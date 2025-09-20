@@ -1,0 +1,66 @@
+﻿@page
+@model AutoPartesRazor.Pages.Products.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Product[0].name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Product[0].description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Product[0].stock)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Product[0].price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Product[0].idCategory)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Product[0].idBrand)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Product) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.stock)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.idCategory)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.idBrand)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

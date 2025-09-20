@@ -1,0 +1,127 @@
+is_global = true
+build_property.TargetFramework = net6.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = AutoPartesRazor
+build_property.RootNamespace = AutoPartesRazor
+build_property.ProjectDir = C:\Users\Sebastian\Desktop\Practicas-Tirar\AutoPartesRazor\AutoPartesRazor\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 6.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\Sebastian\Desktop\Practicas-Tirar\AutoPartesRazor\AutoPartesRazor
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/Users/Sebastian/Desktop/Practicas-Tirar/AutoPartesRazor/AutoPartesRazor/Pages/Brands/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQnJhbmRzXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Sebastian/Desktop/Practicas-Tirar/AutoPartesRazor/AutoPartesRazor/Pages/Brands/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQnJhbmRzXERlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Sebastian/Desktop/Practicas-Tirar/AutoPartesRazor/AutoPartesRazor/Pages/Brands/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQnJhbmRzXERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Sebastian/Desktop/Practicas-Tirar/AutoPartesRazor/AutoPartesRazor/Pages/Brands/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQnJhbmRzXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Sebastian/Desktop/Practicas-Tirar/AutoPartesRazor/AutoPartesRazor/Pages/Brands/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQnJhbmRzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Sebastian/Desktop/Practicas-Tirar/AutoPartesRazor/AutoPartesRazor/Pages/Categories/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2F0ZWdvcmllc1xDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Sebastian/Desktop/Practicas-Tirar/AutoPartesRazor/AutoPartesRazor/Pages/Categories/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2F0ZWdvcmllc1xEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Sebastian/Desktop/Practicas-Tirar/AutoPartesRazor/AutoPartesRazor/Pages/Categories/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2F0ZWdvcmllc1xEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Sebastian/Desktop/Practicas-Tirar/AutoPartesRazor/AutoPartesRazor/Pages/Categories/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2F0ZWdvcmllc1xFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Sebastian/Desktop/Practicas-Tirar/AutoPartesRazor/AutoPartesRazor/Pages/Categories/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2F0ZWdvcmllc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Sebastian/Desktop/Practicas-Tirar/AutoPartesRazor/AutoPartesRazor/Pages/Clients/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2xpZW50c1xDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Sebastian/Desktop/Practicas-Tirar/AutoPartesRazor/AutoPartesRazor/Pages/Clients/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2xpZW50c1xEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Sebastian/Desktop/Practicas-Tirar/AutoPartesRazor/AutoPartesRazor/Pages/Clients/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2xpZW50c1xEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Sebastian/Desktop/Practicas-Tirar/AutoPartesRazor/AutoPartesRazor/Pages/Clients/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2xpZW50c1xFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Sebastian/Desktop/Practicas-Tirar/AutoPartesRazor/AutoPartesRazor/Pages/Clients/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2xpZW50c1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Sebastian/Desktop/Practicas-Tirar/AutoPartesRazor/AutoPartesRazor/Pages/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Sebastian/Desktop/Practicas-Tirar/AutoPartesRazor/AutoPartesRazor/Pages/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Sebastian/Desktop/Practicas-Tirar/AutoPartesRazor/AutoPartesRazor/Pages/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJpdmFjeS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Sebastian/Desktop/Practicas-Tirar/AutoPartesRazor/AutoPartesRazor/Pages/Products/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvZHVjdHNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Sebastian/Desktop/Practicas-Tirar/AutoPartesRazor/AutoPartesRazor/Pages/Products/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvZHVjdHNcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Sebastian/Desktop/Practicas-Tirar/AutoPartesRazor/AutoPartesRazor/Pages/Products/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvZHVjdHNcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Sebastian/Desktop/Practicas-Tirar/AutoPartesRazor/AutoPartesRazor/Pages/Products/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvZHVjdHNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Sebastian/Desktop/Practicas-Tirar/AutoPartesRazor/AutoPartesRazor/Pages/Products/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvZHVjdHNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Sebastian/Desktop/Practicas-Tirar/AutoPartesRazor/AutoPartesRazor/Pages/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Sebastian/Desktop/Practicas-Tirar/AutoPartesRazor/AutoPartesRazor/Pages/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Sebastian/Desktop/Practicas-Tirar/AutoPartesRazor/AutoPartesRazor/Pages/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Sebastian/Desktop/Practicas-Tirar/AutoPartesRazor/AutoPartesRazor/Pages/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-ampqat4wot

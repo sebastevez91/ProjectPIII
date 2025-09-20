@@ -1,0 +1,59 @@
+﻿@page
+@model AutoPartesRazor.Pages.Products.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Product</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Product.name" class="control-label"></label>
+                <input asp-for="Product.name" class="form-control" />
+                <span asp-validation-for="Product.name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.description" class="control-label"></label>
+                <input asp-for="Product.description" class="form-control" />
+                <span asp-validation-for="Product.description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.stock" class="control-label"></label>
+                <input asp-for="Product.stock" class="form-control" />
+                <span asp-validation-for="Product.stock" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.price" class="control-label"></label>
+                <input asp-for="Product.price" class="form-control" />
+                <span asp-validation-for="Product.price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.idCategory" class="control-label"></label>
+                <input asp-for="Product.idCategory" class="form-control" />
+                <span asp-validation-for="Product.idCategory" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.idBrand" class="control-label"></label>
+                <input asp-for="Product.idBrand" class="form-control" />
+                <span asp-validation-for="Product.idBrand" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
