@@ -25,7 +25,10 @@ namespace AutoPartesRazor.Pages.Products
         {
             if (_context.Product != null)
             {
-                Product = await _context.Product.ToListAsync();
+                Product = await _context.Product
+                    .Include(c => c.Category)
+                    .Include(b => b.Brand)
+                    .ToListAsync();
             }
         }
     }
