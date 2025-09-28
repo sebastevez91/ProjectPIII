@@ -29,6 +29,29 @@
                             <a class="nav-link text-dark" asp-area="" asp-page="/Products/Index">Productos</a>
                         </li>
                     </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        @if (User.Identity!.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark">@User.Identity.Name</a>
+                            </li>
+                            <li class="nav-item">
+
+                                <a class="nav-link text-dark" asp-page="/Account/Login" asp-
+                                   page-handler="Logout">Cerrar Sesión</a>
+
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-page="/Account/Login">
+                                    Iniciar
+                                    Sesión
+                                </a>
+                            </li>
+                        }
+                    </ul>
                 </div>
             </div>
         </nav>

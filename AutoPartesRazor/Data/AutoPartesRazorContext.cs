@@ -4,10 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using AutoPartesRazor.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace AutoPartesRazor.Data
 {
-    public class AutoPartesRazorContext : DbContext
+    public class AutoPartesRazorContext : IdentityDbContext<User>
     {
         public AutoPartesRazorContext (DbContextOptions<AutoPartesRazorContext> options)
             : base(options)
