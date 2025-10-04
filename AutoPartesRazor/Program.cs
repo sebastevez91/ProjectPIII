@@ -19,7 +19,11 @@ builder.Services.AddIdentity<User, IdentityRole>(x =>
     x.Password.RequiredUniqueChars = 0;
     x.Password.RequireLowercase = false;
     x.Password.RequireNonAlphanumeric = false;
+    x.Password.RequiredLength = 8;
     x.Password.RequireUppercase = false;
+    x.SignIn.RequireConfirmedEmail = false;
+    x.SignIn.RequireConfirmedAccount = false;
+    x.SignIn.RequireConfirmedPhoneNumber = false;
 }).AddEntityFrameworkStores<AutoPartesRazorContext>();
 
 builder.Services.AddScoped<IUserService, UserService>();

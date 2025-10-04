@@ -19,14 +19,34 @@ namespace AutoPartesRazor.Pages.Products
             _context = context;
         }
 
-        public IActionResult OnGet()
+        [BindProperty]
+        public Product Product { get; set; } = default!;
+        public List<SelectListItem> Categories { get; set; }
+        public List<SelectListItem> Brands { get; set; }
+
+        public async Task<IActionResult> OnGetAsync()
         {
+            //Llena la lista de categorias
+            Categories = _context.Category
+                .Select(c => new SelectListItem
+                {
+                    Value = c.id.ToString(),
+                    Text = c.name
+                })
+                .ToList();
+
+            //Llena la lista de marcas
+            Brands = _context.Brand
+                .Select(b => new SelectListItem
+                {
+                    Value = b.id.ToString(),
+                    Text = b.name
+                })
+                .ToList();
+
             return Page();
         }
 
-        [BindProperty]
-        public Product Product { get; set; } = default!;
-        
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
