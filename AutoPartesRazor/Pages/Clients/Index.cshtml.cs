@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using AutoPartesRazor.Data;
 using AutoPartesRazor.Models;
@@ -12,21 +7,33 @@ namespace AutoPartesRazor.Pages.Clients
 {
     public class IndexModel : PageModel
     {
-        private readonly AutoPartesRazor.Data.AutoPartesRazorContext _context;
+        private readonly AutoPartesRazorContext _context;
 
-        public IndexModel(AutoPartesRazor.Data.AutoPartesRazorContext context)
+        public IndexModel(AutoPartesRazorContext context)
         {
             _context = context;
         }
 
-        public IList<Client> Client { get;set; } = default!;
+        public IList<Client> ClientList { get; set; } = new List<Client>();
 
-        public async Task OnGetAsync()
+        public string CurrentFilter { get; set; } = string.Empty;
+
+        public async Task OnGetAsync(string searchString)
         {
-            if (_context.Client != null)
+            CurrentFilter = searchString ?? string.Empty;
+
+            var query = _context.Client.AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchString))
             {
-                Client = await _context.Client.ToListAsync();
+                searchString = searchString.Trim();
+                query = query.Where(c =>
+                    c.Name.Contains(searchString) ||
+                    c.LastName.Contains(searchString) ||
+                    c.Email.Contains(searchString));
             }
+
+            ClientList = await query.ToListAsync();
         }
     }
 }

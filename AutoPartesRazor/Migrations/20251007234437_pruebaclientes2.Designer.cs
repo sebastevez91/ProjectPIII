@@ -4,6 +4,7 @@ using AutoPartesRazor.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AutoPartesRazor.Migrations
 {
     [DbContext(typeof(AutoPartesRazorContext))]
-    partial class AutoPartesRazorContextModelSnapshot : ModelSnapshot
+    [Migration("20251007234437_pruebaclientes2")]
+    partial class pruebaclientes2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -30,7 +30,7 @@ namespace AutoPartesRazor.Pages.Clients
                 return NotFound();
             }
 
-            var client =  await _context.Client.FirstOrDefaultAsync(m => m.id == id);
+            var client =  await _context.Client.FirstOrDefaultAsync(m => m.Id == id);
             if (client == null)
             {
                 return NotFound();
@@ -56,7 +56,7 @@ namespace AutoPartesRazor.Pages.Clients
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ClientExists(Client.id))
+                if (!ClientExists(Client.Id))
                 {
                     return NotFound();
                 }
@@ -71,7 +71,7 @@ namespace AutoPartesRazor.Pages.Clients
 
         private bool ClientExists(int id)
         {
-          return (_context.Client?.Any(e => e.id == id)).GetValueOrDefault();
+          return (_context.Client?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

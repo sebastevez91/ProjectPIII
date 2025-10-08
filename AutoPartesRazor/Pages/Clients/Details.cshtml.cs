@@ -28,7 +28,7 @@ namespace AutoPartesRazor.Pages.Clients
                 return NotFound();
             }
 
-            var client = await _context.Client.FirstOrDefaultAsync(m => m.id == id);
+            var client = await _context.Client.FirstOrDefaultAsync(m => m.Id == id);
             if (client == null)
             {
                 return NotFound();
