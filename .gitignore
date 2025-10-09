@@ -1,13 +1,13 @@
+# Carpetas de compilación
+AutoPartesRazor/bin/
+AutoPartesRazor/obj/
+
 # Visual Studio
 .vs/
 *.suo
 *.user
 *.userosscache
 *.sln.docstates
-
-# Build
-AutoPartesRazor/bin/
-AutoPartesRazor/obj/
 
 # Config local
 appsettings.Development.json
