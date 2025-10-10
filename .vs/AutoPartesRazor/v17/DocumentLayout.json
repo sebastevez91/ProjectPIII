@@ -3,8 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\patou\\Documentos\\Analista en Sistemas\\ISTIC\\2do a\u00F1o\\2do CUATRIMESTRE\\PROGRAMACION 3\\ProjectPIII\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|c:\\users\\patou\\documentos\\analista en sistemas\\istic\\2do a\u00F1o\\2do cuatrimestre\\programacion 3\\projectpiii\\autopartesrazor\\data\\autopartesrazorcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|solutionrelative:autopartesrazor\\data\\autopartesrazorcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|c:\\users\\patou\\documentos\\analista en sistemas\\istic\\2do a\u00F1o\\2do cuatrimestre\\programacion 3\\projectpiii\\autopartesrazor\\models\\brand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|solutionrelative:autopartesrazor\\models\\brand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|c:\\users\\patou\\documentos\\analista en sistemas\\istic\\2do a\u00F1o\\2do cuatrimestre\\programacion 3\\projectpiii\\autopartesrazor\\models\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|solutionrelative:autopartesrazor\\models\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|c:\\users\\patou\\documentos\\analista en sistemas\\istic\\2do a\u00F1o\\2do cuatrimestre\\programacion 3\\projectpiii\\autopartesrazor\\pages\\brands\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -30,7 +38,7 @@
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "Create.cshtml",
               "DocumentMoniker": "C:\\Users\\patou\\Documentos\\Analista en Sistemas\\ISTIC\\2do a\u00F1o\\2do CUATRIMESTRE\\PROGRAMACION 3\\ProjectPIII\\AutoPartesRazor\\Pages\\Brands\\Create.cshtml",
               "RelativeDocumentMoniker": "AutoPartesRazor\\Pages\\Brands\\Create.cshtml",
@@ -39,20 +47,32 @@
               "ViewState": "AgIAAAMAAAAAAAAAAAAAABoAAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-10-10T02:53:42.234Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Brand.cs",
-              "DocumentMoniker": "C:\\Users\\patou\\Documentos\\Analista en Sistemas\\ISTIC\\2do a\u00F1o\\2do CUATRIMESTRE\\PROGRAMACION 3\\ProjectPIII\\AutoPartesRazor\\Models\\Brand.cs",
-              "RelativeDocumentMoniker": "AutoPartesRazor\\Models\\Brand.cs",
-              "ToolTip": "C:\\Users\\patou\\Documentos\\Analista en Sistemas\\ISTIC\\2do a\u00F1o\\2do CUATRIMESTRE\\PROGRAMACION 3\\ProjectPIII\\AutoPartesRazor\\Models\\Brand.cs",
-              "RelativeToolTip": "AutoPartesRazor\\Models\\Brand.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAIAAAAAAAAAA==",
+              "Title": "AutoPartesRazorContext.cs",
+              "DocumentMoniker": "C:\\Users\\patou\\Documentos\\Analista en Sistemas\\ISTIC\\2do a\u00F1o\\2do CUATRIMESTRE\\PROGRAMACION 3\\ProjectPIII\\AutoPartesRazor\\Data\\AutoPartesRazorContext.cs",
+              "RelativeDocumentMoniker": "AutoPartesRazor\\Data\\AutoPartesRazorContext.cs",
+              "ToolTip": "C:\\Users\\patou\\Documentos\\Analista en Sistemas\\ISTIC\\2do a\u00F1o\\2do CUATRIMESTRE\\PROGRAMACION 3\\ProjectPIII\\AutoPartesRazor\\Data\\AutoPartesRazorContext.cs",
+              "RelativeToolTip": "AutoPartesRazor\\Data\\AutoPartesRazorContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-10T05:48:18.13Z",
+              "WhenOpened": "2025-10-10T06:07:35.058Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Product.cs",
+              "DocumentMoniker": "C:\\Users\\patou\\Documentos\\Analista en Sistemas\\ISTIC\\2do a\u00F1o\\2do CUATRIMESTRE\\PROGRAMACION 3\\ProjectPIII\\AutoPartesRazor\\Models\\Product.cs",
+              "RelativeDocumentMoniker": "AutoPartesRazor\\Models\\Product.cs",
+              "ToolTip": "C:\\Users\\patou\\Documentos\\Analista en Sistemas\\ISTIC\\2do a\u00F1o\\2do CUATRIMESTRE\\PROGRAMACION 3\\ProjectPIII\\AutoPartesRazor\\Models\\Product.cs",
+              "RelativeToolTip": "AutoPartesRazor\\Models\\Product.cs",
+              "ViewState": "AgIAABIAAAAAAAAAAAAowAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-10T06:03:31.812Z",
               "EditorCaption": ""
             },
             {
@@ -69,7 +89,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 1,
+              "Title": "Brand.cs",
+              "DocumentMoniker": "C:\\Users\\patou\\Documentos\\Analista en Sistemas\\ISTIC\\2do a\u00F1o\\2do CUATRIMESTRE\\PROGRAMACION 3\\ProjectPIII\\AutoPartesRazor\\Models\\Brand.cs",
+              "RelativeDocumentMoniker": "AutoPartesRazor\\Models\\Brand.cs",
+              "ToolTip": "C:\\Users\\patou\\Documentos\\Analista en Sistemas\\ISTIC\\2do a\u00F1o\\2do CUATRIMESTRE\\PROGRAMACION 3\\ProjectPIII\\AutoPartesRazor\\Models\\Brand.cs",
+              "RelativeToolTip": "AutoPartesRazor\\Models\\Brand.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-10T05:48:18.13Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
               "Title": "Details.cshtml",
               "DocumentMoniker": "C:\\Users\\patou\\Documentos\\Analista en Sistemas\\ISTIC\\2do a\u00F1o\\2do CUATRIMESTRE\\PROGRAMACION 3\\ProjectPIII\\AutoPartesRazor\\Pages\\Brands\\Details.cshtml",
               "RelativeDocumentMoniker": "AutoPartesRazor\\Pages\\Brands\\Details.cshtml",
@@ -77,18 +110,17 @@
               "RelativeToolTip": "AutoPartesRazor\\Pages\\Brands\\Details.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAACIAAAAGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-08T01:22:13.3Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-08T01:22:13.3Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\Users\\patou\\Documentos\\Analista en Sistemas\\ISTIC\\2do a\u00F1o\\2do CUATRIMESTRE\\PROGRAMACION 3\\ProjectPIII\\AutoPartesRazor\\Pages\\Brands\\Index.cshtml",
               "RelativeDocumentMoniker": "AutoPartesRazor\\Pages\\Brands\\Index.cshtml",
               "ToolTip": "C:\\Users\\patou\\Documentos\\Analista en Sistemas\\ISTIC\\2do a\u00F1o\\2do CUATRIMESTRE\\PROGRAMACION 3\\ProjectPIII\\AutoPartesRazor\\Pages\\Brands\\Index.cshtml",
               "RelativeToolTip": "AutoPartesRazor\\Pages\\Brands\\Index.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-10-08T01:22:01.464Z",
               "EditorCaption": ""
