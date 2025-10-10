@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\AutoPartesRazor.csproj": {}
+    "C:\\Users\\patou\\Documentos\\Analista en Sistemas\\ISTIC\\2do año\\2do CUATRIMESTRE\\PROGRAMACION 3\\ProjectPIII\\AutoPartesRazor\\AutoPartesRazor.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\AutoPartesRazor.csproj": {
+    "C:\\Users\\patou\\Documentos\\Analista en Sistemas\\ISTIC\\2do año\\2do CUATRIMESTRE\\PROGRAMACION 3\\ProjectPIII\\AutoPartesRazor\\AutoPartesRazor.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\AutoPartesRazor.csproj",
+        "projectUniqueName": "C:\\Users\\patou\\Documentos\\Analista en Sistemas\\ISTIC\\2do año\\2do CUATRIMESTRE\\PROGRAMACION 3\\ProjectPIII\\AutoPartesRazor\\AutoPartesRazor.csproj",
         "projectName": "AutoPartesRazor",
-        "projectPath": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\AutoPartesRazor.csproj",
-        "packagesPath": "C:\\Users\\Sebastian\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\obj\\",
+        "projectPath": "C:\\Users\\patou\\Documentos\\Analista en Sistemas\\ISTIC\\2do año\\2do CUATRIMESTRE\\PROGRAMACION 3\\ProjectPIII\\AutoPartesRazor\\AutoPartesRazor.csproj",
+        "packagesPath": "C:\\Users\\patou\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\patou\\Documentos\\Analista en Sistemas\\ISTIC\\2do año\\2do CUATRIMESTRE\\PROGRAMACION 3\\ProjectPIII\\AutoPartesRazor\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Sebastian\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\patou\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -26,7 +26,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -97,7 +96,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.304\\RuntimeIdentifierGraph.json"
         }
       }
     }
