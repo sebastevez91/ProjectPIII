@@ -30,6 +30,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-white" asp-area="" asp-page="/Products/Index">Productos</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-page="/Categories/Index">Categorias</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-page="/Brands/Index">Marcas</a>
+                        </li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         @if (User.Identity!.IsAuthenticated)
@@ -46,7 +52,7 @@
                         }
                         else
                         {
-                            <li class="nav-item">
+                            <li class="nav-item btn btn-primary">
                                 <a class="nav-link text-white" asp-page="/Account/Login">
                                     Iniciar
                                     Sesión
