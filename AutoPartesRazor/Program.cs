@@ -1,12 +1,32 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoPartesRazor.Data;
+using AutoPartesRazor.Interfaces;
+using AutoPartesRazor.Models;
+using AutoPartesRazor.Services;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using AutoPartesRazor.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<AutoPartesRazorContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AutoPartesRazorContext") ?? throw new InvalidOperationException("Connection string 'AutoPartesRazorContext' not found.")));
+
+builder.Services.AddIdentity<User, IdentityRole>(x =>
+{
+    x.User.RequireUniqueEmail = true;
+    x.Password.RequireDigit = false;
+    x.Password.RequiredUniqueChars = 0;
+    x.Password.RequireLowercase = false;
+    x.Password.RequireNonAlphanumeric = false;
+    x.Password.RequiredLength = 8;
+    x.Password.RequireUppercase = false;
+    x.SignIn.RequireConfirmedEmail = false;
+    x.SignIn.RequireConfirmedAccount = false;
+    x.SignIn.RequireConfirmedPhoneNumber = false;
+}).AddEntityFrameworkStores<AutoPartesRazorContext>();
+
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 
@@ -23,6 +43,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();

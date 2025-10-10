@@ -2,15 +2,15 @@
 @model AutoPartesRazor.Pages.Products.IndexModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Lista de productos";
 }
 
-<h1>Index</h1>
+<h1>Lista de productos</h1>
 
 <p>
-    <a asp-page="Create">Create New</a>
+    <a asp-page="Create" class="btn btn-secondary">Nuevo producto</a>
 </p>
-<table class="table">
+<table class="table table-dark table-bordered">
     <thead>
         <tr>
             <th>
@@ -26,10 +26,10 @@
                 @Html.DisplayNameFor(model => model.Product[0].price)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Product[0].idCategory)
+                @Html.DisplayNameFor(model => model.Product[0].Category.name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Product[0].idBrand)
+                @Html.DisplayNameFor(model => model.Product[0].Brand.name)
             </th>
             <th></th>
         </tr>
@@ -47,18 +47,18 @@
                 @Html.DisplayFor(modelItem => item.stock)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.price)
+                $ @Html.DisplayFor(modelItem => item.price)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.idCategory)
+                @Html.DisplayFor(modelItem => item.Category.name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.idBrand)
+                @Html.DisplayFor(modelItem => item.Brand.name)
             </td>
             <td>
-                <a asp-page="./Edit" asp-route-id="@item.id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.id">Delete</a>
+                <a asp-page="./Edit" asp-route-id="@item.id" class="btn btn-primary">editar</a> |
+                <a asp-page="./Details" asp-route-id="@item.id" class="btn btn-secondary">detalles</a> |
+                <a asp-page="./Delete" asp-route-id="@item.id" class="btn btn-danger">eliminar</a>
             </td>
         </tr>
 }

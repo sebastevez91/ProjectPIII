@@ -16,3 +16,12 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+/*Logo de aplicación*/
+.logo-navbar {
+    display: flex;
+    height: 60px; /* Ajusta el tamaño del logo */
+    width: auto; /* Mantiene la proporción */
+    border-radius: 10%;
+    margin: 2%;
+}
