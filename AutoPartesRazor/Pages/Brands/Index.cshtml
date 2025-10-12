@@ -2,16 +2,16 @@
 @model AutoPartesRazor.Pages.Brands.IndexModel
 
 @{
-    ViewData["Title"] = "Lista de marcas";
+    ViewData["Title"] = "Lista de Marcas";
 }
 
-<h1>Lista de marcas</h1>
+<h1>Lista de Marcas</h1>
 
 <p>
-    <a asp-page="Create"></a>
+    <a asp-page="Create" class="btn btn-light">Crear Nueva Marca</a>
 </p>
-<table class="table">
-    <thead>
+<table class="table table-hover shadow-sm table-primary table-striped fs-5 w-50">
+    <thead class="table-dark">
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Brand[0].name)
@@ -25,12 +25,15 @@
             <td>
                 @Html.DisplayFor(modelItem => item.name)
             </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.id">Delete</a>
+            <td class="text-end">
+                    <a asp-page="./Edit" asp-route-id="@item.id" class="btn btn-sm btn-success me-1">Editar</a> |
+                    <a asp-page="./Details" asp-route-id="@item.id" class="btn btn-sm btn-secondary me-1">Detalles</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.id" class="btn btn-sm btn-danger">Eliminar</a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+<div>
+    <a asp-page="/Index" class="btn btn-secondary">Volver</a>
+</div>
