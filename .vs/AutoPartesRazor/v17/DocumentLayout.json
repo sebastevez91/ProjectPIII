@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|c:\\users\\sebastian\\desktop\\practicas-tirar\\autopartesrazor\\autopartesrazor\\models\\brand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|solutionrelative:autopartesrazor\\models\\brand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|c:\\users\\sebastian\\desktop\\practicas-tirar\\autopartesrazor\\autopartesrazor\\data\\autopartesrazorcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|solutionrelative:autopartesrazor\\data\\autopartesrazorcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -17,10 +21,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|c:\\users\\sebastian\\desktop\\practicas-tirar\\autopartesrazor\\autopartesrazor\\pages\\products\\index.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|solutionrelative:autopartesrazor\\pages\\products\\index.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|c:\\users\\sebastian\\desktop\\practicas-tirar\\autopartesrazor\\autopartesrazor\\models\\brand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|solutionrelative:autopartesrazor\\models\\brand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|c:\\users\\sebastian\\desktop\\practicas-tirar\\autopartesrazor\\autopartesrazor\\pages\\products\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -38,7 +38,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 8,
           "Children": [
             {
               "$type": "Bookmark",
@@ -54,7 +54,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "Category.cs",
               "DocumentMoniker": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\Models\\Category.cs",
               "RelativeDocumentMoniker": "AutoPartesRazor\\Models\\Category.cs",
@@ -62,12 +62,11 @@
               "RelativeToolTip": "AutoPartesRazor\\Models\\Category.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-10T00:05:25.574Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-10T00:05:25.574Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\Pages\\Brands\\Index.cshtml",
               "RelativeDocumentMoniker": "AutoPartesRazor\\Pages\\Brands\\Index.cshtml",
@@ -75,25 +74,24 @@
               "RelativeToolTip": "AutoPartesRazor\\Pages\\Brands\\Index.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-10T00:00:30.44Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-10T00:00:30.44Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "AutoPartesRazorContext.cs",
               "DocumentMoniker": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\Data\\AutoPartesRazorContext.cs",
               "RelativeDocumentMoniker": "AutoPartesRazor\\Data\\AutoPartesRazorContext.cs",
               "ToolTip": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\Data\\AutoPartesRazorContext.cs",
               "RelativeToolTip": "AutoPartesRazor\\Data\\AutoPartesRazorContext.cs",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAAAB8AAABOAAAAAAAAAA==",
+              "ViewState": "AgIAABIAAAAAAAAAAAAAAB8AAABOAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-09T23:54:28.24Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "Index.cshtml.cs",
               "DocumentMoniker": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\Pages\\Products\\Index.cshtml.cs",
               "RelativeDocumentMoniker": "AutoPartesRazor\\Pages\\Products\\Index.cshtml.cs",
@@ -117,7 +115,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 0,
               "Title": "Brand.cs",
               "DocumentMoniker": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\Models\\Brand.cs",
               "RelativeDocumentMoniker": "AutoPartesRazor\\Models\\Brand.cs",
@@ -125,7 +123,8 @@
               "RelativeToolTip": "AutoPartesRazor\\Models\\Brand.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-09T23:51:59.655Z"
+              "WhenOpened": "2025-10-09T23:51:59.655Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
