@@ -58,32 +58,36 @@ namespace AutoPartesRazor.Migrations
 
             modelBuilder.Entity("AutoPartesRazor.Models.Client", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("address")
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("email")
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Phone")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("lastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("phone")
-                        .HasColumnType("int");
-
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.ToTable("Client");
                 });
@@ -96,21 +100,15 @@ namespace AutoPartesRazor.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
 
-                    b.Property<int?>("Brandid")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("Categoryid")
-                        .HasColumnType("int");
-
                     b.Property<string>("description")
                         .IsRequired()
                         .HasMaxLength(300)
                         .HasColumnType("nvarchar(300)");
 
-                    b.Property<int>("idBrand")
+                    b.Property<int?>("idBrand")
                         .HasColumnType("int");
 
-                    b.Property<int>("idCategory")
+                    b.Property<int?>("idCategory")
                         .HasColumnType("int");
 
                     b.Property<string>("name")
@@ -127,9 +125,9 @@ namespace AutoPartesRazor.Migrations
 
                     b.HasKey("id");
 
-                    b.HasIndex("Brandid");
+                    b.HasIndex("idBrand");
 
-                    b.HasIndex("Categoryid");
+                    b.HasIndex("idCategory");
 
                     b.ToTable("Product");
                 });
@@ -350,11 +348,13 @@ namespace AutoPartesRazor.Migrations
                 {
                     b.HasOne("AutoPartesRazor.Models.Brand", "Brand")
                         .WithMany("products")
-                        .HasForeignKey("Brandid");
+                        .HasForeignKey("idBrand")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("AutoPartesRazor.Models.Category", "Category")
                         .WithMany("products")
-                        .HasForeignKey("Categoryid");
+                        .HasForeignKey("idCategory")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Brand");
 

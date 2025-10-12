@@ -2,54 +2,77 @@
 @model AutoPartesRazor.Pages.Clients.EditModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Editar cliente";
 }
 
-<h1>Edit</h1>
+@if (TempData["SuccessMessage"] != null)
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            Swal.fire({
+                title: '¡Éxito!',
+                text: '@TempData["SuccessMessage"]',
+                icon: 'success',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true
+            });
+        });
+    </script>
+}
 
-<h4>Client</h4>
+<h2>Editar Cliente</h2>
 <hr />
+
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Client.id" />
-            <div class="form-group">
-                <label asp-for="Client.name" class="control-label"></label>
-                <input asp-for="Client.name" class="form-control" />
-                <span asp-validation-for="Client.name" class="text-danger"></span>
+            <input type="hidden" asp-for="Client.Id" />
+
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Client.Name" class="form-label"></label>
+                <input asp-for="Client.Name" class="form-control" />
+                <span asp-validation-for="Client.Name" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Client.lastName" class="control-label"></label>
-                <input asp-for="Client.lastName" class="form-control" />
-                <span asp-validation-for="Client.lastName" class="text-danger"></span>
+
+            <div class="form-group mb-3">
+                <label asp-for="Client.LastName" class="form-label"></label>
+                <input asp-for="Client.LastName" class="form-control" />
+                <span asp-validation-for="Client.LastName" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Client.address" class="control-label"></label>
-                <input asp-for="Client.address" class="form-control" />
-                <span asp-validation-for="Client.address" class="text-danger"></span>
+
+            <div class="form-group mb-3">
+                <label asp-for="Client.Address" class="form-label"></label>
+                <input asp-for="Client.Address" class="form-control" />
+                <span asp-validation-for="Client.Address" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Client.phone" class="control-label"></label>
-                <input asp-for="Client.phone" class="form-control" />
-                <span asp-validation-for="Client.phone" class="text-danger"></span>
+
+            <div class="form-group mb-3">
+                <label asp-for="Client.Phone" class="form-label"></label>
+                <input asp-for="Client.Phone" class="form-control" placeholder="Ej: 1123456789" />
+                <span asp-validation-for="Client.Phone" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Client.email" class="control-label"></label>
-                <input asp-for="Client.email" class="form-control" />
-                <span asp-validation-for="Client.email" class="text-danger"></span>
+
+            <div class="form-group mb-3">
+                <label asp-for="Client.Email" class="form-label"></label>
+                <input asp-for="Client.Email" class="form-control" />
+                <span asp-validation-for="Client.Email" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                <a asp-page="Index" class="btn btn-secondary">Cancelar</a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-page="./Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

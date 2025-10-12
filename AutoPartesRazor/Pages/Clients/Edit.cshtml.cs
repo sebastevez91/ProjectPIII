@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AutoPartesRazor.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using AutoPartesRazor.Data;
-using AutoPartesRazor.Models;
 
 namespace AutoPartesRazor.Pages.Clients
 {
@@ -30,7 +24,7 @@ namespace AutoPartesRazor.Pages.Clients
                 return NotFound();
             }
 
-            var client =  await _context.Client.FirstOrDefaultAsync(m => m.id == id);
+            var client = await _context.Client.FirstOrDefaultAsync(m => m.Id == id);
             if (client == null)
             {
                 return NotFound();
@@ -56,7 +50,7 @@ namespace AutoPartesRazor.Pages.Clients
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ClientExists(Client.id))
+                if (!ClientExists(Client.Id))
                 {
                     return NotFound();
                 }
@@ -71,7 +65,7 @@ namespace AutoPartesRazor.Pages.Clients
 
         private bool ClientExists(int id)
         {
-          return (_context.Client?.Any(e => e.id == id)).GetValueOrDefault();
+            return (_context.Client?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
