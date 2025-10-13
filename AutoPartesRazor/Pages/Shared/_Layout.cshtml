@@ -39,6 +39,10 @@
                         </li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
+                        <li class="nav-item m-2">
+                            <img src="~/img/shopping-cart-black-shape_icon-icons.com_73416.png" alt="carrito" class="logo-cart btn btn-primary btn-sm">
+                        </li>
+
                         @if (User.Identity!.IsAuthenticated)
                         {
                             <li class="nav-item">
@@ -46,14 +50,14 @@
                             </li>
                             <li class="nav-item">
 
-                                <a class="nav-link text-white" asp-page="/Account/Login" asp-
+                                <a class="nav-link text-white m-2" asp-page="/Account/Login" asp-
                                    page-handler="Logout">Cerrar Sesión</a>
 
                             </li>
                         }
                         else
                         {
-                            <li class="nav-item">
+                            <li class="nav-item m-2">
                                 <a class="nav-link text-white btn btn-primary btn-sm" asp-page="/Account/Login">
                                     Iniciar
                                     Sesión

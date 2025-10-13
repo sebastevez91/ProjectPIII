@@ -30,3 +30,12 @@ body {
 .bg-project {
     background-color: #4b8be9;
 }
+
+/*Logo de carrito*/
+.logo-cart {
+    display: flex;
+    height: 40px;
+    width: auto;
+    border-radius: 10%;
+    margin: 2%;
+}

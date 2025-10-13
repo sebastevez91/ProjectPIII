@@ -28,6 +28,15 @@
 }
 <h1>Lista de productos</h1>
 
+
+    <form method="get" class="mb-3">
+        <div class="input-group">
+            <input type="text" placeholder="Nombre del producto...." class="form-control w-50" />
+            <button type="submit" class="btn btn-success m-2">Buscar</button>
+            <a asp-page="./Index" class="btn btn-secondary m-2">Limpiar</a>
+        </div>
+    </form>
+
 <p>
     <a asp-page="Create" class="btn btn-secondary">Nuevo producto</a>
 </p>
