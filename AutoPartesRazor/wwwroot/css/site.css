@@ -25,3 +25,8 @@ body {
     border-radius: 10%;
     margin: 2%;
 }
+
+/*Fondo de pantalla*/
+.bg-project {
+    background-color: #4b8be9;
+}

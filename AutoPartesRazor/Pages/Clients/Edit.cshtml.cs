@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AutoPartesRazor.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using AutoPartesRazor.Data;
-using AutoPartesRazor.Models;
 
 namespace AutoPartesRazor.Pages.Clients
 {
@@ -30,7 +24,11 @@ namespace AutoPartesRazor.Pages.Clients
                 return NotFound();
             }
 
+<<<<<<< HEAD
             var client =  await _context.Client.FirstOrDefaultAsync(m => m.Id == id);
+=======
+            var client = await _context.Client.FirstOrDefaultAsync(m => m.Id == id);
+>>>>>>> main
             if (client == null)
             {
                 return NotFound();
@@ -71,7 +69,11 @@ namespace AutoPartesRazor.Pages.Clients
 
         private bool ClientExists(int id)
         {
+<<<<<<< HEAD
           return (_context.Client?.Any(e => e.Id == id)).GetValueOrDefault();
+=======
+            return (_context.Client?.Any(e => e.Id == id)).GetValueOrDefault();
+>>>>>>> main
         }
     }
 }

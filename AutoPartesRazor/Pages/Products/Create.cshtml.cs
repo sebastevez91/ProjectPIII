@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AutoPartesRazor.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using AutoPartesRazor.Data;
-using AutoPartesRazor.Models;
 
 namespace AutoPartesRazor.Pages.Products
 {
@@ -51,7 +46,7 @@ namespace AutoPartesRazor.Pages.Products
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-          if (!ModelState.IsValid || _context.Product == null || Product == null)
+            if (!ModelState.IsValid || _context.Product == null || Product == null)
             {
                 return Page();
             }

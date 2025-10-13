@@ -20,8 +20,7 @@ public class UserService : IUserService
     }
 
     //Damos de alta al Usuario
-    public async Task<IdentityResult> AddUserAsync(User user, string
-    password)
+    public async Task<IdentityResult> AddUserAsync(User user, string password)
     {
         return await _userManager.CreateAsync(user, password);
     }

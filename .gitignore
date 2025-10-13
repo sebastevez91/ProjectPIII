@@ -1,13 +1,128 @@
+<<<<<<< HEAD
 # Carpetas de compilación
 AutoPartesRazor/bin/
 AutoPartesRazor/obj/
 
 # Visual Studio
 .vs/
+=======
+# Visual Studio
+.vs/
+bin/
+obj/
+
+# Rider
+.idea/
+
+# User-specific files
+
+##############################
+# Archivos y carpetas de Visual Studio
+##############################
+.vs/
+.vscode/
+>>>>>>> pato
+>>>>>>> main
 *.suo
 *.user
 *.userosscache
 *.sln.docstates
 
+<<<<<<< HEAD
 # Config local
 appsettings.Development.json
+=======
+
+# NuGet
+*.nupkg
+*.snupkg
+*.nuget.props
+*.nuget.targets
+
+# Others
+*.DS_Store
+
+##############################
+# Archivos de compilación
+##############################
+bin/
+obj/
+[Bb]uild/
+[Ll]og/
+*.pdb
+*.cache
+*.log
+
+##############################
+# Archivos de dependencias y paquetes
+##############################
+*.nuget.props
+*.nuget.targets
+*.nupkg
+*.snupkg
+packages/
+*.dll
+*.exe
+
+##############################
+# Archivos de configuración del sistema
+##############################
+Thumbs.db
+Desktop.ini
+
+##############################
+# Archivos de publicación
+##############################
+*.publish.xml
+*.pubxml
+*.publishproj
+PublishProfiles/
+
+##############################
+# Archivos generados por Razor y MSBuild
+##############################
+*.g.cs
+*.g.i.cs
+*.designer.cs
+*.dbmdl
+*.bak
+*.backup
+*.swp
+
+##############################
+# Archivos de Auto Generated (Razor)
+##############################
+AutoPartesRazor/bin/
+AutoPartesRazor/obj/
+AutoPartesRazor/wwwroot/lib/
+
+##############################
+# Archivos temporales o locales
+##############################
+*.tmp
+*.temp
+*.bak
+*.old
+*.orig
+*.db
+
+##############################
+# Archivos de IDE o pruebas
+##############################
+.idea/
+*.DotSettings.user
+*.resharper/
+_ReSharper*/
+*.coverage
+TestResult*/
+*.TestResult.xml
+
+##############################
+# Archivos de seguridad o claves
+##############################
+appsettings.Development.json
+secrets.json
+.env
+.env.*
+
+>>>>>>> main

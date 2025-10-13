@@ -28,13 +28,13 @@ public class Product
     public decimal price { get; set; }
 
     // Clave Foreign Key
-    public int idCategory { get; set; }
+    public int? idCategory { get; set; }
 
     // Navegación 
     public Category? Category { get; set; }
 
     // Clave Foreign Key
-    public int idBrand { get; set; }
+    public int? idBrand { get; set; }
 
     // Navegación 
     public Brand? Brand { get; set; }

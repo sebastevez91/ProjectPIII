@@ -100,21 +100,15 @@ namespace AutoPartesRazor.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
 
-                    b.Property<int?>("Brandid")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("Categoryid")
-                        .HasColumnType("int");
-
                     b.Property<string>("description")
                         .IsRequired()
                         .HasMaxLength(300)
                         .HasColumnType("nvarchar(300)");
 
-                    b.Property<int>("idBrand")
+                    b.Property<int?>("idBrand")
                         .HasColumnType("int");
 
-                    b.Property<int>("idCategory")
+                    b.Property<int?>("idCategory")
                         .HasColumnType("int");
 
                     b.Property<string>("name")
@@ -131,9 +125,9 @@ namespace AutoPartesRazor.Migrations
 
                     b.HasKey("id");
 
-                    b.HasIndex("Brandid");
+                    b.HasIndex("idBrand");
 
-                    b.HasIndex("Categoryid");
+                    b.HasIndex("idCategory");
 
                     b.ToTable("Product");
                 });
@@ -354,11 +348,13 @@ namespace AutoPartesRazor.Migrations
                 {
                     b.HasOne("AutoPartesRazor.Models.Brand", "Brand")
                         .WithMany("products")
-                        .HasForeignKey("Brandid");
+                        .HasForeignKey("idBrand")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("AutoPartesRazor.Models.Category", "Category")
                         .WithMany("products")
-                        .HasForeignKey("Categoryid");
+                        .HasForeignKey("idCategory")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Brand");
 

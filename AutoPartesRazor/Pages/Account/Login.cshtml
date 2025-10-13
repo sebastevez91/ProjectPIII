@@ -9,7 +9,7 @@
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="form-group">
         <label asp-for="LoginInput.Email">Usuario</label>
-        <input asp-for="LoginInput.Email" class="form-control" />
+        <input asp-for="LoginInput.Email" class="form-control" placeholder="Nombre de usuario"/>
 
         <span asp-validation-for="LoginInput.Email" class="text-danger"></span>
 
@@ -28,7 +28,7 @@
         <label asp-for="LoginInput.RememberMe" class="form-check-label">Recuerdame</label>
 
     </div>
-    <button type="submit" class="btn btn-primary">Login</button>
+    <button type="submit" class="btn btn-primary">Ingresar</button>
 </form>
 @section Scripts {
     @{

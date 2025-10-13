@@ -1,7 +1,13 @@
+<<<<<<< HEAD
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using AutoPartesRazor.Data;
 using AutoPartesRazor.Models;
+=======
+﻿using AutoPartesRazor.Data;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+>>>>>>> main
 
 namespace AutoPartesRazor.Pages.Clients
 {

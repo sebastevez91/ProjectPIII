@@ -5,6 +5,27 @@
     ViewData["Title"] = "Lista de productos";
 }
 
+@if (TempData["SuccessMessage"] != null)
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                title: '¡Éxito!',
+                text: '@TempData["SuccessMessage"]',
+                icon: 'success',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer);
+                    toast.addEventListener('mouseleave', Swal.resumeTimer);
+                }
+            });
+        });
+    </script>
+}
 <h1>Lista de productos</h1>
 
 <p>
@@ -47,7 +68,7 @@
                 @Html.DisplayFor(modelItem => item.stock)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.price)
+                $ @Html.DisplayFor(modelItem => item.price)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Category.name)
@@ -56,9 +77,32 @@
                 @Html.DisplayFor(modelItem => item.Brand.name)
             </td>
             <td>
-                <a asp-page="./Edit" asp-route-id="@item.id" class="btn btn-primary">editar</a> |
-                <a asp-page="./Details" asp-route-id="@item.id" class="btn btn-secondary">detalles</a> |
-                <a asp-page="./Delete" asp-route-id="@item.id" class="btn btn-danger">eliminar</a>
+                <a asp-page="./Edit" asp-route-id="@item.id" class="btn btn-primary btn-sm">editar</a> |
+                <a asp-page="./Details" asp-route-id="@item.id" class="btn btn-secondary btn-sm">detalles</a> |
+                <button type="button" class="btn btn-danger btn-sm" 
+                onclick="confirmDelete(@item.id, '@Html.Raw("Products")', '@Html.Raw("producto")', '@Html.Raw(item.name)')">Eliminar</button>
+
+                    <!-- Modal de confirmación -->
+                    <div class="modal fade" id="deleteModal_@item.id" tabindex="-1" aria-labelledby="deleteModalLabel_@item.id" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="deleteModalLabel_@item.id">Confirmar eliminación</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    ¿Está seguro que desea eliminar al producto <strong>@item.name</strong>?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary m-2" data-bs-dismiss="modal">Cancelar</button>
+                                    <form method="post" asp-page="./Delete" asp-route-id="@item.id" style="display:inline;">
+                                        <input type="hidden" name="id" value="@item.id" />
+                                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
             </td>
         </tr>
 }

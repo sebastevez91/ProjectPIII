@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using AutoPartesRazor.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using AutoPartesRazor.Data;
-using AutoPartesRazor.Models;
 
 namespace AutoPartesRazor.Pages.Products
 {
@@ -19,7 +13,7 @@ namespace AutoPartesRazor.Pages.Products
             _context = context;
         }
 
-        public IList<Product> Product { get;set; } = default!;
+        public IList<Product> Product { get; set; } = default!;
 
         public async Task OnGetAsync()
         {
