@@ -36,8 +36,8 @@
 <form method="get" class="mb-3">
     <div class="input-group">
         <input type="text" name="SearchString" value="@Model.CurrentFilter" class="form-control" placeholder="Buscar por nombre, apellido o email..." />
-        <button type="submit" class="btn btn-outline-primary">Buscar</button>
-        <a asp-page="./Index" class="btn btn-outline-secondary">Limpiar</a>
+        <button type="submit" class="btn btn-primary">Buscar</button>
+        <a asp-page="./Index" class="btn btn-secondary">Limpiar</a>
     </div>
 </form>
 
@@ -68,7 +68,8 @@
                         <a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Editar</a>
 
                         <!-- Botón que llama a la función de confirmación -->
-                        <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete(@item.Id, '@Html.Raw(item.Name) @Html.Raw(item.LastName)')">
+                        <button type="button" class="btn btn-danger btn-sm" 
+                                onclick="confirmDelete(@item.Id, '@Html.Raw("Clients")', '@Html.Raw("cliente")', '@Html.Raw(item.Name) @Html.Raw(item.LastName)')">
                             Eliminar
                         </button>
 
@@ -84,7 +85,7 @@
                                         ¿Está seguro que desea eliminar al cliente <strong>@item.Name @item.LastName</strong>?
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                        <button type="button" class="btn btn-secondary m-2" data-bs-dismiss="modal">Cancelar</button>
                                         <form method="post" asp-page="./Delete" asp-route-id="@item.Id" style="display:inline;">
                                             <input type="hidden" name="id" value="@item.Id" />
                                             <button type="submit" class="btn btn-danger">Eliminar</button>
@@ -102,43 +103,4 @@
 else
 {
     <div class="alert alert-warning">No se encontraron clientes.</div>
-}
-
-@section Scripts {
-    <script>
-        function confirmDelete(id, fullName) {
-            Swal.fire({
-                title: '¿Estás seguro?',
-                html: `¿Deseas eliminar al cliente <strong>${fullName}</strong>? Esta acción no se puede deshacer.`,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Sí, eliminar',
-                cancelButtonText: 'Cancelar',
-                reverseButtons: true,
-                customClass: {
-                    confirmButton: 'btn btn-danger',
-                    cancelButton: 'btn btn-secondary'
-                },
-                buttonsStyling: false
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Crear y enviar formulario POST con token anti-forgery
-                    const form = document.createElement('form');
-                    form.method = 'POST';
-                    form.action = `/Clients/Delete?id=${id}`;
-
-                    // Obtener el token anti-forgery (necesario en Razor Pages)
-                    const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
-                    const tokenInput = document.createElement('input');
-                    tokenInput.type = 'hidden';
-                    tokenInput.name = '__RequestVerificationToken';
-                    tokenInput.value = token;
-                    form.appendChild(tokenInput);
-
-                    document.body.appendChild(form);
-                    form.submit();
-                }
-            });
-        }
-    </script>
 }

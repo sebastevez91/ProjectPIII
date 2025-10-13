@@ -15,8 +15,9 @@
                 <div>
                     <img src="~/img/logo.png" class="logo-navbar" alt="logo empresarial">
                 </div>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" 
+                    data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
@@ -25,13 +26,9 @@
                             <a class="nav-link text-white" asp-area="" asp-page="/Index">Inicio</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-page="/Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link text-white" asp-area="" asp-page="/Products/Index">Productos</a>
                         </li>
                         <li class="nav-item">
-
                             <a class="nav-link text-white" asp-area="" asp-page="/Categories/Index">Categorias</a>
                         </li>
                         <li class="nav-item">
@@ -56,8 +53,8 @@
                         }
                         else
                         {
-                            <li class="nav-item btn btn-primary">
-                                <a class="nav-link text-white" asp-page="/Account/Login">
+                            <li class="nav-item">
+                                <a class="nav-link text-white btn btn-primary btn-sm" asp-page="/Account/Login">
                                     Iniciar
                                     Sesión
                                 </a>
@@ -83,6 +80,8 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

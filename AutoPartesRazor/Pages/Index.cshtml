@@ -5,7 +5,46 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Bienvenidos, muy pronto algo nuevo para tu auto</h1>
+
+    @if (User.Identity!.IsAuthenticated)
+    {
+        <h1 class="display-4 text-xl-center">Bienvenido @User.Identity.Name</h1>
+    }
+    else
+    {
+        <h1 class="text-xl-center">Bienvenidos a AutoPartes Razor</h1>
+    }
+
+    <div>
+            <form method="post">
+                <div class="form-group w-100">
+                    <input type="search" class="form-control m-2" placeholder="Que estas buscando..."/>
+                    <button type="submit" class="btn btn-success btn-sm w-50" >Buscar</button>
+                </div>
+            </form>
+    </div>
+    <div class="row m-4">
+        @foreach(var item in Model.products)
+        {
+            <div class="col">
+                <div class="card bg-light border-3" style="width: 18rem;">
+                    <img src="" class="card-img-top" alt="Imagen producto">
+                    <div class="card-body bg-secondary">
+                        <h5 class="card-title">@item.name</h5>
+                        <p class="card-text">@item.description</p>
+                    </div>
+                    <ul class="list-group list-group-flush bg-info">
+                        <li class="list-group-item">@item.Category.name</li>
+                        <li class="list-group-item">@item.Brand.name</li>
+                        <li class="list-group-item">$ @item.price</li>
+                    </ul>
+                    <div class="card-body">
+                        <a href="#" class="btn btn-success btn-sm">Comprar</a>
+                    </div>
+                </div>
+            </div>            
+        }
+    </div>
     <img src="~/img/logo.png" class="img-fluid" alt="...">
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>

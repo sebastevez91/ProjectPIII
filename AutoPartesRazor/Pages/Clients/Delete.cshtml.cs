@@ -1,55 +1,35 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using AutoPartesRazor.Data;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace AutoPartesRazor.Pages.Clients
 {
     public class DeleteModel : PageModel
     {
-        private readonly AutoPartesRazor.Data.AutoPartesRazorContext _context;
+        private readonly AutoPartesRazorContext _context;
 
-        public DeleteModel(AutoPartesRazor.Data.AutoPartesRazorContext context)
+        public DeleteModel(AutoPartesRazorContext context)
         {
             _context = context;
         }
 
-        //  [BindProperty]
-        //public Client Client { get; set; } = default!;
+        public async Task<IActionResult> OnPostAsync(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-        //  public async Task<IActionResult> OnGetAsync(int? id)
-        //  {
-        //      if (id == null || _context.Client == null)
-        //      {
-        //          return NotFound();
-        //      }
+            var client = await _context.Client.FindAsync(id);
+            if (client != null)
+            {
+                _context.Client.Remove(client);
+                await _context.SaveChangesAsync();
 
-        //      var client = await _context.Client.FirstOrDefaultAsync(m => m.id == id);
+                TempData["SuccessMessage"] = "Cliente eliminado correctamente.";
+            }
 
-        //      if (client == null)
-        //      {
-        //          return NotFound();
-        //      }
-        //      else 
-        //      {
-        //          Client = client;
-        //      }
-        //      return Page();
-        //  }
-
-        //public async Task<IActionResult> OnPostAsync(int? id)
-        //{
-        //    if (id == null || _context.Client == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    var client = await _context.Client.FindAsync(id);
-
-        //    if (client != null)
-        //    {
-        //        Client = client;
-        //        _context.Client.Remove(Client);
-        //        await _context.SaveChangesAsync();
-        //    }
-
-        //    return RedirectToPage("./Index");
-        //}
+            return RedirectToPage("./Index");
+        }
     }
 }
