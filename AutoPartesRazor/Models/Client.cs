@@ -30,5 +30,8 @@ namespace AutoPartesRazor.Models
         [EmailAddress(ErrorMessage = "El formato del correo electrónico no es válido.")]
         [Display(Name = "Correo electrónico")]
         public string Email { get; set; } = string.Empty;
+        [Display(Name = "Fecha de Registro")]
+        [DataType(DataType.Date)]
+        public DateTime DateAdded { get; set; } = DateTime.Now;
     }
 }

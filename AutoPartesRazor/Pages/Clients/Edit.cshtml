@@ -63,6 +63,12 @@
                 <span asp-validation-for="Client.Email" class="text-danger"></span>
             </div>
 
+            <div class="form-group mb-3">
+                <label asp-for="Client.DateAdded" class="form-label"></label>
+                <input asp-for="Client.DateAdded" class="form-control" type="date" />
+                <span asp-validation-for="Client.DateAdded" class="text-danger"></span>
+            </div>
+
             <div class="form-group text-center m-4">
                 <button type="submit" class="btn btn-primary btn-lg">Guardar</button>
                 <a asp-page="Index" class="btn btn-secondary btn-lg">Cancelar</a>

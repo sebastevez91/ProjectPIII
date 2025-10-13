@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using AutoPartesRazor.Data; // Aseguramos que la directiva de Data esté aquí
 
 namespace AutoPartesRazor.Pages.Clients
 {
@@ -24,11 +25,7 @@ namespace AutoPartesRazor.Pages.Clients
                 return NotFound();
             }
 
-<<<<<<< HEAD
-            var client =  await _context.Client.FirstOrDefaultAsync(m => m.Id == id);
-=======
             var client = await _context.Client.FirstOrDefaultAsync(m => m.Id == id);
->>>>>>> main
             if (client == null)
             {
                 return NotFound();
@@ -51,6 +48,7 @@ namespace AutoPartesRazor.Pages.Clients
             try
             {
                 await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Cliente editado correctamente."; // Añadimos el mensaje de éxito aquí
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -69,11 +67,7 @@ namespace AutoPartesRazor.Pages.Clients
 
         private bool ClientExists(int id)
         {
-<<<<<<< HEAD
-          return (_context.Client?.Any(e => e.Id == id)).GetValueOrDefault();
-=======
             return (_context.Client?.Any(e => e.Id == id)).GetValueOrDefault();
->>>>>>> main
         }
     }
 }
