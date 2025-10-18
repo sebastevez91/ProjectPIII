@@ -29,8 +29,7 @@ namespace AutoPartesRazor.Pages.Clients
                 searchString = searchString.Trim();
                 query = query.Where(c =>
                     c.Name.Contains(searchString) ||
-                    c.LastName.Contains(searchString) ||
-                    c.Email.Contains(searchString));
+                    c.LastName.Contains(searchString));
             }
 
             ClientList = await query.ToListAsync();

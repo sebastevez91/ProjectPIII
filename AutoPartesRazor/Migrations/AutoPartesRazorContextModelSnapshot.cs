@@ -39,6 +39,27 @@ namespace AutoPartesRazor.Migrations
                     b.ToTable("Brand");
                 });
 
+            modelBuilder.Entity("AutoPartesRazor.Models.Cart", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
+
+                    b.Property<int>("productId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("productId");
+
+                    b.ToTable("Cart");
+                });
+
             modelBuilder.Entity("AutoPartesRazor.Models.Category", b =>
                 {
                     b.Property<int>("id")
@@ -71,10 +92,6 @@ namespace AutoPartesRazor.Migrations
 
                     b.Property<DateTime>("DateAdded")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -148,7 +165,6 @@ namespace AutoPartesRazor.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
@@ -195,7 +211,6 @@ namespace AutoPartesRazor.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("UserName")
-                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
@@ -343,6 +358,17 @@ namespace AutoPartesRazor.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("AutoPartesRazor.Models.Cart", b =>
+                {
+                    b.HasOne("AutoPartesRazor.Models.Product", "producto")
+                        .WithMany()
+                        .HasForeignKey("productId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("producto");
                 });
 
             modelBuilder.Entity("AutoPartesRazor.Models.Product", b =>

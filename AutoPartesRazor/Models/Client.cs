@@ -26,10 +26,6 @@ namespace AutoPartesRazor.Models
         [Display(Name = "Teléfono")]
         public string Phone { get; set; }
 
-        [Required(ErrorMessage = "El correo electrónico es obligatorio.")]
-        [EmailAddress(ErrorMessage = "El formato del correo electrónico no es válido.")]
-        [Display(Name = "Correo electrónico")]
-        public string Email { get; set; } = string.Empty;
         [Display(Name = "Fecha de Registro")]
         [DataType(DataType.Date)]
         public DateTime DateAdded { get; set; } = DateTime.Now;

@@ -50,7 +50,6 @@
                 <th>Apellido</th>
                 <th>Dirección</th>
                 <th>Teléfono</th>
-                <th>Email</th>
                 <th>Fecha de Registro</th>
                 <th>Acciones</th>
             </tr>
@@ -63,7 +62,6 @@
                     <td>@item.LastName</td>
                     <td>@item.Address</td>
                     <td>@item.Phone</td>
-                    <td>@item.Email</td>
                     <td>@item.DateAdded.ToString("yyyy-MM-dd")</td>
                     <td>
                         <a asp-page="./Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">Ver</a>

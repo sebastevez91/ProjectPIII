@@ -1,0 +1,54 @@
+﻿@page
+@model AutoPartesRazor.Pages.Carts.IndexModel
+
+@{
+    ViewData["Title"] = "Carrito de compras";
+}
+
+<h1>Tu carrito de compras</h1>
+
+@if (Model.Cart.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Precio</th>
+                <th>Cantidad</th>
+                <th>Total</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+    @foreach (var item in Model.Cart) {
+            <tr>
+                <td>@item.producto.name</td>
+                <td>@item.producto.price.ToString("C")</td>
+                <td>@item.quantity</td>
+                <td>@((item.quantity * item.producto.price).ToString("C"))</td>
+                <td>
+                    <form method="post">
+                        <input type="hidden" name="id" value="@item.id" />
+                        <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+    }
+        </tbody>
+    </table>
+
+    <div class="text-right">
+        <h4>Total del Carrito: @Model.Cart.Sum(item => item.quantity * item.producto.price).ToString("C")</h4>
+    </div>
+
+    <a  asp-page="/Products/Index" class="btn btn-primary">Seguir Comprando</a>
+}
+else
+{
+    <div class="alert alert-info">
+        No hay productos en el carrito.
+    </div>
+    <a asp-page="/Products/Index" class="btn btn-primary">Ir a Productos</a>
+}
+
+

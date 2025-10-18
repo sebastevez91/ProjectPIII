@@ -34,11 +34,13 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
 
     public DbSet<AutoPartesRazor.Models.Product> Product { get; set; } = default!;
 
-    public DbSet<AutoPartesRazor.Models.Brand>? Brand { get; set; }
+    public DbSet<AutoPartesRazor.Models.Brand> Brand { get; set; }
 
-    public DbSet<AutoPartesRazor.Models.Category>? Category { get; set; }
+    public DbSet<AutoPartesRazor.Models.Category> Category { get; set; }
 
-    public DbSet<AutoPartesRazor.Models.Client>? Client { get; set; }
+    public DbSet<AutoPartesRazor.Models.Client> Client { get; set; }
 
-    public DbSet<AutoPartesRazor.Models.User>? User { get; set; }
+    public DbSet<AutoPartesRazor.Models.User> User { get; set; }
+
+    public DbSet<AutoPartesRazor.Models.Cart> Cart { get; set; }
 }

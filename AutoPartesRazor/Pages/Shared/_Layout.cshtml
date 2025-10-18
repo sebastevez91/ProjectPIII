@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/AutoPartesRazor.styles.css" asp-append-version="true" />
+    <!-- Agregar Font Awesome para íconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 </head>
 <body class="bg-project">
     <header>
@@ -37,10 +39,28 @@
                         <li class="nav-item">
                             <a class="nav-link text-white" asp-area="" asp-page="/Clients/Index">Clientes</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-page="/Carts/Index">Carrito</a>
+                        </li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li class="nav-item m-2">
-                            <img src="~/img/shopping-cart-black-shape_icon-icons.com_73416.png" alt="carrito" class="logo-cart btn btn-primary btn-sm">
+                            <!-- Botón de Carrito con Contador -->
+                            <a asp-page="/Carts/Index" class="btn btn-outline-light position-relative me-2" id="ver-carrito">
+                                <i class="fas fa-shopping-cart"></i>
+                                @if (TempData["Total"] != null)
+                                {
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="contador-carrito">
+                                        @TempData["Total"]
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="contador-carrito" style="display: none;">
+                                        0
+                                    </span>
+                                }
+                            </a>
                         </li>
 
                         @if (User.Identity!.IsAuthenticated)
