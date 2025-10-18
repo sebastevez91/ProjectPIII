@@ -4,7 +4,6 @@ namespace AutoPartesRazor.ViewModels;
 
 public class LoginViewModel
 {
-    [Display(Name = "Correo")]
     [Required(ErrorMessage = "El campo {0} es obligatorio.")]
     [EmailAddress(ErrorMessage = "Debe ingresar un correo válido.")]
     public string Email { get; set; }

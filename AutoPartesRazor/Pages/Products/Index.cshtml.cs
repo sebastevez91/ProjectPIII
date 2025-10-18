@@ -14,16 +14,26 @@ namespace AutoPartesRazor.Pages.Products
         }
 
         public IList<Product> Product { get; set; } = default!;
+        public string SearchProduct {get; set; } = string.Empty;
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(string searchString)
         {
-            if (_context.Product != null)
+            // Buscador por nombre de producto
+            SearchProduct = searchString ?? string.Empty;
+            var query = _context.Product.AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchString))
             {
-                Product = await _context.Product
+                searchString = searchString.Trim();
+                query = query.Where(p =>
+                    p.name.Contains(searchString));
+            }
+
+
+            Product = await query
                     .Include(c => c.Category)
                     .Include(b => b.Brand)
                     .ToListAsync();
-            }
         }
     }
 }

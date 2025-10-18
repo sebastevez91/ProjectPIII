@@ -8,6 +8,7 @@ namespace AutoPartesRazor.Pages.Account;
 public class LoginModel : PageModel
 {
     private readonly IUserService _userService;
+
     public LoginModel(IUserService service)
     {
         _userService = service;
@@ -16,12 +17,12 @@ public class LoginModel : PageModel
     [BindProperty]
     public LoginViewModel LoginInput { get; set; }
 
-    public async Task<IActionResult> OnPostLogin()
+    public async Task<IActionResult> OnPost()
     {
         if (ModelState.IsValid)
         {
-            Microsoft.AspNetCore.Identity.SignInResult result =
-            await _userService.LoginAsync(LoginInput);
+            Microsoft.AspNetCore.Identity.SignInResult result = await _userService.LoginAsync(LoginInput);
+
             if (result.Succeeded)
             {
                 return RedirectToPage("/Index");

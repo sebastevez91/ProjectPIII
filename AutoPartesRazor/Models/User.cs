@@ -8,16 +8,12 @@ namespace AutoPartesRazor.Models;
 public class User : IdentityUser
 {
     [Required]
-    [Display(Name = "Nombre de usuario")]
-    public string UserName { get; set; }
-
-    [Required]
-    [Display(Name = "Correo electrónico")]
-    public string Email { get; set; }
+    [Display(Name = "Usuario")]
+    public string Name { get; set; }
 
     [Required]
     [Display(Name = "Rol")]
-    public Role Role { get; set; }
+    public Role Role { get; set; } = Role.Client;
 
     [Display(Name = "Fecha de creación")]
     public DateTime RegistrationDate { get; set; } = DateTime.Now;

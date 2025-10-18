@@ -4,13 +4,12 @@ namespace AutoPartesRazor.ViewModels;
 
 public class RegisterViewModels
 {
-    [Required(ErrorMessage = "El nombre es obligatorio")]
-    [Display(Name = "Nombre")]
+    [Required(ErrorMessage = "El nombre de usuario es obligatorio")]
+    [Display(Name = "Usuario")]
     public string Name { get; set; }
 
     [Required(ErrorMessage = "El email es obligatorio")]
     [EmailAddress(ErrorMessage = "El formato del email no es válido")]
-    [Display(Name = "Email")]
     public string Email { get; set; }
 
     [Required(ErrorMessage = "La contraseña es obligatorio")]

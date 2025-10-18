@@ -10,9 +10,8 @@ public class UserService : IUserService
     private readonly UserManager<User> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly SignInManager<User> _signInManager;
-    public UserService(UserManager<User> userManager,
 
-    RoleManager<IdentityRole> roleManager, SignInManager<User> signInManager)
+    public UserService(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, SignInManager<User> signInManager)
     {
         _userManager = userManager;
         _roleManager = roleManager;

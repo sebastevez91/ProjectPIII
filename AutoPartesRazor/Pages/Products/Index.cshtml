@@ -29,91 +29,100 @@
 <h1>Lista de productos</h1>
 
 
-    <form method="get" class="mb-3">
-        <div class="input-group">
-            <input type="text" placeholder="Nombre del producto...." class="form-control w-50" />
-            <button type="submit" class="btn btn-success m-2">Buscar</button>
-            <a asp-page="./Index" class="btn btn-secondary m-2">Limpiar</a>
-        </div>
-    </form>
+<form method="get" class="mb-3">
+    <div class="input-group">
+        <input type="text" name="SearchString" value="@Model.SearchProduct" placeholder="Nombre del producto...." class="form-control w-50" />
+        <button type="submit" class="btn btn-success m-2">Buscar</button>
+        <a asp-page="./Index" class="btn btn-secondary m-2">Limpiar</a>
+    </div>
+ </form>
 
 <p>
     <a asp-page="Create" class="btn btn-secondary">Nuevo producto</a>
 </p>
-<table class="table table-dark table-bordered">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Product[0].name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Product[0].description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Product[0].stock)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Product[0].price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Product[0].Category.name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Product[0].Brand.name)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.Product) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.stock)
-            </td>
-            <td>
-                $ @Html.DisplayFor(modelItem => item.price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category.name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Brand.name)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.id" class="btn btn-primary btn-sm">editar</a> |
-                <a asp-page="./Details" asp-route-id="@item.id" class="btn btn-secondary btn-sm">detalles</a> |
-                <button type="button" class="btn btn-danger btn-sm" 
-                onclick="confirmDelete(@item.id, '@Html.Raw("Products")', '@Html.Raw("producto")', '@Html.Raw(item.name)')">Eliminar</button>
 
-                    <!-- Modal de confirmación -->
-                    <div class="modal fade" id="deleteModal_@item.id" tabindex="-1" aria-labelledby="deleteModalLabel_@item.id" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="deleteModalLabel_@item.id">Confirmar eliminación</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    ¿Está seguro que desea eliminar al producto <strong>@item.name</strong>?
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary m-2" data-bs-dismiss="modal">Cancelar</button>
-                                    <form method="post" asp-page="./Delete" asp-route-id="@item.id" style="display:inline;">
-                                        <input type="hidden" name="id" value="@item.id" />
-                                        <button type="submit" class="btn btn-danger">Eliminar</button>
-                                    </form>
+@if (Model.Product.Any())
+{
+    <table class="table table-dark table-bordered">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Product[0].name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Product[0].description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Product[0].stock)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Product[0].price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Product[0].Category.name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Product[0].Brand.name)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+    @foreach (var item in Model.Product) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.stock)
+                </td>
+                <td>
+                    $ @Html.DisplayFor(modelItem => item.price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category.name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Brand.name)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.id" class="btn btn-primary btn-sm m-1">editar</a> |
+                    <a asp-page="./Details" asp-route-id="@item.id" class="btn btn-secondary btn-sm">detalles</a> |
+                    <button type="button" class="btn btn-danger btn-sm m-1" 
+                    onclick="confirmDelete(@item.id, '@Html.Raw("Products")', '@Html.Raw("producto")', '@Html.Raw(item.name)')">Eliminar</button>
+
+                        <!-- Modal de confirmación -->
+                        <div class="modal fade" id="deleteModal_@item.id" tabindex="-1" aria-labelledby="deleteModalLabel_@item.id" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="deleteModalLabel_@item.id">Confirmar eliminación</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        ¿Está seguro que desea eliminar al producto <strong>@item.name</strong>?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary m-2" data-bs-dismiss="modal">Cancelar</button>
+                                        <form method="post" asp-page="./Delete" asp-route-id="@item.id" style="display:inline;">
+                                            <input type="hidden" name="id" value="@item.id" />
+                                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-            </td>
-        </tr>
+                </td>
+            </tr>
+    }
+        </tbody>
+    </table>
 }
-    </tbody>
-</table>
+else
+{
+    <div class="alert alert-warning">No se encontraron productos.</div>
+}
+

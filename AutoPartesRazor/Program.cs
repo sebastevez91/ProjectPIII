@@ -24,7 +24,8 @@ builder.Services.AddIdentity<User, IdentityRole>(x =>
     x.SignIn.RequireConfirmedEmail = false;
     x.SignIn.RequireConfirmedAccount = false;
     x.SignIn.RequireConfirmedPhoneNumber = false;
-}).AddEntityFrameworkStores<AutoPartesRazorContext>();
+}).AddEntityFrameworkStores<AutoPartesRazorContext>()
+.AddDefaultTokenProviders();
 
 builder.Services.AddScoped<IUserService, UserService>();
 
