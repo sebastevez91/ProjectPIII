@@ -4,6 +4,7 @@ using AutoPartesRazor.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AutoPartesRazor.Migrations
 {
     [DbContext(typeof(AutoPartesRazorContext))]
-    partial class AutoPartesRazorContextModelSnapshot : ModelSnapshot
+    [Migration("20251007233013_pruebaclientes1")]
+    partial class pruebaclientes1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -69,9 +71,6 @@ namespace AutoPartesRazor.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<DateTime>("DateAdded")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -86,9 +85,8 @@ namespace AutoPartesRazor.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Phone")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -103,15 +101,21 @@ namespace AutoPartesRazor.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
 
+                    b.Property<int?>("Brandid")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Categoryid")
+                        .HasColumnType("int");
+
                     b.Property<string>("description")
                         .IsRequired()
                         .HasMaxLength(300)
                         .HasColumnType("nvarchar(300)");
 
-                    b.Property<int?>("idBrand")
+                    b.Property<int>("idBrand")
                         .HasColumnType("int");
 
-                    b.Property<int?>("idCategory")
+                    b.Property<int>("idCategory")
                         .HasColumnType("int");
 
                     b.Property<string>("name")
@@ -128,9 +132,9 @@ namespace AutoPartesRazor.Migrations
 
                     b.HasKey("id");
 
-                    b.HasIndex("idBrand");
+                    b.HasIndex("Brandid");
 
-                    b.HasIndex("idCategory");
+                    b.HasIndex("Categoryid");
 
                     b.ToTable("Product");
                 });
@@ -148,22 +152,25 @@ namespace AutoPartesRazor.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
@@ -195,7 +202,6 @@ namespace AutoPartesRazor.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("UserName")
-                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
@@ -349,13 +355,11 @@ namespace AutoPartesRazor.Migrations
                 {
                     b.HasOne("AutoPartesRazor.Models.Brand", "Brand")
                         .WithMany("products")
-                        .HasForeignKey("idBrand")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("Brandid");
 
                     b.HasOne("AutoPartesRazor.Models.Category", "Category")
                         .WithMany("products")
-                        .HasForeignKey("idCategory")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("Categoryid");
 
                     b.Navigation("Brand");
 

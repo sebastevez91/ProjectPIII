@@ -1,3 +1,11 @@
+<<<<<<< HEAD
+# Carpetas de compilación
+AutoPartesRazor/bin/
+AutoPartesRazor/obj/
+
+# Visual Studio
+.vs/
+=======
 # Visual Studio
 .vs/
 bin/
@@ -14,11 +22,16 @@ obj/
 .vs/
 .vscode/
 >>>>>>> pato
+>>>>>>> main
 *.suo
 *.user
 *.userosscache
 *.sln.docstates
 
+<<<<<<< HEAD
+# Config local
+appsettings.Development.json
+=======
 
 # NuGet
 *.nupkg
@@ -112,3 +125,4 @@ secrets.json
 .env
 .env.*
 
+>>>>>>> main

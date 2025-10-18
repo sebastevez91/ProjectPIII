@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using AutoPartesRazor.Data; // Aseguramos que la directiva de Data esté aquí
 
 namespace AutoPartesRazor.Pages.Clients
 {
@@ -47,6 +48,7 @@ namespace AutoPartesRazor.Pages.Clients
             try
             {
                 await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Cliente editado correctamente."; // Añadimos el mensaje de éxito aquí
             }
             catch (DbUpdateConcurrencyException)
             {

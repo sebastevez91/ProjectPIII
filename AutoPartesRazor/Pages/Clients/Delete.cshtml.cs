@@ -1,6 +1,7 @@
-﻿using AutoPartesRazor.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using AutoPartesRazor.Data;
+using AutoPartesRazor.Models;
 
 namespace AutoPartesRazor.Pages.Clients
 {
