@@ -4,13 +4,34 @@
 @{
     ViewData["Title"] = "Carrito de compras";
 }
+@if (TempData["SuccessMessage"] != null)
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                title: '¡Éxito!',
+                text: '@TempData["SuccessMessage"]',
+                icon: 'success',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer);
+                    toast.addEventListener('mouseleave', Swal.resumeTimer);
+                }
+            });
+        });
+    </script>
+}
 
 <h1>Tu carrito de compras</h1>
 
 @if (Model.Cart.Any())
 {
-    <table class="table">
-        <thead>
+    <table class="table table-bordered">
+        <thead class="table-dark">
             <tr>
                 <th>Producto</th>
                 <th>Precio</th>
@@ -19,7 +40,7 @@
                 <th>Acciones</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="table-secondary">
     @foreach (var item in Model.Cart) {
             <tr>
                 <td>@item.producto.name</td>
@@ -27,10 +48,37 @@
                 <td>@item.quantity</td>
                 <td>@((item.quantity * item.producto.price).ToString("C"))</td>
                 <td>
-                    <form method="post">
-                        <input type="hidden" name="id" value="@item.id" />
-                        <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
-                    </form>
+                        <a asp-page="/Products/Details" asp-route-id="@item.productId" class="btn btn-secondary btn-sm position-relative me-2">
+                            <i class="fa-brands fa-phabricator"></i>
+                        </a>
+
+                        <button type="button" class="btn btn-danger btn-sm position-relative me-2"
+                                onclick="confirmDelete(@item.id, '@Html.Raw("Carts")', '@Html.Raw("producto")', '@Html.Raw(item.producto.name)')">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+
+                        <!-- Modal de confirmación -->
+                        <div class="modal fade" id="deleteModal_@item.id" tabindex="-1" aria-labelledby="deleteModalLabel_@item.id" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="deleteModalLabel_@item.id">Confirmar eliminación</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        ¿Está seguro que desea eliminar al producto <strong>@item.producto.name</strong>?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary m-2" data-bs-dismiss="modal">Cancelar</button>
+                                        <form method="post" asp-page="./Delete" asp-route-id="@item.id" style="display:inline;">
+                                            <input type="hidden" name="id" value="@item.id" />
+                                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                 </td>
             </tr>
     }

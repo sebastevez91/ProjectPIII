@@ -1,9 +1,11 @@
 ﻿using AutoPartesRazor.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
 namespace AutoPartesRazor.Pages.Products
 {
+    //[Authorize(Roles = "Admin")]
     public class IndexModel : PageModel
     {
         private readonly AutoPartesRazor.Data.AutoPartesRazorContext _context;
@@ -32,7 +34,6 @@ namespace AutoPartesRazor.Pages.Products
 
             Product = await query
                     .Include(c => c.Category)
-                    .Include(b => b.Brand)
                     .ToListAsync();
         }
     }

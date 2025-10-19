@@ -29,5 +29,39 @@ namespace AutoPartesRazor.Pages
             }
 
         }
+        public async Task<IActionResult> OnPostAgregarCarrito(int productoId, int cantidad)
+        {
+            var product = await _context.Product.FindAsync(productoId);
+            if (product == null)
+            {
+                TempData["Message"] = "El producto no fue encontrado.";
+                return RedirectToPage("/Index");
+            }
+
+            var cartItem = _context.Cart.FirstOrDefault(p => p.productId == productoId);
+            if (cartItem == null)
+            {
+                cartItem = new Cart
+                {
+                    productId = productoId,
+                    quantity = cantidad
+                };
+                _context.Cart.Add(cartItem);
+            }
+            else
+            {
+                cartItem.quantity += cantidad;
+            }
+
+            await _context.SaveChangesAsync();
+
+            int total = _context.Cart.Sum(item => item.quantity);
+            TempData["Total"] = total;
+            TempData["Message"] = "Producto agregado al carrito correctamente.";
+
+            return RedirectToPage("/Index");
+        }
+
+
     }
 }

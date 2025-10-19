@@ -19,6 +19,10 @@ namespace AutoPartesRazor.Pages.Products
         public List<SelectListItem> Categories { get; set; }
         public List<SelectListItem> Brands { get; set; }
 
+        // Para imagen del producto
+        [BindProperty]
+        public IFormFile? ImageFile { get; set; }
+
         public async Task<IActionResult> OnGetAsync()
         {
             //Llena la lista de categorias
@@ -49,6 +53,19 @@ namespace AutoPartesRazor.Pages.Products
             if (!ModelState.IsValid || _context.Product == null || Product == null)
             {
                 return Page();
+            }
+
+            if (ImageFile != null)
+            {
+                var fileName = Path.GetFileName(ImageFile.FileName);
+                var uploadPath = Path.Combine("wwwroot/img/products", fileName);
+
+                using (var stream = new FileStream(uploadPath, FileMode.Create))
+                {
+                    await ImageFile.CopyToAsync(stream);
+                }
+
+                Product.ImagePath = "/img/products/" + fileName;
             }
 
             _context.Product.Add(Product);

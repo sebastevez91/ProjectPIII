@@ -10,22 +10,20 @@ public class Product
 
     [Required]
     [StringLength(50)]
-    [Display(Name = "Nombre del producto")]
     public string name { get; set; }
 
     [Required]
     [StringLength(300)]
-    [Display(Name = "Descripción")]
     public string description { get; set; }
 
     [Required]
-    [Display(Name = "Cantidad")]
     public int stock { get; set; } = 0;
 
     [Required]
-    [Display(Name = "Precio")]
     [Column("price", TypeName = "decimal(18, 2)")]
     public decimal price { get; set; }
+
+    public string? ImagePath { get; set; }
 
     // Clave Foreign Key
     public int? idCategory { get; set; }

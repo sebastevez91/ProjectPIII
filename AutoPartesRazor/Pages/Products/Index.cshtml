@@ -46,53 +46,31 @@
     <table class="table table-dark table-bordered">
         <thead>
             <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Product[0].name)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Product[0].description)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Product[0].stock)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Product[0].price)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Product[0].Category.name)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Product[0].Brand.name)
-                </th>
-                <th></th>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
+                <th>Categoría</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
     @foreach (var item in Model.Product) {
             <tr>
+                <td>@item.name</td>
+                <td>@item.stock</td>
+                <td>@item.price.ToString("C")</td>
+                <td>@item.Category.name</td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.stock)
-                </td>
-                <td>
-                    $ @Html.DisplayFor(modelItem => item.price)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Category.name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Brand.name)
-                </td>
-                <td>
-                    <a asp-page="./Edit" asp-route-id="@item.id" class="btn btn-primary btn-sm m-1">editar</a> |
-                    <a asp-page="./Details" asp-route-id="@item.id" class="btn btn-secondary btn-sm">detalles</a> |
-                    <button type="button" class="btn btn-danger btn-sm m-1" 
-                    onclick="confirmDelete(@item.id, '@Html.Raw("Products")', '@Html.Raw("producto")', '@Html.Raw(item.name)')">Eliminar</button>
+                    <a asp-page="./Edit" asp-route-id="@item.id" class="btn btn-primary btn-sm position-relative me-2">
+                        <i class="fa-regular fa-pen-to-square"></i>
+                    </a> |
+                    <a asp-page="./Details" asp-route-id="@item.id" class="btn btn-secondary btn-sm position-relative me-2">
+                        <i class="fa-brands fa-phabricator"></i>
+                    </a> |
+                    <button type="button" class="btn btn-danger btn-sm position-relative me-2"
+                                onclick="confirmDelete(@item.id, '@Html.Raw("Products")', '@Html.Raw("producto")', '@Html.Raw(item.name)')">
+                            <i class="fa-solid fa-trash"></i>
+                    </button>
 
                         <!-- Modal de confirmación -->
                         <div class="modal fade" id="deleteModal_@item.id" tabindex="-1" aria-labelledby="deleteModalLabel_@item.id" aria-hidden="true">
