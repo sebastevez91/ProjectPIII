@@ -13,7 +13,7 @@ public class User : IdentityUser
 
     [Required]
     [Display(Name = "Rol")]
-    public Role Role { get; set; } = Role.Client;
+    public Role Role { get; set; } = Role.Admin;
 
     [Display(Name = "Fecha de creación")]
     public DateTime RegistrationDate { get; set; } = DateTime.Now;

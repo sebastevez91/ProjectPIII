@@ -22,6 +22,12 @@ namespace AutoPartesRazor.Pages.Products
 
         [BindProperty]
         public Product Product { get; set; } = default!;
+        public List<SelectListItem> Categories { get; set; }
+        public List<SelectListItem> Brands { get; set; }
+
+        // Para imagen del producto
+        [BindProperty]
+        public IFormFile? ImageFile { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -29,6 +35,24 @@ namespace AutoPartesRazor.Pages.Products
             {
                 return NotFound();
             }
+
+            //Llena la lista de categorias
+            Categories = _context.Category
+                .Select(c => new SelectListItem
+                {
+                    Value = c.id.ToString(),
+                    Text = c.name
+                })
+                .ToList();
+
+            //Llena la lista de marcas
+            Brands = _context.Brand
+                .Select(b => new SelectListItem
+                {
+                    Value = b.id.ToString(),
+                    Text = b.name
+                })
+                .ToList();
 
             var product =  await _context.Product.FirstOrDefaultAsync(m => m.id == id);
             if (product == null)
@@ -49,6 +73,19 @@ namespace AutoPartesRazor.Pages.Products
             }
 
             _context.Attach(Product).State = EntityState.Modified;
+
+            if (ImageFile != null)
+            {
+                var fileName = Path.GetFileName(ImageFile.FileName);
+                var uploadPath = Path.Combine("wwwroot/img/products", fileName);
+
+                using (var stream = new FileStream(uploadPath, FileMode.Create))
+                {
+                    await ImageFile.CopyToAsync(stream);
+                }
+
+                Product.ImagePath = "/img/products/" + fileName;
+            }
 
             try
             {
