@@ -1,5 +1,4 @@
-﻿using AutoPartesRazor.Models.Enums;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
 
@@ -13,7 +12,7 @@ public class User : IdentityUser
 
     [Required]
     [Display(Name = "Rol")]
-    public Role Role { get; set; } = Role.Admin;
+    public string Role { get; set; } = "Client";
 
     [Display(Name = "Fecha de creación")]
     public DateTime RegistrationDate { get; set; } = DateTime.Now;

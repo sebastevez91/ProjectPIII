@@ -27,6 +27,8 @@ builder.Services.AddIdentity<User, IdentityRole>(x =>
 }).AddEntityFrameworkStores<AutoPartesRazorContext>()
 .AddDefaultTokenProviders();
 
+builder.Services.AddTransient<SeedDataIdentity>();
+
 builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
@@ -37,6 +39,19 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
+}
+
+SeedDataIdentity(app);
+void SeedDataIdentity(WebApplication app)
+{
+    IServiceScopeFactory? scopedFactory =
+    app.Services.GetService<IServiceScopeFactory>();
+    using (IServiceScope scope = scopedFactory!.CreateScope())
+    {
+        SeedDataIdentity? service =
+        scope.ServiceProvider.GetService<SeedDataIdentity>();
+        service!.SeedAsync().Wait();
+    }
 }
 
 app.UseHttpsRedirection();
