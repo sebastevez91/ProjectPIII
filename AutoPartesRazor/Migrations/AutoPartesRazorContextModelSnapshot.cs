@@ -143,8 +143,9 @@ namespace AutoPartesRazor.Migrations
                         .HasColumnType("decimal(18,2)")
                         .HasColumnName("price");
 
-                    b.Property<int>("stock")
-                        .HasColumnType("int");
+                    b.Property<decimal>("stock")
+                        .HasColumnType("decimal(2,2)")
+                        .HasColumnName("stock");
 
                     b.HasKey("id");
 
@@ -204,8 +205,9 @@ namespace AutoPartesRazor.Migrations
                     b.Property<DateTime>("RegistrationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Role")
-                        .HasColumnType("int");
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
