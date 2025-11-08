@@ -30,6 +30,19 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
             .WithMany(c => c.products)      // Una categoria tiene muchos productos
             .HasForeignKey(p => p.idCategory)
             .OnDelete(DeleteBehavior.Cascade); // Si borrámos la categoria, borra sus productos
+
+        // Relación Order - OrderItem
+        modelBuilder.Entity<OrderItem>()
+            .HasOne(oi => oi.Order)
+            .WithMany(o => o.Items)
+            .HasForeignKey(oi => oi.OrderId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<OrderItem>()
+            .HasOne(oi => oi.Product)
+            .WithMany()
+            .HasForeignKey(oi => oi.ProductId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 
     public DbSet<AutoPartesRazor.Models.Product> Product { get; set; } = default!;
@@ -38,9 +51,11 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
 
     public DbSet<AutoPartesRazor.Models.Category> Category { get; set; }
 
-    public DbSet<AutoPartesRazor.Models.Client> Client { get; set; }
-
     public DbSet<AutoPartesRazor.Models.User> User { get; set; }
 
     public DbSet<AutoPartesRazor.Models.Cart> Cart { get; set; }
+
+    // Nuevos DbSet para órdenes
+    public DbSet<AutoPartesRazor.Models.Order> Order { get; set; }
+    public DbSet<AutoPartesRazor.Models.OrderItem> OrderItem { get; set; }
 }

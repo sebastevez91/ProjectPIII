@@ -28,7 +28,8 @@ namespace AutoPartesRazor.Pages.Products
                 return NotFound();
             }
 
-            var product = await _context.Product.FirstOrDefaultAsync(m => m.id == id);
+            var product = await _context.Product
+                .FirstOrDefaultAsync(m => m.id == id);
             if (product == null)
             {
                 return NotFound();

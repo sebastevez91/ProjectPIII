@@ -1,0 +1,83 @@
+@page
+@model AutoPartesRazor.Pages.Orders.CreateModel
+
+@{
+    ViewData["Title"] = "Realizar pedido";
+}
+
+<div class="container py-4">
+    <h2>Confirmar pedido</h2>
+
+    @if (!Model.CartItems.Any())
+    {
+        <div class="alert alert-info">No hay productos en el carrito.</div>
+        <a asp-page="/Products/Index" class="btn btn-primary">Ir a productos</a>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-md-7">
+                <h5>Resumen de artículos</h5>
+                <ul class="list-group mb-3">
+                    @foreach (var item in Model.CartItems)
+                    {
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>@item.producto?.name</strong>
+                                <div class="text-muted small">Cantidad: @item.quantity</div>
+                            </div>
+                            <div>
+                                <div>@(item.producto != null ? (item.producto.price * item.quantity).ToString("C") : "—")</div>
+                            </div>
+                        </li>
+                    }
+                </ul>
+
+                <div class="mb-3 text-end">
+                    <h4>Total: <span class="fw-bold">@Model.Subtotal.ToString("C")</span></h4>
+                </div>
+            </div>
+
+            <div class="col-md-5">
+                <h5>Datos de envío y pago</h5>
+                <form method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="mb-2">
+                        <label class="form-label">Nombre completo</label>
+                        <input asp-for="Input.CustomerName" class="form-control" />
+                        <span asp-validation-for="Input.CustomerName" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-2">
+                        <label class="form-label">Email</label>
+                        <input asp-for="Input.CustomerEmail" class="form-control" />
+                        <span asp-validation-for="Input.CustomerEmail" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-2">
+                        <label class="form-label">Dirección de envío</label>
+                        <textarea asp-for="Input.ShippingAddress" class="form-control"></textarea>
+                        <span asp-validation-for="Input.ShippingAddress" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Método de pago</label>
+                        <select asp-for="Input.PaymentMethod" class="form-select">
+                            <option value="Efectivo">Efectivo</option>
+                            <option value="Tarjeta">Tarjeta (simulado)</option>
+                            <option value="Transferencia">Transferencia bancaria</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-success w-100">Pagar y crear pedido</button>
+                    <a asp-page="/Carts/Index" class="btn btn-outline-secondary w-100 mt-2">Volver al carrito</a>
+                </form>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}           

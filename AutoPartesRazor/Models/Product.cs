@@ -18,7 +18,6 @@ public class Product
     [Display(Name = "Descripción")]
     public string description { get; set; }
 
-    [Column("stock", TypeName = "decimal(2,2)")]
     [Display(Name = "Stock")]
     public int stock { get; set; } = 0;
 

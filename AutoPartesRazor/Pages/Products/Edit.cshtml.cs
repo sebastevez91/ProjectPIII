@@ -8,16 +8,20 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AutoPartesRazor.Data;
 using AutoPartesRazor.Models;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
 
 namespace AutoPartesRazor.Pages.Products
 {
     public class EditModel : PageModel
     {
         private readonly AutoPartesRazor.Data.AutoPartesRazorContext _context;
+        private readonly IWebHostEnvironment _env;
 
-        public EditModel(AutoPartesRazor.Data.AutoPartesRazorContext context)
+        public EditModel(AutoPartesRazor.Data.AutoPartesRazorContext context, IWebHostEnvironment env)
         {
             _context = context;
+            _env = env;
         }
 
         [BindProperty]
@@ -63,8 +67,6 @@ namespace AutoPartesRazor.Pages.Products
             return Page();
         }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
@@ -74,21 +76,26 @@ namespace AutoPartesRazor.Pages.Products
 
             _context.Attach(Product).State = EntityState.Modified;
 
-            if (ImageFile != null)
-            {
-                var fileName = Path.GetFileName(ImageFile.FileName);
-                var uploadPath = Path.Combine("wwwroot/img/products", fileName);
-
-                using (var stream = new FileStream(uploadPath, FileMode.Create))
-                {
-                    await ImageFile.CopyToAsync(stream);
-                }
-
-                Product.ImagePath = "/img/products/" + fileName;
-            }
-
             try
             {
+                if (ImageFile != null)
+                {
+                    // Crear carpeta si no existe y usar ruta absoluta del wwwroot
+                    var uploadsDir = Path.Combine(_env.WebRootPath, "img", "products");
+                    Directory.CreateDirectory(uploadsDir);
+
+                    var ext = Path.GetExtension(ImageFile.FileName);
+                    var fileName = $"{Guid.NewGuid()}{ext}";
+                    var uploadPath = Path.Combine(uploadsDir, fileName);
+
+                    using (var stream = new FileStream(uploadPath, FileMode.Create))
+                    {
+                        await ImageFile.CopyToAsync(stream);
+                    }
+
+                    Product.ImagePath = "/img/products/" + fileName;
+                }
+
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)

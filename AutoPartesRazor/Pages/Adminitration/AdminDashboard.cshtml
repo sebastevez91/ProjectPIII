@@ -1,0 +1,47 @@
+﻿@page
+@model AutoPartesRazor.Pages.Adminitration.AdminDashboardModel
+@{
+    ViewData["Title"] = "Panel de Administración";
+}
+
+<div class="container py-4">
+    <h2 class="mb-4">Panel de Administración</h2>
+
+    <div class="mb-3">
+        <a asp-page="/Orders/Index" class="btn btn-warning">Ver Órdenes</a>
+        <a asp-page="/Reports/Index" class="btn btn-success ms-2">Ver Reportes</a>
+        <button class="btn btn-secondary ms-2 text-white" onclick="toggleSection('usersSection')">Gestionar Usuarios</button>
+        <button class="btn btn-info ms-2 text-white" onclick="toggleSection('productsSection')">Gestionar Productos</button>
+    </div>
+
+    <!-- Sección de Productos -->
+    <div id="productsSection" class="mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="mb-0">Listado de Productos</h3>
+            <div>
+                <a asp-page="/Products/Create" class="btn btn-primary">Nuevo producto</a>
+                <a asp-page="/Categories/Create" class="btn btn-secondary ms-2">Agregar Categoría</a>
+                <a asp-page="/Brands/Create" class="btn btn-info ms-2 text-white">Agregar Marca</a>
+            </div>
+        </div>
+        <partial name="_ProductsTable" model="Model.Products" />
+    </div>
+
+    <!-- Sección de Usuarios -->
+    <div id="usersSection" class="mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="mb-0">Listado de Usuarios</h3>
+            <a asp-page="/Users/Create" class="btn btn-primary">Nuevo usuario</a>
+        </div>
+        <partial name="_UsersTable" model="Model.Users" />
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function toggleSection(id) {
+            const el = document.getElementById(id);
+            el.style.display = el.style.display === 'none' ? 'block' : 'none';
+        }
+    </script>
+}

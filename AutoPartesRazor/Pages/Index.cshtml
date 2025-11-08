@@ -2,13 +2,7 @@
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
-}
-
-@if (TempData["Message"] != null)
-{
-    <div class="alert alert-success text-center">
-        @TempData["Message"]
-    </div>
+    ViewData["CartCount"] = Model.CartCount;
 }
 
 <div class="text-center">
@@ -23,72 +17,6 @@
     }
 
     <div>
-            <form method="post">
-                <div class="form-group w-100">
-                    <input type="search" class="form-control m-2" placeholder="Que estas buscando..."/>
-                    <button type="submit" class="btn btn-success btn-sm w-50" disabled>Buscar</button>
-                </div>
-            </form>
-    </div>
-    <div class="row p-4">
-        @foreach(var item in Model.products)
-        {
-            <div class="col-sm-4 mb-4">
-                <div class="card bg-dark border-3" style="width: 18rem;">
-                    <img src="@item.ImagePath" class="card-img-top" alt="Imagen producto">
-                    <div class="card-body bg-secondary">
-                        <h5 class="card-title">@item.name</h5>
-                    </div>
-                    <ul class="list-group list-group-flush bg-info">
-                        <li class="list-group-item">Stock: @item.stock</li>
-                        <li class="list-group-item">@item.price.ToString("C")</li>
-                    </ul>
-                    <div class="card-body bg-light">
-                        <form method="post" asp-page-handler="AgregarCarrito">
-                            <input type="hidden" name="productoId" value="@item.id" />
-                            <div class="form-group d-flex">
-                                <label for="cantidad">Cantidad:</label>
-                                <input type="number" name="cantidad" value="1" min="1" max="@item.stock" class="form-control m-2" style="width: 5rem;" />
-                            </div>
-                            <button type="submit" class="btn btn-primary btn-block m-2">
-                                <i class="fa-solid fa-cart-plus"></i>
-                                Agregar al Carrito
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>            
-        }
+        <img src="~/img/fondo-marcas-autopartes.png" alt="FondoMarcas" class="img-fluid" />
     </div>
 </div>
-
-@section Scripts{
-    <script>
-        $(document).ready(function () {
-            $(".agregar-carrito-form").on("submit", function (e) {
-                e.preventDefault(); // Evitar que el formulario se envíe de forma tradicional
-
-                var form = $(this);
-                var productoId = form.data("producto-id");
-                var cantidad = form.find(".cantidad").val();
-
-                $.ajax({
-                    url: "@Url.Page("/Index")",
-                    type: "POST",
-                    data: { productoId: productoId, cantidad: cantidad },
-                    success: function (response) {
-                        if (response.success) {
-                            // Actualizar el contador del carrito
-                            $("#contador-carrito").text(response.totalProductos).show();
-                        } else {
-                            alert(response.message);
-                        }
-                    },
-                    error: function () {
-                        alert("Ocurrió un error al agregar el producto al carrito.");
-                    }
-                });
-            });
-        });
-    </script>
-}

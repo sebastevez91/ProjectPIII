@@ -1,0 +1,171 @@
+﻿@page
+@model AutoPartesRazor.Pages.Products.IndexModel
+
+@{
+    ViewData["Title"] = "Productos";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="mb-0">Repuestos</h2>
+        <div>
+            <a asp-page="/Carts/Index" class="btn btn-outline-primary position-relative">
+                <i class="fa-solid fa-shopping-cart"></i>
+                <span id="cartCount" class="badge bg-danger position-absolute top-0 start-100 translate-middle">@Model.CartCount</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="row mb-3 g-2 align-items-center">
+        <div class="col-md-4">
+            <input id="searchBox" class="form-control" placeholder="Buscar por nombre o descripción..." />
+        </div>
+        <div class="col-md-3">
+            <select id="categoryFilter" class="form-select">
+                <option value="">Todas las categorías</option>
+                @foreach (var c in Model.Categories)
+                {
+                    <option value="@c.Value">@c.Text</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-3">
+            <select id="sortSelect" class="form-select">
+                <option value="">Ordenar</option>
+                <option value="price_asc">Precio ↑</option>
+                <option value="price_desc">Precio ↓</option>
+                <option value="name_asc">Nombre A-Z</option>
+            </select>
+        </div>
+    </div>
+
+    <div id="productsGrid" class="row g-3">
+        @foreach (var p in Model.Products)
+        {
+            <div class="col-12 col-sm-6 col-md-4 product-card" data-name="@p.name.ToLower()" data-desc="@p.description.ToLower()" data-category="@p.idCategory" data-price="@p.price">
+                <div class="card h-100 shadow-sm">
+                    <img src="@(string.IsNullOrEmpty(p.ImagePath) ? "/images/placeholder-product.png" : p.ImagePath)" class="card-img-top product-img" alt="@p.name" onerror="this.src='/images/placeholder-product.png'">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">@p.name</h5>
+                        <p class="card-text text-muted small">@p.Brand?.name ?? ""</p>
+                        <p class="card-text mb-2">@p.description</p>
+                        <div class="mt-auto">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <div class="fw-bold">@p.price.ToString("C")</div>
+                                <div class="text-muted small">Stock: @p.stock</div>
+                            </div>
+
+                            <div class="d-flex gap-2 align-items-center mb-2">
+                                <div class="input-group input-group-sm" style="width:120px;">
+                                    <button class="btn btn-outline-secondary btn-sm" type="button" onclick="changeQty(@p.id, -1)"><i class="fa-solid fa-minus"></i></button>
+                                    <input type="text" readonly class="form-control text-center qty-input" id="qty_@p.id" value="1" data-product="@p.id" data-price="@p.price" />
+                                    <button class="btn btn-outline-secondary btn-sm" type="button" onclick="changeQty(@p.id, 1)"><i class="fa-solid fa-plus"></i></button>
+                                </div>
+                                <button class="btn btn-success btn-sm ms-auto" onclick="addToCart(@p.id)">
+                                    <i class="fa-solid fa-cart-plus me-1"></i> Añadir
+                                </button>
+                            </div>
+
+                            <div class="d-flex justify-content-between">
+                                <a asp-page="./Details" asp-route-id="@p.id" class="btn btn-link btn-sm p-0">Ver detalles</a>
+                                <small class="text-muted">Código: @p.id</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@* Anti-forgery token para AJAX *@
+<form id="antiForgeryForm" method="post" style="display:none;">
+    @Html.AntiForgeryToken()
+</form>
+
+@section Scripts {                                              
+    <script>
+        // Helpers
+        function changeQty(productId, delta) {
+            const input = document.getElementById('qty_' + productId);
+            if (!input) return;
+            let v = parseInt(input.value, 10) || 1;
+            v = Math.max(1, v + delta);
+            input.value = v;
+        }
+
+        function getRequestVerificationToken() {
+            const tokenInput = document.querySelector('#antiForgeryForm input[name="__RequestVerificationToken"]');
+            return tokenInput ? tokenInput.value : '';
+        }
+
+        async function addToCart(productId) {
+            const qtyInput = document.getElementById('qty_' + productId);
+            const quantity = qtyInput ? parseInt(qtyInput.value, 10) || 1 : 1;
+            const token = getRequestVerificationToken();
+
+            try {
+                const form = new URLSearchParams();
+                form.append('productId', productId);
+                form.append('quantity', quantity);
+                form.append('__RequestVerificationToken', token);
+
+                const resp = await fetch('@Url.Page(null, "AddToCart")', {
+                    method: 'POST',
+                    headers: { 'Accept': 'application/json' },
+                    body: form
+                });
+
+                const json = await resp.json();
+                if (json.success) {
+                    // actualizar contador
+                    document.getElementById('cartCount').innerText = json.cartCount;
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'success',
+                        title: json.message,
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                } else {
+                    Swal.fire('Error', json.message || 'No se pudo añadir al carrito', 'error');
+                }
+            } catch (ex) {
+                console.error(ex);
+                Swal.fire('Error', 'Error al comunicarse con el servidor', 'error');
+            }
+        }
+
+        // Cliente: búsqueda, filtrado y ordenado
+        document.getElementById('searchBox').addEventListener('input', () => applyFilters());
+        document.getElementById('categoryFilter').addEventListener('change', () => applyFilters());
+        document.getElementById('sortSelect').addEventListener('change', () => applyFilters());
+
+        function applyFilters() {
+            const q = document.getElementById('searchBox').value.trim().toLowerCase();
+            const cat = document.getElementById('categoryFilter').value;
+            const sort = document.getElementById('sortSelect').value;
+
+            const cards = Array.from(document.querySelectorAll('.product-card'));
+            let items = cards.filter(c => {
+                const matchesQuery = c.dataset.name.includes(q) || c.dataset.desc.includes(q);
+                const matchesCat = !cat || c.dataset.category === cat;
+                return matchesQuery && matchesCat;
+            });
+
+            // ordenar en cliente
+            items.sort((a, b) => {
+                if (sort === 'price_asc') return parseFloat(a.dataset.price) - parseFloat(b.dataset.price);
+                if (sort === 'price_desc') return parseFloat(b.dataset.price) - parseFloat(a.dataset.price);
+                if (sort === 'name_asc') return a.dataset.name.localeCompare(b.dataset.name);
+                return 0;
+            });
+
+            // reordenar DOM
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = '';
+            items.forEach(i => grid.appendChild(i));
+        }
+    </script>
+}

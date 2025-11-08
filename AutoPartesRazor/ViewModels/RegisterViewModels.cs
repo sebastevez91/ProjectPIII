@@ -23,4 +23,22 @@ public class RegisterViewModels
     [DataType(DataType.Password)]
     [Display(Name = "Confirmación de contraseña")]
     public string ConfirmPassword { get; set; }
+
+    [Required(ErrorMessage = "El nombre es obligatorio.")]
+    [StringLength(50, MinimumLength = 2, ErrorMessage = "El nombre debe tener entre 2 y 50 caracteres.")]
+    [Display(Name = "Nombre")]
+    public string FirstName { get; set; } = string.Empty;
+
+    [Required(ErrorMessage = "El apellido es obligatorio.")]
+    [StringLength(50, MinimumLength = 2, ErrorMessage = "El apellido debe tener entre 2 y 50 caracteres.")]
+    [Display(Name = "Apellido")]
+    public string LastName { get; set; } = string.Empty;
+
+    [StringLength(100, ErrorMessage = "El domicilio no puede exceder los 100 caracteres.")]
+    [Display(Name = "Domicilio")]
+    public string Address { get; set; } = string.Empty;
+
+    [RegularExpression(@"^\d{8,10}$", ErrorMessage = "El teléfono debe tener 8 o 10 dígitos numéricos.")]
+    [Display(Name = "Teléfono")]
+    public string? Phone { get; set; }
 }

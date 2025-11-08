@@ -4,7 +4,6 @@ using AutoPartesRazor.Models;
 using AutoPartesRazor.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -29,9 +28,12 @@ builder.Services.AddIdentity<User, IdentityRole>(x =>
 
 builder.Services.AddTransient<SeedDataIdentity>();
 
+builder.Services.AddScoped<IPdfService, AutoPartesRazor.Services.PdfService>();
+
 builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

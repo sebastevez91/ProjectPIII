@@ -26,77 +26,133 @@
     </script>
 }
 
-<h1>Tu carrito de compras</h1>
+<div class="container py-4">
+    <h1 class="mb-4"><i class="fa-solid fa-car-battery me-2"></i>Tu carrito de repuestos</h1>
 
-@if (Model.Cart.Any())
-{
-    <table class="table table-bordered">
-        <thead class="table-dark">
-            <tr>
-                <th>Producto</th>
-                <th>Precio</th>
-                <th>Cantidad</th>
-                <th>Total</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody class="table-secondary">
-    @foreach (var item in Model.Cart) {
-            <tr>
-                <td>@item.producto.name</td>
-                <td>@item.producto.price.ToString("C")</td>
-                <td>@item.quantity</td>
-                <td>@((item.quantity * item.producto.price).ToString("C"))</td>
-                <td>
-                        <a asp-page="/Products/Details" asp-route-id="@item.productId" class="btn btn-secondary btn-sm position-relative me-2">
-                            <i class="fa-brands fa-phabricator"></i>
-                        </a>
-
-                        <button type="button" class="btn btn-danger btn-sm position-relative me-2"
-                                onclick="confirmDelete(@item.id, '@Html.Raw("Carts")', '@Html.Raw("producto")', '@Html.Raw(item.producto.name)')">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-
-                        <!-- Modal de confirmación -->
-                        <div class="modal fade" id="deleteModal_@item.id" tabindex="-1" aria-labelledby="deleteModalLabel_@item.id" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="deleteModalLabel_@item.id">Confirmar eliminación</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    @if (Model.Cart.Any())
+    {
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="list-group">
+                    @foreach (var item in Model.Cart)
+                    {
+                        var lineTotal = item.quantity * item.producto.price;
+                        <div class="list-group-item mb-3 shadow-sm rounded">
+                            <div class="row g-3 align-items-center">
+                                <div class="col-3 col-md-2">
+                                    <img src="@item.producto.ImagePath" alt="@item.producto.name" class="img-fluid product-thumb rounded" onerror="this.src='/images/placeholder-product.png'">
+                                </div>
+                                <div class="col-6 col-md-7">
+                                    <h5 class="mb-1">@item.producto.name</h5>
+                                    <small class="text-muted">Código: @item.productId</small>
+                                    <div class="mt-2">
+                                        <span class="badge bg-primary"><i class="fa-solid fa-industry me-1"></i> Repuestos</span>
                                     </div>
-                                    <div class="modal-body">
-                                        ¿Está seguro que desea eliminar al producto <strong>@item.producto.name</strong>?
+                                </div>
+                                <div class="col-3 col-md-3 text-end">
+                                    <div class="mb-2 fw-bold">@item.producto.price.ToString("C")</div>
+
+                                    <div class="input-group input-group-sm justify-content-end mb-2" style="width:160px;margin-left:auto;">
+                                        <button class="btn btn-outline-secondary" type="button" onclick="changeQty(@item.id, -1)" title="Disminuir"><i class="fa-solid fa-minus"></i></button>
+                                        <input type="text" readonly class="form-control text-center qty-input" id="qty_@item.id" value="@item.quantity" style="max-width:60px;" data-price="@item.producto.price" />
+                                        <button class="btn btn-outline-secondary" type="button" onclick="changeQty(@item.id, 1)" title="Aumentar"><i class="fa-solid fa-plus"></i></button>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary m-2" data-bs-dismiss="modal">Cancelar</button>
-                                        <form method="post" asp-page="./Delete" asp-route-id="@item.id" style="display:inline;">
-                                            <input type="hidden" name="id" value="@item.id" />
-                                            <button type="submit" class="btn btn-danger">Eliminar</button>
-                                        </form>
+
+                                    <div class="small text-muted">Total: <span id="lineTotal_@item.id">@lineTotal.ToString("C")</span></div>
+
+                                    <div class="mt-2">
+                                        <a asp-page="/Products/Details" asp-route-id="@item.productId" class="btn btn-sm btn-outline-secondary me-1"><i class="fa-solid fa-eye"></i> Ver</a>
+                                        <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal_@item.id"><i class="fa-solid fa-trash"></i> Eliminar</button>
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- Modal de confirmación -->
+                            <div class="modal fade" id="deleteModal_@item.id" tabindex="-1" aria-labelledby="deleteModalLabel_@item.id" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="deleteModalLabel_@item.id">Confirmar eliminación</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            ¿Está seguro que desea eliminar el producto <strong>@item.producto.name</strong> del carrito?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary m-2" data-bs-dismiss="modal">Cancelar</button>
+                                            <form method="post" asp-page="./Delete" asp-route-id="@item.id" style="display:inline;">
+                                                <input type="hidden" name="id" value="@item.id" />
+                                                <button type="submit" class="btn btn-danger">Eliminar</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
+                    }
+                </div>
+            </div>
 
-                </td>
-            </tr>
+            <div class="col-lg-4">
+                <div class="card summary-card sticky-top p-3">
+                    <h5 class="card-title mb-3"><i class="fa-solid fa-list-check me-2"></i>Resumen del pedido</h5>
+                    <div class="mb-2 d-flex justify-content-between">
+                        <div>Subtotal (@Model.Cart.Sum(i => i.quantity))</div>
+                        <div id="subtotal">@Model.Cart.Sum(item => item.quantity * item.producto.price).ToString("C")</div>
+                    </div>
+                    <div class="mb-2 d-flex justify-content-between">
+                        <div>Envío</div>
+                        <div id="shipping">Gratis</div>
+                    </div>
+                    <hr />
+                    <div class="mb-3 d-flex justify-content-between fs-5 fw-bold">
+                        <div>Total</div>
+                        <div id="grandTotal">@Model.Cart.Sum(item => item.quantity * item.producto.price).ToString("C")</div>
+                    </div>
+
+                    <a asp-page="/Products/Index" class="btn btn-outline-primary w-100 mb-2"><i class="fa-solid fa-arrow-left me-2"></i> Seguir comprando</a>
+                    <a asp-page="/Orders/Create" class="btn btn-success w-100"><i class="fa-solid fa-credit-card me-2"></i> Proceder al pago</a>
+                </div>
+            </div>
+        </div>
     }
-        </tbody>
-    </table>
+    else
+    {
+        <div class="alert alert-info">
+            No hay productos en el carrito.
+        </div>
+        <a asp-page="/Products/Index" class="btn btn-primary">Ir a Productos</a>
+    }
+</div>
 
-    <div class="text-right">
-        <h4>Total del Carrito: @Model.Cart.Sum(item => item.quantity * item.producto.price).ToString("C")</h4>
-    </div>
+@section Scripts {
+    <script>
+        function formatCurrency(value) {
+            return new Intl.NumberFormat('@System.Globalization.CultureInfo.CurrentCulture.Name', { style: 'currency', currency: '@System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol' }).format(value);
+        }
 
-    <a  asp-page="/Products/Index" class="btn btn-primary">Seguir Comprando</a>
+        function changeQty(itemId, delta) {
+            const qtyInput = document.getElementById('qty_' + itemId);
+            if (!qtyInput) return;
+            let qty = parseInt(qtyInput.value, 10) || 0;
+            qty = Math.max(1, qty + delta);
+            qtyInput.value = qty;
+
+            const price = parseFloat(qtyInput.dataset.price);
+            const lineTotal = qty * price;
+            document.getElementById('lineTotal_' + itemId).innerText = lineTotal.toLocaleString(undefined, { style: 'currency', currency: '@System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol' });
+
+            // Recalcular subtotal y total (cliente)
+            let subtotal = 0;
+            document.querySelectorAll('.qty-input').forEach(function (el) {
+                const q = parseInt(el.value, 10) || 0;
+                const p = parseFloat(el.dataset.price) || 0;
+                subtotal += q * p;
+            });
+            document.getElementById('subtotal').innerText = subtotal.toLocaleString(undefined, { style: 'currency', currency: '@System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol' });
+            document.getElementById('grandTotal').innerText = document.getElementById('subtotal').innerText;
+        }
+    </script>
 }
-else
-{
-    <div class="alert alert-info">
-        No hay productos en el carrito.
-    </div>
-    <a asp-page="/Products/Index" class="btn btn-primary">Ir a Productos</a>
-}
-
 

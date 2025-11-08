@@ -1,0 +1,39 @@
+﻿@model IEnumerable<AutoPartesRazor.Models.Product>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table table-dark table-bordered">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Categoría</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var product in Model)
+            {
+                <tr>
+                    <td>@product.name</td>
+                    <td>@product.Category?.name</td>
+                    <td>
+                        <a asp-page="/Products/Edit" asp-route-id="@product.id" class="btn btn-primary btn-sm me-2">
+                            <i class="fa-regular fa-pen-to-square"></i>
+                        </a>
+                        <a asp-page="/Products/Details" asp-route-id="@product.id" class="btn btn-secondary btn-sm me-2">
+                            <i class="fa-brands fa-phabricator"></i>
+                        </a>
+                        <button type="button" class="btn btn-danger btn-sm me-2"
+                                onclick="confirmDelete(@product.id, 'Products', 'producto', '@product.name')">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-warning">No se encontraron productos.</div>
+}
