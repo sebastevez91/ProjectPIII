@@ -10,10 +10,10 @@
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="ViewModels.Name">Usuario</label>
-                <input asp-for="ViewModels.Name" class="form-control" placeholder="Ingrese su nombre de usuario" />
+                <label asp-for="ViewModels.Username">Usuario</label>
+                <input asp-for="ViewModels.Username" class="form-control" placeholder="Ingrese su nombre de usuario" />
 
-                <span asp-validation-for="ViewModels.Name" class="text-danger"></span>
+                <span asp-validation-for="ViewModels.Username" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ViewModels.Email">Email</label>
@@ -34,16 +34,10 @@
                 <span asp-validation-for="ViewModels.ConfirmPassword" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ViewModels.FirstName">Nombre</label>
-                <input asp-for="ViewModels.FirstName" class="form-control" placeholder="Ingresa tu primer nombre" />
+                <label asp-for="ViewModels.FullName">Nombre Completo</label>
+                <input asp-for="ViewModels.FullName" class="form-control" placeholder="Ej: Pedro Garnacho" />
 
-                <span asp-validation-for="ViewModels.FirstName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ViewModels.LastName">Apellido</label>
-                <input asp-for="ViewModels.LastName" class="form-control" type="password" placeholder="Ingresa tu apellido" />
-
-                <span asp-validation-for="ViewModels.LastName" class="text-danger"></span>
+                <span asp-validation-for="ViewModels.FullName" class="text-danger"></span>
             </div>
 
             <button type="submit" class="btn btn-primary text-center m-2">Crear</button>

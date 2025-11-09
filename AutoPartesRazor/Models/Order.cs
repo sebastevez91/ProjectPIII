@@ -11,6 +11,7 @@ namespace AutoPartesRazor.Models
         public string ShippingAddress { get; set; } = string.Empty;
         public string PaymentMethod { get; set; } = string.Empty;
         public decimal Total { get; set; }
+        public string Status { get; set; } = "Pending";
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         // navegación

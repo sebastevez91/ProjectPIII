@@ -44,11 +44,9 @@ namespace AutoPartesRazor.Pages.Account
 
             User user = new User
             {
-                Name = ViewModels.Name,
+                FullName = ViewModels.FullName,
                 UserName = ViewModels.Email,
                 Email = ViewModels.Email,
-                FirstName = ViewModels.FirstName,
-                LastName = ViewModels.LastName,
             };
 
             var result = await _userService.AddUserAsync(user, ViewModels.Password);

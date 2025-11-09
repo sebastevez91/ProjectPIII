@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using AutoPartesRazor.Models;
+using AutoPartesRazor.ViewModels;
 
 namespace AutoPartesRazor.Pages.Account
 {
@@ -22,41 +23,10 @@ namespace AutoPartesRazor.Pages.Account
         }
 
         [BindProperty]
-        public InputModel Input { get; set; }
+        public UpdateViewModel UpdateUser { get; set; }
 
         [TempData]
         public string StatusMessage { get; set; }
-
-        public class InputModel
-        {
-            [Required(ErrorMessage = "El nombre de usuario es requerido")]
-            [Display(Name = "Nombre de usuario")]
-            public string Username { get; set; }
-
-            [Required(ErrorMessage = "El email es requerido")]
-            [EmailAddress(ErrorMessage = "El email no es válido")]
-            [Display(Name = "Email")]
-            public string Email { get; set; }
-
-            [Phone(ErrorMessage = "El número de teléfono no es válido")]
-            [Display(Name = "Teléfono")]
-            public string PhoneNumber { get; set; }
-
-            [Display(Name = "Nombre completo")]
-            public string FullName { get; set; }
-
-            [Display(Name = "Dirección")]
-            public string Address { get; set; }
-
-            [Display(Name = "Ciudad")]
-            public string City { get; set; }
-
-            [Display(Name = "Código Postal")]
-            public string PostalCode { get; set; }
-
-            [Display(Name = "País")]
-            public string Country { get; set; }
-        }
 
         private async Task LoadAsync(User user)
         {
@@ -64,17 +34,13 @@ namespace AutoPartesRazor.Pages.Account
             var email = await _userManager.GetEmailAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
 
-            Input = new InputModel
+            UpdateUser = new UpdateViewModel
             {
                 Username = userName,
                 Email = email,
-                PhoneNumber = phoneNumber,
-                // Ajusta estos campos según tu modelo User
                 FullName = user.FullName,
                 Address = user.Address,
-                City = user.City,
-                PostalCode = user.PostalCode,
-                Country = user.Country
+                PhoneNumber = user.PhoneNumber,
             };
         }
 
@@ -105,9 +71,9 @@ namespace AutoPartesRazor.Pages.Account
             }
 
             var email = await _userManager.GetEmailAsync(user);
-            if (Input.Email != email)
+            if (UpdateUser.Email != email)
             {
-                var setEmailResult = await _userManager.SetEmailAsync(user, Input.Email);
+                var setEmailResult = await _userManager.SetEmailAsync(user, UpdateUser.Email);
                 if (!setEmailResult.Succeeded)
                 {
                     StatusMessage = "Error al actualizar el email.";
@@ -116,9 +82,9 @@ namespace AutoPartesRazor.Pages.Account
             }
 
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-            if (Input.PhoneNumber != phoneNumber)
+            if (UpdateUser.PhoneNumber != phoneNumber)
             {
-                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
+                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, UpdateUser.PhoneNumber);
                 if (!setPhoneResult.Succeeded)
                 {
                     StatusMessage = "Error al actualizar el número de teléfono.";
@@ -127,11 +93,9 @@ namespace AutoPartesRazor.Pages.Account
             }
 
             // Actualizar campos adicionales del usuario
-            user.FullName = Input.FullName;
-            user.Address = Input.Address;
-            user.City = Input.City;
-            user.PostalCode = Input.PostalCode;
-            user.Country = Input.Country;
+            user.FullName = UpdateUser.FullName;
+            user.PhoneNumber = UpdateUser.PhoneNumber;
+            user.Address = UpdateUser.Address;
 
             var updateResult = await _userManager.UpdateAsync(user);
             if (!updateResult.Succeeded)

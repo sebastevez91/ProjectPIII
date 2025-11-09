@@ -1,17 +1,17 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
-using System.Data;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace AutoPartesRazor.Models;
+namespace AutoPartesRazor.ViewModels;
 
-public class User : IdentityUser
+public class UpdateViewModel
 {
     [Required]
-    [Display(Name = "Rol")]
-    public string Role { get; set; } = "Client";
+    [Display(Name = "Nombre de usuario")]
+    public string Username { get; set; } = string.Empty;
 
-    [Display(Name = "Fecha de creación")]
-    public DateTime RegistrationDate { get; set; } = DateTime.Now;
+    [Required]
+    [EmailAddress]
+    [Display(Name = "Correo electrónico")]
+    public string Email { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "El nombre es obligatorio.")]
     [StringLength(80, MinimumLength = 2, ErrorMessage = "El nombre debe tener más de 80 caracteres.")]
@@ -31,5 +31,5 @@ public class User : IdentityUser
     public string? ProfilePicturePath { get; set; }
 
     // Última actualización
-    public DateTime? LastUpdated { get; set; }
+    public DateTime? LastUpdated { get; set; } = DateTime.Now;
 }

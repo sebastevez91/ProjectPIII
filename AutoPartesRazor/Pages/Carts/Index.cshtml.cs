@@ -20,9 +20,14 @@ namespace AutoPartesRazor.Pages.Carts
         }
 
         public IList<Cart> Cart { get;set; } = default!;
+        public int CartCount { get; set; } = 0;
 
         public async Task OnGetAsync()
         {
+            // Contar el número de items únicos en el carrito
+            var count = await _context.Cart.CountAsync();
+            CartCount = count;
+
             if (_context.Cart != null)
             {
                 Cart = await _context.Cart
@@ -31,9 +36,6 @@ namespace AutoPartesRazor.Pages.Carts
 
             // Calcular el número total de productos en el carrito
             int total = Cart.Sum(item => item.quantity);
-
-            // Pasar el total a la vista usando ViewBag
-            TempData["Total"] = total;
         }
     }
 }

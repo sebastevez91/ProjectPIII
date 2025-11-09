@@ -39,7 +39,7 @@
         {
             <div class="col-12 col-sm-6 col-md-4 product-card" data-name="@p.name.ToLower()" data-desc="@p.description.ToLower()" data-category="@p.idCategory" data-price="@p.price">
                 <div class="card h-100 shadow-sm">
-                    <img src="@(string.IsNullOrEmpty(p.ImagePath) ? "/images/placeholder-product.png" : p.ImagePath)" class="card-img-top product-img" alt="@p.name" onerror="this.src='/images/placeholder-product.png'">
+                    <img src="@(string.IsNullOrEmpty(p.ImagePath) ? "/img/placeholder-product.png" : p.ImagePath)" class="card-img-top product-img" alt="@p.name" onerror="this.src='/images/placeholder-product.png'">
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title">@p.name</h5>
                         <p class="card-text text-muted small">@p.Brand?.name</p>

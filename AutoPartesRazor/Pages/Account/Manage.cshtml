@@ -24,7 +24,7 @@
                     </div>
 
                     <h5 class="mb-1">@User.Identity?.Name</h5>
-                    <p class="text-muted small mb-3">@Model.Input?.Email</p>
+                    <p class="text-muted small mb-3">@Model.UpdateUser?.Email</p>
 
                     <!-- Navegación del perfil -->
                     <div class="list-group list-group-flush">
@@ -75,43 +75,43 @@
                             <form method="post" asp-page-handler="UpdateProfile">
                                 <div class="row g-3">
                                     <div class="col-md-6">
-                                        <label asp-for="Input.Username" class="form-label fw-semibold"></label>
-                                        <input asp-for="Input.Username" class="form-control" readonly />
+                                        <label asp-for="UpdateUser.Username" class="form-label fw-semibold"></label>
+                                        <input asp-for="UpdateUser.Username" class="form-control" readonly />
                                         <small class="text-muted">El nombre de usuario no se puede cambiar</small>
-                                        <span asp-validation-for="Input.Username" class="text-danger"></span>
+                                        <span asp-validation-for="UpdateUser.Username" class="text-danger"></span>
                                     </div>
 
                                     <div class="col-md-6">
-                                        <label asp-for="Input.Email" class="form-label fw-semibold"></label>
+                                        <label asp-for="UpdateUser.Email" class="form-label fw-semibold"></label>
                                         <div class="input-group">
                                             <span class="input-group-text">
                                                 <i class="fa-solid fa-envelope"></i>
                                             </span>
-                                            <input asp-for="Input.Email" class="form-control" />
+                                            <input asp-for="UpdateUser.Email" class="form-control" />
                                         </div>
-                                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                                        <span asp-validation-for="UpdateUser.Email" class="text-danger"></span>
                                     </div>
 
                                     <div class="col-md-6">
-                                        <label asp-for="Input.FullName" class="form-label fw-semibold"></label>
+                                        <label asp-for="UpdateUser.FullName" class="form-label fw-semibold"></label>
                                         <div class="input-group">
                                             <span class="input-group-text">
                                                 <i class="fa-solid fa-id-card"></i>
                                             </span>
-                                            <input asp-for="Input.FullName" class="form-control" placeholder="Ej: Juan Pérez" />
+                                            <input asp-for="UpdateUser.FullName" class="form-control" placeholder="Ej: Juan Pérez" />
                                         </div>
-                                        <span asp-validation-for="Input.FullName" class="text-danger"></span>
+                                        <span asp-validation-for="UpdateUser.FullName" class="text-danger"></span>
                                     </div>
 
                                     <div class="col-md-6">
-                                        <label asp-for="Input.PhoneNumber" class="form-label fw-semibold"></label>
+                                        <label asp-for="UpdateUser.PhoneNumber" class="form-label fw-semibold"></label>
                                         <div class="input-group">
                                             <span class="input-group-text">
                                                 <i class="fa-solid fa-phone"></i>
                                             </span>
-                                            <input asp-for="Input.PhoneNumber" class="form-control" placeholder="Ej: +54 11 1234-5678" />
+                                            <input asp-for="UpdateUser.PhoneNumber" class="form-control" placeholder="Ej: +54 11 1234-5678" />
                                         </div>
-                                        <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                                        <span asp-validation-for="UpdateUser.PhoneNumber" class="text-danger"></span>
                                     </div>
 
                                     <div class="col-12 mt-4">
@@ -139,55 +139,14 @@
                             <form method="post" asp-page-handler="UpdateProfile">
                                 <div class="row g-3">
                                     <div class="col-12">
-                                        <label asp-for="Input.Address" class="form-label fw-semibold"></label>
+                                        <label asp-for="UpdateUser.Address" class="form-label fw-semibold"></label>
                                         <div class="input-group">
                                             <span class="input-group-text">
                                                 <i class="fa-solid fa-home"></i>
                                             </span>
-                                            <input asp-for="Input.Address" class="form-control" placeholder="Ej: Av. Corrientes 1234" />
+                                            <input asp-for="UpdateUser.Address" class="form-control" placeholder="Ej: Av. Corrientes 1234" />
                                         </div>
-                                        <span asp-validation-for="Input.Address" class="text-danger"></span>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <label asp-for="Input.City" class="form-label fw-semibold"></label>
-                                        <div class="input-group">
-                                            <span class="input-group-text">
-                                                <i class="fa-solid fa-city"></i>
-                                            </span>
-                                            <input asp-for="Input.City" class="form-control" placeholder="Ej: Buenos Aires" />
-                                        </div>
-                                        <span asp-validation-for="Input.City" class="text-danger"></span>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <label asp-for="Input.PostalCode" class="form-label fw-semibold"></label>
-                                        <div class="input-group">
-                                            <span class="input-group-text">
-                                                <i class="fa-solid fa-mailbox"></i>
-                                            </span>
-                                            <input asp-for="Input.PostalCode" class="form-control" placeholder="Ej: C1043" />
-                                        </div>
-                                        <span asp-validation-for="Input.PostalCode" class="text-danger"></span>
-                                    </div>
-
-                                    <div class="col-12">
-                                        <label asp-for="Input.Country" class="form-label fw-semibold"></label>
-                                        <div class="input-group">
-                                            <span class="input-group-text">
-                                                <i class="fa-solid fa-globe"></i>
-                                            </span>
-                                            <select asp-for="Input.Country" class="form-select">
-                                                <option value="">Seleccionar país</option>
-                                                <option value="Argentina">Argentina</option>
-                                                <option value="Chile">Chile</option>
-                                                <option value="Uruguay">Uruguay</option>
-                                                <option value="Paraguay">Paraguay</option>
-                                                <option value="Bolivia">Bolivia</option>
-                                                <option value="Brasil">Brasil</option>
-                                            </select>
-                                        </div>
-                                        <span asp-validation-for="Input.Country" class="text-danger"></span>
+                                        <span asp-validation-for="UpdateUser.Address" class="text-danger"></span>
                                     </div>
 
                                     <div class="col-12 mt-4">

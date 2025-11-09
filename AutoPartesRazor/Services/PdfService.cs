@@ -3,10 +3,19 @@ using AutoPartesRazor.Models;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
+using System.IO;
+
 namespace AutoPartesRazor.Services;
 
 public class PdfService : IPdfService
 {
+    private readonly IWebHostEnvironment _environment;
+
+    public PdfService(IWebHostEnvironment environment)
+    {
+        _environment = environment;
+    }
+
     public byte[] GenerateOrderPdf(Order order)
     {
         QuestPDF.Settings.License = LicenseType.Community;
@@ -19,62 +28,174 @@ public class PdfService : IPdfService
                 page.Margin(30);
                 page.DefaultTextStyle(x => x.FontSize(12));
 
+                // Header con logo y datos de la empresa
                 page.Header()
+                    .BorderBottom(1)
+                    .BorderColor(Colors.Grey.Lighten2)
+                    .PaddingBottom(10)
                     .Row(row =>
                     {
+                        // Columna izquierda: Logo y nombre de empresa
                         row.RelativeItem().Column(col =>
                         {
-                            col.Item().Text("AutoPartes").FontSize(18).Bold();
-                            col.Item().Text("Comprobante de pedido").FontSize(12).SemiBold().FontColor(Colors.Grey.Darken1);
-                        });
-                        row.ConstantItem(100).AlignRight().Text($"Pedido #{order.id}").FontSize(12).SemiBold();
-                    });
+                            // Intentar cargar el logo
+                            var logoPath = Path.Combine(_environment.WebRootPath, "img", "logoAzul.jpg");
 
-                page.Content().Column(col =>
-                {
-                    col.Spacing(5);
-
-                    col.Item().Text($"Fecha: {order.CreatedAt.ToLocalTime():g}").FontSize(10);
-                    col.Item().Text($"Cliente: {order.CustomerName}").FontSize(10);
-                    col.Item().Text($"Email: {order.CustomerEmail}").FontSize(10);
-                    col.Item().Text($"Dirección: {order.ShippingAddress}").FontSize(10);
-
-                    col.Item().PaddingVertical(10).Element(Container =>
-                    {
-                        Container.Row(row =>
-                        {
-                            row.RelativeItem().Text("Producto").Bold();
-                            row.ConstantItem(80).AlignRight().Text("Precio u.").Bold();
-                            row.ConstantItem(60).AlignCenter().Text("Cantidad").Bold();
-                            row.ConstantItem(80).AlignRight().Text("Total").Bold();
-                        });
-                    });
-
-                    foreach (var it in order.Items)
-                    {
-                        var name = it.Product?.name ?? $"Producto {it.ProductId}";
-                        var unit = it.UnitPrice;
-                        var total = unit * it.Quantity;
-
-                        col.Item().PaddingVertical(4).Element(Container =>
-                        {
-                            Container.Row(row =>
+                            if (File.Exists(logoPath))
                             {
-                                row.RelativeItem().Text(name);
-                                row.ConstantItem(80).AlignRight().Text(unit.ToString("C"));
-                                row.ConstantItem(60).AlignCenter().Text(it.Quantity.ToString());
-                                row.ConstantItem(80).AlignRight().Text(total.ToString("C"));
+                                col.Item().Width(80).Height(60).Image(logoPath);
+                            }
+                            else
+                            {
+                                // Si no existe la imagen, mostrar un placeholder
+                                col.Item()
+                                    .Height(60)
+                                    .Width(60)
+                                    .Background(Colors.Blue.Lighten3)
+                                    .AlignCenter()
+                                    .AlignMiddle()
+                                    .Text("AP")
+                                    .FontSize(24)
+                                    .Bold()
+                                    .FontColor(Colors.White);
+                            }
+
+                            col.Item().PaddingTop(5).Text("AutoPartes S.A")
+                                .FontSize(20)
+                                .Bold()
+                                .FontColor(Colors.Blue.Darken2);
+
+                            col.Item().Text("Repuestos y accesorios")
+                                .FontSize(10)
+                                .FontColor(Colors.Grey.Darken1);
+                        });
+
+                        // Columna derecha: Número de pedido y fecha
+                        row.ConstantItem(200).Column(col =>
+                        {
+                            col.Item().AlignRight().Text("COMPROBANTE DE PEDIDO")
+                                .FontSize(10)
+                                .Bold()
+                                .FontColor(Colors.Grey.Darken2);
+
+                            col.Item().PaddingTop(5).AlignRight().Text($"Pedido N° {order.id}")
+                                .FontSize(16)
+                                .Bold()
+                                .FontColor(Colors.Blue.Darken2);
+
+                            col.Item().PaddingTop(2).AlignRight().Text($"Fecha: {order.CreatedAt.ToLocalTime():dd/MM/yyyy HH:mm}")
+                                .FontSize(10)
+                                .FontColor(Colors.Grey.Darken1);
+                        });
+                    });
+
+                // Content
+                page.Content().PaddingTop(20).Column(col =>
+                {
+                    col.Spacing(8);
+
+                    // Información del cliente
+                    col.Item().Background(Colors.Grey.Lighten4).Padding(10).Column(clientCol =>
+                    {
+                        clientCol.Item().Text("DATOS DEL CLIENTE")
+                            .FontSize(11)
+                            .Bold()
+                            .FontColor(Colors.Grey.Darken2);
+
+                        clientCol.Item().PaddingTop(5).Row(clientRow =>
+                        {
+                            clientRow.RelativeItem().Column(c =>
+                            {
+                                c.Item().Text(text =>
+                                {
+                                    text.Span("Nombre: ").Bold().FontSize(10);
+                                    text.Span(order.CustomerName).FontSize(10);
+                                });
+                                c.Item().Text(text =>
+                                {
+                                    text.Span("Email: ").Bold().FontSize(10);
+                                    text.Span(order.CustomerEmail).FontSize(10);
+                                });
+                            });
+
+                            clientRow.RelativeItem().Column(c =>
+                            {
+                                c.Item().Text(text =>
+                                {
+                                    text.Span("Dirección: ").Bold().FontSize(10);
+                                    text.Span(order.ShippingAddress).FontSize(10);
+                                });
+                                c.Item().Text(text =>
+                                {
+                                    text.Span("Método de pago: ").Bold().FontSize(10);
+                                    text.Span(order.PaymentMethod).FontSize(10);
+                                });
                             });
                         });
+                    });
+
+                    // Espacio
+                    col.Item().PaddingVertical(10);
+
+                    // Encabezado de la tabla
+                    col.Item().Background(Colors.Blue.Darken2).Padding(8).Row(row =>
+                    {
+                        row.RelativeItem().Text("Producto").Bold().FontColor(Colors.White).FontSize(11);
+                        row.ConstantItem(80).AlignRight().Text("Precio u.").Bold().FontColor(Colors.White).FontSize(11);
+                        row.ConstantItem(60).AlignCenter().Text("Cantidad").Bold().FontColor(Colors.White).FontSize(11);
+                        row.ConstantItem(90).AlignRight().Text("Total").Bold().FontColor(Colors.White).FontSize(11);
+                    });
+
+                    // Items del pedido
+                    var isAlternate = false;
+                    foreach (var item in order.Items)
+                    {
+                        var productName = item.Product?.name ?? $"Producto #{item.ProductId}";
+                        var unitPrice = item.UnitPrice;
+                        var totalPrice = unitPrice * item.Quantity;
+
+                        var backgroundColor = isAlternate ? Colors.Grey.Lighten5 : Colors.White;
+                        isAlternate = !isAlternate;
+
+                        col.Item().Background(backgroundColor).Padding(8).Row(row =>
+                        {
+                            row.RelativeItem().Text(productName).FontSize(10);
+                            row.ConstantItem(80).AlignRight().Text(unitPrice.ToString("C")).FontSize(10);
+                            row.ConstantItem(60).AlignCenter().Text(item.Quantity.ToString()).FontSize(10);
+                            row.ConstantItem(90).AlignRight().Text(totalPrice.ToString("C")).FontSize(10).Bold();
+                        });
                     }
+
+                    // Total
+                    col.Item().PaddingTop(10).AlignRight().Column(totalCol =>
+                    {
+                        totalCol.Item().Background(Colors.Blue.Darken2).Padding(10).Row(totalRow =>
+                        {
+                            totalRow.ConstantItem(100).Text("TOTAL:").Bold().FontColor(Colors.White).FontSize(14);
+                            totalRow.ConstantItem(120).AlignRight().Text(order.Total.ToString("C"))
+                                .Bold()
+                                .FontColor(Colors.White)
+                                .FontSize(16);
+                        });
+                    });
                 });
 
+                // Footer
                 page.Footer()
-                    .AlignRight()
+                    .BorderTop(1)
+                    .BorderColor(Colors.Grey.Lighten2)
+                    .PaddingTop(10)
+                    .AlignCenter()
                     .Column(col =>
                     {
-                        col.Item().Text($"Método de pago: {order.PaymentMethod}").FontSize(10);
-                        col.Item().Text($"Total: {order.Total.ToString("C")}").FontSize(12).Bold();
+                        col.Item().Text("Gracias por su compra")
+                            .FontSize(10)
+                            .Italic()
+                            .FontColor(Colors.Grey.Darken1);
+
+                        col.Item().Text("AutoPartes S.A. - Todos los derechos reservados")
+                            .FontSize(8)
+                            .FontColor(Colors.Grey.Medium);
                     });
             });
         });

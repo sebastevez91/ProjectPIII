@@ -2,8 +2,8 @@
 
 @if (Model != null && Model.Any())
 {
-    <table class="table table-dark table-bordered">
-        <thead>
+    <table class="table table-hover shadow-sm table-primary table-striped fs-6">
+        <thead class="table-dark">
             <tr>
                 <th>Nombre</th>
                 <th>Categoría</th>
@@ -17,14 +17,14 @@
                     <td>@product.name</td>
                     <td>@product.Category?.name</td>
                     <td>
-                        <a asp-page="/Products/Edit" asp-route-id="@product.id" class="btn btn-primary btn-sm me-2">
+                        <a asp-page="/Products/Edit" asp-route-id="@product.id" class="btn btn-primary btn-sm me-2" title="Editar">
                             <i class="fa-regular fa-pen-to-square"></i>
                         </a>
-                        <a asp-page="/Products/Details" asp-route-id="@product.id" class="btn btn-secondary btn-sm me-2">
+                        <a asp-page="/Products/Details" asp-route-id="@product.id" class="btn btn-secondary btn-sm me-2" title="Detalles">
                             <i class="fa-brands fa-phabricator"></i>
                         </a>
                         <button type="button" class="btn btn-danger btn-sm me-2"
-                                onclick="confirmDelete(@product.id, 'Products', 'producto', '@product.name')">
+                                onclick="confirmDelete(@product.id, 'Products', 'producto', '@product.name')" title="Eliminar">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </td>

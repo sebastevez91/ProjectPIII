@@ -1,12 +1,14 @@
 ﻿using System.Threading.Tasks;
 using AutoPartesRazor.Data;
 using AutoPartesRazor.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
 namespace AutoPartesRazor.Pages.Orders;
 
+[Authorize]
 public class DetailsModel : PageModel
 {
     private readonly AutoPartesRazorContext _context;

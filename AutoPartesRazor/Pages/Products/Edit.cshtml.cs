@@ -10,9 +10,11 @@ using AutoPartesRazor.Data;
 using AutoPartesRazor.Models;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AutoPartesRazor.Pages.Products
 {
+    [Authorize(Roles = "Admin")]
     public class EditModel : PageModel
     {
         private readonly AutoPartesRazor.Data.AutoPartesRazorContext _context;
@@ -32,6 +34,10 @@ namespace AutoPartesRazor.Pages.Products
         // Para imagen del producto
         [BindProperty]
         public IFormFile? ImageFile { get; set; }
+
+        // Precio sin decimales
+        [BindProperty]
+        public int PriceInteger { get; set; } = 0;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -63,7 +69,9 @@ namespace AutoPartesRazor.Pages.Products
             {
                 return NotFound();
             }
+            
             Product = product;
+            PriceInteger = (int)Product.price;
             return Page();
         }
 
@@ -75,6 +83,7 @@ namespace AutoPartesRazor.Pages.Products
             }
 
             _context.Attach(Product).State = EntityState.Modified;
+            Product.price = PriceInteger;
 
             try
             {
@@ -95,8 +104,13 @@ namespace AutoPartesRazor.Pages.Products
 
                     Product.ImagePath = "/img/products/" + fileName;
                 }
+                else
+                {
+                    // Mantener la imagen existente
+                    _context.Entry(Product).Property(p => p.ImagePath).IsModified = false;
+                }
 
-                await _context.SaveChangesAsync();
+                    await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
