@@ -20,7 +20,7 @@ public class SeedDataIdentity
         await _context.Database.EnsureCreatedAsync();
         await CheckRolesAsync();
         // Cambia la contraseña a una que cumpla la política o ajusta la política en Program.cs
-        await CheckUserAsync("Super", "Admin", "superadmin@gmail.com","SuperAdmin123!");
+        await CheckUserAsync("SuperAdministrador", "Admin", "superadmin@gmail.com","SuperAdmin123!");
     }
     private async Task CheckRolesAsync()
     {
@@ -34,7 +34,7 @@ public class SeedDataIdentity
         {
             user = new User
             {
-                Name = nombre,
+                FullName = nombre,
                 UserName = correo,
                 Email = correo,
                 Role = "Admin",

@@ -1,0 +1,19 @@
+﻿@page "{id:int}"
+@model AutoPartesRazor.Pages.Orders.ConfirmationModel
+
+@{
+    ViewData["Title"] = "Pedido confirmado";
+}
+
+<div class="container py-4">
+    <div class="alert alert-success">
+        <h4 class="alert-heading">¡Pedido recibido!</h4>
+        <p>Su pedido <strong>#@Model.OrderId</strong> se ha creado correctamente.</p>
+    </div>
+
+    <div class="mb-3">
+        <a asp-page="/Products/Index" class="btn btn-primary">Seguir comprando</a>
+        <a asp-page="./Confirmation" asp-route-id="@Model.OrderId" asp-route-handler="Download" class="btn btn-outline-sucess ms-2">Descargar comprobante</a>
+        <a asp-page="/Orders/Details" asp-route-id="@Model.OrderId" class="btn btn-link ms-2">Ver detalles del pedido</a>
+    </div>
+</div>

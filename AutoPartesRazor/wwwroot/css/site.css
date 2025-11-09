@@ -1,41 +1,454 @@
+/* ============================================
+   BASE STYLES & VARIABLES
+   ============================================ */
+
+:root {
+    --bg: #f6f7fb;
+    --card: #ffffff;
+    --primary: #0b5ed7;
+    --accent: #ff6b00;
+    --muted: #6c757d;
+    --radius: 12px;
+    --shadow: 0 6px 18px rgba(23, 32, 60, 0.08);
+    --glass: rgba(255, 255, 255, 0.6);
+    --max-width: 1200px;
+    --container-padding: 1.5rem;
+}
+
 html {
-  font-size: 14px;
+    font-size: 14px;
+    position: relative;
+    min-height: 100%;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
-html {
-  position: relative;
-  min-height: 100%;
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: linear-gradient(180deg, #f8f9fc 0%, var(--bg) 100%);
+    color: #243044;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
 }
 
-/*Logo de aplicación*/
+.container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding-left: var(--container-padding);
+    padding-right: var(--container-padding);
+}
+
+
+/* ============================================
+   HEADER & NAVIGATION
+   ============================================ */
+
+.site-header {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.95), rgba(250, 250, 252, 0.95));
+    border-bottom: 1px solid rgba(30, 42, 61, 0.04);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 0;
+}
+
+/* Brand/Logo */
 .logo-navbar {
     display: flex;
-    height: 60px; /* Ajusta el tamaño del logo */
-    width: auto; /* Mantiene la proporción */
+    height: 60px;
+    width: auto;
     border-radius: 10%;
     margin: 2%;
 }
 
-/*Fondo de pantalla*/
-.bg-project {
-    background-color: #4b8be9;
+.brand-logo {
+    width: 78px;
+    height: 78px;
+    object-fit: contain;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #fff, #f4f6fb);
+    padding: 6px;
+    border: 1px solid rgba(20, 30, 60, 0.03);
 }
 
-/*Logo de carrito*/
+.brand-text .brand-title {
+    display: block;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--primary);
+}
+
+.brand-text .brand-sub {
+    font-size: 0.75rem;
+    color: var(--muted);
+}
+
+/* Search Bar */
+.search-input {
+    border-radius: 999px 0 0 999px;
+    border-right: 0;
+    padding: 0.5rem 0.75rem;
+    box-shadow: none;
+}
+
+.btn-search {
+    border-radius: 0 999px 999px 0;
+    border: 1px solid rgba(20, 30, 60, 0.06);
+    background: var(--primary);
+    color: white;
+    padding: 0.475rem 0.75rem;
+}
+
+    .btn-search:hover {
+        filter: brightness(0.95);
+        transition: filter 0.12s;
+    }
+
+/* Cart Badge */
 .logo-cart {
     display: flex;
     height: 40px;
     width: auto;
     border-radius: 10%;
     margin: 2%;
+}
+
+.badge-cart {
+    display: inline-block;
+    min-width: 22px;
+    height: 22px;
+    line-height: 20px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.75rem;
+    border-radius: 12px;
+    padding: 0 6px;
+    position: relative;
+    top: -10px;
+    left: -10px;
+    text-align: center;
+}
+
+
+/* ============================================
+   USER DROPDOWN MENU
+   ============================================ */
+
+.user-dropdown {
+    position: relative;
+}
+
+    .user-dropdown > a {
+        cursor: pointer;
+        padding: 0.5rem 1rem;
+        display: block;
+        transition: background-color 0.2s;
+    }
+
+        .user-dropdown > a:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+            border-radius: 0.25rem;
+        }
+
+.user-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 0.375rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    min-width: 220px;
+    margin-top: 0.5rem;
+    padding: 0.5rem 0;
+    z-index: 9999;
+    /* Oculto por defecto */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+    /* Mostrar el menú cuando tiene la clase active */
+    .user-dropdown-menu.active {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+        pointer-events: auto;
+    }
+
+    .user-dropdown-menu a,
+    .user-dropdown-menu button {
+        display: block;
+        width: 100%;
+        padding: 0.65rem 1.25rem;
+        text-decoration: none;
+        color: #333;
+        background: none;
+        border: none;
+        text-align: left;
+        cursor: pointer;
+        font-size: 0.95rem;
+        transition: background-color 0.15s;
+        font-family: inherit;
+    }
+
+        .user-dropdown-menu a:hover,
+        .user-dropdown-menu button:hover {
+            background-color: #f8f9fa;
+            color: #000;
+        }
+
+    .user-dropdown-menu hr {
+        margin: 0.5rem 0;
+        border: none;
+        border-top: 1px solid #e9ecef;
+    }
+
+    .user-dropdown-menu form {
+        margin: 0;
+        padding: 0;
+    }
+
+/* Animación del chevron */
+.user-dropdown > a i.fa-chevron-down {
+    transition: transform 0.3s;
+}
+
+.user-dropdown-menu.active ~ a i.fa-chevron-down {
+    transform: rotate(180deg);
+}
+
+
+/* ============================================
+   MAIN CONTENT
+   ============================================ */
+
+.main-content {
+    min-height: calc(100vh - 160px);
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+.bg-project {
+    background-color: #4b8be9;
+}
+
+
+/* ============================================
+   CARDS & PRODUCTS
+   ============================================ */
+
+.card {
+    border: 0;
+    border-radius: var(--radius);
+    background: var(--card);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+    .card:hover {
+        transform: translateY(-4px);
+        transition: transform 0.18s ease;
+    }
+
+.product-img {
+    width: 100%;
+    height: 220px;
+    object-fit: contain;
+    background: linear-gradient(180deg, #fff, #fbfcff);
+    padding: 18px;
+}
+
+.product-thumb {
+    width: 100%;
+    max-width: 120px;
+    height: auto;
+    object-fit: contain;
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 8px;
+}
+
+.product-card .card-body {
+    padding: 1rem;
+}
+
+.product-card h5 {
+    margin-bottom: 0.35rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #18202e;
+}
+
+.product-card .card-text {
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.stock-badge {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.45rem;
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.04);
+    color: var(--muted);
+}
+
+
+/* ============================================
+   CART & SUMMARY
+   ============================================ */
+
+.summary-card {
+    border-radius: 12px;
+    background: linear-gradient(180deg, #fff, #fbfdff);
+    padding: 1rem;
+    box-shadow: 0 8px 24px rgba(10, 20, 40, 0.06);
+}
+
+.list-group-item {
+    background: linear-gradient(180deg, #fff, #f8f9fb);
+}
+
+
+/* ============================================
+   BUTTONS
+   ============================================ */
+
+.btn-primary,
+.btn-success,
+.btn-outline-primary {
+    border-radius: 8px;
+    padding: 0.45rem 0.8rem;
+    font-weight: 600;
+}
+
+.btn-primary {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+}
+
+.btn-success {
+    background: #198754;
+    border-color: #198754;
+    color: #fff;
+}
+
+.btn-outline-primary {
+    color: var(--primary);
+    border: 1px solid rgba(11, 94, 215, 0.12);
+    background: transparent;
+}
+
+
+/* ============================================
+   FORMS & INPUTS
+   ============================================ */
+
+.form-control {
+    border-radius: 8px;
+    border: 1px solid rgba(30, 40, 60, 0.07);
+    padding: 0.5rem 0.75rem;
+}
+
+
+/* ============================================
+   TABLES
+   ============================================ */
+
+.table {
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(30, 40, 60, 0.03);
+}
+
+
+/* ============================================
+   FOOTER
+   ============================================ */
+
+.site-footer {
+    background: linear-gradient(180deg, #f9fafb, #ffffff);
+    border-top: 1px solid rgba(30, 40, 60, 0.03);
+    margin-top: 3rem;
+}
+
+
+/* ============================================
+   ALERTS & MODALS
+   ============================================ */
+
+.alert {
+    border-radius: 10px;
+    box-shadow: none;
+}
+
+.modal-content {
+    border-radius: 12px;
+}
+
+
+/* ============================================
+   UTILITIES
+   ============================================ */
+
+.text-muted {
+    color: var(--muted) !important;
+}
+
+.mb-1 {
+    margin-bottom: 0.25rem;
+}
+
+
+/* ============================================
+   RESPONSIVE STYLES
+   ============================================ */
+
+@media (max-width: 991px) {
+    .user-dropdown-menu {
+        position: fixed;
+        right: 1rem;
+        left: auto;
+    }
+}
+
+@media (max-width: 767px) {
+    .product-img {
+        height: 160px;
+        padding: 12px;
+    }
+
+    .search-input {
+        display: block;
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+
+    .navbar-collapse {
+        background: transparent;
+    }
 }

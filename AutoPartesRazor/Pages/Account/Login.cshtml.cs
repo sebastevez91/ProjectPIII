@@ -1,4 +1,5 @@
 using AutoPartesRazor.Interfaces;
+using AutoPartesRazor.Models;
 using AutoPartesRazor.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -16,6 +17,8 @@ public class LoginModel : PageModel
 
     [BindProperty]
     public LoginViewModel LoginInput { get; set; }
+
+    public User user { get; set; }
 
     public async Task<IActionResult> OnPost()
     {

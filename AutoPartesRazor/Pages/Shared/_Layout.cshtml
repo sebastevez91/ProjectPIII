@@ -1,107 +1,171 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<AutoPartesRazor.Models.User> SignInManager
+@inject UserManager<AutoPartesRazor.Models.User> UserManager
+
+<!DOCTYPE html>
+<html lang="es">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - AutoPartes Razor</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <title>@ViewData["Title"] - AutoPartes</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- App CSS -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/AutoPartesRazor.styles.css" asp-append-version="true" />
-    <!-- Font Awesome para íconos -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+    @await RenderSectionAsync("Styles", required: false)
 </head>
-<body class="bg-project">
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-secondary border-bottom box-shadow mb-3">
-            <div class="container">
-                <div>
-                    <img src="~/img/logo.png" class="logo-navbar" alt="logo empresarial">
+<body>
+    <header class="site-header shadow-sm">
+        <nav class="navbar container navbar-expand-lg p-0">
+            <a class="navbar-brand d-flex align-items-center" asp-page="/Index">
+                <img src="~/img/logoAzul.jpg" alt="AutoPartes" class="brand-logo me-2" onerror="this.style.display='none'" />
+                <div class="brand-text">
+                    <span class="brand-title">AutoPartes</span>
+                    <small class="brand-sub">Repuestos y accesorios</small>
                 </div>
-                <button class="navbar-toggler" type="button" 
-                    data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-page="/Index">Inicio</a>
-                        </li>
-                        @if (User.IsInRole("Admin"))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-white" asp-area="" asp-page="/Users/Index">Usuarios</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-white" asp-area="" asp-page="/Products/Index">Productos</a>
-                            </li>
-                        }
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="nav-item m-2">
-                            <!-- Botón de Carrito con Contador -->
-                            <a asp-page="/Carts/Index" class="btn btn-outline-light position-relative me-2" id="ver-carrito">
-                                <i class="fas fa-shopping-cart"></i>
-                                @if (TempData["Total"] != null)
-                                {
-                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="contador-carrito">
-                                        @TempData["Total"]
-                                    </span>
-                                }
-                                else
-                                {
-                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="contador-carrito" style="display: none;">
-                                        0
-                                    </span>
-                                }
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="mainNav">
+                <form class="d-flex ms-3 me-auto" method="get" asp-page="/Products/Index">
+                    <input class="form-control search-input" name="q" type="search" placeholder="Buscar repuesto, código o marca..." aria-label="Buscar">
+                    <button class="btn btn-search" type="submit">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                </form>
+
+                <ul class="navbar-nav align-items-center">
+                    @if(User.IsInRole("Admin"))
+                    {
+                        <li class="nav-item me-3">
+                            <a asp-page="/Adminitration/AdminDashboard" class="nav-link">
+                                <i class="fa-solid fa-shield-halved me-1"></i>Administración
                             </a>
                         </li>
-
-                        @if (User.Identity!.IsAuthenticated)
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-white">@User.Identity.Name</a>
-                            </li>
-                            <li class="nav-item">
-
-                                <a asp-page="/Account/Login" asp-page-handler="Logout" 
-                                class="nav-link text-white m-2 btn btn-warning btn-sm">Cerrar Sesión</a>
-
-                            </li>
-                        }
-                        else
-                        {
-                            <li class="nav-item m-2">
-                                <a class="nav-link text-white btn btn-primary btn-sm" asp-page="/Account/Login">
-                                    Iniciar
-                                    Sesión
+                    }
+                    <li class="nav-item me-3">
+                        <a asp-page="/Products/Index" class="nav-link">Catálogo</a>
+                    </li>
+                    <li class="nav-item me-3">
+                        <a asp-page="/Carts/Index" class="nav-link position-relative">
+                            <i class="fa-solid fa-shopping-cart fa-lg"></i>
+                            <span id="navCartCount" class="badge-cart"></span>
+                        </a>
+                    </li>
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <li class="nav-item user-dropdown">
+                            <a href="#" class="nav-link" id="userMenuToggle">
+                                <i class="fa-solid fa-user-circle me-1"></i>
+                                @User.Identity?.Name
+                                <i class="fa-solid fa-chevron-down ms-1 small"></i>
+                            </a>
+                            <div class="user-dropdown-menu" id="userDropdownMenu">
+                                <a asp-page="/Account/Manage">
+                                    <i class="fa-solid fa-user me-2"></i>Mi cuenta
                                 </a>
-                            </li>
-                        }
-                    </ul>
-                </div>
+                                <hr />
+                                <form method="post" asp-page="/Account/Logout">
+                                    <button type="submit">
+                                        <i class="fa-solid fa-right-from-bracket me-2"></i>Cerrar sesión
+                                    </button>
+                                </form>
+                            </div>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a asp-page="/Account/Login" class="nav-link">
+                                <i class="fa-solid fa-right-to-bracket me-1"></i>Entrar
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-page="/Account/Register" class="nav-link btn btn-sm btn-primary ms-2 text-white">
+                                Registro
+                            </a>
+                        </li>
+                    }
+                </ul>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - AutoPartes Razor - <a asp-area="" asp-page="/Privacy">Privacy</a>
+    <main class="main-content container py-4">
+        @RenderBody()
+    </main>
+
+    <footer class="site-footer mt-auto">
+        <div class="container py-4 d-flex justify-content-between align-items-center">
+            <div class="text-muted small">
+                © @DateTime.Now.Year AutoPartes. Todos los derechos reservados.
+            </div>
+            <div class="footer-links">
+                <a asp-page="/Privacy">Privacidad</a>
+                <a asp-page="/Contact" class="ms-3">Contacto</a>
+            </div>
         </div>
     </footer>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <!-- App Scripts -->
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script>
+        // Inicializar contador del carrito
+        (function() {
+            const count = '@(ViewData["CartCount"] ?? "")';
+            const badge = document.getElementById('navCartCount');
+            if (badge && count) {
+                badge.innerText = count;
+            }
+        })();
+
+        // Menú desplegable de usuario
+        document.addEventListener('DOMContentLoaded', function() {
+            const userMenuToggle = document.getElementById('userMenuToggle');
+            const userDropdownMenu = document.getElementById('userDropdownMenu');
+
+            if (userMenuToggle && userDropdownMenu) {
+                // Toggle del menú al hacer clic
+                userMenuToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    userDropdownMenu.classList.toggle('active');
+                });
+
+                // Cerrar el menú al hacer clic fuera
+                document.addEventListener('click', function(e) {
+                    if (!userMenuToggle.contains(e.target) && !userDropdownMenu.contains(e.target)) {
+                        userDropdownMenu.classList.remove('active');
+                    }
+                });
+
+                // Prevenir que el menú se cierre al hacer clic dentro
+                userDropdownMenu.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+            }
+        });
+    </script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

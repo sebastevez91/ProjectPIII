@@ -1,0 +1,287 @@
+﻿@page
+@model AutoPartesRazor.Pages.Account.ManageModel
+@{
+    ViewData["Title"] = "Mi Cuenta";
+    ViewData["CartCount"] = 0; // Ajusta según tu lógica
+}
+
+<div class="container py-4">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+                    <!-- Foto de perfil -->
+                    <div class="profile-picture-container mb-3">
+                        <div class="profile-picture">
+                            <i class="fa-solid fa-user fa-4x text-muted"></i>
+                        </div>
+                        <button class="btn btn-sm btn-outline-primary mt-2" type="button" disabled>
+                            <i class="fa-solid fa-camera me-1"></i>
+                            Cambiar foto
+                        </button>
+                        <small class="text-muted d-block mt-1">Próximamente disponible</small>
+                    </div>
+
+                    <h5 class="mb-1">@User.Identity?.Name</h5>
+                    <p class="text-muted small mb-3">@Model.UpdateUser?.Email</p>
+
+                    <!-- Navegación del perfil -->
+                    <div class="list-group list-group-flush">
+                        <a href="#perfil" class="list-group-item list-group-item-action active" data-bs-toggle="pill">
+                            <i class="fa-solid fa-user me-2"></i>Datos Personales
+                        </a>
+                        <a href="#direccion" class="list-group-item list-group-item-action" data-bs-toggle="pill">
+                            <i class="fa-solid fa-map-marker-alt me-2"></i>Dirección
+                        </a>
+                        <a href="#seguridad" class="list-group-item list-group-item-action" data-bs-toggle="pill">
+                            <i class="fa-solid fa-lock me-2"></i>Seguridad
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contenido principal -->
+        <div class="col-md-9">
+            @if (!string.IsNullOrEmpty(Model.StatusMessage))
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fa-solid fa-check-circle me-2"></i>@Model.StatusMessage
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
+            @if (!ModelState.IsValid)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fa-solid fa-exclamation-circle me-2"></i>
+                    Por favor, corrige los errores en el formulario.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
+            <div class="tab-content">
+                <!-- Tab: Datos Personales -->
+                <div class="tab-pane fade show active" id="perfil">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-white">
+                            <h5 class="mb-0">
+                                <i class="fa-solid fa-user me-2 text-primary"></i>
+                                Información Personal
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <form method="post" asp-page-handler="UpdateProfile">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label asp-for="UpdateUser.Username" class="form-label fw-semibold"></label>
+                                        <input asp-for="UpdateUser.Username" class="form-control" readonly />
+                                        <small class="text-muted">El nombre de usuario no se puede cambiar</small>
+                                        <span asp-validation-for="UpdateUser.Username" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label asp-for="UpdateUser.Email" class="form-label fw-semibold"></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fa-solid fa-envelope"></i>
+                                            </span>
+                                            <input asp-for="UpdateUser.Email" class="form-control" />
+                                        </div>
+                                        <span asp-validation-for="UpdateUser.Email" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label asp-for="UpdateUser.FullName" class="form-label fw-semibold"></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fa-solid fa-id-card"></i>
+                                            </span>
+                                            <input asp-for="UpdateUser.FullName" class="form-control" placeholder="Ej: Juan Pérez" />
+                                        </div>
+                                        <span asp-validation-for="UpdateUser.FullName" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label asp-for="UpdateUser.PhoneNumber" class="form-label fw-semibold"></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fa-solid fa-phone"></i>
+                                            </span>
+                                            <input asp-for="UpdateUser.PhoneNumber" class="form-control" placeholder="Ej: +54 11 1234-5678" />
+                                        </div>
+                                        <span asp-validation-for="UpdateUser.PhoneNumber" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="col-12 mt-4">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fa-solid fa-save me-2"></i>
+                                            Guardar Cambios
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: Dirección -->
+                <div class="tab-pane fade" id="direccion">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-white">
+                            <h5 class="mb-0">
+                                <i class="fa-solid fa-map-marker-alt me-2 text-primary"></i>
+                                Dirección de Envío
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <form method="post" asp-page-handler="UpdateProfile">
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <label asp-for="UpdateUser.Address" class="form-label fw-semibold"></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fa-solid fa-home"></i>
+                                            </span>
+                                            <input asp-for="UpdateUser.Address" class="form-control" placeholder="Ej: Av. Corrientes 1234" />
+                                        </div>
+                                        <span asp-validation-for="UpdateUser.Address" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="col-12 mt-4">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fa-solid fa-save me-2"></i>
+                                            Guardar Dirección
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: Seguridad -->
+                <div class="tab-pane fade" id="seguridad">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-white">
+                            <h5 class="mb-0">
+                                <i class="fa-solid fa-lock me-2 text-primary"></i>
+                                Cambiar Contraseña
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <form method="post" asp-page-handler="ChangePassword">
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <label for="OldPassword" class="form-label fw-semibold">Contraseña actual</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fa-solid fa-key"></i>
+                                            </span>
+                                            <input type="password" name="changePassword.OldPassword" id="OldPassword" class="form-control" required />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label for="NewPassword" class="form-label fw-semibold">Nueva contraseña</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fa-solid fa-lock"></i>
+                                            </span>
+                                            <input type="password" name="changePassword.NewPassword" id="NewPassword" class="form-control" required />
+                                        </div>
+                                        <small class="text-muted">Mínimo 6 caracteres</small>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label for="ConfirmPassword" class="form-label fw-semibold">Confirmar nueva contraseña</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fa-solid fa-lock"></i>
+                                            </span>
+                                            <input type="password" name="changePassword.ConfirmPassword" id="ConfirmPassword" class="form-control" required />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 mt-4">
+                                        <button type="submit" class="btn btn-warning">
+                                            <i class="fa-solid fa-shield-alt me-2"></i>
+                                            Cambiar Contraseña
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .profile-picture-container {
+            position: relative;
+        }
+
+        .profile-picture {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+            .profile-picture i {
+                color: white;
+            }
+
+        .list-group-item {
+            border: none;
+            border-left: 3px solid transparent;
+            transition: all 0.2s;
+        }
+
+            .list-group-item:hover {
+                background-color: #f8f9fa;
+                border-left-color: var(--primary);
+            }
+
+            .list-group-item.active {
+                background-color: rgba(11, 94, 215, 0.1);
+                border-left-color: var(--primary);
+                color: var(--primary);
+                font-weight: 600;
+            }
+
+        .card-header {
+            border-bottom: 2px solid #f0f0f0;
+            padding: 1.25rem;
+        }
+
+        .input-group-text {
+            background-color: #f8f9fa;
+            border-right: none;
+        }
+
+        .input-group .form-control,
+        .input-group .form-select {
+            border-left: none;
+        }
+
+        .input-group:focus-within .input-group-text {
+            border-color: #86b7fe;
+            background-color: #e7f1ff;
+        }
+    </style>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
