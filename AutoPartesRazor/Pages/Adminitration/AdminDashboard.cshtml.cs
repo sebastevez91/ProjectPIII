@@ -19,6 +19,8 @@ public class AdminDashboardModel : PageModel
     public IList<User> Users { get; set; } = default!;
     public IList<Product> Products { get; set; } = default!;
     public IList<Order> Orders { get; set; } = default!;
+    public IList<Category> Categories { get; set; } = default!;
+    public IList<Brand> Brands { get; set; } = default!;
 
     public async Task OnGetAsync()
     {
@@ -33,5 +35,13 @@ public class AdminDashboardModel : PageModel
         Orders = _context.Order != null
             ? await _context.Order.Include(o => o.Items).ThenInclude(oi => oi.Product).ToListAsync()
             : new List<Order>();
+
+        Categories = _context.Category != null
+            ? await _context.Category.ToListAsync()
+            : new List<Category>();
+
+        Brands = _context.Brand != null
+            ? await _context.Brand.ToListAsync()
+            : new List<Brand>();
     }
 }

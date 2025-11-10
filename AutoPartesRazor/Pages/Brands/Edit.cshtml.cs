@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AutoPartesRazor.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using AutoPartesRazor.Data;
-using AutoPartesRazor.Models;
 
 namespace AutoPartesRazor.Pages.Brands
 {
@@ -30,7 +24,7 @@ namespace AutoPartesRazor.Pages.Brands
                 return NotFound();
             }
 
-            var brand =  await _context.Brand.FirstOrDefaultAsync(m => m.id == id);
+            var brand = await _context.Brand.FirstOrDefaultAsync(m => m.id == id);
             if (brand == null)
             {
                 return NotFound();
@@ -66,12 +60,12 @@ namespace AutoPartesRazor.Pages.Brands
                 }
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("/Adminitration/AdminDashboard");
         }
 
         private bool BrandExists(int id)
         {
-          return (_context.Brand?.Any(e => e.id == id)).GetValueOrDefault();
+            return (_context.Brand?.Any(e => e.id == id)).GetValueOrDefault();
         }
     }
 }

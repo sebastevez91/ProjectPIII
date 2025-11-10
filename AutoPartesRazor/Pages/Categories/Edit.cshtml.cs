@@ -1,77 +1,72 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AutoPartesRazor.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using AutoPartesRazor.Data;
-using AutoPartesRazor.Models;
 
-namespace AutoPartesRazor.Pages.Categories
+namespace AutoPartesRazor.Pages.Categories;
+
+[Authorize(Roles = "Admin")]
+public class EditModel : PageModel
 {
-    public class EditModel : PageModel
-    {
-        private readonly AutoPartesRazor.Data.AutoPartesRazorContext _context;
+    private readonly AutoPartesRazor.Data.AutoPartesRazorContext _context;
 
-        public EditModel(AutoPartesRazor.Data.AutoPartesRazorContext context)
+    public EditModel(AutoPartesRazor.Data.AutoPartesRazorContext context)
+    {
+        _context = context;
+    }
+
+    [BindProperty]
+    public Category Category { get; set; } = default!;
+
+    public async Task<IActionResult> OnGetAsync(int? id)
+    {
+        if (id == null || _context.Category == null)
         {
-            _context = context;
+            return NotFound();
         }
 
-        [BindProperty]
-        public Category Category { get; set; } = default!;
-
-        public async Task<IActionResult> OnGetAsync(int? id)
+        var category = await _context.Category.FirstOrDefaultAsync(m => m.id == id);
+        if (category == null)
         {
-            if (id == null || _context.Category == null)
-            {
-                return NotFound();
-            }
+            return NotFound();
+        }
+        Category = category;
+        return Page();
+    }
 
-            var category =  await _context.Category.FirstOrDefaultAsync(m => m.id == id);
-            if (category == null)
-            {
-                return NotFound();
-            }
-            Category = category;
+    // To protect from overposting attacks, enable the specific properties you want to bind to.
+    // For more details, see https://aka.ms/RazorPagesCRUD.
+    public async Task<IActionResult> OnPostAsync()
+    {
+        if (!ModelState.IsValid)
+        {
             return Page();
         }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
+        _context.Attach(Category).State = EntityState.Modified;
+
+        try
         {
-            if (!ModelState.IsValid)
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!CategoryExists(Category.id))
             {
-                return Page();
+                return NotFound();
             }
-
-            _context.Attach(Category).State = EntityState.Modified;
-
-            try
+            else
             {
-                await _context.SaveChangesAsync();
+                throw;
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CategoryExists(Category.id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return RedirectToPage("./Index");
         }
 
-        private bool CategoryExists(int id)
-        {
-          return (_context.Category?.Any(e => e.id == id)).GetValueOrDefault();
-        }
+        return RedirectToPage("/Adminitration/AdminDashboard");
+    }
+
+    private bool CategoryExists(int id)
+    {
+        return (_context.Category?.Any(e => e.id == id)).GetValueOrDefault();
     }
 }

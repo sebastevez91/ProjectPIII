@@ -12,34 +12,101 @@
     </div>
 
     <div class="row mb-3 g-2 align-items-center">
-        <div class="col-md-4">
-            <input id="searchBox" class="form-control" placeholder="Buscar por nombre o descripción..." />
-        </div>
-        <div class="col-md-3">
-            <select id="categoryFilter" class="form-select">
-                <option value="">Todas las categorías</option>
-                @foreach (var c in Model.Categories)
-                {
-                    <option value="@c.Value">@c.Text</option>
-                }
-            </select>
-        </div>
-        <div class="col-md-3">
-            <select id="sortSelect" class="form-select">
-                <option value="">Ordenar</option>
-                <option value="price_asc">Precio ↑</option>
-                <option value="price_desc">Precio ↓</option>
-                <option value="name_asc">Nombre A-Z</option>
-            </select>
-        </div>
+        <form method="get" class="row g-2 align-items-center" id="filterForm">
+            <div class="col-md-4">
+                <input asp-for="SearchQuery" class="form-control" placeholder="Buscar por nombre, descripción o marca..." value="@Model.SearchQuery" />
+            </div>
+            <div class="col-md-3">
+                <select asp-for="CategoryFilter" asp-items="Model.Categories" class="form-select">
+                    <option value="">Todas las categorías</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select asp-for="SortBy" class="form-select">
+                    <option value="">Ordenar por...</option>
+                    <option value="price_asc">Precio: Menor a Mayor</option>
+                    <option value="price_desc">Precio: Mayor a Menor</option>
+                    <option value="name_asc">Nombre: A-Z</option>
+                    <option value="name_desc">Nombre: Z-A</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="fa-solid fa-search me-1"></i>Buscar
+                </button>
+            </div>
+        </form>
     </div>
+
+    @if (!string.IsNullOrWhiteSpace(Model.SearchQuery) || Model.CategoryFilter.HasValue || !string.IsNullOrWhiteSpace(Model.SortBy))
+    {
+        <div class="row mb-3">
+            <div class="col-12">
+                <div class="alert alert-light d-flex justify-content-between align-items-center">
+                    <div>
+                        <i class="fa-solid fa-filter me-2"></i>
+                        <strong>Filtros activos:</strong>
+                        @if (!string.IsNullOrWhiteSpace(Model.SearchQuery))
+                        {
+                            <span class="badge bg-primary ms-2">Búsqueda: @Model.SearchQuery</span>
+                        }
+                        @if (Model.CategoryFilter.HasValue)
+                        {
+                            var categoryName = Model.Categories.FirstOrDefault(c => c.Value == Model.CategoryFilter.ToString())?.Text;
+                            <span class="badge bg-info ms-2">Categoría: @categoryName</span>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(Model.SortBy))
+                        {
+                            <span class="badge bg-secondary ms-2">Ordenado</span>
+                        }
+                    </div>
+                    <a asp-page="/Products/Index" class="btn btn-sm btn-outline-secondary">
+                        <i class="fa-solid fa-times me-1"></i>Limpiar filtros
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (!Model.Products.Any())
+    {
+        <div class="alert alert-info text-center py-5">
+            <i class="fa-solid fa-search fa-3x mb-3 d-block text-muted"></i>
+            <h5>No se encontraron productos</h5>
+            <p class="mb-0">
+                @if (!string.IsNullOrWhiteSpace(Model.SearchQuery))
+                {
+                    <span>No hay productos que coincidan con "<strong>@Model.SearchQuery</strong>"</span>
+                }
+                else
+                {
+                    <span>Intenta ajustar tus filtros de búsqueda</span>
+                }
+            </p>
+        </div>
+    }
+    else
+    {
+        <div class="row g-3 mb-3">
+            <div class="col-12">
+                <small class="text-muted">
+                    <i class="fa-solid fa-box me-1"></i>
+                    Mostrando <strong>@Model.Products.Count</strong> producto(s)
+                    @if (!string.IsNullOrWhiteSpace(Model.SearchQuery))
+                    {
+                        <span> para "<strong>@Model.SearchQuery</strong>"</span>
+                    }
+                </small>
+            </div>
+        </div>
+    }
 
     <div id="productsGrid" class="row g-3">
         @foreach (var p in Model.Products)
         {
-            <div class="col-12 col-sm-6 col-md-4 product-card" data-name="@p.name.ToLower()" data-desc="@p.description.ToLower()" data-category="@p.idCategory" data-price="@p.price">
+            <div class="col-12 col-sm-6 col-md-4">
                 <div class="card h-100 shadow-sm">
-                    <img src="@(string.IsNullOrEmpty(p.ImagePath) ? "/img/placeholder-product.png" : p.ImagePath)" class="card-img-top product-img" alt="@p.name" onerror="this.src='/images/placeholder-product.png'">
+                    <img src="@(string.IsNullOrEmpty(p.ImagePath) ? "/images/placeholder-product.png" : p.ImagePath)" class="card-img-top product-img" alt="@p.name" onerror="this.src='/images/placeholder-product.png'">
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title">@p.name</h5>
                         <p class="card-text text-muted small">@p.Brand?.name</p>
@@ -100,7 +167,6 @@
 
         // Función global para actualizar el contador del carrito
         function updateCartCount(count) {
-            // Actualizar el contador en el navbar (Layout)
             const navCartCount = document.getElementById('navCartCount');
             if (navCartCount) {
                 navCartCount.innerText = count;
@@ -112,18 +178,11 @@
             const quantity = qtyInput ? parseInt(qtyInput.value, 10) || 1 : 1;
             const token = getRequestVerificationToken();
 
-            console.log('=== Iniciando addToCart ===');
-            console.log('ProductID:', productId);
-            console.log('Quantity:', quantity);
-            console.log('Token:', token ? 'Presente' : 'No encontrado');
-
             try {
                 const form = new URLSearchParams();
                 form.append('productId', productId);
                 form.append('quantity', quantity);
                 form.append('__RequestVerificationToken', token);
-
-                console.log('Enviando petición POST...');
 
                 const resp = await fetch('@Url.Page(null, "AddToCart")', {
                     method: 'POST',
@@ -134,24 +193,15 @@
                     body: form
                 });
 
-                console.log('Respuesta recibida:', resp.status, resp.statusText);
-
                 if (!resp.ok) {
-                    console.error('Error HTTP:', resp.status);
-                    const errorText = await resp.text();
-                    console.error('Respuesta del servidor:', errorText);
-                    throw new Error(`Error HTTP: ${resp.status} - ${errorText}`);
+                    throw new Error(`Error HTTP: ${resp.status}`);
                 }
 
                 const json = await resp.json();
-                console.log('JSON recibido:', json);
 
                 if (json.success) {
-                    // Actualizar contador del carrito en el navbar
                     updateCartCount(json.cartCount);
-                    console.log('Contador actualizado a:', json.cartCount);
 
-                    // Mostrar notificación de éxito
                     Swal.fire({
                         toast: true,
                         position: 'top-end',
@@ -160,50 +210,35 @@
                         showConfirmButton: false,
                         timer: 2000
                     });
-
-                    console.log('=== addToCart completado exitosamente ===');
                 } else {
-                    console.error('Error en respuesta:', json.message);
                     Swal.fire('Error', json.message || 'No se pudo añadir al carrito', 'error');
                 }
             } catch (ex) {
-                console.error('=== ERROR EN addToCart ===');
-                console.error('Tipo:', ex.name);
-                console.error('Mensaje:', ex.message);
-                console.error('Stack:', ex.stack);
+                console.error(ex);
                 Swal.fire('Error', 'Error al comunicarse con el servidor: ' + ex.message, 'error');
             }
         }
 
-        // Cliente: búsqueda, filtrado y ordenado
-        document.getElementById('searchBox').addEventListener('input', () => applyFilters());
-        document.getElementById('categoryFilter').addEventListener('change', () => applyFilters());
-        document.getElementById('sortSelect').addEventListener('change', () => applyFilters());
+        // Auto-submit del formulario cuando cambian los filtros
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('filterForm');
+            const selects = form.querySelectorAll('select');
 
-        function applyFilters() {
-            const q = document.getElementById('searchBox').value.trim().toLowerCase();
-            const cat = document.getElementById('categoryFilter').value;
-            const sort = document.getElementById('sortSelect').value;
-
-            const cards = Array.from(document.querySelectorAll('.product-card'));
-            let items = cards.filter(c => {
-                const matchesQuery = c.dataset.name.includes(q) || c.dataset.desc.includes(q);
-                const matchesCat = !cat || c.dataset.category === cat;
-                return matchesQuery && matchesCat;
+            selects.forEach(select => {
+                select.addEventListener('change', function() {
+                    form.submit();
+                });
             });
 
-            // Ordenar en cliente
-            items.sort((a, b) => {
-                if (sort === 'price_asc') return parseFloat(a.dataset.price) - parseFloat(b.dataset.price);
-                if (sort === 'price_desc') return parseFloat(b.dataset.price) - parseFloat(a.dataset.price);
-                if (sort === 'name_asc') return a.dataset.name.localeCompare(b.dataset.name);
-                return 0;
-            });
-
-            // Reordenar DOM
-            const grid = document.getElementById('productsGrid');
-            grid.innerHTML = '';
-            items.forEach(i => grid.appendChild(i));
-        }
+            // Búsqueda con Enter
+            const searchInput = document.querySelector('input[name="SearchQuery"]');
+            if (searchInput) {
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        form.submit();
+                    }
+                });
+            }
+        });
     </script>
 }

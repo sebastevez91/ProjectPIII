@@ -6,7 +6,7 @@ namespace AutoPartesRazor.Models
     {
         public int id { get; set; }
         [Required]
-        [Display(Name = "Categoría")]
+        [Display(Name = "Nombre de categoría")]
         public string name { get; set; }
 
         // Navegación

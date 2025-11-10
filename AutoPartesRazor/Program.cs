@@ -28,6 +28,7 @@ builder.Services.AddIdentity<User, IdentityRole>(x =>
 
 builder.Services.AddTransient<SeedDataIdentity>();
 
+// Servicio de generación de PDFs
 builder.Services.AddScoped<IPdfService, AutoPartesRazor.Services.PdfService>();
 
 builder.Services.AddScoped<IUserService, UserService>();

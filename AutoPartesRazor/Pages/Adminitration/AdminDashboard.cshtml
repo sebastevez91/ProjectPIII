@@ -28,11 +28,29 @@
             <h3 class="mb-0">Listado de Productos</h3>
             <div>
                 <a asp-page="/Products/Create" class="btn btn-primary">Nuevo producto</a>
-                <a asp-page="/Categories/Create" class="btn btn-secondary ms-2">Agregar Categoría</a>
-                <a asp-page="/Brands/Create" class="btn btn-info ms-2 text-white">Agregar Marca</a>
+                <button class="btn btn-primary ms-2" onclick="toggleSection('categoriesSection')">Categorías</button>
+                <button class="btn btn-primary ms-2" onclick="toggleSection('brandSection')">Marcas</button>
             </div>
         </div>
         <partial name="_ProductsTable" model="Model.Products" />
+
+        <!-- Sección de Categorías -->
+        <div id="categoriesSection" style="display:none;">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3 class="mb-0">Listado de Categorías</h3>
+                <a asp-page="/Categories/Create" class=" btn btn-primary">Nueva categoría</a>
+            </div>
+            <partial name="_CategoriesTable" model="Model.Categories" />
+        </div>
+
+        <!-- Sección de Marcas -->
+        <div id="brandSection" style="display:none;">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3 class="mb-0">Listado de Marcas</h3>
+                <a asp-page="/Brands/Create" class=" btn btn-primary m-2">Nueva marca</a>
+            </div>
+            <partial name="_BrandTable" model="Model.Brands" />
+        </div>
     </div>
 
     <!-- Sección de Usuarios -->

@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AutoPartesRazor.Data;
+using AutoPartesRazor.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using AutoPartesRazor.Data;
-using AutoPartesRazor.Models;
 
 namespace AutoPartesRazor.Pages.Products
 {
@@ -24,13 +20,52 @@ namespace AutoPartesRazor.Pages.Products
         public List<SelectListItem> Categories { get; set; } = new();
         public int CartCount { get; set; } = 0;
 
+        [BindProperty(SupportsGet = true)]
+        public string SearchQuery { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public int? CategoryFilter { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public string SortBy { get; set; }
+
         public async Task OnGetAsync()
         {
-            // Cargar productos con sus relaciones
-            Products = await _context.Product
+            // Query base de productos
+            var query = _context.Product
                 .Include(p => p.Brand)
                 .Include(p => p.Category)
-                .ToListAsync();
+                .AsQueryable();
+
+            // Aplicar búsqueda por nombre o descripción
+            if (!string.IsNullOrWhiteSpace(SearchQuery))
+            {
+                var searchLower = SearchQuery.ToLower();
+                query = query.Where(p =>
+                    p.name.ToLower().Contains(searchLower) ||
+                    p.description.ToLower().Contains(searchLower) ||
+                    (p.Brand != null && p.Brand.name.ToLower().Contains(searchLower))
+                );
+            }
+
+            // Aplicar filtro por categoría
+            if (CategoryFilter.HasValue && CategoryFilter.Value > 0)
+            {
+                query = query.Where(p => p.idCategory == CategoryFilter.Value);
+            }
+
+            // Aplicar ordenamiento
+            query = SortBy switch
+            {
+                "price_asc" => query.OrderBy(p => p.price),
+                "price_desc" => query.OrderByDescending(p => p.price),
+                "name_asc" => query.OrderBy(p => p.name),
+                "name_desc" => query.OrderByDescending(p => p.name),
+                _ => query.OrderBy(p => p.id) // Orden por defecto
+            };
+
+            // Ejecutar consulta
+            Products = await query.ToListAsync();
 
             // Cargar categorías para el filtro
             Categories = await _context.Category
@@ -48,18 +83,15 @@ namespace AutoPartesRazor.Pages.Products
             ViewData["CartCount"] = CartCount;
         }
 
-        /// Handler AJAX para añadir productos al carrito
+        /// Handler AJAX para añadir productos al carrito  
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostAddToCartAsync(int productId, int quantity)
         {
             try
             {
-                System.Diagnostics.Debug.WriteLine($"=== Iniciando AddToCart - ProductId: {productId}, Quantity: {quantity} ===");
-
                 // Validación: verificar que exista el contexto de productos
                 if (_context.Product == null)
                 {
-                    System.Diagnostics.Debug.WriteLine("ERROR: Contexto de productos es null");
                     return new JsonResult(new
                     {
                         success = false,
@@ -71,15 +103,12 @@ namespace AutoPartesRazor.Pages.Products
                 var product = await _context.Product.FindAsync(productId);
                 if (product == null)
                 {
-                    System.Diagnostics.Debug.WriteLine($"ERROR: Producto {productId} no encontrado");
                     return new JsonResult(new
                     {
                         success = false,
                         message = "Producto no encontrado"
                     });
                 }
-
-                System.Diagnostics.Debug.WriteLine($"Producto encontrado: {product.name}");
 
                 // Validar cantidad
                 if (quantity <= 0)
@@ -90,7 +119,6 @@ namespace AutoPartesRazor.Pages.Products
                 // Validar stock disponible
                 if (product.stock < quantity)
                 {
-                    System.Diagnostics.Debug.WriteLine($"ERROR: Stock insuficiente. Solicitado: {quantity}, Disponible: {product.stock}");
                     return new JsonResult(new
                     {
                         success = false,
@@ -104,15 +132,12 @@ namespace AutoPartesRazor.Pages.Products
 
                 if (existingCartItem != null)
                 {
-                    System.Diagnostics.Debug.WriteLine($"Producto ya existe en carrito. Cantidad anterior: {existingCartItem.quantity}");
                     // Si existe, actualizar la cantidad
                     existingCartItem.quantity += quantity;
                     _context.Cart.Update(existingCartItem);
-                    System.Diagnostics.Debug.WriteLine($"Nueva cantidad: {existingCartItem.quantity}");
                 }
                 else
                 {
-                    System.Diagnostics.Debug.WriteLine("Creando nuevo item en carrito");
                     // Si no existe, crear nuevo item
                     var cartItem = new Cart
                     {
@@ -123,16 +148,10 @@ namespace AutoPartesRazor.Pages.Products
                 }
 
                 // Guardar cambios en la base de datos
-                System.Diagnostics.Debug.WriteLine("Guardando cambios en BD...");
                 await _context.SaveChangesAsync();
-                System.Diagnostics.Debug.WriteLine("Cambios guardados exitosamente");
 
                 // Obtener el contador actualizado del carrito
-                System.Diagnostics.Debug.WriteLine("Obteniendo contador del carrito...");
                 var cartCount = await ObtenerContadorCarritoAsync();
-                System.Diagnostics.Debug.WriteLine($"Contador del carrito: {cartCount}");
-
-                System.Diagnostics.Debug.WriteLine("=== AddToCart completado exitosamente ===");
 
                 // Retornar respuesta exitosa
                 return new JsonResult(new
@@ -144,10 +163,6 @@ namespace AutoPartesRazor.Pages.Products
             }
             catch (DbUpdateException dbEx)
             {
-                System.Diagnostics.Debug.WriteLine($"ERROR DE BASE DE DATOS: {dbEx.Message}");
-                System.Diagnostics.Debug.WriteLine($"Inner Exception: {dbEx.InnerException?.Message}");
-                System.Diagnostics.Debug.WriteLine($"Stack Trace: {dbEx.StackTrace}");
-
                 return new JsonResult(new
                 {
                     success = false,
@@ -156,9 +171,6 @@ namespace AutoPartesRazor.Pages.Products
             }
             catch (InvalidOperationException invEx)
             {
-                System.Diagnostics.Debug.WriteLine($"ERROR DE OPERACIÓN INVÁLIDA: {invEx.Message}");
-                System.Diagnostics.Debug.WriteLine($"Stack Trace: {invEx.StackTrace}");
-
                 return new JsonResult(new
                 {
                     success = false,
@@ -167,10 +179,6 @@ namespace AutoPartesRazor.Pages.Products
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"ERROR GENERAL: {ex.GetType().Name}");
-                System.Diagnostics.Debug.WriteLine($"Mensaje: {ex.Message}");
-                System.Diagnostics.Debug.WriteLine($"Stack Trace: {ex.StackTrace}");
-
                 return new JsonResult(new
                 {
                     success = false,
@@ -179,7 +187,7 @@ namespace AutoPartesRazor.Pages.Products
             }
         }
 
-        /// Método para obtener el contador de items en el carrito
+        /// Método privado para obtener el contador de items en el carrito
         private async Task<int> ObtenerContadorCarritoAsync()
         {
             // Contar el número de items únicos en el carrito
