@@ -177,34 +177,38 @@
                         <div class="card-body">
                             <form method="post" asp-page-handler="ChangePassword">
                                 <div class="row g-3">
+                                    <input type="hidden" asp-for="UpdateUser.Username" />
+                                    <input type="hidden" asp-for="UpdateUser.Email" />
+                                    <input type="hidden" asp-for="UpdateUser.FullName" />
+                                    <input type="hidden" asp-for="UpdateUser.PhoneNumber" />
                                     <div class="col-12">
-                                        <label for="OldPassword" class="form-label fw-semibold">Contraseña actual</label>
+                                        <label asp-for="ChangePassword.OldPassword" class="form-label fw-semibold"></label>
                                         <div class="input-group">
                                             <span class="input-group-text">
                                                 <i class="fa-solid fa-key"></i>
                                             </span>
-                                            <input type="password" name="changePassword.OldPassword" id="OldPassword" class="form-control" required />
+                                            <input type="password" asp-for="ChangePassword.OldPassword" id="OldPassword" class="form-control" />
                                         </div>
                                     </div>
 
                                     <div class="col-12">
-                                        <label for="NewPassword" class="form-label fw-semibold">Nueva contraseña</label>
+                                        <label asp-for="ChangePassword.NewPassword" class="form-label fw-semibold"></label>
                                         <div class="input-group">
                                             <span class="input-group-text">
                                                 <i class="fa-solid fa-lock"></i>
                                             </span>
-                                            <input type="password" name="changePassword.NewPassword" id="NewPassword" class="form-control" required />
+                                            <input type="password" asp-for="ChangePassword.NewPassword" id="NewPassword" class="form-control" />
                                         </div>
-                                        <small class="text-muted">Mínimo 6 caracteres</small>
+                                        <small class="text-muted">Mínimo 8 caracteres</small>
                                     </div>
 
                                     <div class="col-12">
-                                        <label for="ConfirmPassword" class="form-label fw-semibold">Confirmar nueva contraseña</label>
+                                        <label asp-for="ChangePassword.ConfirmPassword" class="form-label fw-semibold"></label>
                                         <div class="input-group">
                                             <span class="input-group-text">
                                                 <i class="fa-solid fa-lock"></i>
                                             </span>
-                                            <input type="password" name="changePassword.ConfirmPassword" id="ConfirmPassword" class="form-control" required />
+                                            <input type="password" asp-for="ChangePassword.ConfirmPassword" id="ConfirmPassword" class="form-control" />
                                         </div>
                                     </div>
 

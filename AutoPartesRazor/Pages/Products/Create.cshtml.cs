@@ -71,7 +71,7 @@ namespace AutoPartesRazor.Pages.Products
             _context.Product.Add(Product);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("/Adminitration/AdminDashboard");
         }
     }
 }

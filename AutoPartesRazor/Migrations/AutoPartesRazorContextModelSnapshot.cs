@@ -156,6 +156,9 @@ namespace AutoPartesRazor.Migrations
                     b.Property<string>("ImagePath")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool?>("IsDelete")
+                        .HasColumnType("bit");
+
                     b.Property<string>("description")
                         .IsRequired()
                         .HasMaxLength(300)

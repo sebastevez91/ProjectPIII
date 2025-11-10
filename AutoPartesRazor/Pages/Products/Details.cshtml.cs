@@ -3,46 +3,45 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
-namespace AutoPartesRazor.Pages.Products
+namespace AutoPartesRazor.Pages.Products;
+
+public class DetailsModel : PageModel
 {
-    public class DetailsModel : PageModel
+    private readonly AutoPartesRazor.Data.AutoPartesRazorContext _context;
+
+    public DetailsModel(AutoPartesRazor.Data.AutoPartesRazorContext context)
     {
-        private readonly AutoPartesRazor.Data.AutoPartesRazorContext _context;
+        _context = context;
+    }
 
-        public DetailsModel(AutoPartesRazor.Data.AutoPartesRazorContext context)
+    public Product Product { get; set; } = default!;
+    public int CartCount { get; set; } = 0;
+
+    public async Task<IActionResult> OnGetAsync(int? id)
+    {
+        if (id == null || _context.Product == null)
         {
-            _context = context;
+            return NotFound();
         }
 
-        public Product Product { get; set; } = default!;
-        public int CartCount { get; set; } = 0;
+        var product = await _context.Product
+            .Include(b => b.Brand)
+            .Include(c => c.Category)
+            .FirstOrDefaultAsync(m => m.id == id);
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        if (product == null)
         {
-            if (id == null || _context.Product == null)
-            {
-                return NotFound();
-            }
-
-            var product = await _context.Product
-                .Include(b => b.Brand)
-                .Include(c => c.Category)
-                .FirstOrDefaultAsync(m => m.id == id);
-
-            if (product == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                Product = product;
-            }
-
-            // Contar el número de items únicos en el carrito
-            var count = await _context.Cart.CountAsync();
-            CartCount = count;
-
-            return Page();
+            return NotFound();
         }
+        else
+        {
+            Product = product;
+        }
+
+        // Contar el número de items únicos en el carrito
+        var count = await _context.Cart.CountAsync();
+        CartCount = count;
+
+        return Page();
     }
 }
