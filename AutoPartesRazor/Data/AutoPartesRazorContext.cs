@@ -42,6 +42,13 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
             .HasForeignKey(oi => oi.ProductId)
             .OnDelete(DeleteBehavior.Restrict);
 
+        // Relacion Notification - User
+        modelBuilder.Entity<Notification>()
+            .HasOne(n => n.User)
+            .WithMany(u => u.Notifications)
+            .HasForeignKey(n => n.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
         // ============================================
         // QUERY FILTERS - SOFT DELETE
         // ============================================
@@ -83,6 +90,7 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
     public DbSet<AutoPartesRazor.Models.User> User { get; set; }
     public DbSet<AutoPartesRazor.Models.Order> Order { get; set; }
     public DbSet<AutoPartesRazor.Models.OrderItem> OrderItem { get; set; }
+    public DbSet<AutoPartesRazor.Models.Notification> Notification { get; set; }
 
     // ============================================
     // MÉTODO PARA GUARDAR CON SOFT DELETE AUTOMÁTICO

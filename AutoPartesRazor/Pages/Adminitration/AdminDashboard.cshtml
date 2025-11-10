@@ -8,8 +8,8 @@
     <h2 class="mb-4">Panel de Administración</h2>
 
     <div class="mb-3">
-        <button class="btn btn-primary ms-2 text-white btn-lg" onclick="toggleSection('')">
-            <i class="fa-solid fa-newspaper"></i>  Ver Reportes
+        <button class="btn btn-primary ms-2 text-white btn-lg" onclick="toggleSection('notificationSection')">
+            <i class="fa-solid fa-envelope"></i>  Ver Notificaciones
         </button>
         <button class="btn btn-primary ms-2 text-white btn-lg" onclick="toggleSection('orderSection')">
             <i class="fa-solid fa-book"></i>  Ver Órdenes
@@ -69,6 +69,14 @@
         </div>
         <partial name="_OrdenesTable" model="Model.Orders" />
     </div>  
+
+    <!-- Sección de Notificaciones -->
+    <div id="notificationSection" class="mt-4" style="display:none;">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="mb-0">Listado de Notificaciones</h3>
+        </div>
+        <partial name="_NotificationTable" model="Model.Notifications" />
+    </div>
 </div>
 
 @section Scripts {

@@ -13,7 +13,7 @@
     <div class="col-md-4">
         <form method="post" enctype="multipart/form-data">
             <div class="form-group">
-                <img src="@(string.IsNullOrEmpty(Model.Product.ImagePath) ? "/img/placeholder-product.png" : Model.Product.ImagePath)" class="img-fluid rounded mb-3" alt="Imagen del producto" onerror="this.src='/images/placeholder-product.png'">
+                <img src="@(string.IsNullOrEmpty(Model.Product.ImagePath) ? "/img/logoAzul.jpg" : Model.Product.ImagePath)" class="img-fluid rounded mb-3" alt="Imagen del producto" oonerror="this.src='/img/logoAzul.jpg'">
             </div>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Product.id" />
@@ -58,7 +58,7 @@
             </div>
             <div class="form-group  text-center m-4">
                 <button type="submit" class="btn btn-primary btn-lg">Guardar</button>
-                <a asp-page="Index" class="btn btn-secondary btn-lg">Cancelar</a>
+                <a asp-page="/Adminitration/AdminDashboard" class="btn btn-primary btn-lg">Cancelar</a>
             </div>
         </form>
     </div>

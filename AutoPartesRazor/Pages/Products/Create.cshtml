@@ -3,7 +3,6 @@
 
 @{
     ViewData["Title"] = "Crear producto";
-    // ViewData["CartCount"] = Model.CartCount;
 }
 
 <h1>Crear nuevo producto</h1>
@@ -55,14 +54,11 @@
             </div>
 
             <div class="form-group text-center m-4">
-                <input type="submit" value="Crear" class="btn btn-secondary btn-lg" />
+                <input type="submit" value="Crear" class="btn btn-primary btn-lg" />
+                <a asp-page="/Adminitration/AdminDashboard" class="btn btn-primary btn-lg">Cancelar</a>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-page="Index">Back to List</a>
 </div>
 
 @section Scripts {

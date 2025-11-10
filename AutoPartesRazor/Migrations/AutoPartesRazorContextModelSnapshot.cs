@@ -93,6 +93,39 @@ namespace AutoPartesRazor.Migrations
                     b.ToTable("Category");
                 });
 
+            modelBuilder.Entity("AutoPartesRazor.Models.Notification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Notification");
+                });
+
             modelBuilder.Entity("AutoPartesRazor.Models.Order", b =>
                 {
                     b.Property<int>("id")
@@ -452,6 +485,17 @@ namespace AutoPartesRazor.Migrations
                     b.Navigation("producto");
                 });
 
+            modelBuilder.Entity("AutoPartesRazor.Models.Notification", b =>
+                {
+                    b.HasOne("AutoPartesRazor.Models.User", "User")
+                        .WithMany("Notifications")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("AutoPartesRazor.Models.OrderItem", b =>
                 {
                     b.HasOne("AutoPartesRazor.Models.Order", "Order")
@@ -552,6 +596,11 @@ namespace AutoPartesRazor.Migrations
             modelBuilder.Entity("AutoPartesRazor.Models.Order", b =>
                 {
                     b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("AutoPartesRazor.Models.User", b =>
+                {
+                    b.Navigation("Notifications");
                 });
 #pragma warning restore 612, 618
         }

@@ -32,4 +32,7 @@ public class User : IdentityUser
 
     // Última actualización
     public DateTime? LastUpdated { get; set; }
+
+    // Notificación relacionada
+    public ICollection<Notification>? Notifications { get; set; }
 }

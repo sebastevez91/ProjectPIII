@@ -10,7 +10,7 @@
 
 <div>
     <div>
-        <img src="@Model.Product.ImagePath" class="card-img-top product-img" alt="@Model.Product.name" />
+        <img src="@(string.IsNullOrEmpty(Model.Product.ImagePath) ? "/img/logoAzul.jpg" : Model.Product.ImagePath)" class="card-img-top product-img" alt="@Model.Product.name" onerror="this.src='/img/logoAzul.jpg'" />
     </div>
     <hr />
     <dl class="row">
@@ -53,5 +53,5 @@
     </dl>
 </div>
 <div>
-    <a asp-page="./Index" class="btn btn-secondary">Volver al listado</a>
+    <a asp-page="./Index" class="btn btn-primary">Ir al catálogo</a>
 </div>

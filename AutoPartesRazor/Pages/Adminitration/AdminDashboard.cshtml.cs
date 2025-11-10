@@ -21,6 +21,7 @@ public class AdminDashboardModel : PageModel
     public IList<Order> Orders { get; set; } = default!;
     public IList<Category> Categories { get; set; } = default!;
     public IList<Brand> Brands { get; set; } = default!;
+    public IList<Notification> Notifications { get; set; } = default!;
 
     public async Task OnGetAsync()
     {
@@ -43,5 +44,9 @@ public class AdminDashboardModel : PageModel
         Brands = _context.Brand != null
             ? await _context.Brand.ToListAsync()
             : new List<Brand>();
+
+        Notifications = _context.Notification != null
+            ? await _context.Notification.Include(n => n.User).ToListAsync()
+            : new List<Notification>();
     }
 }
