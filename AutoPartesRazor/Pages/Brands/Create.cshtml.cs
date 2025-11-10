@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AutoPartesRazor.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using AutoPartesRazor.Data;
-using AutoPartesRazor.Models;
 
 namespace AutoPartesRazor.Pages.Brands
 {
@@ -26,12 +20,12 @@ namespace AutoPartesRazor.Pages.Brands
 
         [BindProperty]
         public Brand Brand { get; set; } = default!;
-        
+
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-          if (!ModelState.IsValid || _context.Brand == null || Brand == null)
+            if (!ModelState.IsValid || _context.Brand == null || Brand == null)
             {
                 return Page();
             }
@@ -39,7 +33,7 @@ namespace AutoPartesRazor.Pages.Brands
             _context.Brand.Add(Brand);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("/Adminitration/AdminDashboard");
         }
     }
 }

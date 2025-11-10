@@ -2,15 +2,13 @@
 @model AutoPartesRazor.Pages.Categories.CreateModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Crear categoría";
 }
 
-<h1>Create</h1>
-
-<h4>Category</h4>
+<h1>Nueva Categoría</h1>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-4 m-2">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -19,14 +17,11 @@
                 <span asp-validation-for="Category.name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Crear" class="btn btn-primary m-2" />
+                <a asp-page="/Adminitration/AdminDashboard" class="btn btn-secondary m-2">Cancelar</a>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-page="Index">Back to List</a>
 </div>
 
 @section Scripts {
