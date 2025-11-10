@@ -14,6 +14,10 @@ public class Order
     public string Status { get; set; } = "Pending";
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
+    // Soft Delete
+    public bool IsDeleted { get; set; } = false;
+    public DateTime? DeletedAt { get; set; }
+
     // navegación
     public List<OrderItem> Items { get; set; } = new();
 }

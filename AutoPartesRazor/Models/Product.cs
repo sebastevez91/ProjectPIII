@@ -28,6 +28,10 @@ public class Product
 
     public string? ImagePath { get; set; }
 
+    // Delete
+    public bool IsDeleted { get; set; } = false;
+    public DateTime? DeletedAt { get; set; }
+
     // Clave Foreign Key
     public int? idCategory { get; set; }
 
