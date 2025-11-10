@@ -7,5 +7,9 @@ namespace AutoPartesRazor.Models
         public string ProductName { get; set; }
         public int Quantity { get; set; }
         public decimal UnitPrice { get; set; }
+
+        // Delete
+        public bool IsDeleted { get; set; } = false;
+        public DateTime? DeletedAt { get; set; }
     }
 }

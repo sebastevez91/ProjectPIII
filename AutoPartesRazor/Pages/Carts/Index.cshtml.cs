@@ -8,34 +8,33 @@ using Microsoft.EntityFrameworkCore;
 using AutoPartesRazor.Data;
 using AutoPartesRazor.Models;
 
-namespace AutoPartesRazor.Pages.Carts
+namespace AutoPartesRazor.Pages.Carts;
+
+public class IndexModel : PageModel
 {
-    public class IndexModel : PageModel
+    private readonly AutoPartesRazor.Data.AutoPartesRazorContext _context;
+
+    public IndexModel(AutoPartesRazor.Data.AutoPartesRazorContext context)
     {
-        private readonly AutoPartesRazor.Data.AutoPartesRazorContext _context;
+        _context = context;
+    }
 
-        public IndexModel(AutoPartesRazor.Data.AutoPartesRazorContext context)
+    public IList<Cart> Cart { get;set; } = default!;
+    public int CartCount { get; set; } = 0;
+
+    public async Task OnGetAsync()
+    {
+        // Contar el número de items únicos en el carrito
+        var count = await _context.Cart.CountAsync();
+        CartCount = count;
+
+        if (_context.Cart != null)
         {
-            _context = context;
+            Cart = await _context.Cart
+            .Include(c => c.producto).ToListAsync();
         }
 
-        public IList<Cart> Cart { get;set; } = default!;
-        public int CartCount { get; set; } = 0;
-
-        public async Task OnGetAsync()
-        {
-            // Contar el número de items únicos en el carrito
-            var count = await _context.Cart.CountAsync();
-            CartCount = count;
-
-            if (_context.Cart != null)
-            {
-                Cart = await _context.Cart
-                .Include(c => c.producto).ToListAsync();
-            }
-
-            // Calcular el número total de productos en el carrito
-            int total = Cart.Sum(item => item.quantity);
-        }
+        // Calcular el número total de productos en el carrito
+        int total = Cart.Sum(item => item.quantity);
     }
 }
