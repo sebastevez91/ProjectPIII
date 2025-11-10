@@ -27,6 +27,7 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
             .HasOne(p => p.Category)
             .WithMany(c => c.products)
             .HasForeignKey(p => p.idCategory)
+<<<<<<< HEAD
             .OnDelete(DeleteBehavior.Restrict); 
 
         // Relación Order - OrderItem
@@ -81,6 +82,9 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
 
         modelBuilder.Entity<Order>()
             .HasIndex(o => o.IsDeleted);
+=======
+            .OnDelete(DeleteBehavior.Cascade); // Si borrámos la categoria, borra sus productos
+>>>>>>> 2d35bc8959d58325a67095aeb7346e0b6de50540
     }
 
     public DbSet<AutoPartesRazor.Models.Product> Product { get; set; } = default!;

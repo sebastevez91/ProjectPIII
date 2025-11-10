@@ -49,8 +49,14 @@ public class DeleteModel : PageModel
 
         if (product != null)
         {
+<<<<<<< HEAD
             Product = product;
             _context.Product.Remove(Product);
+=======
+            product.IsDelete = true;
+            Product = product;
+            _context.Product.Update(product);
+>>>>>>> 2d35bc8959d58325a67095aeb7346e0b6de50540
             await _context.SaveChangesAsync();
         }
 
