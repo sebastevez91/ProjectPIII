@@ -41,7 +41,7 @@
                         <div class="list-group-item mb-3 shadow-sm rounded">
                             <div class="row g-3 align-items-center">
                                 <div class="col-3 col-md-2">
-                                    <img src="@item.producto.ImagePath" alt="@item.producto.name" class="img-fluid product-thumb rounded" onerror="this.src='/images/placeholder-product.png'">
+                                    <img src="@(string.IsNullOrEmpty(@item.producto.ImagePath) ? "/img/logoAzul.jpg" : item.producto.ImagePath)" class="img-fluid product-thumb rounded" onerror="this.src='/img/logoAzul.jpg'">
                                 </div>
                                 <div class="col-6 col-md-7">
                                     <h5 class="mb-1">@item.producto.name</h5>
@@ -54,9 +54,9 @@
                                     <div class="mb-2 fw-bold">@item.producto.price.ToString("C")</div>
 
                                     <div class="input-group input-group-sm justify-content-end mb-2" style="width:160px;margin-left:auto;">
-                                        <button class="btn btn-outline-secondary" type="button" onclick="changeQty(@item.id, -1)" title="Disminuir"><i class="fa-solid fa-minus"></i></button>
-                                        <input type="text" readonly class="form-control text-center qty-input" id="qty_@item.id" value="@item.quantity" style="max-width:60px;" data-price="@item.producto.price" />
-                                        <button class="btn btn-outline-secondary" type="button" onclick="changeQty(@item.id, 1)" title="Aumentar"><i class="fa-solid fa-plus"></i></button>
+                                       @*  <button class="btn btn-outline-secondary" type="button" onclick="changeQty(@item.id, -1)" title="Disminuir"><i class="fa-solid fa-minus"></i></button> *@
+                                        <input type="text" readonly class="form-control text-center qty-input" id="qty_@item.id" value="@item.quantity un." style="max-width:60px;" data-price="@item.producto.price" />
+                                        @* <button class="btn btn-outline-secondary" type="button" onclick="changeQty(@item.id, 1)" title="Aumentar"><i class="fa-solid fa-plus"></i></button> *@
                                     </div>
 
                                     <div class="small text-muted">Total: <span id="lineTotal_@item.id">@lineTotal.ToString("C")</span></div>
@@ -133,6 +133,7 @@
             return new Intl.NumberFormat('@System.Globalization.CultureInfo.CurrentCulture.Name', { style: 'currency', currency: '@System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol' }).format(value);
         }
 
+        // Funcion para cambiar la cantidad
         function changeQty(itemId, delta) {
             const qtyInput = document.getElementById('qty_' + itemId);
             if (!qtyInput) return;
