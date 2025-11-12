@@ -50,3 +50,4 @@ public class AdminDashboardModel : PageModel
             : new List<Notification>();
     }
 }
+
