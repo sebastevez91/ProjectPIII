@@ -1,0 +1,41 @@
+﻿@model IEnumerable<AutoPartesRazor.Models.Order>
+
+@if(Model != null && Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Cliente</th>
+                <th>Dirección</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var o in Model)
+            {
+                <tr>
+                    <td>@o.id</td>
+                    <td>@o.CustomerName</td>
+                    <td>@o.ShippingAddress</td>
+                    <td>@o.Status</td>
+                    <td>
+                        @if (o.Status == "Pending")
+                        {
+                            <form method="post" asp-page="/Administration/Despacho" asp-page-handler="Despachar" asp-route-id="@o.id" style="display:inline;">
+                                <button type="submit" class="btn btn-success btn-sm">Despachar</button>
+                            </form>
+                        }
+                        <a asp-page="/Administration/DetallePedido" asp-route-id="@o.id" class="btn btn-info btn-sm">Ver detalle</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}
+else
+{
+    <div class="alert alert-warning">No se encontraron órdenes.</div>
+}

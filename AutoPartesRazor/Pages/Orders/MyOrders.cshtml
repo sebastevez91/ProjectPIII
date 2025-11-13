@@ -1,0 +1,30 @@
+﻿@page
+@model MyOrdersModel
+<h2>Mis pedidos</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Fecha</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var p in Model.Pedidos)
+        {
+            <tr>
+                <td>@p.id</td>
+                <td>@p.CreatedAt.ToShortDateString()</td>
+                <td>
+                    <span class="badge bg-info">@p.Status</span>
+                </td>
+                <td>
+                    <a asp-page="/Orders/TrackOrder" asp-route-id="@p.id" class="btn btn-sm btn-primary">
+                        Ver Seguimiento
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

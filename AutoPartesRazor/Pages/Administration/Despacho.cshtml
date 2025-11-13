@@ -1,0 +1,40 @@
+﻿@page
+@model AutoPartesRazor.Pages.Administration.DespachoModel
+@section Scripts {
+    @if (TempData["DespachoOK"] != null)
+    {
+        <script>
+            Swal.fire('¡Listo!', 'El pedido fue despachado con éxito', 'success');
+        </script>
+    }
+}
+
+<h2>Despacho de Pedidos Pendientes</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Cliente</th>
+            <th>Dirección</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var p in Model.PedidosParaDespacho)
+        {
+            <tr>
+                <td>@p.id</td>
+                <td>@p.CustomerName</td>
+                <td>@p.ShippingAddress</td>
+                <td>@p.Status</td>
+                <td>
+                    <form method="post" asp-page-handler="Despachar" asp-route-id="@p.id" style="display:inline;">
+                        <button type="submit" class="btn btn-success">Marcar como Despachado</button>
+                    </form>
+                    <a asp-page="/Administration/DetallePedido" asp-route-id="@p.id" class="btn btn-info">Ver Detalle</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
