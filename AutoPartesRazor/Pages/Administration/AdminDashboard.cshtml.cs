@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
-namespace AutoPartesRazor.Pages.Adminitration;
+namespace AutoPartesRazor.Pages.Administration;
 
 [Authorize(Roles = "Admin")]
 public class AdminDashboardModel : PageModel
