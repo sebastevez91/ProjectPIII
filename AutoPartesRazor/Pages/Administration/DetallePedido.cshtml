@@ -1,0 +1,43 @@
+﻿@page "{id:int}"
+@model AutoPartesRazor.Pages.Administration.DetallePedidoModel
+<h2>Detalle del Pedido</h2>
+@if (Model.Pedido != null)
+{
+    <table class="table">
+        <tr>
+            <td>ID:</td>
+            <td>@Model.Pedido.id</td>
+        </tr>
+        <tr>
+            <td>Cliente:</td>
+            <td>@Model.Pedido.CustomerName</td>
+        </tr>
+        <tr>
+            <td>Email:</td>
+            <td>@Model.Pedido.CustomerEmail</td>
+        </tr>
+        <tr>
+            <td>Estado:</td>
+            <td>@Model.Pedido.Status</td>
+        </tr>
+        <tr>
+            <td>Dirección:</td>
+            <td>@Model.Pedido.ShippingAddress</td>
+        </tr>
+        <tr>
+            <td>Total:</td>
+            <td>$@Model.Pedido.Total</td>
+        </tr>
+    </table>
+    <h4>Productos</h4>
+    <ul>
+        @foreach (var item in Model.Pedido.Items)
+        {
+            <li>@item.Product?.name - @item.Quantity x $@item.UnitPrice</li>
+        }
+    </ul>
+}
+else
+{
+    <div class="alert alert-danger">Pedido no encontrado.</div>
+}

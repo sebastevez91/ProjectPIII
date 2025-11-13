@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddControllers();
 builder.Services.AddDbContext<AutoPartesRazorContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AutoPartesRazorContext") ?? throw new InvalidOperationException("Connection string 'AutoPartesRazorContext' not found.")));
 
@@ -56,6 +57,9 @@ void SeedDataIdentity(WebApplication app)
         service!.SeedAsync().Wait();
     }
 }
+
+app.MapControllers();
+
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
