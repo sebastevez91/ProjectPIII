@@ -51,7 +51,7 @@
                     @if(User.IsInRole("Admin"))
                     {
                         <li class="nav-item me-3">
-                            <a asp-page="/Adminitration/AdminDashboard" class="nav-link">
+                            <a asp-page="/Administration/AdminDashboard" class="nav-link">
                                 <i class="fa-solid fa-shield-halved me-1"></i>Administración
                             </a>
                         </li>
@@ -65,6 +65,8 @@
                             <span id="navCartCount" class="badge-cart"></span>
                         </a>
                     </li>
+                    
+
                     @if (SignInManager.IsSignedIn(User))
                     {
                         <li class="nav-item user-dropdown">
@@ -83,8 +85,26 @@
                                         <i class="fa-solid fa-right-from-bracket me-2"></i>Cerrar sesión
                                     </button>
                                 </form>
+                                @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                                {
+                                    <hr />
+                                        <a asp-page="/Administration/Despacho" class="nav-link">
+                                            <i class="fa-solid fa-truck me-1"></i> Despacho
+                                        </a>
+                                   
+                                }
+                                @if (SignInManager.IsSignedIn(User) && !User.IsInRole("Admin"))
+                                {
+                                    <hr />
+                                        <a asp-page="/Orders/MyOrders" class="nav-link">
+                                            <i class="fa-solid fa-box"></i> Mis pedidos
+                                        </a>
+
+                                }
                             </div>
+
                         </li>
+                        
                     }
                     else
                     {
@@ -100,6 +120,8 @@
                         </li>
                     }
                 </ul>
+                
+
             </div>
         </nav>
     </header>

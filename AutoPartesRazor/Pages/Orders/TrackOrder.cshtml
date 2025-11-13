@@ -1,0 +1,9 @@
+﻿@page "{id:int}"
+@model TrackOrderModel
+<h2>Seguimiento del Pedido #@Model.Pedido.id</h2>
+<ul>
+    <li><strong>Estado actual:</strong> <span class="badge bg-success">@Model.Pedido.Status</span></li>
+    <li><strong>Fecha de creación:</strong> @Model.Pedido.CreatedAt.ToShortDateString()</li>
+    <li><strong>Total:</strong> $@Model.Pedido.Total</li>
+</ul>
+<a asp-page="/Orders/MyOrders" class="btn btn-secondary">Volver a mis pedidos</a>
