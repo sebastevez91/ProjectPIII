@@ -1,9 +1,108 @@
 ﻿@page "{id:int}"
 @model TrackOrderModel
-<h2>Seguimiento del Pedido #@Model.Pedido.id</h2>
-<ul>
-    <li><strong>Estado actual:</strong> <span class="badge bg-success">@Model.Pedido.Status</span></li>
-    <li><strong>Fecha de creación:</strong> @Model.Pedido.CreatedAt.ToShortDateString()</li>
-    <li><strong>Total:</strong> $@Model.Pedido.Total</li>
-</ul>
-<a asp-page="/Orders/MyOrders" class="btn btn-secondary">Volver a mis pedidos</a>
+
+<h2 class="fw-bold text-success animate__animated animate__fadeInLeft">
+    <i class="fa-solid fa-location-arrow"></i> Seguimiento del Pedido [#@Model.Pedido.id](mailto:#@Model.Pedido.id)
+</h2>
+
+@* Stepper visual (busca el estado actual y muestra la barra con animaciones) *@
+@{
+    var steps = new List<(string Estado, string Icon, string ColorClass)>
+    {
+        ("Pending", "fa-file-lines", "bg-secondary"),
+        ("Preparando", "fa-box-open", "bg-info"),
+        ("Despachado", "fa-truck-loading", "bg-warning"),
+        ("En camino", "fa-truck", "bg-primary"),
+        ("Entregado", "fa-check-circle", "bg-success")
+    };
+    int currentStep = steps.FindIndex(s => s.Estado == Model.Pedido.Status);
+    if (currentStep == -1) { currentStep = 0; }
+}
+<div class="stepper my-4 p-2 animate__animated animate__fadeIn">
+    <div class="d-flex justify-content-between align-items-center flex-wrap">
+        @for (int i = 0; i < steps.Count; i++)
+        {
+            var (estado, icono, colorClase) = steps[i];
+            var alcanzado = i <= currentStep;
+            <div class="text-center flex-fill">
+                <div class="step-circle @colorClase @(alcanzado ? "step-active animate__animated animate__bounce" : "step-inactive")">
+                    <i class="fa-solid @(icono)"></i>
+                </div>
+                <div class="step-label mt-2 fw-semibold" style="font-size:1em; color:@(alcanzado ? "#18202E" : "#bbb");">
+                    @estado
+                </div>
+            </div>
+            @if (i < steps.Count - 1)
+            {
+                <div class="flex-grow-1 px-1 step-line @(i < currentStep ? "step-line-active" : "")"></div>
+            }
+        }
+    </div>
+</div>
+
+@if (Model.Pedido.Status == "Entregado" && Model.Pedido.Calificacion == null)
+{
+    <h4 class="mt-4 animate__animated animate__fadeInDown">¿Cómo fue tu experiencia?</h4>
+    <form method="post">
+        <div class="mb-3">
+            <label><b>Califica la entrega:</b></label>
+            <div>
+                @for (int i = 1; i <= 5; i++)
+                {
+                    <input type="radio" id="star-@i" name="Calificacion" value="@i" required />
+                    <label for="star-@i" style="font-size:1.6em; color:#fcc419;">★</label>
+                }
+            </div>
+        </div>
+        <button type="submit" class="btn btn-success animate__animated animate__pulse">
+            <i class="fa-solid fa-paper-plane"></i> Enviar opinión
+        </button>
+    </form>
+}
+else if (Model.Pedido.Status == "Entregado")
+{
+    <div class="alert alert-success mt-4">
+        <b>¡Gracias por tu calificación!</b><br />
+        @if (Model.Pedido.Calificacion != null)
+        {
+            <span>
+                Calificación:&nbsp;
+                @for (int star = 1; star <= 5; star++)
+                {
+                    <span style="font-size:1.3em; color:@(star <= Model.Pedido.Calificacion ? "#fcc419" : "#ccd1d1");">★</span>
+                }
+            </span>
+        }
+    </div>
+}
+
+
+
+
+<a asp-page="/Orders/MyOrders" class="btn btn-secondary btn-lg shadow-sm animate__animated animate__fadeInUp">
+    <i class="fa-solid fa-arrow-left"></i> Volver a mis pedidos
+</a>
+
+@functions {
+    public string GetProgress()
+    {
+        if (Model.Pedido.Status == "Pending") return "10%";
+        if (Model.Pedido.Status == "Preparando") return "30%";
+        if (Model.Pedido.Status == "Despachado") return "60%";
+        if (Model.Pedido.Status == "En camino") return "85%";
+        if (Model.Pedido.Status == "Entregado") return "100%";
+        if (Model.Pedido.Status == "Cancelado") return "100%"; // Si hay cancelado/otro, puedes personalizarlo
+        return "0%";
+    }
+    public string GetProgressColor()
+    {
+        if (Model.Pedido.Status == "Pending") return "bg-warning text-dark";
+        if (Model.Pedido.Status == "Preparando") return "bg-info text-dark";
+        if (Model.Pedido.Status == "Despachado") return "bg-primary";
+        if (Model.Pedido.Status == "En camino") return "bg-primary";
+        if (Model.Pedido.Status == "Entregado") return "bg-success";
+        if (Model.Pedido.Status == "Cancelado") return "bg-danger";
+        return "bg-info";
+    }
+}
+

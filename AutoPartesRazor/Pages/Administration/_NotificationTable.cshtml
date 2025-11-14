@@ -1,21 +1,36 @@
 ﻿@model IEnumerable<AutoPartesRazor.Models.Notification>
 
-@if(Model != null && Model.Any())
+@if (Model != null && Model.Any())
 {
     <table class="table table-hover shadow-sm table-primary table-striped fs-6">
         <thead class="table-dark">
             <tr>
+                <th>Título</th>
                 <th>Mensaje</th>
+                <th>Usuario</th>
                 <th>Fecha</th>
+                <th>Leída</th>
                 <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
-            @foreach(var notification in Model)
+            @foreach (var notification in Model)
             {
                 <tr>
+                    <td>@notification.Title</td>
                     <td>@notification.Message</td>
+                    <td>@notification.User?.UserName</td>
                     <td>@notification.CreatedAt.ToString("g")</td>
+                    <td>
+                        @if (notification.IsRead)
+                        {
+                            <span class="badge bg-success">Sí</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-warning text-dark">No</span>
+                        }
+                    </td>
                     <td>
                         <a asp-page="/Notifications/Delete" asp-route-id="@notification.Id" class="btn btn-danger btn-sm" title="Eliminar">
                             <i class="fa-solid fa-trash"></i>
