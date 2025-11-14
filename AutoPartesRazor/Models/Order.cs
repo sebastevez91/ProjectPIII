@@ -17,5 +17,7 @@ namespace AutoPartesRazor.Models
 
         // navegación
         public List<OrderItem> Items { get; set; } = new();
+        public int? Calificacion { get; set; }
+
     }
 }
