@@ -1,29 +1,42 @@
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
+using AutoPartesRazor.Models;
+using AutoPartesRazor.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using AutoPartesRazor.Models;
-using AutoPartesRazor.ViewModels;
+using Microsoft.EntityFrameworkCore;
+using QuestPDF.Infrastructure;
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 
 namespace AutoPartesRazor.Pages.Account
 {
     [Authorize]
     public class ManageModel : PageModel
     {
+        private readonly AutoPartesRazor.Data.AutoPartesRazorContext _context;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly IWebHostEnvironment _env;
 
-        public ManageModel(UserManager<User> userManager, SignInManager<User> signInManager)
+        public ManageModel(AutoPartesRazor.Data.AutoPartesRazorContext context,
+            UserManager<User> userManager,
+            SignInManager<User> signInManager,
+            IWebHostEnvironment env)
         {
+            _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
+            _env = env;
         }
 
         [BindProperty]
         public UpdateViewModel UpdateUser { get; set; }
+
+        // Para imagen del producto
+        [BindProperty]
+        public IFormFile? ImageFile { get; set; }
 
         [TempData]
         public string StatusMessage { get; set; }
@@ -135,6 +148,44 @@ namespace AutoPartesRazor.Pages.Account
 
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Tu contraseña ha sido cambiada exitosamente.";
+            return RedirectToPage();
+        }
+
+        public async Task<IActionResult> OnPostUpdateProfile()
+        {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+
+            if (ImageFile != null)
+            {
+                // Crear carpeta si no existe y usar ruta absoluta del wwwroot
+                var uploadsDir = Path.Combine(_env.WebRootPath, "img", "perfil");
+                Directory.CreateDirectory(uploadsDir);
+
+                var ext = Path.GetExtension(ImageFile.FileName);
+                var fileName = $"{Guid.NewGuid()}{ext}";
+                var uploadPath = Path.Combine(uploadsDir, fileName);
+
+                using (var stream = new FileStream(uploadPath, FileMode.Create))
+                {
+                    await ImageFile.CopyToAsync(stream);
+                }
+
+                UpdateUser.ProfilePicturePath = "/img/perfil/" + fileName;
+
+                // Actualizar la ruta de la imagen en la entidad User
+                user.ProfilePicturePath = UpdateUser.ProfilePicturePath;
+            }
+            else
+            {
+                // Mantener la imagen existente
+                _context.Entry(user).Property(p => p.ProfilePicturePath).IsModified = false;
+            }
+            await _context.SaveChangesAsync();
             return RedirectToPage();
         }
     }

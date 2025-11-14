@@ -19,7 +19,7 @@ builder.Services.AddIdentity<User, IdentityRole>(x =>
     x.Password.RequiredUniqueChars = 0;
     x.Password.RequireLowercase = false;
     x.Password.RequireNonAlphanumeric = false;
-    x.Password.RequiredLength = 8;
+    x.Password.RequiredLength = 6;
     x.Password.RequireUppercase = false;
     x.SignIn.RequireConfirmedEmail = false;
     x.SignIn.RequireConfirmedAccount = false;
@@ -33,6 +33,8 @@ builder.Services.AddTransient<SeedDataIdentity>();
 builder.Services.AddScoped<IPdfService, AutoPartesRazor.Services.PdfService>();
 
 builder.Services.AddScoped<IUserService, UserService>();
+
+builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 var app = builder.Build();
 

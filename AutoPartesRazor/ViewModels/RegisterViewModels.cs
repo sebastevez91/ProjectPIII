@@ -13,7 +13,7 @@ public class RegisterViewModels
     public string Email { get; set; }
 
     [Required(ErrorMessage = "La contraseña es obligatorio")]
-    [StringLength(40, MinimumLength = 8, ErrorMessage = "La contraseña debe contener 8 caracteres como minimo")]
+    [StringLength(40, MinimumLength = 6, ErrorMessage = "La contraseña debe contener 6 caracteres como minimo")]
     [DataType(DataType.Password)]
     [Compare("ConfirmPassword", ErrorMessage = "Las contraseñas no son iguales")]
     [Display(Name = "Contraseña")]

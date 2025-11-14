@@ -14,13 +14,20 @@
                     <!-- Foto de perfil -->
                     <div class="profile-picture-container mb-3">
                         <div class="profile-picture">
-                            <i class="fa-solid fa-user fa-4x text-muted"></i>
+                            @if(Model.UpdateUser.ProfilePicturePath != null)
+                            {
+                                <img src="S0" {Model.UpdateUser.ProfilePicturePath}" alt="Foto de perfil" class="img-fluid rounded-circle" />
+                            }
+                            else
+                            {
+                                <i class="fa-solid fa-user fa-4x text-muted"></i>
+                            }
+
                         </div>
-                        <button class="btn btn-sm btn-outline-primary mt-2" type="button" disabled>
+                        <a href="#photoperfile" class="btn btn-sm btn-outline-primary mt-2" data-bs-toggle="pill">
                             <i class="fa-solid fa-camera me-1"></i>
-                            Cambiar foto
-                        </button>
-                        <small class="text-muted d-block mt-1">Próximamente disponible</small>
+                                Cambiar foto
+                        </a>
                     </div>
 
                     <h5 class="mb-1">@User.Identity?.Name</h5>
@@ -125,6 +132,33 @@
                         </div>
                     </div>
                 </div>
+                <!-- Tab: Photo Perfile -->
+                <div class="tab-pane fade" id="photoProfile">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-white">
+                            <h5 class="mb-0">
+                                <i class="fa-solid fa-camera me-2 text-primary"></i>
+                                Foto de Perfil
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <form method="post" asp-page-handler="UpdateProfile" enctype="multipart/form-data">
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <label for="UpdateUser.ProfilePicturePath" class="form-label fw-semibold">Seleccionar nueva foto de perfil</label>
+                                        <input type="file" asp-for="UpdateUser.ProfilePicturePath" class="form-control" />
+                                        <span asp-validation-for="UpdateUser.ProfilePicturePath" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-12 mt-4">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fa-solid fa-save me-2"></i>
+                                            Guardar Foto
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>"
 
                 <!-- Tab: Dirección -->
                 <div class="tab-pane fade" id="direccion">
