@@ -1,8 +1,7 @@
-using AutoPartesRazor.Data;
-using AutoPartesRazor.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-
+using AutoPartesRazor.Data;
+using AutoPartesRazor.Models;
 
 public class MyOrdersModel : PageModel
 {
@@ -13,8 +12,8 @@ public class MyOrdersModel : PageModel
     {
         var userEmail = User.Identity?.Name;
         Pedidos = await _context.Order
-                .Where(o => o.CustomerEmail == userEmail)
-                .OrderByDescending(o => o.CreatedAt)
-                .ToListAsync();
+            .Where(o => o.CustomerEmail == userEmail)
+            .OrderByDescending(o => o.CreatedAt)
+            .ToListAsync();
     }
 }

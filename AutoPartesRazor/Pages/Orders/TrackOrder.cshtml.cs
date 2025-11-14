@@ -17,4 +17,19 @@ public class TrackOrderModel : PageModel
             return Page();
         return Forbid();
     }
+    public async Task<IActionResult> OnPostAsync(int id)
+    {
+        var pedido = await _context.Order.FindAsync(id);
+        if (pedido == null || pedido.Status != "Entregado")
+            return NotFound();
+
+        if (Request.Form.TryGetValue("Calificacion", out var calif) && int.TryParse(calif, out int nota))
+            pedido.Calificacion = nota;
+
+        await _context.SaveChangesAsync();
+        return RedirectToPage(new { id });
+    }
+
+
+
 }
