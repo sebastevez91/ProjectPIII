@@ -12,22 +12,18 @@ namespace AutoPartesRazor.Pages.Administration
     public class DespachoModel : PageModel
     {
         private readonly AutoPartesRazorContext _context;
-        public DespachoModel(AutoPartesRazorContext context)
-        {
-            _context = context;
-        }
+        public DespachoModel(AutoPartesRazorContext context) => _context = context;
 
-        public IList<Order> PedidosParaDespacho { get; set; } = new List<Order>();
+        public IList<Order> PedidosPendientes { get; set; } = new List<Order>();
 
-        // GET: carga la lista de pedidos "Pending"
         public async Task OnGetAsync()
         {
-            PedidosParaDespacho = await _context.Order
+            PedidosPendientes = await _context.Order
                 .Where(o => o.Status == "Pending")
+                .OrderByDescending(o => o.CreatedAt)
                 .ToListAsync();
         }
 
-        // POST: Cambia el pedido a "Despachado"
         public async Task<IActionResult> OnPostDespacharAsync(int id)
         {
             var pedido = await _context.Order.FindAsync(id);
@@ -35,9 +31,8 @@ namespace AutoPartesRazor.Pages.Administration
                 return NotFound();
             pedido.Status = "Despachado";
             await _context.SaveChangesAsync();
-            TempData["DespachoOK"] = true; // <-- Notificación
+            TempData["DespachoOK"] = true;
             return RedirectToPage();
         }
-
     }
 }

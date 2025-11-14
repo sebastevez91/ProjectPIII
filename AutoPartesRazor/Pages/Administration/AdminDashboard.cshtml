@@ -7,29 +7,26 @@
 <div class="container py-4">
     <h2 class="mb-4">Panel de Administración</h2>
 
-    <div class="container py-4">
-        <h2 class="mb-4">Panel de Administración</h2>
-        <div class="mb-3 d-flex flex-wrap gap-2">
-            <button class="btn btn-primary btn-lg" onclick="toggleSection('notificationSection')">
-                <i class="fa-solid fa-envelope"></i> Ver Notificaciones
+    <div class="mb-3 d-flex flex-wrap gap-2">
+        <button class="btn btn-primary btn-lg" onclick="toggleSection('notificationSection')">
+            <i class="fa-solid fa-envelope"></i> Ver Notificaciones
+        </button>
+        <button class="btn btn-primary btn-lg" onclick="toggleSection('orderSection')">
+            <i class="fa-solid fa-book"></i> Ver Órdenes
+        </button>
+        <button class="btn btn-primary btn-lg" onclick="toggleSection('usersSection')">
+            <i class="fa-solid fa-users"></i> Gestionar Usuarios
+        </button>
+        <button class="btn btn-primary btn-lg" onclick="toggleSection('productsSection')">
+            <i class="fa-solid fa-list-check"></i> Gestionar Productos
+        </button>
+        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+        {
+            <button class="btn btn-success btn-lg" style="min-width:220px;" onclick="location.href='@Url.Page("/Administration/Despacho")'">
+                <i class="fa-solid fa-truck"></i> Despacho de pedidos
             </button>
-            <button class="btn btn-primary btn-lg" onclick="toggleSection('orderSection')">
-                <i class="fa-solid fa-book"></i> Ver Órdenes
-            </button>
-            <button class="btn btn-primary btn-lg" onclick="toggleSection('usersSection')">
-                <i class="fa-solid fa-users"></i> Gestionar Usuarios
-            </button>
-            <button class="btn btn-primary btn-lg" onclick="toggleSection('productsSection')">
-                <i class="fa-solid fa-list-check"></i> Gestionar Productos
-            </button>
-            @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
-            {
-                <button class="btn btn-success btn-lg" style="min-width:220px;" onclick="location.href='@Url.Page("/Administration/Despacho")'">
-                    <i class="fa-solid fa-truck"></i> Despacho de pedidos
-                </button>
-            }
-        </div>
-
+        }
+    </div>
 
     <!-- Sección de Productos -->
     <div id="productsSection" class="mt-4" style="display:none;">
@@ -77,14 +74,17 @@
             <h3 class="mb-0">Listado de Órdenes</h3>
         </div>
         <partial name="_OrdenesTable" model="Model.Orders" />
-    </div>  
-
+    </div>
 
     <!-- Sección de Notificaciones -->
     <div id="notificationSection" class="mt-4" style="display:none;">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h3 class="mb-0">Listado de Notificaciones</h3>
         </div>
+        <form method="get" class="d-flex mb-3 gap-2">
+            <input type="text" name="OrderId" class="form-control" placeholder="Filtrar por ID Pedido" style="max-width:200px;" />
+            <button type="submit" class="btn btn-secondary btn-sm">Filtrar</button>
+        </form>
         <partial name="_NotificationTable" model="Model.Notifications" />
     </div>
 </div>
