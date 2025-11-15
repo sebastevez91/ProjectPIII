@@ -3,6 +3,7 @@
   "WorkspaceRootPath": "C:\\Users\\patou\\Documentos\\Analista en Sistemas\\ISTIC\\2do a\u00F1o\\2do CUATRIMESTRE\\PP3 INTEGRADOR PGM\\ProjectPIII\\",
   "Documents": [
     {
+<<<<<<< HEAD
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\patou\\Documentos\\Analista en Sistemas\\ISTIC\\2do a\u00F1o\\2do CUATRIMESTRE\\PP3 INTEGRADOR PGM\\ProjectPIII\\AutoPartesRazor\\Migrations\\20251115204716_InitialBaseDatos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:AutoPartesRazor\\Migrations\\20251115204716_InitialBaseDatos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -37,6 +38,10 @@
     {
       "AbsoluteMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|c:\\users\\patou\\documentos\\analista en sistemas\\istic\\2do a\u00F1o\\2do cuatrimestre\\pp3 integrador pgm\\projectpiii\\autopartesrazor\\pages\\adminitration\\admindashboard.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|solutionrelative:autopartesrazor\\pages\\adminitration\\admindashboard.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+=======
+      "AbsoluteMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|c:\\users\\sebastian\\desktop\\practicas-tirar\\autopartesrazor\\autopartesrazor\\pages\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|solutionrelative:autopartesrazor\\pages\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+>>>>>>> main
     }
   ],
   "DocumentGroupContainers": [
@@ -88,6 +93,7 @@
             },
             {
               "$type": "Document",
+<<<<<<< HEAD
               "DocumentIndex": 3,
               "Title": "20251115204112_InitialBaseDatos.cs",
               "DocumentMoniker": "C:\\Users\\patou\\Documentos\\Analista en Sistemas\\ISTIC\\2do a\u00F1o\\2do CUATRIMESTRE\\PP3 INTEGRADOR PGM\\ProjectPIII\\AutoPartesRazor\\Migrations\\20251115204112_InitialBaseDatos.cs",
@@ -172,6 +178,18 @@
               "ViewState": "AgIAAAkAAAAAAAAAAAAAACIAAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-11-09T17:58:20Z"
+=======
+              "DocumentIndex": 0,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\Pages\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "AutoPartesRazor\\Pages\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\Pages\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "AutoPartesRazor\\Pages\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAAGAAAAAAAAAAAAAwwHoAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-15T05:17:02.981Z",
+              "EditorCaption": ""
+>>>>>>> main
             }
           ]
         }

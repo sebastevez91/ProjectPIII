@@ -14,13 +14,16 @@
                     <!-- Foto de perfil -->
                     <div class="profile-picture-container mb-3">
                         <div class="profile-picture">
-                            <i class="fa-solid fa-user fa-4x text-muted"></i>
+                            @if(Model.UpdateUser.ProfilePicturePath != null)
+                            {
+                                <img src="@(Model.UpdateUser.ProfilePicturePath)" alt="Foto de perfil" class="img-fluid rounded-circle" />
+                            }
+                            else
+                            {
+                                <i class="fa-solid fa-user fa-4x text-muted"></i>
+                            }
+
                         </div>
-                        <button class="btn btn-sm btn-outline-primary mt-2" type="button" disabled>
-                            <i class="fa-solid fa-camera me-1"></i>
-                            Cambiar foto
-                        </button>
-                        <small class="text-muted d-block mt-1">Próximamente disponible</small>
                     </div>
 
                     <h5 class="mb-1">@User.Identity?.Name</h5>
@@ -36,6 +39,9 @@
                         </a>
                         <a href="#seguridad" class="list-group-item list-group-item-action" data-bs-toggle="pill">
                             <i class="fa-solid fa-lock me-2"></i>Seguridad
+                        </a>
+                        <a href="#profile" class="list-group-item list-group-item-action" data-bs-toggle="pill">
+                            <i class="fa-solid fa-camera me-2"></i>Foto de Perfil
                         </a>
                     </div>
                 </div>
@@ -212,6 +218,39 @@
                                         <button type="submit" class="btn btn-warning">
                                             <i class="fa-solid fa-shield-alt me-2"></i>
                                             Cambiar Contraseña
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: Photo Perfile -->
+                <div class="tab-pane fade" id="profile">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-white">
+                            <h5 class="mb-0">
+                                <i class="fa-solid fa-camera me-2 text-primary"></i>
+                                Foto de Perfil
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <form method="post" asp-page-handler="UpdatePhotoProfile" enctype="multipart/form-data">
+                                <div class="row g-3">
+                                    <input type="hidden" asp-for="UpdateUser.Username" />
+                                    <input type="hidden" asp-for="UpdateUser.Email" />
+                                    <input type="hidden" asp-for="UpdateUser.FullName" />
+                                    <input type="hidden" asp-for="UpdateUser.PhoneNumber" />
+                                    <div class="col-12">
+                                        <label for="UpdateUser.ProfilePicturePath" class="form-label fw-semibold">Seleccionar nueva foto de perfil</label>
+                                        <input type="file" asp-for="ImageFile" class="form-control" />
+                                        <span asp-validation-for="ImageFile" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-12 mt-4">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fa-solid fa-save me-2"></i>
+                                            Guardar Foto
                                         </button>
                                     </div>
                                 </div>

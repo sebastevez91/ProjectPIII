@@ -11,5 +11,8 @@ namespace AutoPartesRazor.Models
         // navegación
         public Product? Product { get; set; }
         public Order? Order { get; set; }
+        public string Estado { get; set; } = "Pendiente";
+        public DateTime FechaActualizacion { get; set; } = DateTime.Now;
+
     }
 }

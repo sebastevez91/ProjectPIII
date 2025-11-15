@@ -1,0 +1,173 @@
+﻿@page
+@model AutoPartesRazor.Pages.Notifications.IndexModel
+@{
+    ViewData["Title"] = "Notificaciones";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>
+            <i class="fa-solid fa-bell me-2"></i>
+            Notificaciones
+            @if (Model.UnreadCount > 0)
+            {
+                <span class="badge bg-danger">@Model.UnreadCount</span>
+            }
+        </h2>
+        <div>
+            @if (Model.UnreadCount > 0)
+            {
+                <form method="post" asp-page-handler="MarkAllAsRead" class="d-inline">
+                    <button type="submit" class="btn btn-outline-primary">
+                        <i class="fa-solid fa-check-double me-1"></i>
+                        Marcar todas como leídas
+                    </button>
+                </form>
+            }
+        </div>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fa-solid fa-check-circle me-2"></i>@TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- Filtros -->
+    <div class="card mb-3">
+        <div class="card-body">
+            <form method="get" class="row g-3 align-items-center">
+                <div class="col-md-4">
+                    <select name="filter" class="form-select" onchange="this.form.submit()">
+                        <option value="all" selected="@(Model.Filter == "all")">Todas</option>
+                        <option value="unread" selected="@(Model.Filter == "unread")">No leídas</option>
+                        <option value="read" selected="@(Model.Filter == "read")">Leídas</option>
+                    </select>
+                </div>
+                <div class="col-md-8">
+                    <small class="text-muted">
+                        Mostrando @Model.Notifications.Count de @Model.TotalCount notificaciones
+                    </small>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Lista de notificaciones -->
+    @if (!Model.Notifications.Any())
+    {
+        <div class="alert alert-info text-center py-5">
+            <i class="fa-solid fa-inbox fa-3x mb-3 d-block text-muted"></i>
+            <h5>No hay notificaciones</h5>
+            <p class="mb-0">No tienes mensajes en este momento.</p>
+        </div>
+    }
+    else
+    {
+        <div class="list-group">
+            @foreach (var notification in Model.Notifications)
+            {
+                <div class="list-group-item list-group-item-action @(!notification.IsRead ? "bg-light border-primary" : "")"
+                     style="cursor: pointer;"
+                     data-bs-toggle="modal"
+                     data-bs-target="#notificationModal_@notification.Id">
+                    <div class="d-flex w-100 justify-content-between align-items-start">
+                        <div class="flex-grow-1">
+                            <div class="d-flex align-items-center mb-2">
+                                @if (!notification.IsRead)
+                                {
+                                    <span class="badge bg-primary me-2">Nueva</span>
+                                }
+                                <h6 class="mb-0">
+                                    <i class="fa-solid fa-envelope me-2"></i>
+                                    @notification.Title
+                                </h6>
+                            </div>
+                            <p class="mb-2 text-muted small">
+                                @notification.Message.Substring(0, Math.Min(100, notification.Message.Length))@(notification.Message.Length > 100 ? "..." : "")
+                            </p>
+                            <div class="d-flex gap-3">
+                                <small class="text-muted">
+                                    <i class="fa-solid fa-user me-1"></i>
+                                    @notification.User?.UserName
+                                </small>
+                                <small class="text-muted">
+                                    <i class="fa-solid fa-clock me-1"></i>
+                                    @notification.CreatedAt.ToString("dd/MM/yyyy HH:mm")
+                                </small>
+                            </div>
+                        </div>
+                        <div class="ms-3">
+                            <form method="post" asp-page-handler="Delete" asp-route-id="@notification.Id"
+                                  onsubmit="event.stopPropagation(); return confirm('¿Estás seguro de eliminar esta notificación?');">
+                                <button type="submit" class="btn btn-sm btn-outline-danger">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal para ver notificación completa -->
+                <div class="modal fade" id="notificationModal_@notification.Id" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">
+                                    <i class="fa-solid fa-envelope me-2"></i>
+                                    @notification.Title
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <strong>De:</strong> @notification.User?.UserName (@notification.User?.Email)
+                                </div>
+                                <div class="mb-3">
+                                    <strong>Fecha:</strong> @notification.CreatedAt.ToString("dd/MM/yyyy HH:mm")
+                                </div>
+                                <hr />
+                                <div class="notification-message">
+                                    @notification.Message
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                @if (!notification.IsRead)
+                                {
+                                    <form method="post" asp-page-handler="MarkAsRead" asp-route-id="@notification.Id">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fa-solid fa-check me-1"></i>
+                                            Marcar como leída
+                                        </button>
+                                    </form>
+                                }
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                    Cerrar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@section Styles {
+    <style>
+        .notification-message {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .list-group-item:hover {
+            background-color: #f8f9fa !important;
+        }
+
+        .border-primary {
+            border-left: 4px solid var(--primary) !important;
+        }
+    </style>
+}
