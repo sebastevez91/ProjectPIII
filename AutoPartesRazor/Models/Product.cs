@@ -28,6 +28,10 @@ public class Product
 
     public string? ImagePath { get; set; }
 
+    // Nivel mínimo de stock (para alertas)
+    [Range(0, int.MaxValue)]
+    public int MinimumStock { get; set; } = 5;
+
     // Delete
     public bool IsDeleted { get; set; } = false;
     public DateTime? DeletedAt { get; set; }
@@ -43,4 +47,7 @@ public class Product
 
     // Navegación 
     public Brand? Brand { get; set; }
+
+    // Navegación 
+    public ICollection<ProductSupplier>? ProductSuppliers { get; set; }
 }

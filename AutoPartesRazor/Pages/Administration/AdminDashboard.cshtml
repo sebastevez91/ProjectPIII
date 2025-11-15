@@ -8,21 +8,25 @@
     <h2 class="mb-4">Panel de Administración</h2>
 
     <div class="mb-3 d-flex flex-wrap gap-2">
-        <button class="btn btn-primary btn-lg" onclick="toggleSection('notificationSection')">
+        <button class="btn btn-primary btn-sm" onclick="toggleSection('notificationSection')">
             <i class="fa-solid fa-envelope"></i> Ver Notificaciones
         </button>
-        <button class="btn btn-primary btn-lg" onclick="toggleSection('orderSection')">
+        <button class="btn btn-primary btn-sm" onclick="toggleSection('orderSection')">
             <i class="fa-solid fa-book"></i> Ver Órdenes
         </button>
-        <button class="btn btn-primary btn-lg" onclick="toggleSection('usersSection')">
+        <button class="btn btn-primary btn-sm" onclick="toggleSection('usersSection')">
             <i class="fa-solid fa-users"></i> Gestionar Usuarios
         </button>
-        <button class="btn btn-primary btn-lg" onclick="toggleSection('productsSection')">
+        <button class="btn btn-primary btn-sm" onclick="toggleSection('productsSection')">
             <i class="fa-solid fa-list-check"></i> Gestionar Productos
         </button>
+        <button class="btn btn-primary btn-sm" onclick="toggleSection('inventarioSection')">
+            Gestion inventario
+        </button>
+
         @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
         {
-            <button class="btn btn-success btn-lg" style="min-width:220px;" onclick="location.href='@Url.Page("/Administration/Despacho")'">
+            <button class="btn btn-success btn-sm" style="min-width:220px;" onclick="location.href='@Url.Page("/Administration/Despacho")'">
                 <i class="fa-solid fa-truck"></i> Despacho de pedidos
             </button>
         }
@@ -86,6 +90,59 @@
             <button type="submit" class="btn btn-secondary btn-sm">Filtrar</button>
         </form>
         <partial name="_NotificationTable" model="Model.Notifications" />
+    </div>
+
+    <!-- Sección de Inventario -->
+    <div id="inventarioSection" class="mt-4" style="display:none;">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="mb-0">Inventario</h3>
+        </div>
+        <a asp-page="/Suppliers/Index" class="btn btn-primary btn-sm m-1">Proveédores</a>
+        <a asp-page="/PurchaseOrders/Index" class="btn btn-primary btn-sm m-1">Orden de pedidos</a>
+        <button class="btn btn-danger btn-sm" onclick="toggleSection('lowStockSection')">
+            <i class="fa-solid fa-triangle-exclamation"></i>Productos stock bajo
+        </button>
+    </div>
+
+    <!-- Sección Stock Bajo -->
+    <div id="lowStockSection" class="mt-4" style="display:none;">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="mb-0 text-danger">Productos con Stock Bajo</h3>
+        </div>
+
+        @if (Model.LowStockProducts.Count == 0)
+        {
+            <p class="text-success">No hay productos con stock bajo 🎉</p>
+        }
+        else
+        {
+            <table class="table table-bordered">
+                <thead class="table-danger">
+                    <tr>
+                        <th>Producto</th>
+                        <th>Descripción</th>
+                        <th>Stock</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var p in Model.LowStockProducts)
+                    {
+                        <tr>
+                            <td>@p.name</td>
+                            <td>@p.description</td>
+                            <td><strong>@p.stock</strong></td>
+                            <td>
+                                <a asp-page="/PurchaseOrders/Create" asp-route-productId="@p.id"
+                                   class="btn btn-success btn-sm">
+                                    Crear Orden de Pedido
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
     </div>
 </div>
 

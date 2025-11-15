@@ -27,6 +27,11 @@
                                 onclick="confirmDelete(@product.id, 'Products', 'producto', '@product.name')" title="Eliminar">
                             <i class="fa-solid fa-trash"></i>
                         </button>
+                        <a asp-page="/Products/AssignSupplier" asp-route-id="@product.id"
+                           class="btn btn-info btn-sm ms-1">
+                            Asignar Proveedor
+                        </a>
+
                     </td>
                 </tr>
             }

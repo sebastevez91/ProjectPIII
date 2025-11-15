@@ -70,13 +70,26 @@
                             <span id="navCartCount" class="badge-cart"></span>
                         </a>
                     </li>
-                    
+                    @{
+                        var currentUser = await UserManager.GetUserAsync(User);
+                        var profilePic = currentUser?.ProfilePicturePath;
+                    }
 
                     @if (SignInManager.IsSignedIn(User))
                     {
                         <li class="nav-item user-dropdown">
                             <a href="#" class="nav-link" id="userMenuToggle">
-                                <i class="fa-solid fa-user-circle me-1"></i>
+                                @if (!string.IsNullOrEmpty(profilePic))
+                                {
+                                    <img src="@profilePic"
+                                         class="rounded-circle me-2"
+                                         style="width:32px; height:32px; object-fit:cover; border:1px solid #ccc;" />
+                                }
+                                else
+                                {
+                                    <i class="fa-solid fa-user-circle me-1"></i>
+                                }
+
                                 @User.Identity?.Name
                                 <i class="fa-solid fa-chevron-down ms-1 small"></i>
                             </a>
@@ -97,18 +110,17 @@
                                 @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
                                 {
                                     <hr />
-                                        <a asp-page="/Administration/Despacho" class="nav-link">
-                                            <i class="fa-solid fa-truck me-1"></i> Despacho
-                                        </a>
+                                    <a asp-page="/Administration/Despacho">
+                                        <i class="fa-solid fa-truck me-1"></i> Despacho
+                                    </a>
                                    
                                 }
                                 @if (SignInManager.IsSignedIn(User) && !User.IsInRole("Admin"))
                                 {
                                     <hr />
-                                        <a asp-page="/Orders/MyOrders" class="nav-link">
-                                            <i class="fa-solid fa-box"></i> Mis pedidos
-                                        </a>
-
+                                    <a asp-page="/Orders/MyOrders">
+                                        <i class="fa-solid fa-box"></i> Mis pedidos
+                                    </a>
                                 }
                             </div>
 

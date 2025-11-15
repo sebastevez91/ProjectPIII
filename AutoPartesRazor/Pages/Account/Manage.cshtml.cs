@@ -54,6 +54,7 @@ namespace AutoPartesRazor.Pages.Account
                 FullName = user.FullName,
                 Address = user.Address,
                 PhoneNumber = user.PhoneNumber,
+                ProfilePicturePath = user.ProfilePicturePath,
             };
         }
 
@@ -151,7 +152,7 @@ namespace AutoPartesRazor.Pages.Account
             return RedirectToPage();
         }
 
-        public async Task<IActionResult> OnPostUpdateProfile()
+        public async Task<IActionResult> OnPostUpdatePhotoProfileAsync()
         {
             if (!ModelState.IsValid)
             {

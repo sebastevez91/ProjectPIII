@@ -23,6 +23,9 @@ public class AdminDashboardModel : PageModel
     public IList<Brand> Brands { get; set; } = default!;
     public IList<Notification> Notifications { get; set; } = default!;
 
+    public List<Product> LowStockProducts { get; set; } = new();
+
+
     public async Task OnGetAsync()
     {
         Users = _context.User != null
@@ -48,6 +51,13 @@ public class AdminDashboardModel : PageModel
         Notifications = _context.Notification != null
             ? await _context.Notification.Include(n => n.User).ToListAsync()
             : new List<Notification>();
+
+        // Obtener productos con bajo stock (por ejemplo, stock menor o igual a 5)
+        LowStockProducts = await _context.Product
+            .Where(p => !p.IsDeleted && p.stock <= 5)
+            .OrderBy(p => p.stock)
+            .ToListAsync();
+
     }
 }
 

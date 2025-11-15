@@ -54,6 +54,6 @@ public class DeleteModel : PageModel
             await _context.SaveChangesAsync();
         }
 
-        return RedirectToPage("/Adminitration/AdminDashboard");
+        return RedirectToPage("/Administration/AdminDashboard");
     }
 }

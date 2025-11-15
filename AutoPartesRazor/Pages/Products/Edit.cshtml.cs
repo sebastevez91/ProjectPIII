@@ -117,7 +117,7 @@ public class EditModel : PageModel
             }
         }
 
-        return RedirectToPage("/Adminitration/AdminDashboard");
+        return RedirectToPage("/Administration/AdminDashboard");
     }
 
     private bool ProductExists(int id)

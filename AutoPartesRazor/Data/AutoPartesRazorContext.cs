@@ -50,6 +50,23 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
             .OnDelete(DeleteBehavior.Cascade);
 
         // ============================================
+        // RELACIONES DE PROVEEDORES
+        // ============================================
+
+        modelBuilder.Entity<ProductSupplier>()
+            .HasKey(ps => new { ps.ProductId, ps.SupplierId });
+
+        modelBuilder.Entity<ProductSupplier>()
+            .HasOne(ps => ps.Product)
+            .WithMany(p => p.ProductSuppliers)
+            .HasForeignKey(ps => ps.ProductId);
+
+        modelBuilder.Entity<ProductSupplier>()
+            .HasOne(ps => ps.Supplier)
+            .WithMany(s => s.ProductSuppliers)
+            .HasForeignKey(ps => ps.SupplierId);
+
+        // ============================================
         // QUERY FILTERS - SOFT DELETE
         // ============================================
         // Estos filtros se aplican automáticamente a todas las consultas
@@ -91,6 +108,9 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
     public DbSet<AutoPartesRazor.Models.Order> Order { get; set; }
     public DbSet<AutoPartesRazor.Models.OrderItem> OrderItem { get; set; }
     public DbSet<AutoPartesRazor.Models.Notification> Notification { get; set; }
+    public DbSet<AutoPartesRazor.Models.Supplier> Supplier { get; set; }
+    public DbSet<AutoPartesRazor.Models.ProductSupplier> ProductSupplier { get; set; }
+    public DbSet<AutoPartesRazor.Models.PurchaseOrder> PurchaseOrder { get; set; }
 
     // ============================================
     // MÉTODO PARA GUARDAR CON SOFT DELETE AUTOMÁTICO
