@@ -1,0 +1,31 @@
+﻿@page
+@model AutoPartesRazor.Pages.Categories.EditModel
+
+@{
+    ViewData["Title"] = "Editar";
+}
+
+<h1>Editar categoría</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Category.id" />
+            <div class="form-group">
+                <label asp-for="Category.name" class="control-label"></label>
+                <input asp-for="Category.name" class="form-control" />
+                <span asp-validation-for="Category.name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Guardar" class="btn btn-primary m-2" />
+                <a asp-page="/Adminitration/AdminDashboard" class="btn btn-secondary m-2">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

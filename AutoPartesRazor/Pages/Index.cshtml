@@ -1,0 +1,22 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+    ViewData["CartCount"] = Model.CartCount;
+}
+
+<div class="text-center">
+
+    @if (User.Identity!.IsAuthenticated)
+    {
+        <h1 class="display-4 text-xl-center">Bienvenido @User.Identity.Name</h1>
+    }
+    else
+    {
+        <h1 class="text-xl-center">Bienvenidos a AutoPartes Razor</h1>
+    }
+
+    <div>
+        <img src="~/img/fondo-marcas-autopartes.png" alt="FondoMarcas" class="img-fluid" />
+    </div>
+</div>

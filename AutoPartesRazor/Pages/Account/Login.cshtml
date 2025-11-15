@@ -1,0 +1,57 @@
+﻿@page
+@model AutoPartesRazor.Pages.Account.LoginModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="container w-50 h-auto">
+    <div class="row align-items-start">
+        <h2 class="text-center">Iniciar sesión</h2>
+        <div class="col">
+            <img src="~/img/logoAzul.jpg" class="card-img" alt="logo empresarial">
+        </div>
+        <div class="col">
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="LoginInput.Email">Email</label>
+                    <input asp-for="LoginInput.Email" class="form-control" placeholder="Ingrese su email" />
+
+                    <span asp-validation-for="LoginInput.Email" class="text-danger"></span>
+
+                </div>
+                <div class="form-group">
+                    <label asp-for="LoginInput.Password">Contraseña</label>
+                    <input asp-for="LoginInput.Password" class="form-control" type="password" placeholder="Contraseña" />
+
+                    <span asp-validation-for="LoginInput.Password" class="text-danger"></span>
+
+                </div>
+
+                <div class="form-group form-check">
+                    <input asp-for="LoginInput.RememberMe" class="form-check-input" />
+
+                    <label asp-for="LoginInput.RememberMe" class="form-check-label">Recuerdame</label>
+
+                </div>
+                <button type="submit" class="btn btn-primary">Ingresar</button>
+            </form>
+        </div>
+    </div>
+
+
+    <div class="text-center">
+        <strong>Si no tienes una cuenta puedes registrarte <a asp-page="Register">aqui</a></strong>
+    </div>
+
+    <p>
+        <a asp-page="/Account/ForgotPassword">¿Olvidaste tu contraseña?</a>
+    </p>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

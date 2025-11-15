@@ -1,0 +1,57 @@
+﻿@page
+@model AutoPartesRazor.Pages.Products.DetailsModel
+
+@{
+    ViewData["Title"] = "Detalles";
+    ViewData["CartCount"] = Model.CartCount;
+}
+
+<h1>Detalles del producto</h1>
+
+<div>
+    <div>
+        <img src="@(string.IsNullOrEmpty(Model.Product.ImagePath) ? "/img/logoAzul.jpg" : Model.Product.ImagePath)" class="card-img-top product-img" alt="@Model.Product.name" onerror="this.src='/img/logoAzul.jpg'" />
+    </div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Product.name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Product.name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Product.description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Product.description)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Product.stock)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Product.stock)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Product.price)
+        </dt>
+        <dd class="col-sm-10">
+           $ @Html.DisplayFor(model => model.Product.price)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Product.Category.name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Product.Category.name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Product.Brand.name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Product.Brand.name)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Index" class="btn btn-primary">Ir al catálogo</a>
+</div>
