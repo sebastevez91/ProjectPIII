@@ -1,19 +1,20 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AutoPartesRazor.Models
+namespace AutoPartesRazor.Models;
+
+public class Category
 {
-    public class Category
-    {
-        public int id { get; set; }
-        [Required]
-        [Display(Name = "Nombre de categoría")]
-        public string name { get; set; }
+    public int Id { get; set; }
 
-        // Delete
-        public bool IsDeleted { get; set; } = false;
-        public DateTime? DeletedAt { get; set; }
+    [Required]
+    [StringLength(50)]
+    [Display(Name = "Nombre de categoría")]
+    public string Name { get; set; }
 
-        // Navegación
-        public List<Product>? products { get; set; }
-    }
+    // Delete
+    public bool IsDeleted { get; set; } = false;
+    public DateTime? DeletedAt { get; set; }
+
+    // Navegación
+    public ICollection<Product>? Products { get; set; }
 }

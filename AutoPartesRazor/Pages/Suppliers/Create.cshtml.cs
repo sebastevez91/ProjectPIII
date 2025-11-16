@@ -22,7 +22,7 @@ public class CreateModel : PageModel
         if (!ModelState.IsValid)
             return Page();
 
-        _context.Supplier.Add(Supplier);
+        _context.Suppliers.Add(Supplier);
         await _context.SaveChangesAsync();
         return RedirectToPage("Index");
     }

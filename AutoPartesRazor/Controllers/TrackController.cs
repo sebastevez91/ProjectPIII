@@ -11,8 +11,8 @@ public class TrackController : ControllerBase
     [HttpGet("{id}")]
     public IActionResult GetTracking(int id)
     {
-        var pedido = _context.Order.Find(id);
+        var pedido = _context.Orders.Find(id);
         if (pedido == null) return NotFound();
-        return Ok(new { id = pedido.id, estado = pedido.Status });
+        return Ok(new { id = pedido.Id, estado = pedido.Status });
     }
 }

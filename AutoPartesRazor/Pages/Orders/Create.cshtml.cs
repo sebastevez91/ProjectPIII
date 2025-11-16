@@ -44,21 +44,21 @@ public class CreateModel : PageModel
 
     public async Task<IActionResult> OnGetAsync()
     {
-        CartItems = await _context.Cart
-            .Include(c => c.producto)
+        CartItems = await _context.Carts
+            .Include(c => c.Product)
             .ToListAsync();
 
-        Subtotal = CartItems.Sum(c => (c.producto?.price ?? 0m) * c.quantity);
+        Subtotal = CartItems.Sum(c => (c.Product?.Price ?? 0m) * c.Quantity);
         return Page();
     }
 
     public async Task<IActionResult> OnPostAsync()
     {
-        CartItems = await _context.Cart
-            .Include(c => c.producto)
+        CartItems = await _context.Carts
+            .Include(c => c.Product)
             .ToListAsync();
 
-        Subtotal = CartItems.Sum(c => (c.producto?.price ?? 0m) * c.quantity);
+        Subtotal = CartItems.Sum(c => (c.Product?.Price ?? 0m) * c.Quantity);
 
         if (!ModelState.IsValid)
         {
@@ -75,14 +75,14 @@ public class CreateModel : PageModel
         // Validar stock
         foreach (var item in CartItems)
         {
-            if (item.producto == null)
+            if (item.Product == null)
             {
-                ModelState.AddModelError(string.Empty, $"Producto {item.productId} no encontrado.");
+                ModelState.AddModelError(string.Empty, $"Producto {item.ProductId} no encontrado.");
                 return Page();
             }
-            if (item.quantity > item.producto.stock)
+            if (item.Quantity > item.Product.Stock)
             {
-                ModelState.AddModelError(string.Empty, $"No hay suficiente stock para {item.producto.name} (disponible: {item.producto.stock}).");
+                ModelState.AddModelError(string.Empty, $"No hay suficiente stock para {item.Product.Name} (disponible: {item.Product.Stock}).");
                 return Page();
             }
         }
@@ -100,36 +100,36 @@ public class CreateModel : PageModel
                 CreatedAt = DateTime.UtcNow
             };
 
-            _context.Order.Add(order);
+            _context.Orders.Add(order);
             await _context.SaveChangesAsync(); // order.id se genera aquí
 
             foreach (var item in CartItems)
             {
                 var oi = new OrderItem
                 {
-                    OrderId = order.id,
-                    ProductId = item.productId,
-                    Quantity = item.quantity,
-                    UnitPrice = item.producto?.price ?? 0m
+                    OrderId = order.Id,
+                    ProductId = item.Product.Id,
+                    Quantity = item.Quantity,
+                    UnitPrice = item.Product?.Price ?? 0m
                 };
-                _context.OrderItem.Add(oi);
+                _context.OrderItems.Add(oi);
 
                 // Reducir stock
-                item.producto!.stock -= item.quantity;
-                _context.Product.Update(item.producto);
+                item.Product!.Stock -= item.Quantity;
+                _context.Products.Update(item.Product);
             }
 
             // Guardar items y actualizar stock
             await _context.SaveChangesAsync();
 
             // Vaciar carrito
-            _context.Cart.RemoveRange(CartItems);
+            _context.Carts.RemoveRange(CartItems);
             await _context.SaveChangesAsync();
 
             await transaction.CommitAsync();
 
             // usar ruta absoluta para evitar ambigüedades
-            return RedirectToPage("/Orders/Confirmation", new { id = order.id });
+            return RedirectToPage("/Orders/Confirmation", new { id = order.Id });
         }
         catch (Exception ex)
         {

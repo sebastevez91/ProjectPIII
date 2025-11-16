@@ -18,15 +18,15 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
         // Relación Product - Brand
         modelBuilder.Entity<Product>()
             .HasOne(p => p.Brand)
-            .WithMany(b => b.products)
-            .HasForeignKey(b => b.idBrand)
+            .WithMany(b => b.Products)
+            .HasForeignKey(b => b.BrandId)
             .OnDelete(DeleteBehavior.Restrict); 
 
         // Relación Product - Category
         modelBuilder.Entity<Product>()
             .HasOne(p => p.Category)
-            .WithMany(c => c.products)
-            .HasForeignKey(p => p.idCategory)
+            .WithMany(c => c.Products)
+            .HasForeignKey(p => p.CategoryId)
             .OnDelete(DeleteBehavior.Restrict); 
 
         // Relación Order - OrderItem
@@ -40,6 +40,41 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
             .HasOne(oi => oi.Product)
             .WithMany()
             .HasForeignKey(oi => oi.ProductId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // Relación Order - User
+        modelBuilder.Entity<Order>()
+            .HasOne(o => o.User)
+            .WithMany(u => u.Orders)
+            .HasForeignKey(o => o.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // Relación Cart - User
+        modelBuilder.Entity<Cart>()
+            .HasOne(c => c.User)
+            .WithOne(u => u.Cart)
+            .HasForeignKey<Cart>(c => c.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        // Relación Cart - Product
+        modelBuilder.Entity<Cart>()
+            .HasOne(c => c.Product)
+            .WithMany()
+            .HasForeignKey(c => c.ProductId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // Relación PurchaseOrder - Product
+        modelBuilder.Entity<PurchaseOrder>()
+            .HasOne(po => po.Product)
+            .WithMany(p => p.PurchaseOrders)
+            .HasForeignKey(po => po.ProductId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // Relación PurchaseOrder - Supplier
+        modelBuilder.Entity<PurchaseOrder>()
+            .HasOne(po => po.Supplier)
+            .WithMany(s => s.PurchaseOrders)
+            .HasForeignKey(po => po.SupplierId)
             .OnDelete(DeleteBehavior.Restrict);
 
         // Relacion Notification - User
@@ -116,6 +151,9 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
         modelBuilder.Entity<Order>()
             .HasQueryFilter(o => !o.IsDeleted);
 
+        modelBuilder.Entity<Supplier>()
+            .HasQueryFilter(s => !s.IsDeleted);
+
         // ============================================
         // ÍNDICES PARA MEJORAR RENDIMIENTO
         // ============================================
@@ -131,6 +169,7 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
         modelBuilder.Entity<Order>()
             .HasIndex(o => o.IsDeleted);
 
+<<<<<<< HEAD
         // ============================================
         // ÍNDICES MODULO RECLAMOS
         // ============================================
@@ -174,6 +213,24 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
     public DbSet<AutoPartesRazor.Models.PurchaseOrder> PurchaseOrder { get; set; }
     public DbSet<AutoPartesRazor.Models.Claim> Reclamo { get; set; }
     public DbSet<AutoPartesRazor.Models.MessageClaim> MensajeReclamo { get; set; }
+=======
+        // Y su índice
+        modelBuilder.Entity<Supplier>()
+            .HasIndex(s => s.IsDeleted);
+    }
+
+    public DbSet<AutoPartesRazor.Models.Product> Products { get; set; } = default!;
+    public DbSet<AutoPartesRazor.Models.Brand> Brands { get; set; }
+    public DbSet<AutoPartesRazor.Models.Category> Categories { get; set; }
+    public DbSet<AutoPartesRazor.Models.Cart> Carts { get; set; }
+    public DbSet<AutoPartesRazor.Models.User> Users { get; set; }
+    public DbSet<AutoPartesRazor.Models.Order> Orders { get; set; }
+    public DbSet<AutoPartesRazor.Models.OrderItem> OrderItems { get; set; }
+    public DbSet<AutoPartesRazor.Models.Notification> Notifications { get; set; }
+    public DbSet<AutoPartesRazor.Models.Supplier> Suppliers { get; set; }
+    public DbSet<AutoPartesRazor.Models.ProductSupplier> ProductSuppliers { get; set; }
+    public DbSet<AutoPartesRazor.Models.PurchaseOrder> PurchaseOrders { get; set; }
+>>>>>>> b508d6adfc2d2ae6ef774a3ec13a2962fe5795bc
 
     // ============================================
     // MÉTODO PARA GUARDAR CON SOFT DELETE AUTOMÁTICO

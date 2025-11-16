@@ -24,12 +24,12 @@ namespace AutoPartesRazor.Pages.PurchaseOrders
 
         public async Task<IActionResult> OnGetAsync()
         {
-            ProductList = new SelectList(await _context.Product
+            ProductList = new SelectList(await _context.Products
                 .Where(p => !p.IsDeleted)
-                .OrderBy(p => p.name)
+                .OrderBy(p => p.Name)
                 .ToListAsync(), "id", "name");
 
-            SupplierList = new SelectList(await _context.Supplier
+            SupplierList = new SelectList(await _context.Suppliers
                 .OrderBy(s => s.Name)
                 .ToListAsync(), "Id", "Name");
 
@@ -44,7 +44,7 @@ namespace AutoPartesRazor.Pages.PurchaseOrders
                 return Page();
             }
 
-            _context.PurchaseOrder.Add(purchaseOrder);
+            _context.PurchaseOrders.Add(purchaseOrder);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("Index");
@@ -52,8 +52,8 @@ namespace AutoPartesRazor.Pages.PurchaseOrders
 
         private async Task LoadLists()
         {
-            ProductList = new SelectList(await _context.Product.Where(p => !p.IsDeleted).ToListAsync(), "id", "name");
-            SupplierList = new SelectList(await _context.Supplier.ToListAsync(), "Id", "Name");
+            ProductList = new SelectList(await _context.Products.Where(p => !p.IsDeleted).ToListAsync(), "id", "name");
+            SupplierList = new SelectList(await _context.Suppliers.ToListAsync(), "Id", "Name");
         }
     }
 }

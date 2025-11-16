@@ -10,7 +10,7 @@ public class TrackOrderModel : PageModel
     public Order Pedido { get; set; } = default!;
     public IActionResult OnGet(int id)
     {
-        Pedido = _context.Order.FirstOrDefault(o => o.id == id);
+        Pedido = _context.Orders.FirstOrDefault(o => o.Id == id);
         if (Pedido == null) return NotFound();
         // Seguridad: permite solo al dueño del pedido o al admin
         if (User.IsInRole("Admin") || Pedido.CustomerEmail == User.Identity?.Name)
@@ -19,7 +19,7 @@ public class TrackOrderModel : PageModel
     }
     public async Task<IActionResult> OnPostAsync(int id)
     {
-        var pedido = await _context.Order.FindAsync(id);
+        var pedido = await _context.Orders.FindAsync(id);
         if (pedido == null || pedido.Status != "Entregado")
             return NotFound();
 

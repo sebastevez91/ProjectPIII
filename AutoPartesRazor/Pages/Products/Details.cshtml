@@ -10,45 +10,45 @@
 
 <div>
     <div>
-        <img src="@(string.IsNullOrEmpty(Model.Product.ImagePath) ? "/img/logoAzul.jpg" : Model.Product.ImagePath)" class="card-img-top product-img" alt="@Model.Product.name" onerror="this.src='/img/logoAzul.jpg'" />
+        <img src="@(string.IsNullOrEmpty(Model.Product.ImagePath) ? "/img/logoAzul.jpg" : Model.Product.ImagePath)" class="card-img-top product-img" alt="@Model.Product.Name" onerror="this.src='/img/logoAzul.jpg'" />
     </div>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Product.name)
+            @Html.DisplayNameFor(model => model.Product.Name)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Product.name)
+            @Html.DisplayFor(model => model.Product.Name)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Product.description)
+            @Html.DisplayNameFor(model => model.Product.Description)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Product.description)
+            @Html.DisplayFor(model => model.Product.Description)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Product.stock)
+            @Html.DisplayNameFor(model => model.Product.Stock)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Product.stock)
+            @Html.DisplayFor(model => model.Product.Stock)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Product.price)
+            @Html.DisplayNameFor(model => model.Product.Price)
         </dt>
         <dd class="col-sm-10">
-           $ @Html.DisplayFor(model => model.Product.price)
+           $ @Html.DisplayFor(model => model.Product.Price)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Product.Category.name)
+            @Html.DisplayNameFor(model => model.Product.Category.Name)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Product.Category.name)
+            @Html.DisplayFor(model => model.Product.Category.Name)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Product.Brand.name)
+            @Html.DisplayNameFor(model => model.Product.Brand.Name)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Product.Brand.name)
+            @Html.DisplayFor(model => model.Product.Brand.Name)
         </dd>
     </dl>
 </div>
