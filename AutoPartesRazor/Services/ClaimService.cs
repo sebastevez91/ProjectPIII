@@ -6,9 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AutoPartesRazor.Services;
 
-/// <summary>
 /// Implementación del servicio de gestión de reclamos
-/// </summary>
 public class ClaimService : IClaimService
 {
     private readonly AutoPartesRazorContext _context;
