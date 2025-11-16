@@ -3,27 +3,20 @@
   "WorkspaceRootPath": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|c:\\users\\sebastian\\desktop\\practicas-tirar\\autopartesrazor\\autopartesrazor\\data\\databaseseeder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|solutionrelative:autopartesrazor\\data\\databaseseeder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|c:\\users\\sebastian\\desktop\\practicas-tirar\\autopartesrazor\\autopartesrazor\\data\\autopartesrazorcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|solutionrelative:autopartesrazor\\data\\autopartesrazorcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|c:\\users\\sebastian\\desktop\\practicas-tirar\\autopartesrazor\\autopartesrazor\\models\\purchaseorder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|solutionrelative:autopartesrazor\\models\\purchaseorder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|c:\\users\\sebastian\\desktop\\practicas-tirar\\autopartesrazor\\autopartesrazor\\models\\notification.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|solutionrelative:autopartesrazor\\models\\notification.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|c:\\users\\sebastian\\desktop\\practicas-tirar\\autopartesrazor\\autopartesrazor\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|solutionrelative:autopartesrazor\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|c:\\users\\sebastian\\desktop\\practicas-tirar\\autopartesrazor\\autopartesrazor\\data\\seeddataidentity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|solutionrelative:autopartesrazor\\data\\seeddataidentity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|ViewDataWindow_MSSQL__/_localdb__MSSQLLocalDB/AutoPartesRazor.Data/True/SqlTable/dbo.AspNetUsers.sql||{0058A1F7-65F3-4DB9-B3D0-CA7E64DD73CD}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|c:\\users\\sebastian\\desktop\\practicas-tirar\\autopartesrazor\\autopartesrazor\\pages\\notifications\\index.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|solutionrelative:autopartesrazor\\pages\\notifications\\index.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|c:\\users\\sebastian\\desktop\\practicas-tirar\\autopartesrazor\\autopartesrazor\\pages\\notifications\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|solutionrelative:autopartesrazor\\pages\\notifications\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|c:\\users\\sebastian\\desktop\\practicas-tirar\\autopartesrazor\\autopartesrazor\\pages\\administration\\admindashboard.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -53,82 +46,59 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "dbo.AspNetUsers [Datos]",
-              "DocumentMoniker": "ViewDataWindow_MSSQL__/_localdb__MSSQLLocalDB/AutoPartesRazor.Data/True/SqlTable/dbo.AspNetUsers.sql",
-              "ToolTip": "dbo.AspNetUsers [Datos]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
-              "WhenOpened": "2025-11-16T21:54:32.045Z",
+              "DocumentIndex": 1,
+              "Title": "PurchaseOrder.cs",
+              "DocumentMoniker": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\Models\\PurchaseOrder.cs",
+              "RelativeDocumentMoniker": "AutoPartesRazor\\Models\\PurchaseOrder.cs",
+              "ToolTip": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\Models\\PurchaseOrder.cs",
+              "RelativeToolTip": "AutoPartesRazor\\Models\\PurchaseOrder.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-16T22:42:24.52Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "SeedDataIdentity.cs",
-              "DocumentMoniker": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\Data\\SeedDataIdentity.cs",
-              "RelativeDocumentMoniker": "AutoPartesRazor\\Data\\SeedDataIdentity.cs",
-              "ToolTip": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\Data\\SeedDataIdentity.cs",
-              "RelativeToolTip": "AutoPartesRazor\\Data\\SeedDataIdentity.cs",
-              "ViewState": "AgIAAB4AAAAAAAAAAAAAADIAAAAMAAAAAAAAAA==",
+              "Title": "Notification.cs",
+              "DocumentMoniker": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\Models\\Notification.cs",
+              "RelativeDocumentMoniker": "AutoPartesRazor\\Models\\Notification.cs",
+              "ToolTip": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\Models\\Notification.cs",
+              "RelativeToolTip": "AutoPartesRazor\\Models\\Notification.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-16T21:53:04.621Z",
+              "WhenOpened": "2025-11-16T22:42:16.38Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "DatabaseSeeder.cs",
-              "DocumentMoniker": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\Data\\DatabaseSeeder.cs",
-              "RelativeDocumentMoniker": "AutoPartesRazor\\Data\\DatabaseSeeder.cs",
-              "ToolTip": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\Data\\DatabaseSeeder.cs",
-              "RelativeToolTip": "AutoPartesRazor\\Data\\DatabaseSeeder.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAABEAAAAjAAAAAAAAAA==",
+              "Title": "AutoPartesRazorContext.cs",
+              "DocumentMoniker": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\Data\\AutoPartesRazorContext.cs",
+              "RelativeDocumentMoniker": "AutoPartesRazor\\Data\\AutoPartesRazorContext.cs",
+              "ToolTip": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\Data\\AutoPartesRazorContext.cs",
+              "RelativeToolTip": "AutoPartesRazor\\Data\\AutoPartesRazorContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAKoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-16T21:47:43.756Z",
+              "WhenOpened": "2025-11-16T22:34:23.799Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "Index.cshtml.cs",
-              "DocumentMoniker": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\Pages\\Notifications\\Index.cshtml.cs",
-              "RelativeDocumentMoniker": "AutoPartesRazor\\Pages\\Notifications\\Index.cshtml.cs",
-              "ToolTip": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\Pages\\Notifications\\Index.cshtml.cs",
-              "RelativeToolTip": "AutoPartesRazor\\Pages\\Notifications\\Index.cshtml.cs",
-              "ViewState": "AgIAABIAAAAAAAAAAAAwwCgAAAAqAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-16T21:39:30.918Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\Pages\\Notifications\\Index.cshtml",
-              "RelativeDocumentMoniker": "AutoPartesRazor\\Pages\\Notifications\\Index.cshtml",
-              "ToolTip": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\Pages\\Notifications\\Index.cshtml",
-              "RelativeToolTip": "AutoPartesRazor\\Pages\\Notifications\\Index.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-16T21:39:11.059Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\Program.cs",
               "RelativeDocumentMoniker": "AutoPartesRazor\\Program.cs",
               "ToolTip": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\Program.cs",
               "RelativeToolTip": "AutoPartesRazor\\Program.cs",
-              "ViewState": "AgIAADMAAAAAAAAAAAAQwD8AAABAAAAAAAAAAA==",
+              "ViewState": "AgIAACwAAAAAAAAAAAAQwEEAAABAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-16T19:19:16.359Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 4,
               "Title": "AdminDashboard.cshtml.cs",
               "DocumentMoniker": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\Pages\\Administration\\AdminDashboard.cshtml.cs",
               "RelativeDocumentMoniker": "AutoPartesRazor\\Pages\\Administration\\AdminDashboard.cshtml.cs",

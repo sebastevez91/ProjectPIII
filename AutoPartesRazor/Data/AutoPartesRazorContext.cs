@@ -169,7 +169,6 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
         modelBuilder.Entity<Order>()
             .HasIndex(o => o.IsDeleted);
 
-<<<<<<< HEAD
         // ============================================
         // ÍNDICES MODULO RECLAMOS
         // ============================================
@@ -198,27 +197,12 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
         modelBuilder.Entity<MessageClaim>()
             .HasIndex(m => m.FechaEnvio);
 
-    }
-
-    public DbSet<AutoPartesRazor.Models.Product> Product { get; set; }
-    public DbSet<AutoPartesRazor.Models.Brand> Brand { get; set; }
-    public DbSet<AutoPartesRazor.Models.Category> Category { get; set; }
-    public DbSet<AutoPartesRazor.Models.Cart> Cart { get; set; }
-    public DbSet<AutoPartesRazor.Models.User> User { get; set; }
-    public DbSet<AutoPartesRazor.Models.Order> Order { get; set; }
-    public DbSet<AutoPartesRazor.Models.OrderItem> OrderItem { get; set; }
-    public DbSet<AutoPartesRazor.Models.Notification> Notification { get; set; }
-    public DbSet<AutoPartesRazor.Models.Supplier> Supplier { get; set; }
-    public DbSet<AutoPartesRazor.Models.ProductSupplier> ProductSupplier { get; set; }
-    public DbSet<AutoPartesRazor.Models.PurchaseOrder> PurchaseOrder { get; set; }
-    public DbSet<AutoPartesRazor.Models.Claim> Reclamo { get; set; }
-    public DbSet<AutoPartesRazor.Models.MessageClaim> MensajeReclamo { get; set; }
-=======
-        // Y su índice
         modelBuilder.Entity<Supplier>()
             .HasIndex(s => s.IsDeleted);
     }
 
+    public DbSet<AutoPartesRazor.Models.Claim> Reclamo { get; set; }
+    public DbSet<AutoPartesRazor.Models.MessageClaim> MensajeReclamo { get; set; }
     public DbSet<AutoPartesRazor.Models.Product> Products { get; set; } = default!;
     public DbSet<AutoPartesRazor.Models.Brand> Brands { get; set; }
     public DbSet<AutoPartesRazor.Models.Category> Categories { get; set; }
@@ -230,7 +214,7 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
     public DbSet<AutoPartesRazor.Models.Supplier> Suppliers { get; set; }
     public DbSet<AutoPartesRazor.Models.ProductSupplier> ProductSuppliers { get; set; }
     public DbSet<AutoPartesRazor.Models.PurchaseOrder> PurchaseOrders { get; set; }
->>>>>>> b508d6adfc2d2ae6ef774a3ec13a2962fe5795bc
+
 
     // ============================================
     // MÉTODO PARA GUARDAR CON SOFT DELETE AUTOMÁTICO
