@@ -5,11 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AutoPartesRazor.Migrations
 {
-<<<<<<<< HEAD:AutoPartesRazor/Migrations/20251115204716_InitialBaseDatos.cs
-    public partial class InitialBaseDatos : Migration
-========
-    public partial class resetBDTables : Migration
->>>>>>>> main:AutoPartesRazor/Migrations/20251115033352_resetBDTables.cs
+    public partial class Actualizacion : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -90,8 +86,6 @@ namespace AutoPartesRazor.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Order",
-<<<<<<<< HEAD:AutoPartesRazor/Migrations/20251115204716_InitialBaseDatos.cs
-========
                 columns: table => new
                 {
                     id = table.Column<int>(type: "int", nullable: false)
@@ -114,24 +108,10 @@ namespace AutoPartesRazor.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Supplier",
->>>>>>>> main:AutoPartesRazor/Migrations/20251115033352_resetBDTables.cs
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-<<<<<<<< HEAD:AutoPartesRazor/Migrations/20251115204716_InitialBaseDatos.cs
-                    CustomerName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CustomerEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ShippingAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PaymentMethod = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Total = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Order", x => x.id);
-========
                     Name = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     Phone = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true)
@@ -139,7 +119,6 @@ namespace AutoPartesRazor.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Supplier", x => x.Id);
->>>>>>>> main:AutoPartesRazor/Migrations/20251115033352_resetBDTables.cs
                 });
 
             migrationBuilder.CreateTable(
@@ -334,13 +313,9 @@ namespace AutoPartesRazor.Migrations
                     OrderId = table.Column<int>(type: "int", nullable: false),
                     ProductId = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-<<<<<<<< HEAD:AutoPartesRazor/Migrations/20251115204716_InitialBaseDatos.cs
-                    UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
-========
                     UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Estado = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FechaActualizacion = table.Column<DateTime>(type: "datetime2", nullable: false)
->>>>>>>> main:AutoPartesRazor/Migrations/20251115033352_resetBDTables.cs
                 },
                 constraints: table =>
                 {
@@ -359,8 +334,6 @@ namespace AutoPartesRazor.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
-<<<<<<<< HEAD:AutoPartesRazor/Migrations/20251115204716_InitialBaseDatos.cs
-========
             migrationBuilder.CreateTable(
                 name: "ProductSupplier",
                 columns: table => new
@@ -413,7 +386,6 @@ namespace AutoPartesRazor.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
->>>>>>>> main:AutoPartesRazor/Migrations/20251115033352_resetBDTables.cs
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -464,8 +436,6 @@ namespace AutoPartesRazor.Migrations
                 column: "productId");
 
             migrationBuilder.CreateIndex(
-<<<<<<<< HEAD:AutoPartesRazor/Migrations/20251115204716_InitialBaseDatos.cs
-========
                 name: "IX_Category_IsDeleted",
                 table: "Category",
                 column: "IsDeleted");
@@ -481,7 +451,6 @@ namespace AutoPartesRazor.Migrations
                 column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
->>>>>>>> main:AutoPartesRazor/Migrations/20251115033352_resetBDTables.cs
                 name: "IX_OrderItem_OrderId",
                 table: "OrderItem",
                 column: "OrderId");
@@ -543,9 +512,6 @@ namespace AutoPartesRazor.Migrations
                 name: "Cart");
 
             migrationBuilder.DropTable(
-<<<<<<<< HEAD:AutoPartesRazor/Migrations/20251115204716_InitialBaseDatos.cs
-                name: "OrderItem");
-========
                 name: "Notification");
 
             migrationBuilder.DropTable(
@@ -556,7 +522,6 @@ namespace AutoPartesRazor.Migrations
 
             migrationBuilder.DropTable(
                 name: "PurchaseOrder");
->>>>>>>> main:AutoPartesRazor/Migrations/20251115033352_resetBDTables.cs
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

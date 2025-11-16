@@ -91,7 +91,7 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
             .HasIndex(p => p.IsDeleted);
 
         modelBuilder.Entity<Brand>()
-            .HasIndex(b => b.IsDeleted);
+            .HasIndex(b => b.IsDeleted); modelBuilder.Entity<Category>();
 
         modelBuilder.Entity<Category>()
             .HasIndex(c => c.IsDeleted);
@@ -100,7 +100,7 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
             .HasIndex(o => o.IsDeleted);
     }
 
-    public DbSet<AutoPartesRazor.Models.Product> Product { get; set; } = default!;
+    public DbSet<AutoPartesRazor.Models.Product> Product { get; set; }
     public DbSet<AutoPartesRazor.Models.Brand> Brand { get; set; }
     public DbSet<AutoPartesRazor.Models.Category> Category { get; set; }
     public DbSet<AutoPartesRazor.Models.Cart> Cart { get; set; }
