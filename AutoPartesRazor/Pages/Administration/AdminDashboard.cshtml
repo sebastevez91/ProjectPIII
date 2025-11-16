@@ -8,6 +8,11 @@
     <h2 class="mb-4">Panel de Administración</h2>
 
     <div class="mb-3 d-flex flex-wrap gap-2">
+        <!-- ⬇️ NUEVO BOTÓN DE RESEÑAS ⬇️ -->
+        <button class="btn btn-warning btn-sm" onclick="location.href='@Url.Page("/Administration/ReviewsDashboard")'">
+            <i class="fa-solid fa-star"></i> Dashboard de Reseñas
+        </button>
+
         <button class="btn btn-primary btn-sm" onclick="toggleSection('notificationSection')">
             <i class="fa-solid fa-envelope"></i> Ver Notificaciones
         </button>
