@@ -29,6 +29,10 @@
 
                 </div>
 
+                <p class="text-center">
+                    <a asp-page="/Account/ForgotPassword">¿Olvidaste tu contraseña?</a>
+                </p>
+
                 <div class="form-group form-check">
                     <input asp-for="LoginInput.RememberMe" class="form-check-input" />
 
@@ -44,10 +48,6 @@
     <div class="text-center">
         <strong>Si no tienes una cuenta puedes registrarte <a asp-page="Register">aqui</a></strong>
     </div>
-
-    <p>
-        <a asp-page="/Account/ForgotPassword">¿Olvidaste tu contraseña?</a>
-    </p>
 </div>
 
 @section Scripts {
