@@ -36,6 +36,8 @@ builder.Services.AddScoped<IPdfService, AutoPartesRazor.Services.PdfService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 
+builder.Services.AddScoped<IClaimService, ClaimService>();
+
 var app = builder.Build();
 
 // ============================================

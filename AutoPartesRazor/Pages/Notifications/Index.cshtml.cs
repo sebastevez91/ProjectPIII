@@ -1,20 +1,23 @@
 ﻿using AutoPartesRazor.Data;
 using AutoPartesRazor.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
 namespace AutoPartesRazor.Pages.Notifications;
 
-[Authorize] // Solo usuarios autenticados pueden ver notificaciones
+[Authorize]
 public class IndexModel : PageModel
 {
     private readonly AutoPartesRazorContext _context;
+    private readonly UserManager<User> _userManager;
 
-    public IndexModel(AutoPartesRazorContext context)
+    public IndexModel(AutoPartesRazorContext context, UserManager<User> userManager)
     {
         _context = context;
+        _userManager = userManager;
     }
 
     public List<Notification> Notifications { get; set; } = new();
@@ -26,11 +29,20 @@ public class IndexModel : PageModel
 
     public async Task OnGetAsync()
     {
+        // Obtener el usuario autenticado
+        var currentUser = await _userManager.GetUserAsync(User);
+
+        if (currentUser == null)
+        {
+            return;
+        }
+
+        // Filtrar notificaciones solo del usuario autenticado
         var query = _context.Notifications
-            .Include(n => n.User)
+            .Where(n => n.UserId == currentUser.Id)
             .AsQueryable();
 
-        // Aplicar filtro
+        // Aplicar filtro adicional
         query = Filter switch
         {
             "unread" => query.Where(n => !n.IsRead),
@@ -43,14 +55,21 @@ public class IndexModel : PageModel
             .OrderByDescending(n => n.CreatedAt)
             .ToListAsync();
 
-        // Contadores
-        UnreadCount = await _context.Notifications.CountAsync(n => !n.IsRead);
-        TotalCount = await _context.Notifications.CountAsync();
+        // Contadores solo del usuario autenticado
+        UnreadCount = await _context.Notifications
+            .CountAsync(n => n.UserId == currentUser.Id && !n.IsRead);
+
+        TotalCount = await _context.Notifications
+            .CountAsync(n => n.UserId == currentUser.Id);
     }
 
     public async Task<IActionResult> OnPostMarkAsReadAsync(int id)
     {
-        var notification = await _context.Notifications.FindAsync(id);
+        var currentUser = await _userManager.GetUserAsync(User);
+
+        var notification = await _context.Notifications
+            .FirstOrDefaultAsync(n => n.Id == id && n.UserId == currentUser.Id);
+
         if (notification == null)
         {
             return NotFound();
@@ -65,8 +84,10 @@ public class IndexModel : PageModel
 
     public async Task<IActionResult> OnPostMarkAllAsReadAsync()
     {
+        var currentUser = await _userManager.GetUserAsync(User);
+
         var unreadNotifications = await _context.Notifications
-            .Where(n => !n.IsRead)
+            .Where(n => n.UserId == currentUser.Id && !n.IsRead)
             .ToListAsync();
 
         foreach (var notification in unreadNotifications)
@@ -82,7 +103,11 @@ public class IndexModel : PageModel
 
     public async Task<IActionResult> OnPostDeleteAsync(int id)
     {
-        var notification = await _context.Notifications.FindAsync(id);
+        var currentUser = await _userManager.GetUserAsync(User);
+
+        var notification = await _context.Notifications
+            .FirstOrDefaultAsync(n => n.Id == id && n.UserId == currentUser.Id);
+
         if (notification == null)
         {
             return NotFound();
