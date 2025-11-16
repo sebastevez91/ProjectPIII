@@ -1,5 +1,6 @@
 ﻿@page
 @model AutoPartesRazor.Pages.PurchaseOrders.IndexModel
+@using AutoPartesRazor.Models.Enum;
 
 <div class="container py-4">
     <h2>Órdenes de Pedido</h2>
@@ -9,22 +10,39 @@
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>Producto</th>
-                <th>Proveedor</th>
-                <th>Cantidad</th>
+                <th>N° orden</th>
+                <th>Estado</th>
                 <th>Fecha</th>
+                <td>Detalles</td>
             </tr>
         </thead>
         <tbody>
             @foreach (var o in Model.PurchaseOrder)
             {
                 <tr>
-                    <td>@o.Product.name</td>
-                    <td>@o.Supplier.Name</td>
-                    <td>@o.Quantity</td>
+                    <td>#@o.Id</td>
+                    <td>
+                        <form method="post" class="d-flex gap-2">
+                            <select asp-for="@o.Status" class="form-select form-select-sm"
+                                    asp-items="@Model.SelectStatus">
+                                <option value="">-- Asignar estado --</option>
+                            </select>
+                            <button type="submit" class="btn btn-primary btn-sm" title="Asignar">
+                                <i class="fa-solid fa-circle-up"></i>
+                            </button>
+                        </form>
+                    </td>
                     <td>@o.CreatedAt.ToShortDateString()</td>
+                    <td>
+                        <a asp-page="/PurchaseOrders/Details" asp-route-id="@o.Id" class="btn btn-primary btn-sm me-2">
+                            <i class="fa-brands fa-phabricator" title="Ver orden"></i>
+                        </a>
+                    </td>
                 </tr>
             }
         </tbody>
     </table>
 </div>
+
+
+

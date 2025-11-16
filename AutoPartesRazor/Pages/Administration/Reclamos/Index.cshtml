@@ -1,0 +1,277 @@
+@page
+@model AutoPartesRazor.Pages.Admin.Reclamos.IndexModel
+@{
+    ViewData["Title"] = "Panel de Reclamos";
+}
+
+<div class="container-fluid mt-4">
+    <h1 class="h3 mb-4">
+        <i class="bi bi-kanban me-2"></i>
+        Panel de Gestión de Reclamos
+    </h1>
+
+    <!-- Estadísticas -->
+    @if (Model.Estadisticas != null)
+    {
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card bg-info text-white shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="text-uppercase mb-1">Total Abiertos</h6>
+                                <h2 class="mb-0">@(Model.Estadisticas.ReclamosNuevos + Model.Estadisticas.ReclamosEnProceso + Model.Estadisticas.ReclamosResueltos)</h2>
+                            </div>
+                            <i class="bi bi-inbox-fill" style="font-size: 2.5rem; opacity: 0.5;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card bg-warning text-dark shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="text-uppercase mb-1">Nuevos</h6>
+                                <h2 class="mb-0">@Model.Estadisticas.ReclamosNuevos</h2>
+                            </div>
+                            <i class="bi bi-star-fill" style="font-size: 2.5rem; opacity: 0.5;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card bg-danger text-white shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="text-uppercase mb-1">Críticos</h6>
+                                <h2 class="mb-0">@Model.Estadisticas.ReclamosCriticos</h2>
+                            </div>
+                            <i class="bi bi-exclamation-triangle-fill" style="font-size: 2.5rem; opacity: 0.5;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card bg-secondary text-white shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="text-uppercase mb-1">Sin Asignar</h6>
+                                <h2 class="mb-0">@Model.Estadisticas.ReclamosSinAsignar</h2>
+                            </div>
+                            <i class="bi bi-person-x-fill" style="font-size: 2.5rem; opacity: 0.5;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <p class="mb-0"><strong>Tiempo promedio de respuesta:</strong></p>
+                                <h5 class="text-primary">@Model.Estadisticas.TiempoPromedioRespuestaHoras.ToString("F2") horas</h5>
+                            </div>
+                            <div class="col-md-4">
+                                <p class="mb-0"><strong>En Proceso:</strong></p>
+                                <h5 class="text-warning">@Model.Estadisticas.ReclamosEnProceso</h5>
+                            </div>
+                            <div class="col-md-4">
+                                <p class="mb-0"><strong>Resueltos:</strong></p>
+                                <h5 class="text-success">@Model.Estadisticas.ReclamosResueltos</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <!-- Filtros -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-light">
+            <h6 class="mb-0">
+                <i class="bi bi-funnel me-2"></i>
+                Filtros
+            </h6>
+        </div>
+        <div class="card-body">
+            <form method="get" class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label">Estado</label>
+                    <select name="estado" class="form-select">
+                        <option value="">Todos</option>
+                        @foreach (var estado in Enum.GetValues<AutoPartesRazor.Models.Enum.StatusClaim>())
+                        {
+                            <option value="@((int)estado)" selected="@(Model.EstadoFiltro == estado)">@estado</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Urgencia</label>
+                    <select name="urgencia" class="form-select">
+                        <option value="">Todas</option>
+                        @foreach (var urgencia in Enum.GetValues<AutoPartesRazor.Models.Enum.LevelUrgency>())
+                        {
+                            <option value="@((int)urgencia)" selected="@(Model.UrgenciaFiltro == urgencia)">@urgencia</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Buscar</label>
+                    <input type="text" name="buscar" class="form-control" placeholder="Ticket o asunto..." value="@Model.TextoBusqueda" />
+                </div>
+
+                <div class="col-md-3 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary me-2">
+                        <i class="bi bi-search me-1"></i>Filtrar
+                    </button>
+                    <a asp-page="./Index" class="btn btn-outline-secondary">
+                        <i class="bi bi-x-circle me-1"></i>Limpiar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Tabla de Reclamos -->
+    <div class="card shadow-sm">
+        <div class="card-header bg-white">
+            <h6 class="mb-0">Lista de Reclamos</h6>
+        </div>
+        <div class="card-body p-0">
+            @if (Model.Reclamos == null || !Model.Reclamos.Any())
+            {
+                <div class="alert alert-info m-3">
+                    <i class="bi bi-info-circle me-2"></i>
+                    No hay reclamos que coincidan con los filtros aplicados.
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover table-sm mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Ticket</th>
+                                <th>Cliente</th>
+                                <th>Asunto</th>
+                                <th>Estado</th>
+                                <th>Urgencia</th>
+                                <th>Creado</th>
+                                <th>Asignado</th>
+                                <th>Mensajes</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var reclamo in Model.Reclamos)
+                            {
+                                <tr class="@(reclamo.MensajesSinLeerAdmin > 0 ? "table-warning" : "")">
+                                    <td>
+                                        <strong class="text-primary">@reclamo.NumeroTicket</strong>
+                                    </td>
+                                    <td>
+                                        <small>@reclamo.Cliente?.FullName</small>
+                                    </td>
+                                    <td>
+                                        <div class="text-truncate" style="max-width: 250px;">
+                                            @reclamo.Asunto
+                                        </div>
+                                    </td>
+                                    <td>
+                                        @switch (reclamo.Estado)
+                                        {
+                                            case AutoPartesRazor.Models.Enum.StatusClaim.Nuevo:
+                                                <span class="badge bg-info">Nuevo</span>
+                                                break;
+                                            case AutoPartesRazor.Models.Enum.StatusClaim.EnProceso:
+                                                <span class="badge bg-warning text-dark">En Proceso</span>
+                                                break;
+                                            case AutoPartesRazor.Models.Enum.StatusClaim.Respondido:
+                                                <span class="badge bg-primary">Respondido</span>
+                                                break;
+                                            case AutoPartesRazor.Models.Enum.StatusClaim.Resuelto:
+                                                <span class="badge bg-success">Resuelto</span>
+                                                break;
+                                            case AutoPartesRazor.Models.Enum.StatusClaim.Cerrado:
+                                                <span class="badge bg-secondary">Cerrado</span>
+                                                break;
+                                        }
+                                    </td>
+                                    <td>
+                                        @switch (reclamo.NivelUrgencia)
+                                        {
+                                            case AutoPartesRazor.Models.Enum.LevelUrgency.Baja:
+                                                <span class="badge bg-light text-dark">Baja</span>
+                                                break;
+                                            case AutoPartesRazor.Models.Enum.LevelUrgency.Media:
+                                                <span class="badge bg-secondary">Media</span>
+                                                break;
+                                            case AutoPartesRazor.Models.Enum.LevelUrgency.Alta:
+                                                <span class="badge bg-warning text-dark">Alta</span>
+                                                break;
+                                            case AutoPartesRazor.Models.Enum.LevelUrgency.Critica:
+                                                <span class="badge bg-danger">Crítica</span>
+                                                break;
+                                        }
+                                    </td>
+                                    <td>
+                                        <small>@reclamo.FechaCreacion.ToString("dd/MM/yy HH:mm")</small>
+                                    </td>
+                                    <td>
+                                        <small>
+                                            @if (reclamo.AdministradorAsignado != null)
+                                            {
+                                                @reclamo.AdministradorAsignado.FullName
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted">Sin asignar</span>
+                                            }
+                                        </small>
+                                    </td>
+                                    <td>
+                                        @if (reclamo.MensajesSinLeerAdmin > 0)
+                                        {
+                                            <span class="badge bg-danger rounded-pill">
+                                                @reclamo.MensajesSinLeerAdmin
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">
+                                                <i class="bi bi-check-all"></i>
+                                            </span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <a asp-page="./Gestionar" asp-route-id="@reclamo.Id" class="btn btn-sm btn-outline-primary">
+                                            <i class="bi bi-gear me-1"></i>Gestionar
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="card-footer">
+                    <p class="mb-0 text-muted">
+                        Total de reclamos: <strong>@Model.Reclamos.Count</strong>
+                    </p>
+                </div>
+            }
+        </div>
+    </div>
+</div>

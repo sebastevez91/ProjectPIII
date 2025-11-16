@@ -1,0 +1,254 @@
+@page
+@model AutoPartesRazor.Pages.Reclamos.DetalleModel
+@{
+    ViewData["Title"] = $"Reclamo {Model.ViewModel.Reclamo.NumeroTicket}";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <!-- Columna principal: Mensajes -->
+        <div class="col-lg-8">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="bi bi-ticket-detailed me-2"></i>
+                            @Model.ViewModel.Reclamo.NumeroTicket
+                        </h5>
+                        <a asp-page="./Index" class="btn btn-sm btn-light">
+                            <i class="bi bi-arrow-left me-1"></i>Volver
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h4>@Model.ViewModel.Reclamo.Asunto</h4>
+                    <hr />
+
+                    @if (Model.MensajeError != null)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="bi bi-exclamation-triangle me-2"></i>@Model.MensajeError
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    }
+
+                    @if (Model.MensajeExito != null)
+                    {
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="bi bi-check-circle me-2"></i>@Model.MensajeExito
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    }
+
+                    <!-- Historial de mensajes -->
+                    <div class="chat-container" id="chatContainer" style="max-height: 500px; overflow-y: auto;">
+                        @foreach (var mensaje in Model.ViewModel.Mensajes)
+                        {
+                            @if (mensaje.EsAdministrador)
+                            {
+                                <!-- Mensaje del administrador (izquierda) -->
+                                <div class="d-flex mb-3">
+                                    <div class="flex-shrink-0">
+                                        <div class="bg-warning rounded-circle text-white d-flex align-items-center justify-content-center" 
+                                             style="width: 40px; height: 40px;">
+                                            <i class="bi bi-person-gear"></i>
+                                        </div>
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <div class="card bg-light">
+                                            <div class="card-body p-2">
+                                                <div class="d-flex justify-content-between">
+                                                    <strong class="text-warning">
+                                                        @(mensaje.Usuario?.FullName ?? "Administrador")
+                                                    </strong>
+                                                    <small class="text-muted">
+                                                        @mensaje.FechaEnvio.ToString("dd/MM/yyyy HH:mm")
+                                                    </small>
+                                                </div>
+                                                <p class="mb-0 mt-2">@mensaje.Mensaje</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <!-- Mensaje del cliente (derecha) -->
+                                <div class="d-flex mb-3 justify-content-end">
+                                    <div class="flex-grow-1 me-3 text-end">
+                                        <div class="card bg-primary text-white">
+                                            <div class="card-body p-2">
+                                                <div class="d-flex justify-content-between">
+                                                    <small class="text-white-50">
+                                                        @mensaje.FechaEnvio.ToString("dd/MM/yyyy HH:mm")
+                                                    </small>
+                                                    <strong>Tú</strong>
+                                                </div>
+                                                <p class="mb-0 mt-2">@mensaje.Mensaje</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex-shrink-0">
+                                        <div class="bg-primary rounded-circle text-white d-flex align-items-center justify-content-center" 
+                                             style="width: 40px; height: 40px;">
+                                            <i class="bi bi-person-fill"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+
+                    <!-- Formulario para nuevo mensaje -->
+                    @if (Model.ViewModel.PuedeResponder)
+                    {
+                        <hr class="mt-4" />
+                        <form method="post">
+                            <div class="mb-3">
+                                <label asp-for="ViewModel.NuevoMensaje" class="form-label">Agregar Mensaje</label>
+                                <textarea asp-for="ViewModel.NuevoMensaje" class="form-control" rows="3" 
+                                          placeholder="Escribe tu mensaje aquí..."></textarea>
+                                <span asp-validation-for="ViewModel.NuevoMensaje" class="text-danger"></span>
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-send-fill me-2"></i>
+                                    Enviar Mensaje
+                                </button>
+                            </div>
+                        </form>
+                    }
+                    else
+                    {
+                        <div class="alert alert-warning mt-4">
+                            <i class="bi bi-lock-fill me-2"></i>
+                            Este reclamo está cerrado y no se pueden agregar más mensajes.
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Columna lateral: Información del reclamo -->
+        <div class="col-lg-4">
+            <div class="card shadow-sm mb-3">
+                <div class="card-header bg-secondary text-white">
+                    <h6 class="mb-0">Información del Reclamo</h6>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <strong>Estado:</strong>
+                        <div class="mt-1">
+                            @switch (Model.ViewModel.Reclamo.Estado)
+                            {
+                                case AutoPartesRazor.Models.Enum.StatusClaim.Nuevo:
+                                    <span class="badge bg-info">
+                                        <i class="bi bi-star-fill me-1"></i>Nuevo
+                                    </span>
+                                    break;
+                                case AutoPartesRazor.Models.Enum.StatusClaim.EnProceso:
+                                    <span class="badge bg-warning text-dark">
+                                        <i class="bi bi-hourglass-split me-1"></i>En Proceso
+                                    </span>
+                                    break;
+                                case AutoPartesRazor.Models.Enum.StatusClaim.Respondido:
+                                    <span class="badge bg-primary">
+                                        <i class="bi bi-chat-dots-fill me-1"></i>Respondido
+                                    </span>
+                                    break;
+                                case AutoPartesRazor.Models.Enum.StatusClaim.Resuelto:
+                                    <span class="badge bg-success">
+                                        <i class="bi bi-check-circle-fill me-1"></i>Resuelto
+                                    </span>
+                                    break;
+                                case AutoPartesRazor.Models.Enum.StatusClaim.Cerrado:
+                                    <span class="badge bg-secondary">
+                                        <i class="bi bi-lock-fill me-1"></i>Cerrado
+                                    </span>
+                                    break;
+                            }
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <strong>Urgencia:</strong>
+                        <div class="mt-1">
+                            @switch (Model.ViewModel.Reclamo.NivelUrgencia)
+                            {
+                                case AutoPartesRazor.Models.Enum.LevelUrgency.Baja:
+                                    <span class="badge bg-light text-dark">Baja</span>
+                                    break;
+                                case AutoPartesRazor.Models.Enum.LevelUrgency.Media:
+                                    <span class="badge bg-secondary">Media</span>
+                                    break;
+                                case AutoPartesRazor.Models.Enum.LevelUrgency.Alta:
+                                    <span class="badge bg-warning text-dark">Alta</span>
+                                    break;
+                                case AutoPartesRazor.Models.Enum.LevelUrgency.Critica:
+                                    <span class="badge bg-danger">Crítica</span>
+                                    break;
+                            }
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <strong>Creado:</strong>
+                        <div class="text-muted">
+                            @Model.ViewModel.Reclamo.FechaCreacion.ToString("dd/MM/yyyy HH:mm")
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <strong>Última actualización:</strong>
+                        <div class="text-muted">
+                            @Model.ViewModel.Reclamo.FechaActualizacion.ToString("dd/MM/yyyy HH:mm")
+                        </div>
+                    </div>
+
+                    @if (Model.ViewModel.Reclamo.AdministradorAsignado != null)
+                    {
+                        <div class="mb-3">
+                            <strong>Asignado a:</strong>
+                            <div class="text-muted">
+                                @Model.ViewModel.Reclamo.AdministradorAsignado.FullName
+                            </div>
+                        </div>
+                    }
+
+                    @if (Model.ViewModel.Reclamo.FechaCierre.HasValue)
+                    {
+                        <div class="mb-3">
+                            <strong>Cerrado el:</strong>
+                            <div class="text-muted">
+                                @Model.ViewModel.Reclamo.FechaCierre.Value.ToString("dd/MM/yyyy HH:mm")
+                            </div>
+                        </div>
+                    }
+
+                    <div class="mb-0">
+                        <strong>Total de mensajes:</strong>
+                        <div class="text-muted">
+                            @Model.ViewModel.Mensajes.Count
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        // Scroll automático al final del chat
+        const chatContainer = document.getElementById('chatContainer');
+        if (chatContainer) {
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        // Auto-cerrar alertas
+        setTimeout(function() {
+            $('.alert').fadeOut('slow');
+        }, 5000);
+    </script>
+}
