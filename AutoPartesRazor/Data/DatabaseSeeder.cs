@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using AutoPartesRazor.Models;
 using AutoPartesRazor.Data;
+using AutoPartesRazor.Services;
 
 namespace AutoPartesRazor.Data;
 
