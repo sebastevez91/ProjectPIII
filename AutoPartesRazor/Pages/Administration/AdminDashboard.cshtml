@@ -21,7 +21,7 @@
             <i class="fa-solid fa-list-check"></i> Gestionar Productos
         </button>
         <button class="btn btn-primary btn-sm" onclick="toggleSection('inventarioSection')">
-            Gestion inventario
+            <i class="fa-solid fa-folder-open"></i> Gestion inventario
         </button>
 
         @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
@@ -97,10 +97,15 @@
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h3 class="mb-0">Inventario</h3>
         </div>
-        <a asp-page="/Suppliers/Index" class="btn btn-primary btn-sm m-1">Proveédores</a>
-        <a asp-page="/PurchaseOrders/Index" class="btn btn-primary btn-sm m-1">Orden de pedidos</a>
+        <a asp-page="/Suppliers/Index" class="btn btn-primary btn-sm m-1">
+            <i class="fa-solid fa-truck-fast"></i>
+            Proveédores
+        </a>
+        <a asp-page="/PurchaseOrders/Index" class="btn btn-primary btn-sm m-1">
+            <i class="fa-solid fa-layer-group"></i> Orden de pedidos
+        </a>
         <button class="btn btn-danger btn-sm" onclick="toggleSection('lowStockSection')">
-            <i class="fa-solid fa-triangle-exclamation"></i>Productos stock bajo
+            <i class="fa-solid fa-triangle-exclamation"></i> Productos stock bajo
         </button>
     </div>
 
