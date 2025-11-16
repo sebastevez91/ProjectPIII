@@ -108,6 +108,114 @@ namespace AutoPartesRazor.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("AutoPartesRazor.Models.Claim", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("AdministradorAsignadoId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Asunto")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("ClienteId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<int>("Estado")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("FechaActualizacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FechaCierre")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("FechaCreacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("NivelUrgencia")
+                        .HasColumnType("int");
+
+                    b.Property<string>("NumeroTicket")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdministradorAsignadoId");
+
+                    b.HasIndex("ClienteId");
+
+                    b.HasIndex("Estado");
+
+                    b.HasIndex("FechaCreacion");
+
+                    b.HasIndex("NivelUrgencia");
+
+                    b.HasIndex("NumeroTicket")
+                        .IsUnique();
+
+                    b.HasIndex("Estado", "NivelUrgencia", "FechaCreacion");
+
+                    b.ToTable("Reclamo");
+                });
+
+            modelBuilder.Entity("AutoPartesRazor.Models.MessageClaim", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<bool>("EsAdministrador")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("FechaEnvio")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FechaLectura")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Leido")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Mensaje")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<int>("ReclamoId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UsuarioId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FechaEnvio");
+
+                    b.HasIndex("ReclamoId");
+
+                    b.HasIndex("UsuarioId");
+
+                    b.ToTable("MensajeReclamo");
+                });
+
             modelBuilder.Entity("AutoPartesRazor.Models.Notification", b =>
                 {
                     b.Property<int>("Id")
@@ -637,6 +745,43 @@ namespace AutoPartesRazor.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("AutoPartesRazor.Models.Claim", b =>
+                {
+                    b.HasOne("AutoPartesRazor.Models.User", "AdministradorAsignado")
+                        .WithMany()
+                        .HasForeignKey("AdministradorAsignadoId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("AutoPartesRazor.Models.User", "Cliente")
+                        .WithMany()
+                        .HasForeignKey("ClienteId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AdministradorAsignado");
+
+                    b.Navigation("Cliente");
+                });
+
+            modelBuilder.Entity("AutoPartesRazor.Models.MessageClaim", b =>
+                {
+                    b.HasOne("AutoPartesRazor.Models.Claim", "Reclamo")
+                        .WithMany("Mensajes")
+                        .HasForeignKey("ReclamoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AutoPartesRazor.Models.User", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Reclamo");
+
+                    b.Navigation("Usuario");
+                });
+
             modelBuilder.Entity("AutoPartesRazor.Models.Notification", b =>
                 {
                     b.HasOne("AutoPartesRazor.Models.User", "User")
@@ -795,6 +940,11 @@ namespace AutoPartesRazor.Migrations
             modelBuilder.Entity("AutoPartesRazor.Models.Category", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("AutoPartesRazor.Models.Claim", b =>
+                {
+                    b.Navigation("Mensajes");
                 });
 
             modelBuilder.Entity("AutoPartesRazor.Models.Order", b =>

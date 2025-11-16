@@ -61,6 +61,19 @@
                                 <i class="fa-solid fa-shield-halved me-1"></i>Administración
                             </a>
                         </li>
+                        <li class="nav-item me-3">
+                            <a asp-page="/Administration/Reclamos/Index" class="nav-link">
+                                <i class="fa-solid fa-shield-halved me-1"></i>Gestion Reclamos
+                            </a>
+                        </li>
+                    }
+                    @if (SignInManager.IsSignedIn(User) && !User.IsInRole("Admin"))
+                    {
+                        <li class="nav-item me-3">
+                            <a asp-page="/Claims/Index" class="nav-link">
+                                <i class="fa-solid fa-comment-dots me-1"></i>Mis Reclamos
+                            </a>
+                        </li>
                     }
                     <li class="nav-item me-3">
                         <a asp-page="/Products/Index" class="nav-link">Catálogo</a>
@@ -98,6 +111,12 @@
                                 <a asp-page="/Account/Manage">
                                     <i class="fa-solid fa-user me-2"></i>Mi cuenta
                                 </a>
+                                @if (!User.IsInRole("Admin"))
+                                {
+                                    <a asp-page="/Reclamos/Index">
+                                        <i class="fa-solid fa-comment-dots me-2"></i>Mis Reclamos
+                                    </a>
+                                }
                                 <hr />
                                 <a asp-page="/Notifications/Index">
                                     <i class="fa-solid fa-bell me-2"></i>Notificaciones
@@ -163,6 +182,16 @@
             </div>
         </div>
     </footer>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+            crossorigin="anonymous"></script>
+
+    <!-- jQuery Validation -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive@4.0.0/dist/jquery.validate.unobtrusive.min.js"></script>
+
+
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
