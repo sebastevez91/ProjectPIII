@@ -34,13 +34,13 @@ public class EditModel : PageModel
 
     public async Task<IActionResult> OnGetAsync(int? id)
     {
-        if (id == null || _context.Product == null)
+        if (id == null || _context.Products == null)
         {
             return NotFound();
         }
 
         //Llena la lista de categorias
-        Categories = _context.Category
+        Categories = _context.Categories
             .Select(c => new SelectListItem
             {
                 Value = c.Id.ToString(),
@@ -49,7 +49,7 @@ public class EditModel : PageModel
             .ToList();
 
         //Llena la lista de marcas
-        Brands = _context.Brand
+        Brands = _context.Brands
             .Select(b => new SelectListItem
             {
                 Value = b.Id.ToString(),
@@ -57,7 +57,7 @@ public class EditModel : PageModel
             })
             .ToList();
 
-        var product = await _context.Product.FirstOrDefaultAsync(m => m.Id == id);
+        var product = await _context.Products.FirstOrDefaultAsync(m => m.Id == id);
         if (product == null)
         {
             return NotFound();
@@ -122,6 +122,6 @@ public class EditModel : PageModel
 
     private bool ProductExists(int id)
     {
-        return (_context.Product?.Any(e => e.Id == id)).GetValueOrDefault();
+        return (_context.Products?.Any(e => e.Id == id)).GetValueOrDefault();
     }
 }

@@ -59,7 +59,7 @@
         <div class="d-flex gap-2 flex-wrap">
             @if (Model.Pedido.Status == "Pendiente")
             {
-                <form method="post" asp-page-handler="Preparar" asp-route-id="@Model.Pedido.id">
+                <form method="post" asp-page-handler="Preparar" asp-route-id="@Model.Pedido.Id">
                     <button type="submit" class="btn btn-info shadow-sm animate__animated animate__pulse">
                         <i class="fa-solid fa-box-open"></i> Preparar
                     </button>
@@ -67,7 +67,7 @@
             }
             @if (Model.Pedido.Status == "Preparando")
             {
-                <form method="post" asp-page-handler="Despachar" asp-route-id="@Model.Pedido.id">
+                <form method="post" asp-page-handler="Despachar" asp-route-id="@Model.Pedido.Id">
                     <button type="submit" class="btn btn-warning shadow-sm animate__animated animate__pulse">
                         <i class="fa-solid fa-truck-loading"></i> Despachar
                     </button>
@@ -75,7 +75,7 @@
             }
             @if (Model.Pedido.Status == "Despachado")
             {
-                <form method="post" asp-page-handler="EnCamino" asp-route-id="@Model.Pedido.id">
+                <form method="post" asp-page-handler="EnCamino" asp-route-id="@Model.Pedido.Id">
                     <button type="submit" class="btn btn-primary shadow-sm animate__animated animate__pulse">
                         <i class="fa-solid fa-truck"></i> En camino
                     </button>
@@ -83,7 +83,7 @@
             }
             @if (Model.Pedido.Status == "En camino")
             {
-                <form method="post" asp-page-handler="Entregar" asp-route-id="@Model.Pedido.id">
+                <form method="post" asp-page-handler="Entregar" asp-route-id="@Model.Pedido.Id">
                     <button type="submit" class="btn btn-success shadow-sm animate__animated animate__pulse">
                         <i class="fa-solid fa-check-double"></i> Entregar
                     </button>
@@ -91,7 +91,7 @@
             }
             @if (Model.Pedido.Status != "Entregado" && Model.Pedido.Status != "Cancelado")
             {
-                <form method="post" asp-page-handler="Cancelar" asp-route-id="@Model.Pedido.id">
+                <form method="post" asp-page-handler="Cancelar" asp-route-id="@Model.Pedido.Id">
                     <button type="submit" class="btn btn-danger shadow-sm animate__animated animate__shakeX">
                         <i class="fa-solid fa-ban"></i> Cancelar
                     </button>
@@ -104,7 +104,7 @@
     <table class="table table-hover table-striped shadow rounded animate__animated animate__fadeInUp">
         <tr>
             <td><b>ID:</b></td>
-            <td>@Model.Pedido.id</td>
+            <td>@Model.Pedido.Id</td>
         </tr>
         <tr>
             <td><b>Cliente:</b></td>

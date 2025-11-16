@@ -21,14 +21,14 @@ public class AssignSuppliersModel : PageModel
 
     public async Task<IActionResult> OnGetAsync(int id)
     {
-        Product = await _context.Product
+        Product = await _context.Products
             .Include(p => p.ProductSuppliers)
             .FirstOrDefaultAsync(p => p.Id == id);
 
         if (Product == null)
             return NotFound();
 
-        AllSuppliers = await _context.Supplier.ToListAsync();
+        AllSuppliers = await _context.Suppliers.ToListAsync();
         AssignedSuppliers = Product.ProductSuppliers.Select(ps => ps.SupplierId).ToList();
 
         return Page();
@@ -36,7 +36,7 @@ public class AssignSuppliersModel : PageModel
 
     public async Task<IActionResult> OnPostAsync(int id, int[] selectedSuppliers)
     {
-        var product = await _context.Product
+        var product = await _context.Products
             .Include(p => p.ProductSuppliers)
             .FirstOrDefaultAsync(p => p.Id == id);
 

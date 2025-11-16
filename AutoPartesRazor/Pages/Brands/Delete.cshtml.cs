@@ -19,12 +19,12 @@ public class DeleteModel : PageModel
 
     public async Task<IActionResult> OnGetAsync(int? id)
     {
-        if (id == null || _context.Brand == null)
+        if (id == null || _context.Brands == null)
         {
             return NotFound();
         }
 
-        var brand = await _context.Brand.FirstOrDefaultAsync(m => m.Id == id);
+        var brand = await _context.Brands.FirstOrDefaultAsync(m => m.Id == id);
 
         if (brand == null)
         {
@@ -39,16 +39,16 @@ public class DeleteModel : PageModel
 
     public async Task<IActionResult> OnPostAsync(int? id)
     {
-        if (id == null || _context.Brand == null)
+        if (id == null || _context.Brands == null)
         {
             return NotFound();
         }
-        var brand = await _context.Brand.FindAsync(id);
+        var brand = await _context.Brands.FindAsync(id);
 
         if (brand != null)
         {
             Brand = brand;
-            _context.Brand.Remove(Brand);
+            _context.Brands.Remove(Brand);
             await _context.SaveChangesAsync();
         }
 

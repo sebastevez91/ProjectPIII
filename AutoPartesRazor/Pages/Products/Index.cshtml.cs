@@ -33,7 +33,7 @@ public class IndexModel : PageModel
     public async Task OnGetAsync()
     {
         // Query base de productos
-        var query = _context.Product
+        var query = _context.Products
             .Include(p => p.Brand)
             .Include(p => p.Category)
             .AsQueryable();
@@ -69,7 +69,7 @@ public class IndexModel : PageModel
         Products = await query.ToListAsync();
 
         // Cargar categorías para el filtro
-        Categories = await _context.Category
+        Categories = await _context.Categories
             .Select(c => new SelectListItem
             {
                 Value = c.Id.ToString(),
@@ -91,7 +91,7 @@ public class IndexModel : PageModel
         try
         {
             // Validación: verificar que exista el contexto de productos
-            if (_context.Product == null)
+            if (_context.Products == null)
             {
                 return new JsonResult(new
                 {
@@ -101,7 +101,7 @@ public class IndexModel : PageModel
             }
 
             // Buscar el producto
-            var product = await _context.Product.FindAsync(productId);
+            var product = await _context.Products.FindAsync(productId);
             if (product == null)
             {
                 return new JsonResult(new
@@ -128,24 +128,24 @@ public class IndexModel : PageModel
             }
 
             // Verificar si el producto ya existe en el carrito
-            var existingCartItem = await _context.Cart
-                .FirstOrDefaultAsync(c => c.productId == productId);
+            var existingCartItem = await _context.Carts
+                .FirstOrDefaultAsync(c => c.Product.Id == productId);
 
             if (existingCartItem != null)
             {
                 // Si existe, actualizar la cantidad
-                existingCartItem.quantity += quantity;
-                _context.Cart.Update(existingCartItem);
+                existingCartItem.Quantity += quantity;
+                _context.Carts.Update(existingCartItem);
             }
             else
             {
                 // Si no existe, crear nuevo item
                 var cartItem = new Cart
                 {
-                    productId = productId,
-                    quantity = quantity
+                    ProductId = productId,
+                    Quantity = quantity
                 };
-                _context.Cart.Add(cartItem);
+                _context.Carts.Add(cartItem);
             }
 
             // Guardar cambios en la base de datos
@@ -192,7 +192,7 @@ public class IndexModel : PageModel
     private async Task<int> ObtenerContadorCarritoAsync()
     {
         // Contar el número de items únicos en el carrito
-        var count = await _context.Cart.CountAsync();
+        var count = await _context.Carts.CountAsync();
         return count;
     }
 }

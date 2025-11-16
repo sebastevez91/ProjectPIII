@@ -19,12 +19,12 @@ public class EditModel : PageModel
 
     public async Task<IActionResult> OnGetAsync(int? id)
     {
-        if (id == null || _context.Brand == null)
+        if (id == null || _context.Brands == null)
         {
             return NotFound();
         }
 
-        var brand = await _context.Brand.FirstOrDefaultAsync(m => m.Id == id);
+        var brand = await _context.Brands.FirstOrDefaultAsync(m => m.Id == id);
         if (brand == null)
         {
             return NotFound();
@@ -65,6 +65,6 @@ public class EditModel : PageModel
 
     private bool BrandExists(int id)
     {
-        return (_context.Brand?.Any(e => e.Id == id)).GetValueOrDefault();
+        return (_context.Brands?.Any(e => e.Id == id)).GetValueOrDefault();
     }
 }

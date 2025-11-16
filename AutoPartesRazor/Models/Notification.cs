@@ -20,7 +20,10 @@ public class Notification
 
     public bool IsRead { get; set; } = false;
 
+    // Foreign Key - User
+    [Required]
+    public string UserId { get; set; }
+
     // Foreign key to User
-    public string UserId { get; set; } = string.Empty;
     public User? User { get; set; }
 }

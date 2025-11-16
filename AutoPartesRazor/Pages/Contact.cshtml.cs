@@ -69,7 +69,7 @@ public class ContactModel : PageModel
                 IsRead = false
             };
 
-            _context.Notification.Add(notification);
+            _context.Notifications.Add(notification);
             await _context.SaveChangesAsync();
 
             TempData["SuccessMessage"] = "¡Tu mensaje ha sido enviado exitosamente! Te responderemos pronto.";
@@ -85,6 +85,6 @@ public class ContactModel : PageModel
 
     private async Task<int> ObtenerContadorCarritoAsync()
     {
-        return await _context.Cart.CountAsync();
+        return await _context.Carts.CountAsync();
     }
 }

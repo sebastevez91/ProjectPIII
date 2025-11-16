@@ -18,12 +18,12 @@ namespace AutoPartesRazor.Pages.PurchaseOrders
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || _context.PurchaseOrder == null)
+            if (id == null || _context.PurchaseOrders == null)
             {
                 return NotFound();
             }
 
-            var purchaseorder = await _context.PurchaseOrder
+            var purchaseorder = await _context.PurchaseOrders
                 .Include(p => p.Product)
                 .Include(s => s.Supplier)
                 .FirstOrDefaultAsync(m => m.Id == id);

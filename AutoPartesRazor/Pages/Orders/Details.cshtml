@@ -12,7 +12,7 @@
     }
     else
     {
-        <h2>Pedido #@Model.Order.id</h2>
+        <h2>Pedido #@Model.Order.Id</h2>
         <div class="mb-3">
             <small class="text-muted">Fecha: @Model.Order.CreatedAt.ToLocalTime().ToString("g")</small>
         </div>
@@ -57,11 +57,11 @@
         </div>
 
         <div class="d-flex justify-content-between">
-            <a asp-page="/Orders/Confirmation" asp-route-id="@Model.Order.id" class="btn btn-secondary">Ver confirmación</a>
+            <a asp-page="/Orders/Confirmation" asp-route-id="@Model.Order.Id" class="btn btn-secondary">Ver confirmación</a>
             @if(User.IsInRole("Admin"))
             {
-                <a asp-page="/Orders/Edit" asp-route-id="@Model.Order.id" class="btn btn-warning"><i class="fa-solid fa-edit me-1"></i> Editar pedido</a>
-                <a asp-page="/Adminitration/AdminDashboard" asp-route-id="@Model.Order.id" class="btn btn-primary">Volver</a>
+                <a asp-page="/Orders/Edit" asp-route-id="@Model.Order.Id" class="btn btn-warning"><i class="fa-solid fa-edit me-1"></i> Editar pedido</a>
+                <a asp-page="/Adminitration/AdminDashboard" asp-route-id="@Model.Order.Id" class="btn btn-primary">Volver</a>
             }
             else
             {

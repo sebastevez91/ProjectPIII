@@ -26,7 +26,7 @@ public class CreateModel : PageModel
     public async Task<IActionResult> OnGetAsync()
     {
         //Llena la lista de categorias
-        Categories = _context.Category
+        Categories = _context.Categories
             .Select(c => new SelectListItem
             {
                 Value = c.Id.ToString(),
@@ -35,7 +35,7 @@ public class CreateModel : PageModel
             .ToList();
 
         //Llena la lista de marcas
-        Brands = _context.Brand
+        Brands = _context.Brands
             .Select(b => new SelectListItem
             {
                 Value = b.Id.ToString(),
@@ -50,7 +50,7 @@ public class CreateModel : PageModel
     // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
     public async Task<IActionResult> OnPostAsync()
     {
-        if (!ModelState.IsValid || _context.Product == null || Product == null)
+        if (!ModelState.IsValid || _context.Products == null || Product == null)
         {
             return Page();
         }
@@ -68,7 +68,7 @@ public class CreateModel : PageModel
             Product.ImagePath = "/img/products/" + fileName;
         }
 
-        _context.Product.Add(Product);
+        _context.Products.Add(Product);
         await _context.SaveChangesAsync();
 
         return RedirectToPage("/Administration/AdminDashboard");

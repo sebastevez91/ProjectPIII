@@ -19,12 +19,12 @@ namespace AutoPartesRazor.Pages.Products
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || _context.Product == null)
+            if (id == null || _context.Products == null)
             {
                 return NotFound();
             }
 
-            var product = await _context.Product
+            var product = await _context.Products
                 .Include(b => b.Brand)
                 .Include(c => c.Category)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -39,7 +39,7 @@ namespace AutoPartesRazor.Pages.Products
             }
 
             // Contar el número de items únicos en el carrito
-            var count = await _context.Cart.CountAsync();
+            var count = await _context.Carts.CountAsync();
             CartCount = count;
 
             return Page();

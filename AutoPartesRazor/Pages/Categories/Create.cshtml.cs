@@ -25,12 +25,12 @@ namespace AutoPartesRazor.Pages.Categories
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid || _context.Category == null || Category == null)
+            if (!ModelState.IsValid || _context.Categories == null || Category == null)
             {
                 return Page();
             }
 
-            _context.Category.Add(Category);
+            _context.Categories.Add(Category);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("/Adminitration/AdminDashboard");

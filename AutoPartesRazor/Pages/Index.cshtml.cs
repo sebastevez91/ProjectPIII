@@ -21,7 +21,7 @@ public class IndexModel : PageModel
     public async Task OnGetAsync()
     {
         // Contar el número de items únicos en el carrito
-        var count = await _context.Cart.CountAsync();
+        var count = await _context.Carts.CountAsync();
         CartCount = count;
     }
 }

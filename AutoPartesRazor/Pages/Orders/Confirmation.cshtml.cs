@@ -26,7 +26,7 @@ public class ConfirmationModel : PageModel
     {
         OrderId = id;
         // opcional: validar existencia
-        var exists = await _context.Order.FindAsync(id);
+        var exists = await _context.Orders.FindAsync(id);
         if (exists == null) return NotFound();
         return Page();
     }
@@ -34,14 +34,14 @@ public class ConfirmationModel : PageModel
     // Handler para descargar el comprobante en PDF: /Orders/Confirmation?id=123&handler=Download
     public async Task<IActionResult> OnGetDownloadAsync(int id)
     {
-        var order = await _context.Order
+        var order = await _context.Orders
             .Include(o => o.Items)
                 .ThenInclude(oi => oi.Product)
-            .FirstOrDefaultAsync(o => o.id == id);
+            .FirstOrDefaultAsync(o => o.Id == id);
 
         if (order == null) return NotFound();
 
         var pdf = _pdfService.GenerateOrderPdf(order);
-        return File(pdf, "application/pdf", $"pedido_{order.id}.pdf");
+        return File(pdf, "application/pdf", $"pedido_{order.Id}.pdf");
     }
 }

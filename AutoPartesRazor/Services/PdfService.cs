@@ -78,7 +78,7 @@ public class PdfService : IPdfService
                                 .Bold()
                                 .FontColor(Colors.Grey.Darken2);
 
-                            col.Item().PaddingTop(5).AlignRight().Text($"Pedido N° {order.id}")
+                            col.Item().PaddingTop(5).AlignRight().Text($"Pedido N° {order.Id}")
                                 .FontSize(16)
                                 .Bold()
                                 .FontColor(Colors.Blue.Darken2);
