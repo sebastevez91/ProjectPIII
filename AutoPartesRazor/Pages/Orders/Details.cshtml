@@ -46,7 +46,7 @@
                     @foreach (var item in Model.Order.Items)
                     {
                         <tr>
-                            <td>@(item.Product?.name ?? ("Producto " + item.ProductId))</td>
+                            <td>@(item.Product?.Name ?? ("Producto " + item.ProductId))</td>
                             <td class="text-end">@item.UnitPrice.ToString("C")</td>
                             <td class="text-center">@item.Quantity</td>
                             <td class="text-end">@((item.UnitPrice * item.Quantity).ToString("C"))</td>

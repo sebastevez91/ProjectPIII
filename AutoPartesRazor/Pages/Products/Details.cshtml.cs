@@ -27,7 +27,7 @@ namespace AutoPartesRazor.Pages.Products
             var product = await _context.Product
                 .Include(b => b.Brand)
                 .Include(c => c.Category)
-                .FirstOrDefaultAsync(m => m.id == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             if (product == null)
             {

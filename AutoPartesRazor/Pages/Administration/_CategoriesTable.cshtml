@@ -12,12 +12,12 @@
             @foreach(var category in Model)
             {
                 <tr>
-                    <td>@category.name</td>
+                    <td>@category.Name</td>
                     <td>
-                        <a asp-page="/Categories/Edit" asp-route-id="@category.id" class="btn btn-success btn-sm me-2" title="Editar">
+                        <a asp-page="/Categories/Edit" asp-route-id="@category.Id" class="btn btn-success btn-sm me-2" title="Editar">
                             <i class="fa-solid fa-pen-to-square"></i>
                         </a>
-                        <a asp-page="/Categories/Delete" asp-route-id="@category.id" class="btn btn-danger btn-sm" title="Eliminar">
+                        <a asp-page="/Categories/Delete" asp-route-id="@category.Id" class="btn btn-danger btn-sm" title="Eliminar">
                             <i class="fa-solid fa-trash"></i>
                         </a>
                     </td>

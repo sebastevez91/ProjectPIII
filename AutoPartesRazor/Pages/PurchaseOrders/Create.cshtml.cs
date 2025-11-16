@@ -26,7 +26,7 @@ namespace AutoPartesRazor.Pages.PurchaseOrders
         {
             ProductList = new SelectList(await _context.Product
                 .Where(p => !p.IsDeleted)
-                .OrderBy(p => p.name)
+                .OrderBy(p => p.Name)
                 .ToListAsync(), "id", "name");
 
             SupplierList = new SelectList(await _context.Supplier

@@ -23,11 +23,11 @@
                     {
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <div>
-                                <strong>@item.producto?.name</strong>
+                                <strong>@item.producto?.Name</strong>
                                 <div class="text-muted small">Cantidad: @item.quantity</div>
                             </div>
                             <div>
-                                <div>@(item.producto != null ? (item.producto.price * item.quantity).ToString("C") : "—")</div>
+                                <div>@(item.producto != null ? (item.producto.Price * item.quantity).ToString("C") : "—")</div>
                             </div>
                         </li>
                     }

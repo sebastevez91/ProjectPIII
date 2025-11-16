@@ -23,6 +23,7 @@ public class ForgotPasswordModel : PageModel
     [EmailAddress]
     public string Email { get; set; }
 
+    [TempData]
     public string Message { get; set; }
 
     public async Task<IActionResult> OnPostAsync()
@@ -34,7 +35,7 @@ public class ForgotPasswordModel : PageModel
 
         if (user == null)
         {
-            Message = "Si el correo está registrado, recibirá un email.";
+            Message = "El email ingresado no esta registrado.";
             return Page();
         }
 
@@ -57,6 +58,7 @@ public class ForgotPasswordModel : PageModel
         // Enviar email al usuario
         var subject = "Recuperación de contraseña";
         var body = $@"
+            <h3>AutopartesRazor S.A - Recuperación de Contraseña</h3>
             <p>Has solicitado recuperar tu contraseña.</p>
             <p>Tu contraseña provisoria para ingresar es:</p>
             <h2>{newPassword}</h2>
@@ -65,9 +67,9 @@ public class ForgotPasswordModel : PageModel
 
         await _emailSender.SendEmailAsync(Email, subject, body);
 
-        Message = "Si el correo está registrado, recibirá un email con su nueva contraseña.";
+        Message = "Se envió un email con su nueva contraseña, revisa tu correo.";
 
-        return Page();
+        return Redirect("./Login");
     }
 }
 

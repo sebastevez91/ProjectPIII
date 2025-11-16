@@ -4,43 +4,68 @@
     ViewData["Title"] = "Registro";
 }
 
-<div class="container w-50">
-    <h2>Registro</h2>
-    <div>
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="ViewModels.Username">Usuario</label>
-                <input asp-for="ViewModels.Username" class="form-control" placeholder="Ingrese su nombre de usuario" />
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-11 col-md-9 col-lg-7">
+            <div class="card border-0 shadow">
+                <div class="card-body p-4 p-md-5">
+                    <h2 class="text-center mb-2">Crear Cuenta</h2>
+                    <p class="text-center text-muted mb-4">Completa el formulario para registrarte</p>
 
-                <span asp-validation-for="ViewModels.Username" class="text-danger"></span>
+                    <form method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="ViewModels.Username" class="form-label">Usuario</label>
+                                <input asp-for="ViewModels.Username" class="form-control"
+                                       placeholder="Ingrese su nombre de usuario" />
+                                <span asp-validation-for="ViewModels.Username" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="ViewModels.FullName" class="form-label">Nombre Completo</label>
+                                <input asp-for="ViewModels.FullName" class="form-control"
+                                       placeholder="Ej: Pedro Garnacho" />
+                                <span asp-validation-for="ViewModels.FullName" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="ViewModels.Email" class="form-label">Email</label>
+                            <input asp-for="ViewModels.Email" class="form-control"
+                                   placeholder="Ingrese su email" />
+                            <span asp-validation-for="ViewModels.Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="ViewModels.Password" class="form-label">Contraseña</label>
+                                <input asp-for="ViewModels.Password" class="form-control"
+                                       type="password" placeholder="Ingrese su contraseña" />
+                                <span asp-validation-for="ViewModels.Password" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="ViewModels.ConfirmPassword" class="form-label">Confirmar Contraseña</label>
+                                <input asp-for="ViewModels.ConfirmPassword" class="form-control"
+                                       type="password" placeholder="Confirmar contraseña" />
+                                <span asp-validation-for="ViewModels.ConfirmPassword" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-lg w-100 mt-3">
+                            Crear Cuenta
+                        </button>
+                    </form>
+
+                    <div class="text-center mt-3">
+                        <p class="text-muted mb-0">
+                            ¿Ya tienes cuenta? <a asp-page="/Account/Login">Inicia sesión aquí</a>
+                        </p>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="ViewModels.Email">Email</label>
-                <input asp-for="ViewModels.Email" class="form-control" placeholder="Ingrese su email" />
-
-                <span asp-validation-for="ViewModels.Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ViewModels.Password">Contraseña</label>
-                <input asp-for="ViewModels.Password" class="form-control" type="password" placeholder="Ingrese su contraseña" />
-
-                <span asp-validation-for="ViewModels.Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ViewModels.ConfirmPassword">Reingresa la contraseña</label>
-                <input asp-for="ViewModels.ConfirmPassword" class="form-control" type="password" placeholder="Vuelva a ingresar su contraseña" />
-
-                <span asp-validation-for="ViewModels.ConfirmPassword" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ViewModels.FullName">Nombre Completo</label>
-                <input asp-for="ViewModels.FullName" class="form-control" placeholder="Ej: Pedro Garnacho" />
-
-                <span asp-validation-for="ViewModels.FullName" class="text-danger"></span>
-            </div>
-
-            <button type="submit" class="btn btn-primary text-center m-2">Crear</button>
-        </form>
+        </div>
     </div>
 </div>

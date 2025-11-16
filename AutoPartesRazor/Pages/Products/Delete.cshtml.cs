@@ -26,7 +26,7 @@ public class DeleteModel : PageModel
             return NotFound();
         }
 
-        var product = await _context.Product.FirstOrDefaultAsync(m => m.id == id);
+        var product = await _context.Product.FirstOrDefaultAsync(m => m.Id == id);
 
         if (product == null)
         {

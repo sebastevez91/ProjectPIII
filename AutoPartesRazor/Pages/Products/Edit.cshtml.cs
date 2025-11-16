@@ -43,8 +43,8 @@ public class EditModel : PageModel
         Categories = _context.Category
             .Select(c => new SelectListItem
             {
-                Value = c.id.ToString(),
-                Text = c.name
+                Value = c.Id.ToString(),
+                Text = c.Name
             })
             .ToList();
 
@@ -52,19 +52,19 @@ public class EditModel : PageModel
         Brands = _context.Brand
             .Select(b => new SelectListItem
             {
-                Value = b.id.ToString(),
-                Text = b.name
+                Value = b.Id.ToString(),
+                Text = b.Name
             })
             .ToList();
 
-        var product = await _context.Product.FirstOrDefaultAsync(m => m.id == id);
+        var product = await _context.Product.FirstOrDefaultAsync(m => m.Id == id);
         if (product == null)
         {
             return NotFound();
         }
 
         Product = product;
-        PriceInteger = (int)Product.price;
+        PriceInteger = (int)Product.Price;
         return Page();
     }
 
@@ -76,7 +76,7 @@ public class EditModel : PageModel
         }
 
         _context.Attach(Product).State = EntityState.Modified;
-        Product.price = PriceInteger;
+        Product.Price = PriceInteger;
 
         try
         {
@@ -107,7 +107,7 @@ public class EditModel : PageModel
         }
         catch (DbUpdateConcurrencyException)
         {
-            if (!ProductExists(Product.id))
+            if (!ProductExists(Product.Id))
             {
                 return NotFound();
             }
@@ -122,6 +122,6 @@ public class EditModel : PageModel
 
     private bool ProductExists(int id)
     {
-        return (_context.Product?.Any(e => e.id == id)).GetValueOrDefault();
+        return (_context.Product?.Any(e => e.Id == id)).GetValueOrDefault();
     }
 }

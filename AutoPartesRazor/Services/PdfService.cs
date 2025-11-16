@@ -150,7 +150,7 @@ public class PdfService : IPdfService
                     var isAlternate = false;
                     foreach (var item in order.Items)
                     {
-                        var productName = item.Product?.name ?? $"Producto #{item.ProductId}";
+                        var productName = item.Product?.Name ?? $"Producto #{item.ProductId}";
                         var unitPrice = item.UnitPrice;
                         var totalPrice = unitPrice * item.Quantity;
 

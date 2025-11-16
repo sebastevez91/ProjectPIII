@@ -48,7 +48,7 @@ public class CreateModel : PageModel
             .Include(c => c.producto)
             .ToListAsync();
 
-        Subtotal = CartItems.Sum(c => (c.producto?.price ?? 0m) * c.quantity);
+        Subtotal = CartItems.Sum(c => (c.producto?.Price ?? 0m) * c.quantity);
         return Page();
     }
 
@@ -58,7 +58,7 @@ public class CreateModel : PageModel
             .Include(c => c.producto)
             .ToListAsync();
 
-        Subtotal = CartItems.Sum(c => (c.producto?.price ?? 0m) * c.quantity);
+        Subtotal = CartItems.Sum(c => (c.producto?.Price ?? 0m) * c.quantity);
 
         if (!ModelState.IsValid)
         {
@@ -80,9 +80,9 @@ public class CreateModel : PageModel
                 ModelState.AddModelError(string.Empty, $"Producto {item.productId} no encontrado.");
                 return Page();
             }
-            if (item.quantity > item.producto.stock)
+            if (item.quantity > item.producto.Stock)
             {
-                ModelState.AddModelError(string.Empty, $"No hay suficiente stock para {item.producto.name} (disponible: {item.producto.stock}).");
+                ModelState.AddModelError(string.Empty, $"No hay suficiente stock para {item.producto.Name} (disponible: {item.producto.Stock}).");
                 return Page();
             }
         }
@@ -110,12 +110,12 @@ public class CreateModel : PageModel
                     OrderId = order.id,
                     ProductId = item.productId,
                     Quantity = item.quantity,
-                    UnitPrice = item.producto?.price ?? 0m
+                    UnitPrice = item.producto?.Price ?? 0m
                 };
                 _context.OrderItem.Add(oi);
 
                 // Reducir stock
-                item.producto!.stock -= item.quantity;
+                item.producto!.Stock -= item.quantity;
                 _context.Product.Update(item.producto);
             }
 

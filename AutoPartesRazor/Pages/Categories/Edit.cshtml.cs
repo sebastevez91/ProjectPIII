@@ -26,7 +26,7 @@ public class EditModel : PageModel
             return NotFound();
         }
 
-        var category = await _context.Category.FirstOrDefaultAsync(m => m.id == id);
+        var category = await _context.Category.FirstOrDefaultAsync(m => m.Id == id);
         if (category == null)
         {
             return NotFound();
@@ -52,7 +52,7 @@ public class EditModel : PageModel
         }
         catch (DbUpdateConcurrencyException)
         {
-            if (!CategoryExists(Category.id))
+            if (!CategoryExists(Category.Id))
             {
                 return NotFound();
             }
@@ -67,6 +67,6 @@ public class EditModel : PageModel
 
     private bool CategoryExists(int id)
     {
-        return (_context.Category?.Any(e => e.id == id)).GetValueOrDefault();
+        return (_context.Category?.Any(e => e.Id == id)).GetValueOrDefault();
     }
 }

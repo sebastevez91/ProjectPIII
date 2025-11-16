@@ -13,12 +13,12 @@
             @foreach(var brand in Model)
             {
                 <tr>
-                    <td>@brand.name</td>
+                    <td>@brand.Name</td>
                     <td>
-                        <a asp-page="/Brands/Edit" asp-route-id="@brand.id" class="btn btn-success btn-sm me-2" title="Editar">
+                        <a asp-page="/Brands/Edit" asp-route-id="@brand.Id" class="btn btn-success btn-sm me-2" title="Editar">
                             <i class="fa-solid fa-pen-to-square"></i>
                         </a>
-                        <a asp-page="/Brands/Delete" asp-route-id="@brand.id" class="btn btn-danger btn-sm" title="Eliminar">
+                        <a asp-page="/Brands/Delete" asp-route-id="@brand.Id" class="btn btn-danger btn-sm" title="Eliminar">
                             <i class="fa-solid fa-trash"></i>
                         </a>
                     </td>

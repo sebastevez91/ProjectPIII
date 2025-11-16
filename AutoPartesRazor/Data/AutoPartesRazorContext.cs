@@ -18,15 +18,15 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
         // Relación Product - Brand
         modelBuilder.Entity<Product>()
             .HasOne(p => p.Brand)
-            .WithMany(b => b.products)
-            .HasForeignKey(b => b.idBrand)
+            .WithMany(b => b.Products)
+            .HasForeignKey(b => b.BrandId)
             .OnDelete(DeleteBehavior.Restrict); 
 
         // Relación Product - Category
         modelBuilder.Entity<Product>()
             .HasOne(p => p.Category)
-            .WithMany(c => c.products)
-            .HasForeignKey(p => p.idCategory)
+            .WithMany(c => c.Products)
+            .HasForeignKey(p => p.CategoryId)
             .OnDelete(DeleteBehavior.Restrict); 
 
         // Relación Order - OrderItem

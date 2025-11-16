@@ -23,7 +23,7 @@ public class AssignSuppliersModel : PageModel
     {
         Product = await _context.Product
             .Include(p => p.ProductSuppliers)
-            .FirstOrDefaultAsync(p => p.id == id);
+            .FirstOrDefaultAsync(p => p.Id == id);
 
         if (Product == null)
             return NotFound();
@@ -38,7 +38,7 @@ public class AssignSuppliersModel : PageModel
     {
         var product = await _context.Product
             .Include(p => p.ProductSuppliers)
-            .FirstOrDefaultAsync(p => p.id == id);
+            .FirstOrDefaultAsync(p => p.Id == id);
 
         if (product == null)
             return NotFound();

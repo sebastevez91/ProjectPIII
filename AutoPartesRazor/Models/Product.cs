@@ -6,48 +6,48 @@ namespace AutoPartesRazor.Models;
 
 public class Product
 {
-    public int id {  get; set; }
+    public int Id { get; set; }
 
-    [Required(ErrorMessage = "El nombre del producto es obligatorio.")]
-    [StringLength(50)]
-    [Display(Name = "Producto")]
-    public string name { get; set; }
+    [Required(ErrorMessage = "Nombre de producto obligatorio.")]
+    [StringLength(100)]
+    [Display(Name = "Nombre de producto")]
+    public string Name { get; set; }
 
-    [Required(ErrorMessage = "La decripción es obligatoria.")]
-    [StringLength(300)]
+    [StringLength(500)]
     [Display(Name = "Descripción")]
-    public string description { get; set; }
+    public string Description { get; set; } = "No se ingresó descripción.";
 
     [Display(Name = "Stock")]
-    public int stock { get; set; } = 0;
+    public int Stock { get; set; } = 0;
 
     [Required]
-    [Column("price", TypeName = "decimal(18, 2)")]
+    [Column(TypeName = "decimal(18, 2)")]
     [Display(Name = "Precio")]
-    public decimal price { get; set; }
+    public decimal Price { get; set; }
 
+    [Display(Name = "Imagen del producto")]
     public string? ImagePath { get; set; }
 
-    // Nivel mínimo de stock (para alertas)
     [Range(0, int.MaxValue)]
+    [Display(Name = "Minimo Stock")]
     public int MinimumStock { get; set; } = 5;
 
-    // Delete
+    // Soft Delete
     public bool IsDeleted { get; set; } = false;
     public DateTime? DeletedAt { get; set; }
 
-    // Clave Foreign Key
-    public int? idCategory { get; set; }
+    // Foreign Keys
+    [Display(Name = "Categoria")]
+    public int? CategoryId { get; set; }
 
-    // Navegación 
+    [Display(Name = "Marca")]
+    public int? BrandId { get; set; }
+
+    // Navigation Properties
     public Category? Category { get; set; }
-
-    // Clave Foreign Key
-    public int? idBrand { get; set; }
-
-    // Navegación 
     public Brand? Brand { get; set; }
-
-    // Navegación 
     public ICollection<ProductSupplier>? ProductSuppliers { get; set; }
+    public ICollection<OrderItem>? OrderItems { get; set; }
+    //public ICollection<CartItem>? CartItems { get; set; }
+    public ICollection<PurchaseOrder>? PurchaseOrders { get; set; }
 }

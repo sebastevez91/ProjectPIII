@@ -54,8 +54,8 @@ public class AdminDashboardModel : PageModel
 
         // Obtener productos con bajo stock (por ejemplo, stock menor o igual a 5)
         LowStockProducts = await _context.Product
-            .Where(p => !p.IsDeleted && p.stock <= 5)
-            .OrderBy(p => p.stock)
+            .Where(p => !p.IsDeleted && p.Stock <= 5)
+            .OrderBy(p => p.Stock)
             .ToListAsync();
 
     }
