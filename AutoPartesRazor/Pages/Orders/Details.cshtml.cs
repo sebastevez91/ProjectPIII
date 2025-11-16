@@ -24,10 +24,10 @@ public class DetailsModel : PageModel
     {
         if (id == null) return NotFound();
 
-        Order = await _context.Order
+        Order = await _context.Orders
             .Include(o => o.Items)
                 .ThenInclude(oi => oi.Product)
-            .FirstOrDefaultAsync(o => o.id == id.Value);
+            .FirstOrDefaultAsync(o => o.Id == id.Value);
 
         if (Order == null) return NotFound();
 

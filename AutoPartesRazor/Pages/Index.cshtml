@@ -5,18 +5,243 @@
     ViewData["CartCount"] = Model.CartCount;
 }
 
-<div class="text-center">
-
-    @if (User.Identity!.IsAuthenticated)
-    {
-        <h1 class="display-4 text-xl-center">Bienvenido @User.Identity.Name</h1>
-    }
-    else
-    {
-        <h1 class="text-xl-center">Bienvenidos a AutoPartes Razor</h1>
-    }
-
-    <div>
-        <img src="~/img/fondo-marcas-autopartes.png" alt="FondoMarcas" class="img-fluid" />
+<!-- Hero Section -->
+<div class="hero-section bg-primary bg-gradient text-white py-5">
+    <div class="container text-center py-4">
+        @if (User.Identity!.IsAuthenticated)
+        {
+            <h1 class="display-4 fw-bold mb-3">Bienvenido, @User.Identity.Name</h1>
+            <p class="lead">Encuentra las mejores autopartes para tu vehículo</p>
+        }
+        else
+        {
+            <h1 class="display-3 fw-bold mb-3">Bienvenidos a AutoPartes Razor</h1>
+            <p class="lead mb-4">Tu tienda de confianza para repuestos y accesorios automotrices</p>
+        }
     </div>
 </div>
+
+<!-- Imagen de marcas -->
+<div class="container my-5 text-center">
+    <img src="~/img/fondo-marcas-autopartes.png" alt="Marcas de autopartes" class="img-fluid rounded shadow" />
+</div>
+
+<!-- Características principales -->
+<div class="container my-5">
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm text-center p-4">
+                <div class="card-body">
+                    <div class="feature-icon bg-primary bg-gradient text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="bi bi-truck fs-1"></i>
+                    </div>
+                    <h4 class="fw-bold">Envío Rápido</h4>
+                    <p class="text-muted">Entrega a domicilio en 24-48 horas</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm text-center p-4">
+                <div class="card-body">
+                    <div class="feature-icon bg-success bg-gradient text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="bi bi-shield-check fs-1"></i>
+                    </div>
+                    <h4 class="fw-bold">Garantía de Calidad</h4>
+                    <p class="text-muted">Todas nuestras piezas están garantizadas</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm text-center p-4">
+                <div class="card-body">
+                    <div class="feature-icon bg-info bg-gradient text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="bi bi-headset fs-1"></i>
+                    </div>
+                    <h4 class="fw-bold">Soporte 24/7</h4>
+                    <p class="text-muted">Asesoría técnica siempre disponible</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Métodos de pago -->
+<div class="bg-light py-5">
+    <div class="container">
+        <h2 class="text-center fw-bold mb-4">Métodos de Pago Aceptados</h2>
+        <div class="row g-4 justify-content-center">
+            <div class="col-6 col-md-3 col-lg-2">
+                <div class="card h-100 border-0 shadow-sm text-center p-3 hover-card">
+                    <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                        <i class="bi bi-credit-card text-primary" style="font-size: 3rem;"></i>
+                        <p class="mt-2 mb-0 fw-semibold small">Tarjetas</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3 col-lg-2">
+                <div class="card h-100 border-0 shadow-sm text-center p-3 hover-card">
+                    <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                        <i class="bi bi-paypal text-primary" style="font-size: 3rem;"></i>
+                        <p class="mt-2 mb-0 fw-semibold small">PayPal</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3 col-lg-2">
+                <div class="card h-100 border-0 shadow-sm text-center p-3 hover-card">
+                    <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                        <i class="bi bi-bank text-primary" style="font-size: 3rem;"></i>
+                        <p class="mt-2 mb-0 fw-semibold small">Transferencia</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3 col-lg-2">
+                <div class="card h-100 border-0 shadow-sm text-center p-3 hover-card">
+                    <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                        <i class="bi bi-cash-coin text-primary" style="font-size: 3rem;"></i>
+                        <p class="mt-2 mb-0 fw-semibold small">Efectivo</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3 col-lg-2">
+                <div class="card h-100 border-0 shadow-sm text-center p-3 hover-card">
+                    <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                        <i class="bi bi-wallet2 text-primary" style="font-size: 3rem;"></i>
+                        <p class="mt-2 mb-0 fw-semibold small">Mercado Pago</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Reseñas de clientes -->
+<div class="container my-5 py-4">
+    <h2 class="text-center fw-bold mb-4">Lo Que Dicen Nuestros Clientes</h2>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <div class="mb-3">
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                    </div>
+                    <p class="text-muted">"Excelente servicio y calidad. Las piezas llegaron en perfecto estado y rápido. Totalmente recomendado."</p>
+                    <div class="d-flex align-items-center mt-3">
+                        <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center text-white fw-bold" style="width: 40px; height: 40px;">
+                            JM
+                        </div>
+                        <div class="ms-3">
+                            <h6 class="mb-0 fw-bold">Juan Martínez</h6>
+                            <small class="text-muted">Cliente verificado</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <div class="mb-3">
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                    </div>
+                    <p class="text-muted">"Precios competitivos y atención personalizada. Encontré justo lo que necesitaba para mi auto."</p>
+                    <div class="d-flex align-items-center mt-3">
+                        <div class="bg-success rounded-circle d-flex align-items-center justify-content-center text-white fw-bold" style="width: 40px; height: 40px;">
+                            ML
+                        </div>
+                        <div class="ms-3">
+                            <h6 class="mb-0 fw-bold">María López</h6>
+                            <small class="text-muted">Cliente verificado</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <div class="mb-3">
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-half text-warning"></i>
+                    </div>
+                    <p class="text-muted">"Gran variedad de productos y muy buena asesoría técnica. El equipo sabe lo que hace."</p>
+                    <div class="d-flex align-items-center mt-3">
+                        <div class="bg-info rounded-circle d-flex align-items-center justify-content-center text-white fw-bold" style="width: 40px; height: 40px;">
+                            CR
+                        </div>
+                        <div class="ms-3">
+                            <h6 class="mb-0 fw-bold">Carlos Rodríguez</h6>
+                            <small class="text-muted">Cliente verificado</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Redes sociales -->
+<div class="bg-dark text-white py-5">
+    <div class="container text-center">
+        <h2 class="fw-bold mb-4">Síguenos en Redes Sociales</h2>
+        <p class="lead mb-4">Mantente al día con nuestras ofertas y novedades</p>
+        <div class="d-flex gap-3 justify-content-center flex-wrap">
+            <a href="#" class="btn btn-outline-light btn-lg rounded-circle social-btn" style="width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;">
+                <i class="bi bi-facebook fs-4"></i>
+            </a>
+            <a href="#" class="btn btn-outline-light btn-lg rounded-circle social-btn" style="width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;">
+                <i class="bi bi-instagram fs-4"></i>
+            </a>
+            <a href="#" class="btn btn-outline-light btn-lg rounded-circle social-btn" style="width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;">
+                <i class="bi bi-twitter fs-4"></i>
+            </a>
+            <a href="#" class="btn btn-outline-light btn-lg rounded-circle social-btn" style="width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;">
+                <i class="bi bi-whatsapp fs-4"></i>
+            </a>
+            <a href="#" class="btn btn-outline-light btn-lg rounded-circle social-btn" style="width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;">
+                <i class="bi bi-youtube fs-4"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- CTA Final -->
+<div class="container my-5 py-4 text-center">
+    <div class="bg-primary bg-gradient text-white rounded-3 p-5 shadow-lg">
+        <h2 class="fw-bold mb-3">¿Listo para encontrar tu repuesto?</h2>
+        <p class="lead mb-4">Explora nuestro catálogo completo de autopartes</p>
+        <a asp-page="/Products/Index" class="btn btn-light btn-lg px-5">
+            Ver Catálogo
+        </a>
+    </div>
+</div>
+
+<style>
+    .hover-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .hover-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+        }
+
+    .social-btn {
+        transition: transform 0.3s ease, background-color 0.3s ease;
+    }
+
+        .social-btn:hover {
+            transform: scale(1.1);
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+</style>

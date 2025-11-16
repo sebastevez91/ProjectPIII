@@ -25,12 +25,12 @@ namespace AutoPartesRazor.Pages.Brands
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid || _context.Brand == null || Brand == null)
+            if (!ModelState.IsValid || _context.Brands == null || Brand == null)
             {
                 return Page();
             }
 
-            _context.Brand.Add(Brand);
+            _context.Brands.Add(Brand);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("/Adminitration/AdminDashboard");

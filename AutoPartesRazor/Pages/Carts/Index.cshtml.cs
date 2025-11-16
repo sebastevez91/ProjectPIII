@@ -25,17 +25,17 @@ namespace AutoPartesRazor.Pages.Carts
         public async Task OnGetAsync()
         {
             // Contar el número de items únicos en el carrito
-            var count = await _context.Cart.CountAsync();
+            var count = await _context.Carts.CountAsync();
             CartCount = count;
 
-            if (_context.Cart != null)
+            if (_context.Carts != null)
             {
-                Cart = await _context.Cart
-                .Include(c => c.producto).ToListAsync();
+                Cart = await _context.Carts
+                .Include(c => c.Product).ToListAsync();
             }
 
             // Calcular el número total de productos en el carrito
-            int total = Cart.Sum(item => item.quantity);
+            int total = Cart.Sum(item => item.Quantity);
         }
     }
 }

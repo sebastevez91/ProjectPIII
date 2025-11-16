@@ -19,7 +19,7 @@ public class DeleteModel : PageModel
 
     public async Task<IActionResult> OnGetAsync(int id)
     {
-        Supplier = await _context.Supplier.FindAsync(id);
+        Supplier = await _context.Suppliers.FindAsync(id);
 
         if (Supplier == null)
             return NotFound();
@@ -29,12 +29,12 @@ public class DeleteModel : PageModel
 
     public async Task<IActionResult> OnPostAsync(int id)
     {
-        var supplier = await _context.Supplier.FindAsync(id);
+        var supplier = await _context.Suppliers.FindAsync(id);
 
         if (supplier == null)
             return NotFound();
 
-        _context.Supplier.Remove(supplier);
+        _context.Suppliers.Remove(supplier);
         await _context.SaveChangesAsync();
 
         return RedirectToPage("Index");

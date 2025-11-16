@@ -125,7 +125,6 @@
                 <thead class="table-danger">
                     <tr>
                         <th>Producto</th>
-                        <th>Descripción</th>
                         <th>Stock</th>
                         <th></th>
                     </tr>
@@ -134,11 +133,10 @@
                     @foreach (var p in Model.LowStockProducts)
                     {
                         <tr>
-                            <td>@p.name</td>
-                            <td>@p.description</td>
-                            <td><strong>@p.stock</strong></td>
+                            <td>@p.Name</td>
+                            <td><strong>@p.Stock</strong></td>
                             <td>
-                                <a asp-page="/PurchaseOrders/Create" asp-route-productId="@p.id"
+                                <a asp-page="/PurchaseOrders/Create" asp-route-productId="@p.Id"
                                    class="btn btn-success btn-sm">
                                     Crear Orden de Pedido
                                 </a>

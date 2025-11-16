@@ -26,7 +26,7 @@ public class IndexModel : PageModel
 
     public async Task OnGetAsync()
     {
-        var query = _context.Notification
+        var query = _context.Notifications
             .Include(n => n.User)
             .AsQueryable();
 
@@ -44,13 +44,13 @@ public class IndexModel : PageModel
             .ToListAsync();
 
         // Contadores
-        UnreadCount = await _context.Notification.CountAsync(n => !n.IsRead);
-        TotalCount = await _context.Notification.CountAsync();
+        UnreadCount = await _context.Notifications.CountAsync(n => !n.IsRead);
+        TotalCount = await _context.Notifications.CountAsync();
     }
 
     public async Task<IActionResult> OnPostMarkAsReadAsync(int id)
     {
-        var notification = await _context.Notification.FindAsync(id);
+        var notification = await _context.Notifications.FindAsync(id);
         if (notification == null)
         {
             return NotFound();
@@ -65,7 +65,7 @@ public class IndexModel : PageModel
 
     public async Task<IActionResult> OnPostMarkAllAsReadAsync()
     {
-        var unreadNotifications = await _context.Notification
+        var unreadNotifications = await _context.Notifications
             .Where(n => !n.IsRead)
             .ToListAsync();
 
@@ -82,13 +82,13 @@ public class IndexModel : PageModel
 
     public async Task<IActionResult> OnPostDeleteAsync(int id)
     {
-        var notification = await _context.Notification.FindAsync(id);
+        var notification = await _context.Notifications.FindAsync(id);
         if (notification == null)
         {
             return NotFound();
         }
 
-        _context.Notification.Remove(notification);
+        _context.Notifications.Remove(notification);
         await _context.SaveChangesAsync();
 
         TempData["SuccessMessage"] = "Notificación eliminada.";

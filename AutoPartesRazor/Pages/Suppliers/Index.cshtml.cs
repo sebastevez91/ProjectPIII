@@ -18,6 +18,6 @@ public class IndexModel : PageModel
 
     public async Task OnGetAsync()
     {
-        Suppliers = await _context.Supplier.ToListAsync();
+        Suppliers = await _context.Suppliers.ToListAsync();
     }
 }

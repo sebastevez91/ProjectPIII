@@ -19,7 +19,7 @@ public class EditModel : PageModel
 
     public async Task<IActionResult> OnGetAsync(int id)
     {
-        Supplier = await _context.Supplier.FindAsync(id);
+        Supplier = await _context.Suppliers.FindAsync(id);
 
         if (Supplier == null)
             return NotFound();
@@ -32,7 +32,7 @@ public class EditModel : PageModel
         if (!ModelState.IsValid)
             return Page();
 
-        _context.Supplier.Update(Supplier);
+        _context.Suppliers.Update(Supplier);
         await _context.SaveChangesAsync();
         return RedirectToPage("Index");
     }
