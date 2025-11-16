@@ -67,6 +67,38 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
             .HasForeignKey(ps => ps.SupplierId);
 
         // ============================================
+        // RELACIONES MÓDULO RECLAMOS
+        // ============================================
+
+        // Relación Reclamo - Cliente
+        modelBuilder.Entity<Claim>()
+            .HasOne(c => c.Cliente)
+            .WithMany()
+            .HasForeignKey(c => c.ClienteId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // Relación Reclamo - Administrador Asignado
+        modelBuilder.Entity<Claim>()
+            .HasOne(c => c.AdministradorAsignado)
+            .WithMany()
+            .HasForeignKey(c => c.AdministradorAsignadoId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // Relación MensajeReclamo - Reclamo
+        modelBuilder.Entity<MessageClaim>()
+            .HasOne(m => m.Reclamo)
+            .WithMany(r => r.Mensajes)
+            .HasForeignKey(m => m.ReclamoId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        // Relación MensajeReclamo - Usuario
+        modelBuilder.Entity<MessageClaim>()
+            .HasOne(m => m.Usuario)
+            .WithMany()
+            .HasForeignKey(m => m.UsuarioId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // ============================================
         // QUERY FILTERS - SOFT DELETE
         // ============================================
         // Estos filtros se aplican automáticamente a todas las consultas
@@ -98,6 +130,35 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
 
         modelBuilder.Entity<Order>()
             .HasIndex(o => o.IsDeleted);
+
+        // ============================================
+        // ÍNDICES MODULO RECLAMOS
+        // ============================================
+        modelBuilder.Entity<Claim>()
+            .HasIndex(r => r.NumeroTicket)
+            .IsUnique();
+
+        modelBuilder.Entity<Claim>()
+            .HasIndex(r => r.ClienteId);
+
+        modelBuilder.Entity<Claim>()
+            .HasIndex(r => r.Estado);
+
+        modelBuilder.Entity<Claim>()
+            .HasIndex(r => r.NivelUrgencia);
+
+        modelBuilder.Entity<Claim>()
+            .HasIndex(r => r.FechaCreacion);
+
+        modelBuilder.Entity<Claim>()
+            .HasIndex(r => new { r.Estado, r.NivelUrgencia, r.FechaCreacion });
+
+        modelBuilder.Entity<MessageClaim>()
+            .HasIndex(m => m.ReclamoId);
+
+        modelBuilder.Entity<MessageClaim>()
+            .HasIndex(m => m.FechaEnvio);
+
     }
 
     public DbSet<AutoPartesRazor.Models.Product> Product { get; set; }
@@ -111,6 +172,8 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
     public DbSet<AutoPartesRazor.Models.Supplier> Supplier { get; set; }
     public DbSet<AutoPartesRazor.Models.ProductSupplier> ProductSupplier { get; set; }
     public DbSet<AutoPartesRazor.Models.PurchaseOrder> PurchaseOrder { get; set; }
+    public DbSet<AutoPartesRazor.Models.Claim> Reclamo { get; set; }
+    public DbSet<AutoPartesRazor.Models.MessageClaim> MensajeReclamo { get; set; }
 
     // ============================================
     // MÉTODO PARA GUARDAR CON SOFT DELETE AUTOMÁTICO

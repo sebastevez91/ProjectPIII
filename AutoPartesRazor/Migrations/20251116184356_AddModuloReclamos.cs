@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AutoPartesRazor.Migrations
 {
-    public partial class Actualizacion : Migration
+    public partial class AddModuloReclamos : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -251,6 +251,40 @@ namespace AutoPartesRazor.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Reclamo",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NumeroTicket = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Asunto = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Descripcion = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
+                    NivelUrgencia = table.Column<int>(type: "int", nullable: false),
+                    Estado = table.Column<int>(type: "int", nullable: false),
+                    FechaCreacion = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    FechaActualizacion = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    FechaCierre = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ClienteId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    AdministradorAsignadoId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reclamo", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Reclamo_AspNetUsers_AdministradorAsignadoId",
+                        column: x => x.AdministradorAsignadoId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Reclamo_AspNetUsers_ClienteId",
+                        column: x => x.ClienteId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Product",
                 columns: table => new
                 {
@@ -282,6 +316,37 @@ namespace AutoPartesRazor.Migrations
                         principalTable: "Category",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MensajeReclamo",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ReclamoId = table.Column<int>(type: "int", nullable: false),
+                    UsuarioId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Mensaje = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
+                    FechaEnvio = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EsAdministrador = table.Column<bool>(type: "bit", nullable: false),
+                    Leido = table.Column<bool>(type: "bit", nullable: false),
+                    FechaLectura = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MensajeReclamo", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MensajeReclamo_AspNetUsers_UsuarioId",
+                        column: x => x.UsuarioId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_MensajeReclamo_Reclamo_ReclamoId",
+                        column: x => x.ReclamoId,
+                        principalTable: "Reclamo",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -367,6 +432,7 @@ namespace AutoPartesRazor.Migrations
                     ProductId = table.Column<int>(type: "int", nullable: false),
                     SupplierId = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -441,6 +507,21 @@ namespace AutoPartesRazor.Migrations
                 column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
+                name: "IX_MensajeReclamo_FechaEnvio",
+                table: "MensajeReclamo",
+                column: "FechaEnvio");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MensajeReclamo_ReclamoId",
+                table: "MensajeReclamo",
+                column: "ReclamoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MensajeReclamo_UsuarioId",
+                table: "MensajeReclamo",
+                column: "UsuarioId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Notification_UserId",
                 table: "Notification",
                 column: "UserId");
@@ -489,6 +570,42 @@ namespace AutoPartesRazor.Migrations
                 name: "IX_PurchaseOrder_SupplierId",
                 table: "PurchaseOrder",
                 column: "SupplierId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reclamo_AdministradorAsignadoId",
+                table: "Reclamo",
+                column: "AdministradorAsignadoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reclamo_ClienteId",
+                table: "Reclamo",
+                column: "ClienteId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reclamo_Estado",
+                table: "Reclamo",
+                column: "Estado");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reclamo_Estado_NivelUrgencia_FechaCreacion",
+                table: "Reclamo",
+                columns: new[] { "Estado", "NivelUrgencia", "FechaCreacion" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reclamo_FechaCreacion",
+                table: "Reclamo",
+                column: "FechaCreacion");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reclamo_NivelUrgencia",
+                table: "Reclamo",
+                column: "NivelUrgencia");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reclamo_NumeroTicket",
+                table: "Reclamo",
+                column: "NumeroTicket",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -512,6 +629,9 @@ namespace AutoPartesRazor.Migrations
                 name: "Cart");
 
             migrationBuilder.DropTable(
+                name: "MensajeReclamo");
+
+            migrationBuilder.DropTable(
                 name: "Notification");
 
             migrationBuilder.DropTable(
@@ -527,7 +647,7 @@ namespace AutoPartesRazor.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Reclamo");
 
             migrationBuilder.DropTable(
                 name: "Order");
@@ -537,6 +657,9 @@ namespace AutoPartesRazor.Migrations
 
             migrationBuilder.DropTable(
                 name: "Supplier");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Brand");
