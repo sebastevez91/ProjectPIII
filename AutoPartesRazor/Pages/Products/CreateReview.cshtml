@@ -1,4 +1,175 @@
-﻿@page
+﻿@page "{productId:int}"
 @model AutoPartesRazor.Pages.Products.CreateReviewModel
 @{
+    ViewData["Title"] = "Escribir reseña";
+    ViewData["CartCount"] = Model.CartCount;
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-page="/Products/Index">Productos</a></li>
+                    <li class="breadcrumb-item"><a asp-page="/Products/Details" asp-route-id="@Model.Product.id">@Model.Product.name</a></li>
+                    <li class="breadcrumb-item active">Escribir reseña</li>
+                </ol>
+            </nav>
+
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fa-solid fa-star me-2"></i>
+                        Califica este producto
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <!-- Información del producto -->
+                    <div class="d-flex align-items-center mb-4 p-3 bg-light rounded">
+                        <img src="@(string.IsNullOrEmpty(Model.Product.ImagePath) ? "/img/logoAzul.jpg" : Model.Product.ImagePath)"
+                             class="me-3"
+                             style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;"
+                             onerror="this.src='/img/logoAzul.jpg'" />
+                        <div>
+                            <h5 class="mb-1">@Model.Product.name</h5>
+                            <small class="text-muted">@Model.Product.Brand?.name</small>
+                        </div>
+                    </div>
+
+                    <form method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                        <!-- Calificación por estrellas -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">
+                                Calificación <span class="text-danger">*</span>
+                            </label>
+                            <div class="star-rating">
+                                @for (int i = 5; i >= 1; i--)
+                                {
+                                    <input type="radio"
+                                           id="star@(i)"
+                                           name="Review.Rating"
+                                           value="@i"
+                                           required />
+                                    <label for="star@(i)" class="star">
+                                        <i class="fa-solid fa-star"></i>
+                                    </label>
+                                }
+                            </div>
+                            <span asp-validation-for="Review.Rating" class="text-danger"></span>
+                            <div id="rating-text" class="small text-muted mt-2"></div>
+                        </div>
+
+                        <!-- Comentario -->
+                        <div class="mb-4">
+                            <label asp-for="Review.Comment" class="form-label fw-bold">
+                                Comentario (opcional)
+                            </label>
+                            <textarea asp-for="Review.Comment"
+                                      class="form-control"
+                                      rows="5"
+                                      maxlength="500"
+                                      placeholder="Cuéntanos tu experiencia con este producto..."></textarea>
+                            <span asp-validation-for="Review.Comment" class="text-danger"></span>
+                            <div class="form-text">
+                                <span id="char-count">0</span>/500 caracteres
+                            </div>
+                        </div>
+
+                        <!-- Botones -->
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-success">
+                                <i class="fa-solid fa-paper-plane me-1"></i>
+                                Publicar reseña
+                            </button>
+                            <a asp-page="/Products/Details"
+                               asp-route-id="@Model.Product.id"
+                               class="btn btn-outline-secondary">
+                                Cancelar
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Consejos -->
+            <div class="card mt-3 border-0 bg-light">
+                <div class="card-body">
+                    <h6 class="mb-3">
+                        <i class="fa-solid fa-lightbulb text-warning me-2"></i>
+                        Consejos para escribir una buena reseña
+                    </h6>
+                    <ul class="small mb-0">
+                        <li>Sé específico sobre tu experiencia con el producto</li>
+                        <li>Menciona la calidad, durabilidad y rendimiento</li>
+                        <li>Incluye detalles sobre la instalación si aplica</li>
+                        <li>Sé honesto y constructivo</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        /* Sistema de estrellas */
+        .star-rating {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+            gap: 5px;
+            font-size: 2rem;
+        }
+
+            .star-rating input[type="radio"] {
+                display: none;
+            }
+
+            .star-rating label {
+                cursor: pointer;
+                color: #ddd;
+                transition: color 0.2s;
+            }
+
+                .star-rating input[type="radio"]:checked ~ label,
+                .star-rating label:hover,
+                .star-rating label:hover ~ label {
+                    color: #ffc107;
+                }
+    </style>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        // Actualizar contador de caracteres
+        const textarea = document.querySelector('textarea[name="Review.Comment"]');
+        const charCount = document.getElementById('char-count');
+
+        if (textarea && charCount) {
+            textarea.addEventListener('input', function() {
+                charCount.textContent = this.value.length;
+            });
+        }
+
+        // Texto descriptivo de la calificación
+        const ratingInputs = document.querySelectorAll('.star-rating input[type="radio"]');
+        const ratingText = document.getElementById('rating-text');
+
+        const ratingDescriptions = {
+            1: '⭐ Muy malo - No lo recomiendo',
+            2: '⭐⭐ Malo - Necesita mejoras',
+            3: '⭐⭐⭐ Regular - Cumple lo básico',
+            4: '⭐⭐⭐⭐ Bueno - Lo recomiendo',
+            5: '⭐⭐⭐⭐⭐ Excelente - Altamente recomendado'
+        };
+
+        ratingInputs.forEach(input => {
+            input.addEventListener('change', function() {
+                ratingText.textContent = ratingDescriptions[this.value];
+            });
+        });
+    </script>
 }

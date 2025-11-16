@@ -1,0 +1,198 @@
+﻿@page "{productId:int}"
+@model AutoPartesRazor.Pages.Products.ReviewsModel
+@{
+    ViewData["Title"] = $"Reseñas - {Model.Product.name}";
+    ViewData["CartCount"] = Model.CartCount;
+}
+
+<div class="container py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-page="/Products/Index">Productos</a></li>
+            <li class="breadcrumb-item"><a asp-page="/Products/Details" asp-route-id="@Model.Product.id">@Model.Product.name</a></li>
+            <li class="breadcrumb-item active">Reseñas</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <!-- Columna izquierda: Información del producto -->
+        <div class="col-lg-4 mb-4">
+            <div class="card sticky-top" style="top: 20px;">
+                <img src="@(string.IsNullOrEmpty(Model.Product.ImagePath) ? "/img/logoAzul.jpg" : Model.Product.ImagePath)" 
+                     class="card-img-top" 
+                     style="height: 250px; object-fit: cover;"
+                     onerror="this.src='/img/logoAzul.jpg'" />
+                <div class="card-body">
+                    <h5 class="card-title">@Model.Product.name</h5>
+                    <p class="text-muted mb-2">@Model.Product.Brand?.name</p>
+                    <div class="mb-3">
+                        <div class="d-flex align-items-center mb-2">
+                            <h3 class="mb-0 me-2">@Model.Product.AverageRating.ToString("0.0")</h3>
+                            <div class="text-warning fs-5">
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    <i class="fa-solid fa-star@(i <= Model.Product.AverageRating ? "" : "-o")"></i>
+                                }
+                            </div>
+                        </div>
+                        <p class="text-muted small mb-0">Basado en @Model.Product.TotalReviews reseña(s)</p>
+                        <p class="text-success small mb-0">@Model.Product.PositiveReviewsPercentage% positivas</p>
+                    </div>
+
+                    @if (!Model.UserHasReviewed && User.Identity?.IsAuthenticated == true)
+                    {
+                        <a asp-page="/Products/CreateReview" asp-route-productId="@Model.Product.id" 
+                           class="btn btn-primary w-100">
+                            <i class="fa-solid fa-star me-1"></i>
+                            Escribir reseña
+                        </a>
+                    }
+                    else if (Model.UserHasReviewed)
+                    {
+                        <div class="alert alert-success mb-0">
+                            <i class="fa-solid fa-check me-1"></i>
+                            Ya has reseñado este producto
+                        </div>
+                    }
+                    else
+                    {
+                        <a asp-page="/Account/Login" class="btn btn-outline-primary w-100">
+                            Inicia sesión para reseñar
+                        </a>
+                    }
+
+                    <hr />
+                    <a asp-page="/Products/Details" asp-route-id="@Model.Product.id" 
+                       class="btn btn-outline-secondary w-100">
+                        <i class="fa-solid fa-arrow-left me-1"></i>
+                        Volver al producto
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Columna derecha: Reseñas -->
+        <div class="col-lg-8">
+            <h3 class="mb-4">
+                <i class="fa-solid fa-comments me-2"></i>
+                Reseñas de clientes (@Model.Reviews.Count)
+            </h3>
+
+            <!-- Filtros -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <form method="get">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <select name="filterRating" class="form-select" onchange="this.form.submit()">
+                                    <option value="">Todas las calificaciones</option>
+                                    <option value="5" selected="@(Model.FilterRating == 5)">★★★★★ (5 estrellas)</option>
+                                    <option value="4" selected="@(Model.FilterRating == 4)">★★★★☆ (4 estrellas)</option>
+                                    <option value="3" selected="@(Model.FilterRating == 3)">★★★☆☆ (3 estrellas)</option>
+                                    <option value="2" selected="@(Model.FilterRating == 2)">★★☆☆☆ (2 estrellas)</option>
+                                    <option value="1" selected="@(Model.FilterRating == 1)">★☆☆☆☆ (1 estrella)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <select name="sortBy" class="form-select" onchange="this.form.submit()">
+                                    <option value="recent" selected="@(Model.SortBy == "recent")">Más recientes</option>
+                                    <option value="helpful" selected="@(Model.SortBy == "helpful")">Más útiles</option>
+                                    <option value="highest" selected="@(Model.SortBy == "highest")">Mayor calificación</option>
+                                    <option value="lowest" selected="@(Model.SortBy == "lowest")">Menor calificación</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                @if (Model.FilterRating.HasValue || Model.SortBy != "recent")
+                                {
+                                    <a asp-page="/Products/Reviews" asp-route-productId="@Model.Product.id" 
+                                       class="btn btn-outline-secondary w-100">
+                                        Limpiar filtros
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Lista de reseñas -->
+            @if (!Model.Reviews.Any())
+            {
+                <div class="alert alert-info">
+                    <i class="fa-solid fa-info-circle me-2"></i>
+                    No hay reseñas que coincidan con los filtros seleccionados.
+                </div>
+            }
+            else
+            {
+                @foreach (var review in Model.Reviews)
+                {
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <div>
+                                    <div class="text-warning mb-1">
+                                        @for (int i = 1; i <= 5; i++)
+                                        {
+                                            <i class="fa-solid fa-star@(i <= review.Rating ? "" : "-o")"></i>
+                                        }
+                                    </div>
+                                    <h6 class="mb-0">
+                                        @review.User?.UserName
+                                        <span class="badge bg-primary ms-2">Compra Verificada</span>
+                                    </h6>
+                                    <small class="text-muted">@review.CreatedAt.ToString("dd/MM/yyyy")</small>
+                                </div>
+                            </div>
+
+                            @if (!string.IsNullOrEmpty(review.Comment))
+                            {
+                                <p class="mb-3">@review.Comment</p>
+                            }
+
+                            <!-- Botones de utilidad -->
+                            <div class="d-flex align-items-center gap-3">
+                                <small class="text-muted">¿Te resultó útil esta reseña?</small>
+                                
+                                @if (User.Identity?.IsAuthenticated == true)
+                                {
+                                    var userVote = Model.UserVotes.FirstOrDefault(v => v.ReviewId == review.Id);
+                                    
+                                    <form method="post" class="d-inline">
+                                        <input type="hidden" name="reviewId" value="@review.Id" />
+                                        <input type="hidden" name="isHelpful" value="true" />
+                                        <button type="submit" 
+                                                asp-page-handler="Vote"
+                                                class="btn btn-sm @(userVote?.IsHelpful == true ? "btn-success" : "btn-outline-success")"
+                                                @(userVote != null ? "disabled" : "")>
+                                            <i class="fa-solid fa-thumbs-up me-1"></i>
+                                            Sí (@review.HelpfulCount)
+                                        </button>
+                                    </form>
+
+                                    <form method="post" class="d-inline">
+                                        <input type="hidden" name="reviewId" value="@review.Id" />
+                                        <input type="hidden" name="isHelpful" value="false" />
+                                        <button type="submit" 
+                                                asp-page-handler="Vote"
+                                                class="btn btn-sm @(userVote?.IsHelpful == false ? "btn-danger" : "btn-outline-danger")"
+                                                @(userVote != null ? "disabled" : "")>
+                                            <i class="fa-solid fa-thumbs-down me-1"></i>
+                                            No (@review.NotHelpfulCount)
+                                        </button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <span class="text-muted small">
+                                        👍 @review.HelpfulCount | 👎 @review.NotHelpfulCount
+                                    </span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
