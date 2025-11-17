@@ -1,9 +1,9 @@
 using AutoPartesRazor.Interfaces;
 using AutoPartesRazor.Models;
+using AutoPartesRazor.Models.Enum;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using AutoPartesRazor.Models.Enum;
 
 namespace AutoPartesRazor.Pages.Admin.Reclamos;
 
@@ -49,7 +49,7 @@ public class IndexModel : PageModel
         if (!string.IsNullOrWhiteSpace(buscar))
         {
             TextoBusqueda = buscar;
-            Reclamos = Reclamos.Where(r => 
+            Reclamos = Reclamos.Where(r =>
                 r.NumeroTicket.Contains(buscar, StringComparison.OrdinalIgnoreCase) ||
                 r.Asunto.Contains(buscar, StringComparison.OrdinalIgnoreCase) ||
                 (r.Cliente != null && r.Cliente.FullName.Contains(buscar, StringComparison.OrdinalIgnoreCase))

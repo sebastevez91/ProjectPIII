@@ -1,5 +1,7 @@
 ﻿using AutoPartesRazor.Models;
 using AutoPartesRazor.Models.Enum;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.ComponentModel.DataAnnotations;
 
 namespace AutoPartesRazor.ViewModels
@@ -21,12 +23,14 @@ namespace AutoPartesRazor.ViewModels
         public LevelUrgency NivelUrgencia { get; set; } = LevelUrgency.Media;
     }
 
-    /// <summary>
     /// ViewModel para mostrar detalles de un reclamo
-    /// </summary>
     public class ReclamoDetalleViewModel
     {
+        
+        [ValidateNever]
         public Claim Reclamo { get; set; } = new Claim();
+
+        [ValidateNever]
         public List<MessageClaim> Mensajes { get; set; } = new List<MessageClaim>();
 
         [Required(ErrorMessage = "El mensaje no puede estar vacío.")]
@@ -38,7 +42,7 @@ namespace AutoPartesRazor.ViewModels
         public bool PuedeResponder { get; set; }
     }
 
-   
+
     /// ViewModel para gestionar un reclamo (administrador)
 
     public class GestionarReclamoViewModel
