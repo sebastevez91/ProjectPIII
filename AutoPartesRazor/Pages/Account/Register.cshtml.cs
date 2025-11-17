@@ -1,11 +1,9 @@
 using AutoPartesRazor.Data;
 using AutoPartesRazor.Interfaces;
 using AutoPartesRazor.Models;
-using AutoPartesRazor.Services;
 using AutoPartesRazor.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace AutoPartesRazor.Pages.Account
 {

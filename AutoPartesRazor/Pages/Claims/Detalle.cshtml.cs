@@ -1,28 +1,28 @@
 using AutoPartesRazor.Interfaces;
 using AutoPartesRazor.Models;
+using AutoPartesRazor.Models.Enum;
 using AutoPartesRazor.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using AutoPartesRazor.Models.Enum;
 
-namespace AutoPartesRazor.Pages.Reclamos;
+namespace AutoPartesRazor.Pages.Claims;
 
 [Authorize]
 public class DetalleModel : PageModel
 {
-    private readonly IClaimService _reclamoService;
+    private readonly IClaimService _reclamoService;  // ✅ IClaimService
     private readonly UserManager<User> _userManager;
 
-    public DetalleModel(IClaimService reclamoService, UserManager<User> userManager)
+    public DetalleModel(IClaimService reclamoService, UserManager<User> userManager)  // ✅ IClaimService
     {
         _reclamoService = reclamoService;
         _userManager = userManager;
     }
 
     [BindProperty]
-    public ReclamoDetalleViewModel ViewModel { get; set; } = new ReclamoDetalleViewModel();
+    public ReclamoDetalleViewModel ViewModel { get; set; } = new ReclamoDetalleViewModel();  // ✅ ReclamoDetalleViewModel
 
     [TempData]
     public string? MensajeExito { get; set; }
@@ -69,8 +69,25 @@ public class DetalleModel : PageModel
         return Page();
     }
 
-    public async Task<IActionResult> OnPostAsync(int id)
+    public async Task<IActionResult> OnPostAsync()
     {
+        // Obtener el ID de la ruta
+        int id = 0;
+        if (RouteData.Values.ContainsKey("id"))
+        {
+            id = Convert.ToInt32(RouteData.Values["id"]);
+        }
+
+        // LIMPIAR ERRORES DE VALIDACIÓN QUE NO NECESITAMOS
+        var keysToRemove = ModelState.Keys
+            .Where(k => k.StartsWith("ViewModel.Reclamo") || k.StartsWith("ViewModel.Mensajes"))
+            .ToList();
+
+        foreach (var key in keysToRemove)
+        {
+            ModelState.Remove(key);
+        }
+
         var usuario = await _userManager.GetUserAsync(User);
         if (usuario == null)
         {
@@ -94,10 +111,12 @@ public class DetalleModel : PageModel
 
         if (!ModelState.IsValid)
         {
+            System.Diagnostics.Debug.WriteLine("ModelState NO válido, recargando página");
+
             // Recargar datos
             var reclamo = await _reclamoService.ObtenerReclamoPorIdAsync(id);
             var mensajes = await _reclamoService.ObtenerMensajesDeReclamoAsync(id);
-            
+
             ViewModel.Reclamo = reclamo!;
             ViewModel.Mensajes = mensajes;
             ViewModel.EsAdministrador = esAdministrador;
@@ -108,19 +127,21 @@ public class DetalleModel : PageModel
 
         try
         {
+
             await _reclamoService.AgregarMensajeAsync(id, usuario.Id, ViewModel.NuevoMensaje, esAdministrador);
-            
+
             MensajeExito = "Mensaje enviado correctamente.";
             return RedirectToPage(new { id });
         }
         catch (Exception ex)
         {
+
             MensajeError = $"Error al enviar el mensaje: {ex.Message}";
-            
+
             // Recargar datos
             var reclamo = await _reclamoService.ObtenerReclamoPorIdAsync(id);
             var mensajes = await _reclamoService.ObtenerMensajesDeReclamoAsync(id);
-            
+
             ViewModel.Reclamo = reclamo!;
             ViewModel.Mensajes = mensajes;
             ViewModel.EsAdministrador = esAdministrador;

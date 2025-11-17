@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using AutoPartesRazor.Data;
+﻿using AutoPartesRazor.Data;
 using AutoPartesRazor.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

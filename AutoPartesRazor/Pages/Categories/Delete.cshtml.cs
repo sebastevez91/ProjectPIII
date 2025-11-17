@@ -28,6 +28,7 @@ public class DeleteModel : PageModel
 
         var category = await _context.Categories.FirstOrDefaultAsync(m => m.Id == id);
 
+
         if (category == null)
         {
             return NotFound();
@@ -52,6 +53,15 @@ public class DeleteModel : PageModel
             Category = category;
             _context.Categories.Remove(Category);
             await _context.SaveChangesAsync();
+            if (category == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                Category = category;
+            }
+            return Page();
         }
 
         return RedirectToPage("./Index");
