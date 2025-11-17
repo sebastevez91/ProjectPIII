@@ -1,6 +1,13 @@
-﻿@model IEnumerable<AutoPartesRazor.Models.Order>
+﻿@page
+@model AutoPartesRazor.Pages.Orders.IndexModel
 
-@if(Model != null && Model.Any())
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Lista de Órdenes de Ventas</h1>
+
+@if (Model != null && Model.Order.Any())
 {
     <table class="table">
         <thead>
@@ -13,7 +20,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var o in Model)
+            @foreach (var o in Model.Order)
             {
                 <tr>
                     <td>@o.Id</td>

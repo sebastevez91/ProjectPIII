@@ -16,28 +16,71 @@ public class IndexModel : PageModel
         _context = context;
     }
 
-    public IList<PurchaseOrder> PurchaseOrder { get; set; }
+    public IList<PurchaseOrder> PurchaseOrders { get; set; } = new List<PurchaseOrder>();
 
-    public List<SelectListItem> SelectStatus { get; set; }
+    public SelectList StatusList { get; set; }
 
     public async Task OnGetAsync()
     {
-        PurchaseOrder = await _context.PurchaseOrders
+        PurchaseOrders = await _context.PurchaseOrders
             .Include(o => o.Product)
             .Include(o => o.Supplier)
+            .OrderByDescending(o => o.CreatedAt)
             .ToListAsync();
+
+        // Lista de estados disponibles
+        StatusList = new SelectList(new[]
+        {
+            new { Value = "Pending", Text = "Pendiente" },
+            new { Value = "Approved", Text = "Aprobado" },
+            new { Value = "Received", Text = "Recibido" },
+            new { Value = "Cancelled", Text = "Cancelado" }
+        }, "Value", "Text");
     }
 
-    // Handler para cambiar estado
-    public async Task<IActionResult> OnPostChangeStatus()
+    public async Task<IActionResult> OnPostChangeStatusAsync(int orderId, string status)
     {
-        var order = await _context.PurchaseOrders.FindAsync();
+        if (string.IsNullOrEmpty(status))
+        {
+            TempData["ErrorMessage"] = "Debe seleccionar un estado.";
+            return RedirectToPage();
+        }
+
+        var order = await _context.PurchaseOrders.FindAsync(orderId);
+
         if (order == null)
-            return NotFound();
+        {
+            TempData["ErrorMessage"] = "Orden no encontrada.";
+            return RedirectToPage();
+        }
+
+        order.Status = status;
+
+        // Si la orden es recibida, actualizar el stock del producto
+        if (status == "Received" && order.ProductId > 0)
+        {
+            var product = await _context.Products.FindAsync(order.ProductId);
+            if (product != null)
+            {
+                product.Stock += order.Quantity;
+            }
+        }
 
         await _context.SaveChangesAsync();
 
-        return new JsonResult(new { ok = true });
+        TempData["SuccessMessage"] = $"Estado actualizado a: {GetStatusText(status)}";
+        return RedirectToPage();
     }
 
+    private string GetStatusText(string status)
+    {
+        return status switch
+        {
+            "Pending" => "Pendiente",
+            "Approved" => "Aprobado",
+            "Received" => "Recibido",
+            "Cancelled" => "Cancelado",
+            _ => status
+        };
+    }
 }

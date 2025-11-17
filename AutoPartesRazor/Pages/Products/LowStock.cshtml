@@ -1,0 +1,45 @@
+﻿@page
+@model AutoPartesRazor.Pages.Products.LowStockModel
+@{
+    ViewData["Title"] = "Productos con Stock Bajo";
+}
+
+<!-- Sección Stock Bajo -->
+<div class="mt-4"">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="mb-0 text-danger">Productos con Stock Bajo</h3>
+    </div>
+
+    @if (Model.LowStockProducts.Count == 0)
+    {
+        <p class="text-success">No hay productos con stock bajo 🎉</p>
+    }
+    else
+    {
+        <table class="table table-bordered">
+            <thead class="table-danger">
+                <tr>
+                    <th>Producto</th>
+                    <th>Stock</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var p in Model.LowStockProducts)
+                {
+                    <tr>
+                        <td>@p.Name</td>
+                        <td><strong>@p.Stock</strong></td>
+                        <td>
+                            <a asp-page="/PurchaseOrders/Create" asp-route-productId="@p.Id"
+                               class="btn btn-success btn-sm">
+                                Crear Orden de Pedido
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+</div>

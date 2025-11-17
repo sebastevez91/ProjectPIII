@@ -5,11 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AutoPartesRazor.Migrations
 {
-<<<<<<<< HEAD:AutoPartesRazor/Migrations/20251116184356_AddModuloReclamos.cs
-    public partial class AddModuloReclamos : Migration
-========
     public partial class InitialCreationDB : Migration
->>>>>>>> b508d6adfc2d2ae6ef774a3ec13a2962fe5795bc:AutoPartesRazor/Migrations/20251116191011_InitialCreationDB.cs
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -236,7 +232,36 @@ namespace AutoPartesRazor.Migrations
                 });
 
             migrationBuilder.CreateTable(
-<<<<<<<< HEAD:AutoPartesRazor/Migrations/20251116184356_AddModuloReclamos.cs
+                name: "Orders",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CustomerName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    CustomerEmail = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    ShippingAddress = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    PaymentMethod = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Total = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Calificacion = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Orders_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Reclamo",
                 columns: table => new
                 {
@@ -265,39 +290,6 @@ namespace AutoPartesRazor.Migrations
                     table.ForeignKey(
                         name: "FK_Reclamo_AspNetUsers_ClienteId",
                         column: x => x.ClienteId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Product",
-========
-                name: "Orders",
->>>>>>>> b508d6adfc2d2ae6ef774a3ec13a2962fe5795bc:AutoPartesRazor/Migrations/20251116191011_InitialCreationDB.cs
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    CustomerName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    CustomerEmail = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    ShippingAddress = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    PaymentMethod = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Total = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Calificacion = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Orders", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Orders_AspNetUsers_UserId",
-                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -338,7 +330,6 @@ namespace AutoPartesRazor.Migrations
                 });
 
             migrationBuilder.CreateTable(
-<<<<<<<< HEAD:AutoPartesRazor/Migrations/20251116184356_AddModuloReclamos.cs
                 name: "MensajeReclamo",
                 columns: table => new
                 {
@@ -370,10 +361,7 @@ namespace AutoPartesRazor.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Cart",
-========
                 name: "Carts",
->>>>>>>> b508d6adfc2d2ae6ef774a3ec13a2962fe5795bc:AutoPartesRazor/Migrations/20251116191011_InitialCreationDB.cs
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -472,13 +460,9 @@ namespace AutoPartesRazor.Migrations
                     ProductId = table.Column<int>(type: "int", nullable: false),
                     SupplierId = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-<<<<<<<< HEAD:AutoPartesRazor/Migrations/20251116184356_AddModuloReclamos.cs
-                    Status = table.Column<int>(type: "int", nullable: true),
-========
                     UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Total = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
->>>>>>>> b508d6adfc2d2ae6ef774a3ec13a2962fe5795bc:AutoPartesRazor/Migrations/20251116191011_InitialCreationDB.cs
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -559,7 +543,6 @@ namespace AutoPartesRazor.Migrations
                 column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
-<<<<<<<< HEAD:AutoPartesRazor/Migrations/20251116184356_AddModuloReclamos.cs
                 name: "IX_MensajeReclamo_FechaEnvio",
                 table: "MensajeReclamo",
                 column: "FechaEnvio");
@@ -575,12 +558,8 @@ namespace AutoPartesRazor.Migrations
                 column: "UsuarioId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Notification_UserId",
-                table: "Notification",
-========
                 name: "IX_Notifications_UserId",
                 table: "Notifications",
->>>>>>>> b508d6adfc2d2ae6ef774a3ec13a2962fe5795bc:AutoPartesRazor/Migrations/20251116191011_InitialCreationDB.cs
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -639,7 +618,6 @@ namespace AutoPartesRazor.Migrations
                 column: "SupplierId");
 
             migrationBuilder.CreateIndex(
-<<<<<<<< HEAD:AutoPartesRazor/Migrations/20251116184356_AddModuloReclamos.cs
                 name: "IX_Reclamo_AdministradorAsignadoId",
                 table: "Reclamo",
                 column: "AdministradorAsignadoId");
@@ -674,11 +652,11 @@ namespace AutoPartesRazor.Migrations
                 table: "Reclamo",
                 column: "NumeroTicket",
                 unique: true);
-========
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Suppliers_IsDeleted",
                 table: "Suppliers",
                 column: "IsDeleted");
->>>>>>>> b508d6adfc2d2ae6ef774a3ec13a2962fe5795bc:AutoPartesRazor/Migrations/20251116191011_InitialCreationDB.cs
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -702,14 +680,10 @@ namespace AutoPartesRazor.Migrations
                 name: "Carts");
 
             migrationBuilder.DropTable(
-<<<<<<<< HEAD:AutoPartesRazor/Migrations/20251116184356_AddModuloReclamos.cs
                 name: "MensajeReclamo");
 
             migrationBuilder.DropTable(
-                name: "Notification");
-========
                 name: "Notifications");
->>>>>>>> b508d6adfc2d2ae6ef774a3ec13a2962fe5795bc:AutoPartesRazor/Migrations/20251116191011_InitialCreationDB.cs
 
             migrationBuilder.DropTable(
                 name: "OrderItems");
@@ -724,9 +698,9 @@ namespace AutoPartesRazor.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-<<<<<<<< HEAD:AutoPartesRazor/Migrations/20251116184356_AddModuloReclamos.cs
                 name: "Reclamo");
-========
+
+            migrationBuilder.DropTable(
                 name: "Orders");
 
             migrationBuilder.DropTable(
@@ -737,29 +711,12 @@ namespace AutoPartesRazor.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
->>>>>>>> b508d6adfc2d2ae6ef774a3ec13a2962fe5795bc:AutoPartesRazor/Migrations/20251116191011_InitialCreationDB.cs
 
             migrationBuilder.DropTable(
                 name: "Brands");
 
             migrationBuilder.DropTable(
-<<<<<<<< HEAD:AutoPartesRazor/Migrations/20251116184356_AddModuloReclamos.cs
-                name: "Product");
-
-            migrationBuilder.DropTable(
-                name: "Supplier");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "Brand");
-
-            migrationBuilder.DropTable(
-                name: "Category");
-========
                 name: "Categories");
->>>>>>>> b508d6adfc2d2ae6ef774a3ec13a2962fe5795bc:AutoPartesRazor/Migrations/20251116191011_InitialCreationDB.cs
         }
     }
 }

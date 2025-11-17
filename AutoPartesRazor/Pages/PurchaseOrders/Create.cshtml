@@ -1,46 +1,251 @@
 ﻿@page
 @model AutoPartesRazor.Pages.PurchaseOrders.CreateModel
+
 @{
-    ViewData["Title"] = "Nueva Orden de Pedido";
+    ViewData["Title"] = "Nueva Orden de Compra";
 }
 
 <div class="container py-4">
-    <h2 class="mb-4">Crear Orden de Pedido</h2>
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fa-solid fa-cart-plus me-2"></i>Nueva Orden de Compra
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" id="purchaseOrderForm">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
 
-    <form method="post">
-        <div class="mb-3">
-            <label asp-for="purchaseOrder.ProductId" class="form-label"></label>
-            <select asp-for="purchaseOrder.ProductId" class="form-select" asp-items="Model.ProductList">
-                <option value="">Seleccione un producto</option>
-            </select>
-            <span asp-validation-for="purchaseOrder.ProductId" class="text-danger"></span>
+                        <!-- Producto -->
+                        <div class="mb-3">
+                            <label asp-for="PurchaseOrder.ProductId" class="form-label fw-bold">
+                                <i class="fa-solid fa-box me-1"></i>Producto
+                            </label>
+                            <select asp-for="PurchaseOrder.ProductId"
+                                    class="form-select"
+                                    asp-items="Model.ProductList"
+                                    id="productSelect">
+                                <option value="">-- Seleccione un producto --</option>
+                            </select>
+                            <span asp-validation-for="PurchaseOrder.ProductId" class="text-danger"></span>
+                        </div>
+
+                        <!-- Proveedor -->
+                        <div class="mb-3">
+                            <label asp-for="PurchaseOrder.SupplierId" class="form-label fw-bold">
+                                <i class="fa-solid fa-truck me-1"></i>Proveedor
+                            </label>
+                            <select asp-for="PurchaseOrder.SupplierId"
+                                    class="form-select"
+                                    asp-items="Model.SupplierList"
+                                    id="supplierSelect">
+                                <option value="">-- Seleccione un proveedor --</option>
+                            </select>
+                            <span asp-validation-for="PurchaseOrder.SupplierId" class="text-danger"></span>
+                        </div>
+
+                        <!-- Cantidad -->
+                        <div class="mb-3">
+                            <label asp-for="PurchaseOrder.Quantity" class="form-label fw-bold">
+                                <i class="fa-solid fa-calculator me-1"></i>Cantidad
+                            </label>
+                            <input asp-for="PurchaseOrder.Quantity"
+                                   type="number"
+                                   class="form-control"
+                                   id="quantityInput"
+                                   min="1"
+                                   placeholder="Ingrese la cantidad"
+                                   value="1" />
+                            <span asp-validation-for="PurchaseOrder.Quantity" class="text-danger"></span>
+                        </div>
+
+                        <!-- Información calculada -->
+                        <div class="card bg-light mb-3" id="calculationCard" style="display: none;">
+                            <div class="card-body">
+                                <h6 class="card-title">
+                                    <i class="fa-solid fa-info-circle me-2"></i>Resumen de la Orden
+                                </h6>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p class="mb-1">
+                                            <strong>Precio Unitario:</strong>
+                                            <span id="unitPriceDisplay" class="text-primary">$0.00</span>
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p class="mb-1">
+                                            <strong>Total:</strong>
+                                            <span id="totalDisplay" class="text-success fs-5">$0.00</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <small class="text-muted">
+                                    <i class="fa-solid fa-circle-info me-1"></i>
+                                    Los cálculos se actualizan automáticamente
+                                </small>
+                            </div>
+                        </div>
+
+                        <!-- Botones -->
+                        <div class="d-flex gap-2 justify-content-end">
+                            <a asp-page="./Index" class="btn btn-secondary">
+                                <i class="fa-solid fa-arrow-left me-1"></i>Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-primary" id="submitBtn">
+                                <i class="fa-solid fa-check me-1"></i>Crear Orden
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Información adicional -->
+            <div class="alert alert-info mt-3">
+                <i class="fa-solid fa-lightbulb me-2"></i>
+                <strong>Nota:</strong> El precio unitario se calculará automáticamente según el proveedor seleccionado.
+                Si no hay precio configurado, se usará el 65% del precio de venta del producto.
+            </div>
         </div>
-
-        <div class="mb-3">
-            <label asp-for="purchaseOrder.SupplierId" class="form-label"></label>
-            <select asp-for="purchaseOrder.SupplierId" class="form-select" asp-items="Model.SupplierList">
-                <option value="">Seleccione un proveedor</option>
-            </select>
-            <span asp-validation-for="purchaseOrder.SupplierId" class="text-danger"></span>
-        </div>
-
-        <div class="mb-3">
-            <label asp-for="purchaseOrder.Quantity" class="form-label"></label>
-            <input asp-for="purchaseOrder.Quantity" class="form-control" />
-            <span asp-validation-for="purchaseOrder.Quantity" class="text-danger"></span>
-        </div>
-
-@*         <div class="mb-3">
-            <label asp-for="purchaseOrder.CreatedAt" class="form-label"></label>
-            <input asp-for="purchaseOrder.CreatedAt" class="form-control" type="date" />
-            <span asp-validation-for="purchaseOrder.CreatedAt" class="text-danger"></span>
-        </div> *@
-
-        <button type="submit" class="btn btn-primary">Crear Orden</button>
-        <a asp-page="Index" class="btn btn-secondary">Volver</a>
-    </form>
+    </div>
 </div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        $(document).ready(function() {
+            let unitPrice = 0;
+
+            // Función para calcular y mostrar el total
+            function calculateTotal() {
+                const quantity = parseInt($('#quantityInput').val()) || 0;
+                const total = unitPrice * quantity;
+
+                $('#unitPriceDisplay').text('$' + unitPrice.toFixed(2));
+                $('#totalDisplay').text('$' + total.toFixed(2));
+
+                if (unitPrice > 0 && quantity > 0) {
+                    $('#calculationCard').slideDown();
+                } else {
+                    $('#calculationCard').slideUp();
+                }
+            }
+
+            // Función para obtener el precio del proveedor
+            async function loadSupplierPrice() {
+                const productId = $('#productSelect').val();
+                const supplierId = $('#supplierSelect').val();
+
+                if (!productId || !supplierId) {
+                    unitPrice = 0;
+                    calculateTotal();
+                    return;
+                }
+
+                try {
+                    const response = await fetch(
+                        `?handler=SupplierPrice&productId=${productId}&supplierId=${supplierId}`
+                    );
+                    const data = await response.json();
+
+                    if (data.success) {
+                        unitPrice = data.price;
+                        calculateTotal();
+                    }
+                } catch (error) {
+                    console.error('Error al obtener precio:', error);
+                }
+            }
+
+            // Eventos para recalcular
+            $('#productSelect, #supplierSelect').on('change', loadSupplierPrice);
+            $('#quantityInput').on('input', calculateTotal);
+
+            // Validación del formulario
+            $('#purchaseOrderForm').on('submit', function(e) {
+                const productId = $('#productSelect').val();
+                const supplierId = $('#supplierSelect').val();
+                const quantity = parseInt($('#quantityInput').val()) || 0;
+
+                let errors = [];
+
+                if (!productId) {
+                    errors.push('Debe seleccionar un producto');
+                }
+                if (!supplierId) {
+                    errors.push('Debe seleccionar un proveedor');
+                }
+                if (quantity <= 0) {
+                    errors.push('La cantidad debe ser mayor a 0');
+                }
+
+                if (errors.length > 0) {
+                    e.preventDefault();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Formulario incompleto',
+                        html: '<ul class="text-start">' +
+                              errors.map(err => '<li>' + err + '</li>').join('') +
+                              '</ul>',
+                        confirmButtonText: 'Entendido'
+                    });
+                    return false;
+                }
+
+                // Confirmación antes de crear
+                e.preventDefault();
+                Swal.fire({
+                    title: '¿Crear orden de compra?',
+                    html: `
+                        <div class="text-start">
+                            <p><strong>Cantidad:</strong> ${quantity} unidades</p>
+                            <p><strong>Precio unitario:</strong> $${unitPrice.toFixed(2)}</p>
+                            <p><strong>Total:</strong> <span class="text-success fs-5">$${(unitPrice * quantity).toFixed(2)}</span></p>
+                        </div>
+                    `,
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#0d6efd',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: '<i class="fa-solid fa-check me-1"></i>Sí, crear orden',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#submitBtn').prop('disabled', true);
+                        $('#submitBtn').html('<span class="spinner-border spinner-border-sm me-1"></span>Creando...');
+                        this.submit();
+                    }
+                });
+            });
+        });
+    </script>
+
+    <style>
+        .card {
+            border: none;
+            border-radius: 10px;
+        }
+
+        .card-header {
+            border-radius: 10px 10px 0 0 !important;
+            padding: 1.25rem;
+        }
+
+        #calculationCard {
+            border: 2px solid #0d6efd;
+            transition: all 0.3s ease;
+        }
+
+        .form-label {
+            color: #495057;
+        }
+
+        .form-select:focus,
+        .form-control:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+    </style>
 }
