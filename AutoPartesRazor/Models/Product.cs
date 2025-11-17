@@ -6,7 +6,7 @@ namespace AutoPartesRazor.Models;
 
 public class Product
 {
-    public int id {  get; set; }
+    public int id { get; set; }
 
     [Required(ErrorMessage = "El nombre del producto es obligatorio.")]
     [StringLength(50)]

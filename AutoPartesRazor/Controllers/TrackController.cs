@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using AutoPartesRazor.Data;
+﻿using AutoPartesRazor.Data;
+using Microsoft.AspNetCore.Mvc;
 
 [Route("api/[controller]")]
 [ApiController]

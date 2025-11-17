@@ -10,10 +10,10 @@ namespace AutoPartesRazor.Models.Enum
         [Display(Name = "Media")]
         Media = 2,
 
-       [Display(Name = "Alta")]
+        [Display(Name = "Alta")]
         Alta = 3,
 
-       [Display(Name = "Crítica")]
+        [Display(Name = "Crítica")]
         Critica = 4
     }
 }

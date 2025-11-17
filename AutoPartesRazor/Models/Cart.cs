@@ -2,7 +2,7 @@
 {
     public class Cart
     {
-        public int id {  get; set; }
+        public int id { get; set; }
 
         public int productId { get; set; }
 

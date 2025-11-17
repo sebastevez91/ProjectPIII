@@ -4,7 +4,7 @@ namespace AutoPartesRazor.Models
 {
     public class Brand
     {
-        public int id {  get; set; }
+        public int id { get; set; }
 
         [Required]
         [Display(Name = "Marca")]

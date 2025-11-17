@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AutoPartesRazor.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using AutoPartesRazor.Data;
-using AutoPartesRazor.Models;
 
 namespace AutoPartesRazor.Pages.Brands
 {
@@ -20,7 +15,7 @@ namespace AutoPartesRazor.Pages.Brands
         }
 
         [BindProperty]
-      public Brand Brand { get; set; } = default!;
+        public Brand Brand { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -35,7 +30,7 @@ namespace AutoPartesRazor.Pages.Brands
             {
                 return NotFound();
             }
-            else 
+            else
             {
                 Brand = brand;
             }

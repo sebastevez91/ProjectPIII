@@ -20,14 +20,14 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
             .HasOne(p => p.Brand)
             .WithMany(b => b.products)
             .HasForeignKey(b => b.idBrand)
-            .OnDelete(DeleteBehavior.Restrict); 
+            .OnDelete(DeleteBehavior.Restrict);
 
         // Relación Product - Category
         modelBuilder.Entity<Product>()
             .HasOne(p => p.Category)
             .WithMany(c => c.products)
             .HasForeignKey(p => p.idCategory)
-            .OnDelete(DeleteBehavior.Restrict); 
+            .OnDelete(DeleteBehavior.Restrict);
 
         // Relación Order - OrderItem
         modelBuilder.Entity<OrderItem>()

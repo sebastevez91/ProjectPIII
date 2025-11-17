@@ -17,7 +17,7 @@ public class PurchaseOrder
     [Required]
     public int SupplierId { get; set; }
 
-    [Display(Name ="Provéedor")]
+    [Display(Name = "Provéedor")]
     public Supplier? Supplier { get; set; }
 
     [Required]
@@ -25,9 +25,9 @@ public class PurchaseOrder
     [Display(Name = "Cantidad")]
     public int Quantity { get; set; }
 
-    [Display(Name ="Estado")]
+    [Display(Name = "Estado")]
     public StatusOrder? Status { get; set; } = StatusOrder.Pendiente;
 
-    [Display(Name ="Fecha de creación")]
+    [Display(Name = "Fecha de creación")]
     public DateTime CreatedAt { get; set; } = DateTime.Now;
 }

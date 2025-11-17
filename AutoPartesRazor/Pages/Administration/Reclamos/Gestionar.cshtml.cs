@@ -90,7 +90,7 @@ public class GestionarModel : PageModel
         try
         {
             var actualizado = await _reclamoService.ActualizarEstadoReclamoAsync(reclamoId, ViewModel.NuevoEstado);
-            
+
             if (actualizado)
             {
                 MensajeExito = $"Estado actualizado a '{ViewModel.NuevoEstado}' correctamente.";
@@ -114,7 +114,7 @@ public class GestionarModel : PageModel
         try
         {
             var actualizado = await _reclamoService.ActualizarUrgenciaReclamoAsync(reclamoId, ViewModel.NuevaUrgencia);
-            
+
             if (actualizado)
             {
                 MensajeExito = $"Urgencia actualizada a '{ViewModel.NuevaUrgencia}' correctamente.";
@@ -144,7 +144,7 @@ public class GestionarModel : PageModel
             }
 
             var actualizado = await _reclamoService.AsignarAdministradorAsync(reclamoId, ViewModel.AdministradorAsignadoId);
-            
+
             if (actualizado)
             {
                 MensajeExito = "Administrador asignado correctamente.";
@@ -168,7 +168,7 @@ public class GestionarModel : PageModel
         try
         {
             var cerrado = await _reclamoService.CerrarReclamoAsync(reclamoId);
-            
+
             if (cerrado)
             {
                 MensajeExito = "Reclamo cerrado correctamente.";

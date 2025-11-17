@@ -1,11 +1,9 @@
 ﻿using AutoPartesRazor.Data;
 using AutoPartesRazor.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
 
 namespace AutoPartesRazor.Pages;
 
