@@ -65,12 +65,6 @@ public class DatabaseSeeder
             await _context.SaveChangesAsync();
             Console.WriteLine("✅ Órdenes de compra creadas");
 
-            // 8. CREAR CARRITOS
-            Console.WriteLine("🛒 Creando carritos...");
-            CreateCarts(users, products);
-            await _context.SaveChangesAsync();
-            Console.WriteLine("✅ Carritos creados");
-
             // 9. CREAR ÓRDENES
             Console.WriteLine("📊 Creando órdenes de venta...");
             CreateOrders(users, products);
@@ -826,33 +820,6 @@ public class DatabaseSeeder
         }
 
         _context.PurchaseOrders.AddRange(purchaseOrders);
-    }
-
-    private void CreateCarts(List<User> users, List<Product> products)
-    {
-        var carts = new List<Cart>();
-        var clients = users.Where(u => u.Role == "Client").ToList();
-
-        // 3 clientes tienen carritos activos
-        for (int i = 0; i < Math.Min(3, clients.Count); i++)
-        {
-            var client = clients[i];
-            var numItems = _random.Next(2, 5);
-
-            for (int j = 0; j < numItems; j++)
-            {
-                var product = products[_random.Next(products.Count)];
-                carts.Add(new Cart
-                {
-                    UserId = client.Id,
-                    ProductId = product.Id,
-                    Quantity = _random.Next(1, 4),
-                    CreatedAt = DateTime.Now.AddDays(-_random.Next(1, 10))
-                });
-            }
-        }
-
-        _context.Carts.AddRange(carts);
     }
 
     private void CreateOrders(List<User> users, List<Product> products)
