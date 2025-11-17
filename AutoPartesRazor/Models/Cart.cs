@@ -4,6 +4,7 @@ namespace AutoPartesRazor.Models;
 
 public class Cart
 {
+
     public int Id { get; set; }
 
     // Foreign Key - User

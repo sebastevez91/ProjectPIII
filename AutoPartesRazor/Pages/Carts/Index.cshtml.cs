@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using AutoPartesRazor.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using AutoPartesRazor.Data;
-using AutoPartesRazor.Models;
 
 namespace AutoPartesRazor.Pages.Carts
 {
@@ -19,7 +13,7 @@ namespace AutoPartesRazor.Pages.Carts
             _context = context;
         }
 
-        public IList<Cart> Cart { get;set; } = default!;
+        public IList<Cart> Cart { get; set; } = default!;
         public int CartCount { get; set; } = 0;
 
         public async Task OnGetAsync()

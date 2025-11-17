@@ -24,7 +24,9 @@ public class DeleteModel : PageModel
             return NotFound();
         }
 
+
         var brand = await _context.Brands.FirstOrDefaultAsync(m => m.Id == id);
+
 
         if (brand == null)
         {
@@ -45,11 +47,23 @@ public class DeleteModel : PageModel
         }
         var brand = await _context.Brands.FindAsync(id);
 
+
         if (brand != null)
         {
             Brand = brand;
             _context.Brands.Remove(Brand);
             await _context.SaveChangesAsync();
+
+            if (brand == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                Brand = brand;
+            }
+            return Page();
+
         }
 
         return RedirectToPage("./Index");

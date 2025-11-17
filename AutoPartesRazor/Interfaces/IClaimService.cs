@@ -8,12 +8,12 @@ namespace AutoPartesRazor.Interfaces;
 public interface IClaimService
 {
     // ========== OPERACIONES DE RECLAMO ==========
-    
+
     /// Obtiene todos los reclamos del sistema
     Task<List<Claim>> ObtenerTodosLosReclamosAsync();
 
     /// Obtiene todos los reclamos de un cliente específico
- 
+
     Task<List<Claim>> ObtenerReclamosPorClienteAsync(string clienteId);
 
     /// Obtiene un reclamo por su ID

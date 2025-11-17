@@ -1,5 +1,5 @@
-@page
-@model AutoPartesRazor.Pages.Reclamos.DetalleModel
+@page "{id:int}"
+@model AutoPartesRazor.Pages.Claims.DetalleModel
 @{
     ViewData["Title"] = $"Reclamo {Model.ViewModel.Reclamo.NumeroTicket}";
 }
@@ -105,9 +105,12 @@
                         <hr class="mt-4" />
                         <form method="post">
                             <div class="mb-3">
-                                <label asp-for="ViewModel.NuevoMensaje" class="form-label">Agregar Mensaje</label>
-                                <textarea asp-for="ViewModel.NuevoMensaje" class="form-control" rows="3" 
-                                          placeholder="Escribe tu mensaje aquí..."></textarea>
+                                <label class="form-label" asp-for="ViewModel.NuevoMensaje">Agregar Mensaje</label>
+                                <textarea asp-for="ViewModel.NuevoMensaje"
+                                          class="form-control"
+                                          rows="3"
+                                          placeholder="Escribe tu mensaje aquí..."
+                                          required></textarea>
                                 <span asp-validation-for="ViewModel.NuevoMensaje" class="text-danger"></span>
                             </div>
                             <div class="d-grid">
@@ -238,7 +241,9 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @* COMENTAR ESTO TEMPORALMENTE *@
+    @* @{await Html.RenderPartialAsync("_ValidationScriptsPartial");} *@
+
     <script>
         // Scroll automático al final del chat
         const chatContainer = document.getElementById('chatContainer');
