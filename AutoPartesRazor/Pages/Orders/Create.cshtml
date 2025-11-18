@@ -45,13 +45,13 @@
 
                     <div class="mb-2">
                         <label class="form-label">Nombre completo</label>
-                        <input asp-for="Input.CustomerName" class="form-control" />
+                        <input asp-for="Input.CustomerName" value="@Model.UserSesion.FullName" class="form-control" />
                         <span asp-validation-for="Input.CustomerName" class="text-danger"></span>
                     </div>
 
                     <div class="mb-2">
                         <label class="form-label">Email</label>
-                        <input asp-for="Input.CustomerEmail" class="form-control" />
+                        <input asp-for="Input.CustomerEmail" value="@Model.UserSesion.Email" class="form-control" />
                         <span asp-validation-for="Input.CustomerEmail" class="text-danger"></span>
                     </div>
 

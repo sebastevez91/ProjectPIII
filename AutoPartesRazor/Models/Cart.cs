@@ -7,10 +7,6 @@ public class Cart
 
     public int Id { get; set; }
 
-    // Foreign Key - User
-    [Required]
-    public string UserId { get; set; }
-
     // Foreign Key - Product
     public int ProductId { get; set; }
 
@@ -24,6 +20,5 @@ public class Cart
     public DateTime? UpdatedAt { get; set; }
 
     // Navigation Properties
-    public User User { get; set; }
     public Product? Product { get; set; }
 }

@@ -51,13 +51,6 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
             .HasForeignKey(o => o.UserId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        // Relación Cart - User
-        modelBuilder.Entity<Cart>()
-            .HasOne(c => c.User)
-            .WithOne(u => u.Cart)
-            .HasForeignKey<Cart>(c => c.UserId)
-            .OnDelete(DeleteBehavior.Cascade);
-
         // Relación Cart - Product
         modelBuilder.Entity<Cart>()
             .HasOne(c => c.Product)
@@ -136,6 +129,48 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
             .OnDelete(DeleteBehavior.Restrict);
 
         // ============================================
+        // NUEVAS RELACIONES DE RESEÑAS
+        // ============================================
+
+        // Relación Product - ProductReview
+        modelBuilder.Entity<ProductReview>()
+            .HasOne(pr => pr.Product)
+            .WithMany(p => p.Reviews)
+            .HasForeignKey(pr => pr.ProductId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        // Relación User - ProductReview
+        modelBuilder.Entity<ProductReview>()
+            .HasOne(pr => pr.User)
+            .WithMany()
+            .HasForeignKey(pr => pr.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // Relación ReviewHelpful - ProductReview
+        modelBuilder.Entity<ReviewHelpful>()
+            .HasOne(rh => rh.Review)
+            .WithMany()
+            .HasForeignKey(rh => rh.ReviewId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        // Relación ReviewHelpful - User
+        modelBuilder.Entity<ReviewHelpful>()
+            .HasOne(rh => rh.User)
+            .WithMany()
+            .HasForeignKey(rh => rh.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // Constraint: Un usuario solo puede votar una vez por reseña
+        modelBuilder.Entity<ReviewHelpful>()
+            .HasIndex(rh => new { rh.ReviewId, rh.UserId })
+            .IsUnique();
+
+        // Constraint: Un usuario solo puede hacer una reseña por producto
+        modelBuilder.Entity<ProductReview>()
+            .HasIndex(pr => new { pr.ProductId, pr.UserId })
+            .IsUnique();
+
+        // ============================================
         // QUERY FILTERS - SOFT DELETE
         // ============================================
         // Estos filtros se aplican automáticamente a todas las consultas
@@ -203,6 +238,9 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
             .HasIndex(s => s.IsDeleted);
     }
 
+    // ============================================
+    // TABLAS EN BASE DE DATOS
+    // ============================================
     public DbSet<AutoPartesRazor.Models.Claim> Reclamo { get; set; }
     public DbSet<AutoPartesRazor.Models.MessageClaim> MensajeReclamo { get; set; }
     public DbSet<AutoPartesRazor.Models.Product> Products { get; set; } = default!;
@@ -216,6 +254,8 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
     public DbSet<AutoPartesRazor.Models.Supplier> Suppliers { get; set; }
     public DbSet<AutoPartesRazor.Models.ProductSupplier> ProductSuppliers { get; set; }
     public DbSet<AutoPartesRazor.Models.PurchaseOrder> PurchaseOrders { get; set; }
+    public DbSet<AutoPartesRazor.Models.ProductReview> ProductReviews { get; set; } = default!;
+    public DbSet<AutoPartesRazor.Models.ReviewHelpful> ReviewHelpfuls { get; set; } = default!;
 
 
     // ============================================

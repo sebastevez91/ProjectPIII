@@ -58,6 +58,13 @@ using (var scope = app.Services.CreateScope())
         await context.Database.MigrateAsync();
         logger.LogInformation("✅ Migraciones aplicadas correctamente");
 
+        // Limpiar carritos al iniciar
+        logger.LogInformation("🧹 Limpiando carritos...");
+        var carts = await context.Carts.ToListAsync();
+        context.Carts.RemoveRange(carts);
+        await context.SaveChangesAsync();
+        logger.LogInformation($"✅ {carts.Count} carritos eliminados");
+
         // Solo ejecutar el seeder si la base está vacía
         if (!await context.Products.AnyAsync())
         {

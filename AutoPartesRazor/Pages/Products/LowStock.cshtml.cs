@@ -1,33 +1,35 @@
 using AutoPartesRazor.Data;
 using AutoPartesRazor.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
-namespace AutoPartesRazor.Pages.Products
+namespace AutoPartesRazor.Pages.Products;
+
+[Authorize(Roles ="Admin")]
+public class LowStockModel : PageModel
 {
-    public class LowStockModel : PageModel
+    private readonly ILogger<LowStockModel> _logger;
+    private readonly AutoPartesRazorContext _context;
+
+    public LowStockModel(ILogger<LowStockModel> logger, AutoPartesRazorContext context)
     {
-        private readonly ILogger<LowStockModel> _logger;
-        private readonly AutoPartesRazorContext _context;
+        _logger = logger;
+        _context = context;
+    }
 
-        public LowStockModel(ILogger<LowStockModel> logger, AutoPartesRazorContext context)
+    public IList<Product> LowStockProducts { get; set; } = default!;
+
+    public async Task<IActionResult> OnGetAsync()
+    {
+        if (_context.Products != null)
         {
-            _logger = logger;
-            _context = context;
+            LowStockProducts = await _context.Products
+                .Where(p => p.Stock < 5)
+                .ToListAsync();
         }
-
-        public IList<Product> LowStockProducts { get; set; } = default!;
-
-        public async Task<IActionResult> OnGetAsync()
-        {
-            if (_context.Products != null)
-            {
-                LowStockProducts = await _context.Products
-                    .Where(p => p.Stock < 5)// Assuming low stock is defined as less than 10 units
-                    .ToListAsync();
-            }
-            return Page();
-        }
+        return Page();
     }
 }

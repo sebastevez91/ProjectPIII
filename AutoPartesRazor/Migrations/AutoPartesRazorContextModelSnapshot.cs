@@ -68,16 +68,9 @@ namespace AutoPartesRazor.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ProductId");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
 
                     b.ToTable("Carts");
                 });
@@ -411,6 +404,47 @@ namespace AutoPartesRazor.Migrations
                     b.ToTable("Products");
                 });
 
+            modelBuilder.Entity("AutoPartesRazor.Models.ProductReview", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Comment")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("HelpfulCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NotHelpfulCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("ProductId", "UserId")
+                        .IsUnique();
+
+                    b.ToTable("ProductReviews");
+                });
+
             modelBuilder.Entity("AutoPartesRazor.Models.ProductSupplier", b =>
                 {
                     b.Property<int>("ProductId")
@@ -467,6 +501,37 @@ namespace AutoPartesRazor.Migrations
                     b.ToTable("PurchaseOrders");
                 });
 
+            modelBuilder.Entity("AutoPartesRazor.Models.ReviewHelpful", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<bool>("IsHelpful")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ReviewId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("VotedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("ReviewId", "UserId")
+                        .IsUnique();
+
+                    b.ToTable("ReviewHelpfuls");
+                });
+
             modelBuilder.Entity("AutoPartesRazor.Models.Supplier", b =>
                 {
                     b.Property<int>("Id")
@@ -516,6 +581,9 @@ namespace AutoPartesRazor.Migrations
                     b.Property<string>("Address")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<int?>("CartId")
+                        .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -581,6 +649,8 @@ namespace AutoPartesRazor.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CartId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -734,15 +804,7 @@ namespace AutoPartesRazor.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("AutoPartesRazor.Models.User", "User")
-                        .WithOne("Cart")
-                        .HasForeignKey("AutoPartesRazor.Models.Cart", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Product");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("AutoPartesRazor.Models.Claim", b =>
@@ -843,6 +905,25 @@ namespace AutoPartesRazor.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("AutoPartesRazor.Models.ProductReview", b =>
+                {
+                    b.HasOne("AutoPartesRazor.Models.Product", "Product")
+                        .WithMany("Reviews")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AutoPartesRazor.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("AutoPartesRazor.Models.ProductSupplier", b =>
                 {
                     b.HasOne("AutoPartesRazor.Models.Product", "Product")
@@ -879,6 +960,34 @@ namespace AutoPartesRazor.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("Supplier");
+                });
+
+            modelBuilder.Entity("AutoPartesRazor.Models.ReviewHelpful", b =>
+                {
+                    b.HasOne("AutoPartesRazor.Models.ProductReview", "Review")
+                        .WithMany()
+                        .HasForeignKey("ReviewId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AutoPartesRazor.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Review");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("AutoPartesRazor.Models.User", b =>
+                {
+                    b.HasOne("AutoPartesRazor.Models.Cart", "Cart")
+                        .WithMany()
+                        .HasForeignKey("CartId");
+
+                    b.Navigation("Cart");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -959,6 +1068,8 @@ namespace AutoPartesRazor.Migrations
                     b.Navigation("ProductSuppliers");
 
                     b.Navigation("PurchaseOrders");
+
+                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("AutoPartesRazor.Models.Supplier", b =>
@@ -970,8 +1081,6 @@ namespace AutoPartesRazor.Migrations
 
             modelBuilder.Entity("AutoPartesRazor.Models.User", b =>
                 {
-                    b.Navigation("Cart");
-
                     b.Navigation("Notifications");
 
                     b.Navigation("Orders");

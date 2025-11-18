@@ -17,6 +17,9 @@ namespace AutoPartesRazor.Pages.Products
         public Product Product { get; set; } = default!;
         public int CartCount { get; set; } = 0;
 
+        // ⬇️ NUEVA PROPIEDAD ⬇️
+        public bool UserHasReviewed { get; set; }
+
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null || _context.Products == null)
@@ -24,9 +27,12 @@ namespace AutoPartesRazor.Pages.Products
                 return NotFound();
             }
 
+            // ⬇️ MODIFICADO: Agregar .Include para cargar reseñas ⬇️
             var product = await _context.Products
                 .Include(b => b.Brand)
                 .Include(c => c.Category)
+                .Include(p => p.Reviews!)         // ⬅️ NUEVO: Cargar reseñas
+                    .ThenInclude(r => r.User)     // ⬅️ NUEVO: Cargar usuarios de las reseñas
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (product == null)
@@ -36,6 +42,17 @@ namespace AutoPartesRazor.Pages.Products
             else
             {
                 Product = product;
+            }
+
+            // ⬇️ NUEVO: Verificar si el usuario ya reseñó este producto ⬇️
+            if (User.Identity?.IsAuthenticated == true)
+            {
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == User.Identity.Name);
+                if (user != null)
+                {
+                    UserHasReviewed = await _context.ProductReviews
+                        .AnyAsync(r => r.ProductId == id && r.UserId == user.Id);
+                }
             }
 
             // Contar el número de items únicos en el carrito
