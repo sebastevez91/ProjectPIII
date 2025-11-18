@@ -52,24 +52,26 @@ public class ReviewsDashboardModel : PageModel
             : 0;
         CriticalProducts = productsWithReviews.Count(p => p.AverageRating < 3.0);
 
-        // TOP 10 productos (mínimo 5 reseñas)
+        // TOP 10 productos - CAMBIO: Mínimo 3 reseñas en lugar de 5
         TopProducts = productsWithReviews
-            .Where(p => p.TotalReviews >= 5)
+            .Where(p => p.TotalReviews >= 3)
             .OrderByDescending(p => p.AverageRating)
             .ThenByDescending(p => p.TotalReviews)
             .Take(10)
             .ToList();
 
-        // Productos críticos (calificación < 3.5 y mínimo 5 reseñas)
+        // Productos críticos - CAMBIO: Mínimo 1 reseña para detectar problemas rápido
         BottomProducts = productsWithReviews
-            .Where(p => p.TotalReviews >= 5 && p.AverageRating < 3.5)
+            .Where(p => p.TotalReviews >= 1 && p.AverageRating < 3.5)
             .OrderBy(p => p.AverageRating)
+            .ThenBy(p => p.TotalReviews) // Priorizar los que tienen más reseñas
             .ToList();
 
-        // Productos con descuento automático (calificación < 3.5 y mínimo 5 reseñas)
+        // Productos con descuento automático - CAMBIO: Mínimo 2 reseñas para activar descuentos
         DiscountedProducts = productsWithReviews
-            .Where(p => p.TotalReviews >= 5 && p.AverageRating < 3.5)
+            .Where(p => p.TotalReviews >= 2 && p.AverageRating < 3.5)
             .OrderBy(p => p.AverageRating)
+            .ThenByDescending(p => p.TotalReviews)
             .ToList();
 
         // Estadísticas por proveedor

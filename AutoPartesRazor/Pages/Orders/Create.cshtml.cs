@@ -1,6 +1,7 @@
 ﻿using AutoPartesRazor.Data;
 using AutoPartesRazor.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -12,11 +13,13 @@ namespace AutoPartesRazor.Pages.Orders;
 public class CreateModel : PageModel
 {
     private readonly AutoPartesRazorContext _context;
+    private readonly UserManager<User> _userManager;
     private readonly ILogger<CreateModel> _logger;
 
-    public CreateModel(AutoPartesRazorContext context, ILogger<CreateModel> logger)
+    public CreateModel(AutoPartesRazorContext context, UserManager<User> userManager, ILogger<CreateModel> logger)
     {
         _context = context;
+        _userManager = userManager;
         _logger = logger;
     }
 
@@ -42,8 +45,14 @@ public class CreateModel : PageModel
     [BindProperty]
     public OrderInputModel Input { get; set; } = new();
 
+    public User UserSesion { get; set; } = new();
+
     public async Task<IActionResult> OnGetAsync()
     {
+        var user = await _userManager.GetUserAsync(User);
+
+        UserSesion = user ?? new User();
+
         CartItems = await _context.Carts
             .Include(c => c.Product)
             .ToListAsync();

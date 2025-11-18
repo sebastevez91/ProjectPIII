@@ -38,7 +38,7 @@ public class ReviewsModel : PageModel
         if (Product == null)
             return NotFound();
 
-        // Obtener rese?as con filtros
+        // Obtener reseñas con filtros
         var query = _context.ProductReviews
             .Include(r => r.User)
             .Where(r => r.ProductId == productId);
@@ -57,7 +57,7 @@ public class ReviewsModel : PageModel
 
         Reviews = await query.ToListAsync();
 
-        // Verificar si el usuario ya rese??
+        // Verificar si el usuario ya reseñó
         if (User.Identity?.IsAuthenticated == true)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == User.Identity.Name);
@@ -90,36 +90,67 @@ public class ReviewsModel : PageModel
         if (review == null)
             return NotFound();
 
-        // Verificar si ya vot?
+        // Buscar voto existente
         var existingVote = await _context.ReviewHelpfuls
             .FirstOrDefaultAsync(v => v.ReviewId == reviewId && v.UserId == user.Id);
 
         if (existingVote != null)
         {
-            TempData["ErrorMessage"] = "Ya has votado en esta rese?a.";
-            return RedirectToPage(new { productId });
+            // Si el usuario hace clic en el mismo botón, remover el voto
+            if (existingVote.IsHelpful == isHelpful)
+            {
+                // Decrementar el contador correspondiente
+                if (existingVote.IsHelpful)
+                    review.HelpfulCount--;
+                else
+                    review.NotHelpfulCount--;
+
+                _context.ReviewHelpfuls.Remove(existingVote);
+                TempData["SuccessMessage"] = "Has removido tu voto.";
+            }
+            else
+            {
+                // Si hace clic en el botón opuesto, cambiar el voto
+                if (existingVote.IsHelpful)
+                {
+                    review.HelpfulCount--;
+                    review.NotHelpfulCount++;
+                }
+                else
+                {
+                    review.NotHelpfulCount--;
+                    review.HelpfulCount++;
+                }
+
+                existingVote.IsHelpful = isHelpful;
+                existingVote.VotedAt = DateTime.Now;
+                TempData["SuccessMessage"] = "Has cambiado tu voto.";
+            }
         }
-
-        // Crear voto
-        var vote = new ReviewHelpful
-        {
-            ReviewId = reviewId,
-            UserId = user.Id,
-            IsHelpful = isHelpful,
-            VotedAt = DateTime.Now
-        };
-
-        _context.ReviewHelpfuls.Add(vote);
-
-        // Actualizar contadores
-        if (isHelpful)
-            review.HelpfulCount++;
         else
-            review.NotHelpfulCount++;
+        {
+            // Crear nuevo voto
+            var vote = new ReviewHelpful
+            {
+                ReviewId = reviewId,
+                UserId = user.Id,
+                IsHelpful = isHelpful,
+                VotedAt = DateTime.Now
+            };
+
+            _context.ReviewHelpfuls.Add(vote);
+
+            // Incrementar contador correspondiente
+            if (isHelpful)
+                review.HelpfulCount++;
+            else
+                review.NotHelpfulCount++;
+
+            TempData["SuccessMessage"] = "¡Gracias por tu voto!";
+        }
 
         await _context.SaveChangesAsync();
 
-        TempData["SuccessMessage"] = "?Gracias por tu voto!";
         return RedirectToPage(new { productId });
     }
 }
