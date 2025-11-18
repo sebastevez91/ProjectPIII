@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace AutoPartesRazor.Migrations
 {
-    public partial class InitialCreationDB : Migration
+    public partial class ModuloReclamo : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
