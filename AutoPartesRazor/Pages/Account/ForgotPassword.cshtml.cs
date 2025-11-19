@@ -1,9 +1,18 @@
+<<<<<<< HEAD
 using AutoPartesRazor.Interfaces;
 using AutoPartesRazor.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
+=======
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using AutoPartesRazor.Interfaces;
+using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
+using AutoPartesRazor.Models;
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
 
 namespace AutoPartesRazor.Pages.Account;
 
@@ -23,7 +32,10 @@ public class ForgotPasswordModel : PageModel
     [EmailAddress]
     public string Email { get; set; }
 
+<<<<<<< HEAD
     [TempData]
+=======
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
     public string Message { get; set; }
 
     public async Task<IActionResult> OnPostAsync()
@@ -35,7 +47,11 @@ public class ForgotPasswordModel : PageModel
 
         if (user == null)
         {
+<<<<<<< HEAD
             Message = "El email ingresado no esta registrado.";
+=======
+            Message = "Si el correo está registrado, recibirá un email.";
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
             return Page();
         }
 
@@ -58,7 +74,10 @@ public class ForgotPasswordModel : PageModel
         // Enviar email al usuario
         var subject = "Recuperación de contraseña";
         var body = $@"
+<<<<<<< HEAD
             <h3>AutopartesRazor S.A - Recuperación de Contraseña</h3>
+=======
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
             <p>Has solicitado recuperar tu contraseña.</p>
             <p>Tu contraseña provisoria para ingresar es:</p>
             <h2>{newPassword}</h2>
@@ -67,9 +86,15 @@ public class ForgotPasswordModel : PageModel
 
         await _emailSender.SendEmailAsync(Email, subject, body);
 
+<<<<<<< HEAD
         Message = "Se envió un email con su nueva contraseña, revisa tu correo.";
 
         return Redirect("./Login");
+=======
+        Message = "Si el correo está registrado, recibirá un email con su nueva contraseña.";
+
+        return Page();
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
     }
 }
 

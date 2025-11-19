@@ -1,8 +1,12 @@
 using AutoPartesRazor.Data;
 using AutoPartesRazor.Models;
+<<<<<<< HEAD
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+=======
+using Microsoft.AspNetCore.Mvc.RazorPages;
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
 using Microsoft.EntityFrameworkCore;
 
 namespace AutoPartesRazor.Pages.PurchaseOrders;
@@ -16,6 +20,7 @@ public class IndexModel : PageModel
         _context = context;
     }
 
+<<<<<<< HEAD
     public IList<PurchaseOrder> PurchaseOrders { get; set; } = new List<PurchaseOrder>();
 
     public SelectList StatusList { get; set; }
@@ -84,3 +89,15 @@ public class IndexModel : PageModel
         };
     }
 }
+=======
+    public IList<PurchaseOrder> PurchaseOrder { get; set; }
+
+    public async Task OnGetAsync()
+    {
+        PurchaseOrder = await _context.PurchaseOrder
+            .Include(o => o.Product)
+            .Include(o => o.Supplier)
+            .ToListAsync();
+    }
+}
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090

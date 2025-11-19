@@ -14,6 +14,7 @@
                 <div class="card-body p-4">
                     <form method="post">
                         <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+<<<<<<< HEAD
                         <input type="hidden" asp-for="Brand.Id" />
 
                         <div class="mb-4">
@@ -24,6 +25,18 @@
                                 <input asp-for="Brand.Name" class="form-control border-start-0" placeholder="Ej: Toyota, Ford, etc." />
                             </div>
                             <span asp-validation-for="Brand.Name" class="text-danger small"></span>
+=======
+                        <input type="hidden" asp-for="Brand.id" />
+
+                        <div class="mb-4">
+                            <label asp-for="Brand.name" class="form-label fw-semibold">
+                                Nombre de la Marca
+                            </label>
+                            <div class="input-group">
+                                <input asp-for="Brand.name" class="form-control border-start-0" placeholder="Ej: Toyota, Ford, etc." />
+                            </div>
+                            <span asp-validation-for="Brand.name" class="text-danger small"></span>
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                         </div>
 
                         <div class="d-grid gap-2 d-md-flex justify-content-md-between mt-4 pt-3 border-top">

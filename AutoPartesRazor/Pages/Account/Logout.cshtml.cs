@@ -1,7 +1,14 @@
+<<<<<<< HEAD
 using AutoPartesRazor.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+=======
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using AutoPartesRazor.Models;
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
 
 namespace AutoPartesRazor.Pages.Account
 {

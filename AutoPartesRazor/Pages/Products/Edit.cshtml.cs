@@ -34,21 +34,34 @@ public class EditModel : PageModel
 
     public async Task<IActionResult> OnGetAsync(int? id)
     {
+<<<<<<< HEAD
         if (id == null || _context.Products == null)
+=======
+        if (id == null || _context.Product == null)
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
         {
             return NotFound();
         }
 
         //Llena la lista de categorias
+<<<<<<< HEAD
         Categories = _context.Categories
             .Select(c => new SelectListItem
             {
                 Value = c.Id.ToString(),
                 Text = c.Name
+=======
+        Categories = _context.Category
+            .Select(c => new SelectListItem
+            {
+                Value = c.id.ToString(),
+                Text = c.name
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
             })
             .ToList();
 
         //Llena la lista de marcas
+<<<<<<< HEAD
         Brands = _context.Brands
             .Select(b => new SelectListItem
             {
@@ -58,13 +71,28 @@ public class EditModel : PageModel
             .ToList();
 
         var product = await _context.Products.FirstOrDefaultAsync(m => m.Id == id);
+=======
+        Brands = _context.Brand
+            .Select(b => new SelectListItem
+            {
+                Value = b.id.ToString(),
+                Text = b.name
+            })
+            .ToList();
+
+        var product = await _context.Product.FirstOrDefaultAsync(m => m.id == id);
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
         if (product == null)
         {
             return NotFound();
         }
 
         Product = product;
+<<<<<<< HEAD
         PriceInteger = (int)Product.Price;
+=======
+        PriceInteger = (int)Product.price;
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
         return Page();
     }
 
@@ -76,7 +104,11 @@ public class EditModel : PageModel
         }
 
         _context.Attach(Product).State = EntityState.Modified;
+<<<<<<< HEAD
         Product.Price = PriceInteger;
+=======
+        Product.price = PriceInteger;
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
 
         try
         {
@@ -107,7 +139,11 @@ public class EditModel : PageModel
         }
         catch (DbUpdateConcurrencyException)
         {
+<<<<<<< HEAD
             if (!ProductExists(Product.Id))
+=======
+            if (!ProductExists(Product.id))
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
             {
                 return NotFound();
             }
@@ -122,6 +158,10 @@ public class EditModel : PageModel
 
     private bool ProductExists(int id)
     {
+<<<<<<< HEAD
         return (_context.Products?.Any(e => e.Id == id)).GetValueOrDefault();
+=======
+        return (_context.Product?.Any(e => e.id == id)).GetValueOrDefault();
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
     }
 }

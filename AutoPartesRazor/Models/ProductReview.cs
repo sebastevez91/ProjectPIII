@@ -6,6 +6,10 @@ public class ProductReview
 {
     public int Id { get; set; }
 
+<<<<<<< HEAD
+=======
+    [Required]
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
     [Range(1, 5, ErrorMessage = "La calificación debe ser entre 1 y 5 estrellas")]
     [Display(Name = "Calificación")]
     public int Rating { get; set; }

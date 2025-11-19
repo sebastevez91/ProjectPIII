@@ -1,7 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+<<<<<<< HEAD
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34728.123
+=======
+# Visual Studio Version 18
+VisualStudioVersion = 18.0.11205.157
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoPartesRazor", "AutoPartesRazor\AutoPartesRazor.csproj", "{87CB4919-2214-42C6-8638-2038E8A9B44F}"
 EndProject

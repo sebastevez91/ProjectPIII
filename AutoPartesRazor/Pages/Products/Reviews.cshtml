@@ -1,7 +1,11 @@
 ﻿@page "{productId:int}"
 @model AutoPartesRazor.Pages.Products.ReviewsModel
 @{
+<<<<<<< HEAD
     ViewData["Title"] = $"Reseñas - {Model.Product.Name}";
+=======
+    ViewData["Title"] = $"Reseñas - {Model.Product.name}";
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
     ViewData["CartCount"] = Model.CartCount;
 }
 
@@ -9,7 +13,11 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a asp-page="/Products/Index">Productos</a></li>
+<<<<<<< HEAD
             <li class="breadcrumb-item"><a asp-page="/Products/Details" asp-route-id="@Model.Product.Id">@Model.Product.Name</a></li>
+=======
+            <li class="breadcrumb-item"><a asp-page="/Products/Details" asp-route-id="@Model.Product.id">@Model.Product.name</a></li>
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
             <li class="breadcrumb-item active">Reseñas</li>
         </ol>
     </nav>
@@ -23,8 +31,13 @@
                      style="height: 250px; object-fit: cover;"
                      onerror="this.src='/img/logoAzul.jpg'" />
                 <div class="card-body">
+<<<<<<< HEAD
                     <h5 class="card-title">@Model.Product.Name</h5>
                     <p class="text-muted mb-2">@Model.Product.Brand?.Name</p>
+=======
+                    <h5 class="card-title">@Model.Product.name</h5>
+                    <p class="text-muted mb-2">@Model.Product.Brand?.name</p>
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                     <div class="mb-3">
                         <div class="d-flex align-items-center mb-2">
                             <h3 class="mb-0 me-2">@Model.Product.AverageRating.ToString("0.0")</h3>
@@ -41,7 +54,11 @@
 
                     @if (!Model.UserHasReviewed && User.Identity?.IsAuthenticated == true)
                     {
+<<<<<<< HEAD
                         <a asp-page="/Products/CreateReview" asp-route-productId="@Model.Product.Id" 
+=======
+                        <a asp-page="/Products/CreateReview" asp-route-productId="@Model.Product.id" 
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                            class="btn btn-primary w-100">
                             <i class="fa-solid fa-star me-1"></i>
                             Escribir reseña
@@ -62,7 +79,11 @@
                     }
 
                     <hr />
+<<<<<<< HEAD
                     <a asp-page="/Products/Details" asp-route-id="@Model.Product.Id" 
+=======
+                    <a asp-page="/Products/Details" asp-route-id="@Model.Product.id" 
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                        class="btn btn-outline-secondary w-100">
                         <i class="fa-solid fa-arrow-left me-1"></i>
                         Volver al producto
@@ -104,7 +125,11 @@
                             <div class="col-md-4">
                                 @if (Model.FilterRating.HasValue || Model.SortBy != "recent")
                                 {
+<<<<<<< HEAD
                                     <a asp-page="/Products/Reviews" asp-route-productId="@Model.Product.Id" 
+=======
+                                    <a asp-page="/Products/Reviews" asp-route-productId="@Model.Product.id" 
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                                        class="btn btn-outline-secondary w-100">
                                         Limpiar filtros
                                     </a>
@@ -164,7 +189,11 @@
                                         <button type="submit" 
                                                 asp-page-handler="Vote"
                                                 class="btn btn-sm @(userVote?.IsHelpful == true ? "btn-success" : "btn-outline-success")"
+<<<<<<< HEAD
                                                 @* @(userVote != null ? "disabled" : "") *@>
+=======
+                                                @(userVote != null ? "disabled" : "")>
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                                             <i class="fa-solid fa-thumbs-up me-1"></i>
                                             Sí (@review.HelpfulCount)
                                         </button>
@@ -176,7 +205,11 @@
                                         <button type="submit" 
                                                 asp-page-handler="Vote"
                                                 class="btn btn-sm @(userVote?.IsHelpful == false ? "btn-danger" : "btn-outline-danger")"
+<<<<<<< HEAD
                                                 @* @(userVote != null ? "disabled" : "") *@>
+=======
+                                                @(userVote != null ? "disabled" : "")>
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                                             <i class="fa-solid fa-thumbs-down me-1"></i>
                                             No (@review.NotHelpfulCount)
                                         </button>

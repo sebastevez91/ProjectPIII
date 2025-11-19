@@ -1,5 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
+<<<<<<< HEAD
 using System.ComponentModel.DataAnnotations.Schema;
+=======
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
 
 namespace AutoPartesRazor.Models;
 
@@ -8,6 +11,7 @@ public class PurchaseOrder
 {
     public int Id { get; set; }
 
+<<<<<<< HEAD
     // Forenig key Producto
     [Required]
     public int ProductId { get; set; }
@@ -17,10 +21,19 @@ public class PurchaseOrder
     public int SupplierId { get; set; }
 
     [Display(Name = "Provéedor")]
+=======
+    [Required]
+    public int ProductId { get; set; }
+    public Product? Product { get; set; }
+
+    [Required]
+    public int SupplierId { get; set; }
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
     public Supplier? Supplier { get; set; }
 
     [Required]
     [Range(1, 9999)]
+<<<<<<< HEAD
     [Display(Name = "Cantidad")]
     public int Quantity { get; set; }
 
@@ -41,4 +54,9 @@ public class PurchaseOrder
     // Navegación
     public Product? Product { get; set; }
 
+=======
+    public int Quantity { get; set; }
+
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
 }

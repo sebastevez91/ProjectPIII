@@ -1,5 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
+<<<<<<< HEAD
+=======
+using System.Data;
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
 
 namespace AutoPartesRazor.Models;
 
@@ -9,11 +13,19 @@ public class User : IdentityUser
     [Display(Name = "Rol")]
     public string Role { get; set; } = "Client";
 
+<<<<<<< HEAD
     [Display(Name = "Fecha de registro")]
     public DateTime RegistrationDate { get; set; } = DateTime.Now;
 
     [Required(ErrorMessage = "El nombre es obligatorio.")]
     [StringLength(100, MinimumLength = 2, ErrorMessage = "El nombre debe tener más de 100 caracteres.")]
+=======
+    [Display(Name = "Fecha de creación")]
+    public DateTime RegistrationDate { get; set; } = DateTime.Now;
+
+    [Required(ErrorMessage = "El nombre es obligatorio.")]
+    [StringLength(80, MinimumLength = 2, ErrorMessage = "El nombre debe tener más de 80 caracteres.")]
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
     [Display(Name = "Nombre Completo")]
     public string FullName { get; set; } = string.Empty;
 
@@ -22,7 +34,11 @@ public class User : IdentityUser
     public string? Address { get; set; } = string.Empty;
 
     [RegularExpression(@"^\d{8,10}$", ErrorMessage = "El teléfono debe tener 8 o 10 dígitos numéricos.")]
+<<<<<<< HEAD
     [Display(Name = "Número de Teléfono")]
+=======
+    [Display(Name = "Teléfono")]
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
     public string? PhoneNumber { get; set; }
 
     [StringLength(500)]
@@ -30,11 +46,18 @@ public class User : IdentityUser
     public string? ProfilePicturePath { get; set; }
 
     // Última actualización
+<<<<<<< HEAD
     [Display(Name = "Ultima actualización")]
+=======
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
     public DateTime? LastUpdated { get; set; }
 
     // Notificación relacionada
     public ICollection<Notification>? Notifications { get; set; }
+<<<<<<< HEAD
     public ICollection<Order>? Orders { get; set; }
     public Cart? Cart { get; set; }
 }
+=======
+}
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090

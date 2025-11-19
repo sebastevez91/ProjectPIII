@@ -18,6 +18,10 @@ public class IndexModel : PageModel
 
     public async Task OnGetAsync()
     {
+<<<<<<< HEAD
         Suppliers = await _context.Suppliers.ToListAsync();
+=======
+        Suppliers = await _context.Supplier.ToListAsync();
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
     }
 }

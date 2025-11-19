@@ -14,6 +14,7 @@
         <form method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
+<<<<<<< HEAD
                 <label asp-for="Product.Name" class="control-label "></label>
                 <input asp-for="Product.Name" class="form-control" />
                 <span asp-validation-for="Product.Name" class="text-danger"></span>
@@ -36,13 +37,42 @@
             <div class="form-group">
                 <label asp-for="Product.Category.Name" class="control-label "></label>
                 <select asp-for="Product.CategoryId" class="form-select"
+=======
+                <label asp-for="Product.name" class="control-label "></label>
+                <input asp-for="Product.name" class="form-control" />
+                <span asp-validation-for="Product.name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.description" class="control-label "></label>
+                <input asp-for="Product.description" class="form-control" />
+                <span asp-validation-for="Product.description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.stock" class="control-label "></label>
+                <input asp-for="Product.stock" class="form-control" />
+                <span asp-validation-for="Product.stock" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.price" class="control-label "></label>
+                <input asp-for="Product.price" class="form-control" />
+                <span asp-validation-for="Product.price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.Category.name" class="control-label "></label>
+                <select asp-for="Product.idCategory" class="form-select"
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                         asp-items="Model.Categories">
                     <option value="">-- Seleccione una categoría --</option>
                 </select>
             </div>
             <div class="form-group">
+<<<<<<< HEAD
                 <label asp-for="Product.Brand.Name" class="control-label "></label>
                 <select asp-for="Product.BrandId" class="form-select"
+=======
+                <label asp-for="Product.Brand.name" class="control-label "></label>
+                <select asp-for="Product.idBrand" class="form-select"
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                         asp-items="Model.Brands">
                     <option value="">-- Seleccione una marca --</option>
                 </select>

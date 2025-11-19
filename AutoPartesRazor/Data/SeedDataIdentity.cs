@@ -1,7 +1,13 @@
 ﻿using AutoPartesRazor.Interfaces;
 using AutoPartesRazor.Models;
+<<<<<<< HEAD
 using Microsoft.AspNetCore.Identity;
 using System.Data;
+=======
+using AutoPartesRazor.Services;
+using System.Data;
+using Microsoft.AspNetCore.Identity;
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
 
 namespace AutoPartesRazor.Data;
 
@@ -19,7 +25,11 @@ public class SeedDataIdentity
         await _context.Database.EnsureCreatedAsync();
         await CheckRolesAsync();
         // Cambia la contraseña a una que cumpla la política o ajusta la política en Program.cs
+<<<<<<< HEAD
         await CheckUserAsync("SuperAdministrador", "Admin", "superadmin@gmail.com", "SuperAdmin123!");
+=======
+        await CheckUserAsync("SuperAdministrador", "Admin", "superadmin@gmail.com","SuperAdmin123!");
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
     }
     private async Task CheckRolesAsync()
     {
@@ -47,7 +57,11 @@ public class SeedDataIdentity
             }
 
             // Sólo añadir al rol si la creación tuvo éxito
+<<<<<<< HEAD
             await _userService.AddUserToRoleAsync(user, "Admin");
+=======
+            await _userService.AddUserToRoleAsync(user,"Admin");
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
         }
         return user;
     }

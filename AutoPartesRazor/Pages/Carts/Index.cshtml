@@ -37,6 +37,7 @@
                 <div class="list-group">
                     @foreach (var item in Model.Cart)
                     {
+<<<<<<< HEAD
                         var lineTotal = item.Quantity * item.Product.Price;
                         <div class="list-group-item mb-3 shadow-sm rounded">
                             <div class="row g-3 align-items-center">
@@ -46,11 +47,23 @@
                                 <div class="col-6 col-md-7">
                                     <h5 class="mb-1">@item.Product.Name</h5>
                                     <small class="text-muted">Código: @item.ProductId</small>
+=======
+                        var lineTotal = item.quantity * item.producto.price;
+                        <div class="list-group-item mb-3 shadow-sm rounded">
+                            <div class="row g-3 align-items-center">
+                                <div class="col-3 col-md-2">
+                                    <img src="@(string.IsNullOrEmpty(@item.producto.ImagePath) ? "/img/logoAzul.jpg" : item.producto.ImagePath)" class="img-fluid product-thumb rounded" onerror="this.src='/img/logoAzul.jpg'">
+                                </div>
+                                <div class="col-6 col-md-7">
+                                    <h5 class="mb-1">@item.producto.name</h5>
+                                    <small class="text-muted">Código: @item.productId</small>
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                                     <div class="mt-2">
                                         <span class="badge bg-primary"><i class="fa-solid fa-industry me-1"></i> Repuestos</span>
                                     </div>
                                 </div>
                                 <div class="col-3 col-md-3 text-end">
+<<<<<<< HEAD
                                     <div class="mb-2 fw-bold">@item.Product.Price.ToString("C")</div>
 
                                     <div class="input-group input-group-sm justify-content-end mb-2" style="width:160px;margin-left:auto;">
@@ -64,11 +77,27 @@
                                     <div class="mt-2">
                                         <a asp-page="/Products/Details" asp-route-id="@item.ProductId" class="btn btn-sm btn-outline-secondary me-1"><i class="fa-solid fa-eye"></i> Ver</a>
                                         <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal_@item.Id"><i class="fa-solid fa-trash"></i> Eliminar</button>
+=======
+                                    <div class="mb-2 fw-bold">@item.producto.price.ToString("C")</div>
+
+                                    <div class="input-group input-group-sm justify-content-end mb-2" style="width:160px;margin-left:auto;">
+                                       @*  <button class="btn btn-outline-secondary" type="button" onclick="changeQty(@item.id, -1)" title="Disminuir"><i class="fa-solid fa-minus"></i></button> *@
+                                        <input type="text" readonly class="form-control text-center qty-input" id="qty_@item.id" value="@item.quantity un." style="max-width:60px;" data-price="@item.producto.price" />
+                                        @* <button class="btn btn-outline-secondary" type="button" onclick="changeQty(@item.id, 1)" title="Aumentar"><i class="fa-solid fa-plus"></i></button> *@
+                                    </div>
+
+                                    <div class="small text-muted">Total: <span id="lineTotal_@item.id">@lineTotal.ToString("C")</span></div>
+
+                                    <div class="mt-2">
+                                        <a asp-page="/Products/Details" asp-route-id="@item.productId" class="btn btn-sm btn-outline-secondary me-1"><i class="fa-solid fa-eye"></i> Ver</a>
+                                        <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal_@item.id"><i class="fa-solid fa-trash"></i> Eliminar</button>
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Modal de confirmación -->
+<<<<<<< HEAD
                             <div class="modal fade" id="deleteModal_@item.Id" tabindex="-1" aria-labelledby="deleteModalLabel_@item.Id" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
@@ -83,6 +112,22 @@
                                             <button type="button" class="btn btn-secondary m-2" data-bs-dismiss="modal">Cancelar</button>
                                             <form method="post" asp-page="./Delete" asp-route-id="@item.Id" style="display:inline;">
                                                 <input type="hidden" name="id" value="@item.Id" />
+=======
+                            <div class="modal fade" id="deleteModal_@item.id" tabindex="-1" aria-labelledby="deleteModalLabel_@item.id" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="deleteModalLabel_@item.id">Confirmar eliminación</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            ¿Está seguro que desea eliminar el producto <strong>@item.producto.name</strong> del carrito?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary m-2" data-bs-dismiss="modal">Cancelar</button>
+                                            <form method="post" asp-page="./Delete" asp-route-id="@item.id" style="display:inline;">
+                                                <input type="hidden" name="id" value="@item.id" />
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                                                 <button type="submit" class="btn btn-danger">Eliminar</button>
                                             </form>
                                         </div>
@@ -99,8 +144,13 @@
                 <div class="card summary-card sticky-top p-3">
                     <h5 class="card-title mb-3"><i class="fa-solid fa-list-check me-2"></i>Resumen del pedido</h5>
                     <div class="mb-2 d-flex justify-content-between">
+<<<<<<< HEAD
                         <div>Subtotal (@Model.Cart.Sum(i => i.Quantity))</div>
                         <div id="subtotal">@Model.Cart.Sum(item => item.Quantity * item.Product.Price).ToString("C")</div>
+=======
+                        <div>Subtotal (@Model.Cart.Sum(i => i.quantity))</div>
+                        <div id="subtotal">@Model.Cart.Sum(item => item.quantity * item.producto.price).ToString("C")</div>
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                     </div>
                     <div class="mb-2 d-flex justify-content-between">
                         <div>Envío</div>
@@ -109,7 +159,11 @@
                     <hr />
                     <div class="mb-3 d-flex justify-content-between fs-5 fw-bold">
                         <div>Total</div>
+<<<<<<< HEAD
                         <div id="grandTotal">@Model.Cart.Sum(item => item.Quantity * item.Product.Price).ToString("C")</div>
+=======
+                        <div id="grandTotal">@Model.Cart.Sum(item => item.quantity * item.producto.price).ToString("C")</div>
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                     </div>
 
                     <a asp-page="/Products/Index" class="btn btn-outline-primary w-100 mb-2"><i class="fa-solid fa-arrow-left me-2"></i> Seguir comprando</a>

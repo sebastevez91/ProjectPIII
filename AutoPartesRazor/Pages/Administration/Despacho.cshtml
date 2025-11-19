@@ -39,7 +39,11 @@
             else if (p.Status == "Despachado") { badgeClass = "bg-success"; badgeIcon = "<i class='fa-solid fa-truck'></i>"; anim = "animate__tada"; }
             else if (p.Status == "Cancelado") { badgeClass = "bg-danger"; badgeIcon = "<i class='fa-solid fa-xmark'></i>"; }
             <tr class="align-middle animate__animated animate__fadeInUp">
+<<<<<<< HEAD
                 <td>@p.Id</td>
+=======
+                <td>@p.id</td>
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                 <td>@p.CustomerName</td>
                 <td>@p.CustomerEmail</td>
                 <td>@p.ShippingAddress</td>
@@ -49,12 +53,20 @@
                     </span>
                 </td>
                 <td>
+<<<<<<< HEAD
                     <form method="post" asp-page-handler="Despachar" asp-route-id="@p.Id" class="d-inline despachoForm" data-pid="@p.Id">
+=======
+                    <form method="post" asp-page-handler="Despachar" asp-route-id="@p.id" class="d-inline despachoForm" data-pid="@p.id">
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                         <button type="submit" class="btn btn-success btn-sm shadow-sm animate__animated animate__bounceIn">
                             <i class="fa-solid fa-dolly"></i> Despachar
                         </button>
                     </form>
+<<<<<<< HEAD
                     <a asp-page="/Administration/DetallePedido" asp-route-id="@p.Id"
+=======
+                    <a asp-page="/Administration/DetallePedido" asp-route-id="@p.id"
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                        class="btn btn-info btn-sm shadow-sm animate__animated animate__fadeIn">
                         <i class="fa-solid fa-magnifying-glass"></i> Ver Detalle
                     </a>

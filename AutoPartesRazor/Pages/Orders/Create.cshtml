@@ -23,11 +23,19 @@
                     {
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <div>
+<<<<<<< HEAD
                                 <strong>@item.Product?.Name</strong>
                                 <div class="text-muted small">Cantidad: @item.Quantity</div>
                             </div>
                             <div>
                                 <div>@(item.Product != null ? (item.Product.Price * item.Quantity).ToString("C") : "—")</div>
+=======
+                                <strong>@item.producto?.name</strong>
+                                <div class="text-muted small">Cantidad: @item.quantity</div>
+                            </div>
+                            <div>
+                                <div>@(item.producto != null ? (item.producto.price * item.quantity).ToString("C") : "—")</div>
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                             </div>
                         </li>
                     }
@@ -45,13 +53,21 @@
 
                     <div class="mb-2">
                         <label class="form-label">Nombre completo</label>
+<<<<<<< HEAD
                         <input asp-for="Input.CustomerName" value="@Model.UserSesion.FullName" class="form-control" />
+=======
+                        <input asp-for="Input.CustomerName" class="form-control" />
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                         <span asp-validation-for="Input.CustomerName" class="text-danger"></span>
                     </div>
 
                     <div class="mb-2">
                         <label class="form-label">Email</label>
+<<<<<<< HEAD
                         <input asp-for="Input.CustomerEmail" value="@Model.UserSesion.Email" class="form-control" />
+=======
+                        <input asp-for="Input.CustomerEmail" class="form-control" />
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                         <span asp-validation-for="Input.CustomerEmail" class="text-danger"></span>
                     </div>
 

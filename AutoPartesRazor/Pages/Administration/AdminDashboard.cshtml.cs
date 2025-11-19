@@ -1,5 +1,9 @@
 using AutoPartesRazor.Models;
 using Microsoft.AspNetCore.Authorization;
+<<<<<<< HEAD
+=======
+using Microsoft.AspNetCore.Mvc;
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,6 +31,7 @@ public class AdminDashboardModel : PageModel
 
     public async Task OnGetAsync()
     {
+<<<<<<< HEAD
         Users = _context.Users != null
             ? await _context.Users.ToListAsync()
             : new List<User>();
@@ -55,6 +60,36 @@ public class AdminDashboardModel : PageModel
         LowStockProducts = await _context.Products
             .Where(p => !p.IsDeleted && p.Stock <= 5)
             .OrderBy(p => p.Stock)
+=======
+        Users = _context.User != null
+            ? await _context.User.ToListAsync()
+            : new List<User>();
+
+        Products = _context.Product != null
+            ? await _context.Product.Include(p => p.Category).ToListAsync()
+            : new List<Product>();
+
+        Orders = _context.Order != null
+            ? await _context.Order.Include(o => o.Items).ThenInclude(oi => oi.Product).ToListAsync()
+            : new List<Order>();
+
+        Categories = _context.Category != null
+            ? await _context.Category.ToListAsync()
+            : new List<Category>();
+
+        Brands = _context.Brand != null
+            ? await _context.Brand.ToListAsync()
+            : new List<Brand>();
+
+        Notifications = _context.Notification != null
+            ? await _context.Notification.Include(n => n.User).ToListAsync()
+            : new List<Notification>();
+
+        // Obtener productos con bajo stock (por ejemplo, stock menor o igual a 5)
+        LowStockProducts = await _context.Product
+            .Where(p => !p.IsDeleted && p.stock <= 5)
+            .OrderBy(p => p.stock)
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
             .ToListAsync();
 
     }

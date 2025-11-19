@@ -3,6 +3,10 @@ using AutoPartesRazor.Models;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
+<<<<<<< HEAD
+=======
+using System.IO;
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
 
 namespace AutoPartesRazor.Services;
 
@@ -77,7 +81,11 @@ public class PdfService : IPdfService
                                 .Bold()
                                 .FontColor(Colors.Grey.Darken2);
 
+<<<<<<< HEAD
                             col.Item().PaddingTop(5).AlignRight().Text($"Pedido N° {order.Id}")
+=======
+                            col.Item().PaddingTop(5).AlignRight().Text($"Pedido N° {order.id}")
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                                 .FontSize(16)
                                 .Bold()
                                 .FontColor(Colors.Blue.Darken2);
@@ -149,7 +157,11 @@ public class PdfService : IPdfService
                     var isAlternate = false;
                     foreach (var item in order.Items)
                     {
+<<<<<<< HEAD
                         var productName = item.Product?.Name ?? $"Producto #{item.ProductId}";
+=======
+                        var productName = item.Product?.name ?? $"Producto #{item.ProductId}";
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                         var unitPrice = item.UnitPrice;
                         var totalPrice = unitPrice * item.Quantity;
 

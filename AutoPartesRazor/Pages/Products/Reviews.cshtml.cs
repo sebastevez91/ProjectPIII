@@ -29,17 +29,29 @@ public class ReviewsModel : PageModel
 
     public async Task<IActionResult> OnGetAsync(int productId)
     {
+<<<<<<< HEAD
         Product = await _context.Products
             .Include(p => p.Brand)
             .Include(p => p.Reviews!)
                 .ThenInclude(r => r.User)
             .FirstOrDefaultAsync(p => p.Id == productId);
+=======
+        Product = await _context.Product
+            .Include(p => p.Brand)
+            .Include(p => p.Reviews!)
+                .ThenInclude(r => r.User)
+            .FirstOrDefaultAsync(p => p.id == productId);
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
 
         if (Product == null)
             return NotFound();
 
         // Obtener reseñas con filtros
+<<<<<<< HEAD
         var query = _context.ProductReviews
+=======
+        var query = _context.ProductReview
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
             .Include(r => r.User)
             .Where(r => r.ProductId == productId);
 
@@ -60,6 +72,7 @@ public class ReviewsModel : PageModel
         // Verificar si el usuario ya reseñó
         if (User.Identity?.IsAuthenticated == true)
         {
+<<<<<<< HEAD
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == User.Identity.Name);
             if (user != null)
             {
@@ -68,12 +81,26 @@ public class ReviewsModel : PageModel
 
                 // Obtener votos del usuario
                 UserVotes = await _context.ReviewHelpfuls
+=======
+            var user = await _context.User.FirstOrDefaultAsync(u => u.Email == User.Identity.Name);
+            if (user != null)
+            {
+                UserHasReviewed = await _context.ProductReview
+                    .AnyAsync(r => r.ProductId == productId && r.UserId == user.Id);
+
+                // Obtener votos del usuario
+                UserVotes = await _context.ReviewHelpful
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                     .Where(v => v.UserId == user.Id && Reviews.Select(r => r.Id).Contains(v.ReviewId))
                     .ToListAsync();
             }
         }
 
+<<<<<<< HEAD
         CartCount = await _context.Carts.CountAsync();
+=======
+        CartCount = await _context.Cart.CountAsync();
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
         return Page();
     }
 
@@ -82,6 +109,7 @@ public class ReviewsModel : PageModel
         if (!User.Identity?.IsAuthenticated == true)
             return RedirectToPage("/Account/Login");
 
+<<<<<<< HEAD
         var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == User.Identity.Name);
         if (user == null)
             return RedirectToPage("/Account/Login");
@@ -92,10 +120,23 @@ public class ReviewsModel : PageModel
 
         // Buscar voto existente
         var existingVote = await _context.ReviewHelpfuls
+=======
+        var user = await _context.User.FirstOrDefaultAsync(u => u.Email == User.Identity.Name);
+        if (user == null)
+            return RedirectToPage("/Account/Login");
+
+        var review = await _context.ProductReview.FindAsync(reviewId);
+        if (review == null)
+            return NotFound();
+
+        // Verificar si ya votó
+        var existingVote = await _context.ReviewHelpful
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
             .FirstOrDefaultAsync(v => v.ReviewId == reviewId && v.UserId == user.Id);
 
         if (existingVote != null)
         {
+<<<<<<< HEAD
             // Si el usuario hace clic en el mismo botón, remover el voto
             if (existingVote.IsHelpful == isHelpful)
             {
@@ -151,6 +192,32 @@ public class ReviewsModel : PageModel
 
         await _context.SaveChangesAsync();
 
+=======
+            TempData["ErrorMessage"] = "Ya has votado en esta reseña.";
+            return RedirectToPage(new { productId });
+        }
+
+        // Crear voto
+        var vote = new ReviewHelpful
+        {
+            ReviewId = reviewId,
+            UserId = user.Id,
+            IsHelpful = isHelpful,
+            VotedAt = DateTime.Now
+        };
+
+        _context.ReviewHelpful.Add(vote);
+
+        // Actualizar contadores
+        if (isHelpful)
+            review.HelpfulCount++;
+        else
+            review.NotHelpfulCount++;
+
+        await _context.SaveChangesAsync();
+
+        TempData["SuccessMessage"] = "¡Gracias por tu voto!";
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
         return RedirectToPage(new { productId });
     }
 }

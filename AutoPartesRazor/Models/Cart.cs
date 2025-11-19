@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace AutoPartesRazor.Models;
@@ -22,3 +23,19 @@ public class Cart
     // Navigation Properties
     public Product? Product { get; set; }
 }
+=======
+﻿namespace AutoPartesRazor.Models
+{
+    public class Cart
+    {
+        public int id {  get; set; }
+
+        public int productId { get; set; }
+
+        public int quantity { get; set; }
+
+        // Navegación
+        public Product? producto { get; set; }
+    }
+}
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090

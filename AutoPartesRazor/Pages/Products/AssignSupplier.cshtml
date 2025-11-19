@@ -2,14 +2,25 @@
 @model AutoPartesRazor.Pages.Products.AssignSuppliersModel
 
 <div class="container py-4">
+<<<<<<< HEAD
     <h2>Asignar Proveedores a @Model.Product.Name</h2>
+=======
+    <h2>Asignar Proveedores a @Model.Product.name</h2>
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
 
     <form method="post">
 
         @foreach (var supplier in Model.AllSuppliers)
         {
             <div class="form-check">
+<<<<<<< HEAD
                 <input type="checkbox" class="form-check-input" name="selectedSuppliers" value="@supplier.Id"
+=======
+                <input type="checkbox"
+                       class="form-check-input"
+                       name="selectedSuppliers"
+                       value="@supplier.Id"
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                        @(Model.AssignedSuppliers.Contains(supplier.Id) ? "checked" : "") />
 
                 <label class="form-check-label">@supplier.Name</label>

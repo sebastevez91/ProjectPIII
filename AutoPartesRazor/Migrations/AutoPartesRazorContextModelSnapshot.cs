@@ -24,11 +24,19 @@ namespace AutoPartesRazor.Migrations
 
             modelBuilder.Entity("AutoPartesRazor.Models.Brand", b =>
                 {
+<<<<<<< HEAD
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+=======
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
@@ -36,6 +44,7 @@ namespace AutoPartesRazor.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+<<<<<<< HEAD
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -46,10 +55,22 @@ namespace AutoPartesRazor.Migrations
                     b.HasIndex("IsDeleted");
 
                     b.ToTable("Brands");
+=======
+                    b.Property<string>("name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.ToTable("Brand");
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                 });
 
             modelBuilder.Entity("AutoPartesRazor.Models.Cart", b =>
                 {
+<<<<<<< HEAD
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
@@ -73,15 +94,42 @@ namespace AutoPartesRazor.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("Carts");
+=======
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
+
+                    b.Property<int>("productId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("productId");
+
+                    b.ToTable("Cart");
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                 });
 
             modelBuilder.Entity("AutoPartesRazor.Models.Category", b =>
                 {
+<<<<<<< HEAD
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+=======
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
@@ -89,6 +137,7 @@ namespace AutoPartesRazor.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+<<<<<<< HEAD
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -207,6 +256,17 @@ namespace AutoPartesRazor.Migrations
                     b.HasIndex("UsuarioId");
 
                     b.ToTable("MensajeReclamo");
+=======
+                    b.Property<string>("name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.ToTable("Category");
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                 });
 
             modelBuilder.Entity("AutoPartesRazor.Models.Notification", b =>
@@ -241,16 +301,28 @@ namespace AutoPartesRazor.Migrations
 
                     b.HasIndex("UserId");
 
+<<<<<<< HEAD
                     b.ToTable("Notifications");
+=======
+                    b.ToTable("Notification");
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                 });
 
             modelBuilder.Entity("AutoPartesRazor.Models.Order", b =>
                 {
+<<<<<<< HEAD
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+=======
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
 
                     b.Property<int?>("Calificacion")
                         .HasColumnType("int");
@@ -260,6 +332,7 @@ namespace AutoPartesRazor.Migrations
 
                     b.Property<string>("CustomerEmail")
                         .IsRequired()
+<<<<<<< HEAD
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
@@ -267,6 +340,13 @@ namespace AutoPartesRazor.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+=======
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
@@ -276,6 +356,7 @@ namespace AutoPartesRazor.Migrations
 
                     b.Property<string>("PaymentMethod")
                         .IsRequired()
+<<<<<<< HEAD
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -283,6 +364,13 @@ namespace AutoPartesRazor.Migrations
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+=======
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ShippingAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -291,6 +379,7 @@ namespace AutoPartesRazor.Migrations
                     b.Property<decimal>("Total")
                         .HasColumnType("decimal(18,2)");
 
+<<<<<<< HEAD
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
@@ -304,15 +393,34 @@ namespace AutoPartesRazor.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Orders");
+=======
+                    b.HasKey("id");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.ToTable("Order");
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                 });
 
             modelBuilder.Entity("AutoPartesRazor.Models.OrderItem", b =>
                 {
+<<<<<<< HEAD
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+=======
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
+
+                    b.Property<string>("Estado")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
 
                     b.Property<DateTime>("FechaActualizacion")
                         .HasColumnType("datetime2");
@@ -323,6 +431,7 @@ namespace AutoPartesRazor.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
+<<<<<<< HEAD
                     b.Property<int?>("ProductId1")
                         .HasColumnType("int");
 
@@ -340,18 +449,32 @@ namespace AutoPartesRazor.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
+=======
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("id");
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
 
                     b.HasIndex("OrderId");
 
                     b.HasIndex("ProductId");
 
+<<<<<<< HEAD
                     b.HasIndex("ProductId1");
 
                     b.ToTable("OrderItems");
+=======
+                    b.ToTable("OrderItem");
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                 });
 
             modelBuilder.Entity("AutoPartesRazor.Models.Product", b =>
                 {
+<<<<<<< HEAD
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
@@ -363,15 +486,25 @@ namespace AutoPartesRazor.Migrations
 
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int");
+=======
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
 
+<<<<<<< HEAD
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+=======
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                     b.Property<string>("ImagePath")
                         .HasColumnType("nvarchar(max)");
 
@@ -381,6 +514,7 @@ namespace AutoPartesRazor.Migrations
                     b.Property<int>("MinimumStock")
                         .HasColumnType("int");
 
+<<<<<<< HEAD
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -443,6 +577,40 @@ namespace AutoPartesRazor.Migrations
                         .IsUnique();
 
                     b.ToTable("ProductReviews");
+=======
+                    b.Property<string>("description")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<int?>("idBrand")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("idCategory")
+                        .HasColumnType("int");
+
+                    b.Property<string>("name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<decimal>("price")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("price");
+
+                    b.Property<int>("stock")
+                        .HasColumnType("int");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("idBrand");
+
+                    b.HasIndex("idCategory");
+
+                    b.ToTable("Product");
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                 });
 
             modelBuilder.Entity("AutoPartesRazor.Models.ProductSupplier", b =>
@@ -453,14 +621,21 @@ namespace AutoPartesRazor.Migrations
                     b.Property<int>("SupplierId")
                         .HasColumnType("int");
 
+<<<<<<< HEAD
                     b.Property<decimal?>("SupplyPrice")
                         .HasColumnType("decimal(18,2)");
 
+=======
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                     b.HasKey("ProductId", "SupplierId");
 
                     b.HasIndex("SupplierId");
 
+<<<<<<< HEAD
                     b.ToTable("ProductSuppliers");
+=======
+                    b.ToTable("ProductSupplier");
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                 });
 
             modelBuilder.Entity("AutoPartesRazor.Models.PurchaseOrder", b =>
@@ -480,6 +655,7 @@ namespace AutoPartesRazor.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
+<<<<<<< HEAD
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
 
@@ -492,12 +668,18 @@ namespace AutoPartesRazor.Migrations
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("decimal(18,2)");
 
+=======
+                    b.Property<int>("SupplierId")
+                        .HasColumnType("int");
+
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                     b.HasKey("Id");
 
                     b.HasIndex("ProductId");
 
                     b.HasIndex("SupplierId");
 
+<<<<<<< HEAD
                     b.ToTable("PurchaseOrders");
                 });
 
@@ -530,6 +712,9 @@ namespace AutoPartesRazor.Migrations
                         .IsUnique();
 
                     b.ToTable("ReviewHelpfuls");
+=======
+                    b.ToTable("PurchaseOrder");
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                 });
 
             modelBuilder.Entity("AutoPartesRazor.Models.Supplier", b =>
@@ -540,6 +725,7 @@ namespace AutoPartesRazor.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+<<<<<<< HEAD
                     b.Property<string>("Address")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
@@ -547,10 +733,13 @@ namespace AutoPartesRazor.Migrations
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
 
+=======
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                     b.Property<string>("Email")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+<<<<<<< HEAD
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -558,6 +747,12 @@ namespace AutoPartesRazor.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+=======
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(80)
+                        .HasColumnType("nvarchar(80)");
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
 
                     b.Property<string>("Phone")
                         .HasMaxLength(20)
@@ -565,9 +760,13 @@ namespace AutoPartesRazor.Migrations
 
                     b.HasKey("Id");
 
+<<<<<<< HEAD
                     b.HasIndex("IsDeleted");
 
                     b.ToTable("Suppliers");
+=======
+                    b.ToTable("Supplier");
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                 });
 
             modelBuilder.Entity("AutoPartesRazor.Models.User", b =>
@@ -582,9 +781,12 @@ namespace AutoPartesRazor.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+<<<<<<< HEAD
                     b.Property<int?>("CartId")
                         .HasColumnType("int");
 
+=======
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -598,8 +800,13 @@ namespace AutoPartesRazor.Migrations
 
                     b.Property<string>("FullName")
                         .IsRequired()
+<<<<<<< HEAD
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+=======
+                        .HasMaxLength(80)
+                        .HasColumnType("nvarchar(80)");
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
 
                     b.Property<DateTime?>("LastUpdated")
                         .HasColumnType("datetime2");
@@ -650,8 +857,11 @@ namespace AutoPartesRazor.Migrations
 
                     b.HasKey("Id");
 
+<<<<<<< HEAD
                     b.HasIndex("CartId");
 
+=======
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -798,6 +1008,7 @@ namespace AutoPartesRazor.Migrations
 
             modelBuilder.Entity("AutoPartesRazor.Models.Cart", b =>
                 {
+<<<<<<< HEAD
                     b.HasOne("AutoPartesRazor.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
@@ -842,6 +1053,15 @@ namespace AutoPartesRazor.Migrations
                     b.Navigation("Reclamo");
 
                     b.Navigation("Usuario");
+=======
+                    b.HasOne("AutoPartesRazor.Models.Product", "producto")
+                        .WithMany()
+                        .HasForeignKey("productId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("producto");
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                 });
 
             modelBuilder.Entity("AutoPartesRazor.Models.Notification", b =>
@@ -855,6 +1075,7 @@ namespace AutoPartesRazor.Migrations
                     b.Navigation("User");
                 });
 
+<<<<<<< HEAD
             modelBuilder.Entity("AutoPartesRazor.Models.Order", b =>
                 {
                     b.HasOne("AutoPartesRazor.Models.User", "User")
@@ -865,6 +1086,8 @@ namespace AutoPartesRazor.Migrations
                     b.Navigation("User");
                 });
 
+=======
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
             modelBuilder.Entity("AutoPartesRazor.Models.OrderItem", b =>
                 {
                     b.HasOne("AutoPartesRazor.Models.Order", "Order")
@@ -879,10 +1102,13 @@ namespace AutoPartesRazor.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+<<<<<<< HEAD
                     b.HasOne("AutoPartesRazor.Models.Product", null)
                         .WithMany("OrderItems")
                         .HasForeignKey("ProductId1");
 
+=======
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                     b.Navigation("Order");
 
                     b.Navigation("Product");
@@ -891,6 +1117,7 @@ namespace AutoPartesRazor.Migrations
             modelBuilder.Entity("AutoPartesRazor.Models.Product", b =>
                 {
                     b.HasOne("AutoPartesRazor.Models.Brand", "Brand")
+<<<<<<< HEAD
                         .WithMany("Products")
                         .HasForeignKey("BrandId")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -898,6 +1125,15 @@ namespace AutoPartesRazor.Migrations
                     b.HasOne("AutoPartesRazor.Models.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
+=======
+                        .WithMany("products")
+                        .HasForeignKey("idBrand")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("AutoPartesRazor.Models.Category", "Category")
+                        .WithMany("products")
+                        .HasForeignKey("idCategory")
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Brand");
@@ -905,6 +1141,7 @@ namespace AutoPartesRazor.Migrations
                     b.Navigation("Category");
                 });
 
+<<<<<<< HEAD
             modelBuilder.Entity("AutoPartesRazor.Models.ProductReview", b =>
                 {
                     b.HasOne("AutoPartesRazor.Models.Product", "Product")
@@ -924,6 +1161,8 @@ namespace AutoPartesRazor.Migrations
                     b.Navigation("User");
                 });
 
+=======
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
             modelBuilder.Entity("AutoPartesRazor.Models.ProductSupplier", b =>
                 {
                     b.HasOne("AutoPartesRazor.Models.Product", "Product")
@@ -946,6 +1185,7 @@ namespace AutoPartesRazor.Migrations
             modelBuilder.Entity("AutoPartesRazor.Models.PurchaseOrder", b =>
                 {
                     b.HasOne("AutoPartesRazor.Models.Product", "Product")
+<<<<<<< HEAD
                         .WithMany("PurchaseOrders")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -955,6 +1195,17 @@ namespace AutoPartesRazor.Migrations
                         .WithMany("PurchaseOrders")
                         .HasForeignKey("SupplierId")
                         .OnDelete(DeleteBehavior.Restrict)
+=======
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AutoPartesRazor.Models.Supplier", "Supplier")
+                        .WithMany()
+                        .HasForeignKey("SupplierId")
+                        .OnDelete(DeleteBehavior.Cascade)
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                         .IsRequired();
 
                     b.Navigation("Product");
@@ -962,6 +1213,7 @@ namespace AutoPartesRazor.Migrations
                     b.Navigation("Supplier");
                 });
 
+<<<<<<< HEAD
             modelBuilder.Entity("AutoPartesRazor.Models.ReviewHelpful", b =>
                 {
                     b.HasOne("AutoPartesRazor.Models.ProductReview", "Review")
@@ -990,6 +1242,8 @@ namespace AutoPartesRazor.Migrations
                     b.Navigation("Cart");
                 });
 
+=======
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -1043,17 +1297,25 @@ namespace AutoPartesRazor.Migrations
 
             modelBuilder.Entity("AutoPartesRazor.Models.Brand", b =>
                 {
+<<<<<<< HEAD
                     b.Navigation("Products");
+=======
+                    b.Navigation("products");
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                 });
 
             modelBuilder.Entity("AutoPartesRazor.Models.Category", b =>
                 {
+<<<<<<< HEAD
                     b.Navigation("Products");
                 });
 
             modelBuilder.Entity("AutoPartesRazor.Models.Claim", b =>
                 {
                     b.Navigation("Mensajes");
+=======
+                    b.Navigation("products");
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                 });
 
             modelBuilder.Entity("AutoPartesRazor.Models.Order", b =>
@@ -1063,6 +1325,7 @@ namespace AutoPartesRazor.Migrations
 
             modelBuilder.Entity("AutoPartesRazor.Models.Product", b =>
                 {
+<<<<<<< HEAD
                     b.Navigation("OrderItems");
 
                     b.Navigation("ProductSuppliers");
@@ -1070,20 +1333,29 @@ namespace AutoPartesRazor.Migrations
                     b.Navigation("PurchaseOrders");
 
                     b.Navigation("Reviews");
+=======
+                    b.Navigation("ProductSuppliers");
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                 });
 
             modelBuilder.Entity("AutoPartesRazor.Models.Supplier", b =>
                 {
                     b.Navigation("ProductSuppliers");
+<<<<<<< HEAD
 
                     b.Navigation("PurchaseOrders");
+=======
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                 });
 
             modelBuilder.Entity("AutoPartesRazor.Models.User", b =>
                 {
                     b.Navigation("Notifications");
+<<<<<<< HEAD
 
                     b.Navigation("Orders");
+=======
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                 });
 #pragma warning restore 612, 618
         }

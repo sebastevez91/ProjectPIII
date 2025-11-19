@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
+<<<<<<< HEAD
 namespace AutoPartesRazor.Pages.PurchaseOrders;
 
 public class CreateModel : PageModel
@@ -133,3 +134,57 @@ public class CreateModel : PageModel
         return new JsonResult(new { success = false });
     }
 }
+=======
+namespace AutoPartesRazor.Pages.PurchaseOrders
+{
+    public class CreateModel : PageModel
+    {
+        private readonly AutoPartesRazorContext _context;
+
+        public CreateModel(AutoPartesRazorContext context)
+        {
+            _context = context;
+        }
+
+        [BindProperty]
+        public PurchaseOrder purchaseOrder { get; set; } = new();
+
+        public SelectList ProductList { get; set; }
+        public SelectList SupplierList { get; set; }
+
+        public async Task<IActionResult> OnGetAsync()
+        {
+            ProductList = new SelectList(await _context.Product
+                .Where(p => !p.IsDeleted)
+                .OrderBy(p => p.name)
+                .ToListAsync(), "id", "name");
+
+            SupplierList = new SelectList(await _context.Supplier
+                .OrderBy(s => s.Name)
+                .ToListAsync(), "Id", "Name");
+
+            return Page();
+        }
+
+        public async Task<IActionResult> OnPostAsync()
+        {
+            if (!ModelState.IsValid)
+            {
+                await LoadLists();
+                return Page();
+            }
+
+            _context.PurchaseOrder.Add(purchaseOrder);
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage("Index");
+        }
+
+        private async Task LoadLists()
+        {
+            ProductList = new SelectList(await _context.Product.Where(p => !p.IsDeleted).ToListAsync(), "id", "name");
+            SupplierList = new SelectList(await _context.Supplier.ToListAsync(), "Id", "Name");
+        }
+    }
+}
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090

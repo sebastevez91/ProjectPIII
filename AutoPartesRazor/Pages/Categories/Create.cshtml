@@ -12,6 +12,7 @@
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
+<<<<<<< HEAD
                 <label asp-for="Category.Name" class="control-label"></label>
                 <input asp-for="Category.Name" class="form-control" />
                 <span asp-validation-for="Category.Name" class="text-danger"></span>
@@ -19,6 +20,15 @@
             <div class="form-group">
                 <input type="submit" value="Crear" class="btn btn-primary m-2" />
                 <a asp-page="/Administration/AdminDashboard" class="btn btn-secondary m-2">Cancelar</a>
+=======
+                <label asp-for="Category.name" class="control-label"></label>
+                <input asp-for="Category.name" class="form-control" />
+                <span asp-validation-for="Category.name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Crear" class="btn btn-primary m-2" />
+                <a asp-page="/Adminitration/AdminDashboard" class="btn btn-secondary m-2">Cancelar</a>
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
             </div>
         </form>
     </div>

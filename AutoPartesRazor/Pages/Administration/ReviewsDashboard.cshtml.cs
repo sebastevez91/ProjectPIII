@@ -16,7 +16,11 @@ public class ReviewsDashboardModel : PageModel
         _context = context;
     }
 
+<<<<<<< HEAD
     // Estad�sticas generales
+=======
+    // Estadísticas generales
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
     public int TotalReviews { get; set; }
     public double AverageRating { get; set; }
     public int ProductsWithReviews { get; set; }
@@ -28,13 +32,22 @@ public class ReviewsDashboardModel : PageModel
     public List<Product> BottomProducts { get; set; } = new();
     public List<Product> DiscountedProducts { get; set; } = new();
 
+<<<<<<< HEAD
     // Estad�sticas por proveedor
+=======
+    // Estadísticas por proveedor
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
     public List<SupplierStatistics> SupplierStats { get; set; } = new();
 
     public async Task OnGetAsync()
     {
+<<<<<<< HEAD
         // Cargar productos con sus rese�as
         var products = await _context.Products
+=======
+        // Cargar productos con sus reseñas
+        var products = await _context.Product
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
             .Include(p => p.Reviews)
             .Include(p => p.Brand)
             .Include(p => p.ProductSuppliers!)
@@ -42,7 +55,11 @@ public class ReviewsDashboardModel : PageModel
             .Where(p => !p.IsDeleted)
             .ToListAsync();
 
+<<<<<<< HEAD
         // Estad�sticas generales
+=======
+        // Estadísticas generales
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
         TotalProducts = products.Count;
         var productsWithReviews = products.Where(p => p.TotalReviews > 0).ToList();
         ProductsWithReviews = productsWithReviews.Count;
@@ -52,6 +69,7 @@ public class ReviewsDashboardModel : PageModel
             : 0;
         CriticalProducts = productsWithReviews.Count(p => p.AverageRating < 3.0);
 
+<<<<<<< HEAD
         // TOP 10 productos - LOS 10 PORCENTAJES M�S ALTOS (sin importar estrellas ni cantidad de rese�as)
         TopProducts = productsWithReviews
             .Where(p => p.TotalReviews >= 1) // M�nimo 1 rese�a para aparecer
@@ -76,6 +94,30 @@ public class ReviewsDashboardModel : PageModel
 
         // Estad�sticas por proveedor
         var suppliers = await _context.Suppliers.ToListAsync();
+=======
+        // TOP 10 productos (mínimo 5 reseñas)
+        TopProducts = productsWithReviews
+            .Where(p => p.TotalReviews >= 5)
+            .OrderByDescending(p => p.AverageRating)
+            .ThenByDescending(p => p.TotalReviews)
+            .Take(10)
+            .ToList();
+
+        // Productos críticos (calificación < 3.5 y mínimo 5 reseñas)
+        BottomProducts = productsWithReviews
+            .Where(p => p.TotalReviews >= 5 && p.AverageRating < 3.5)
+            .OrderBy(p => p.AverageRating)
+            .ToList();
+
+        // Productos con descuento automático (calificación < 3.5 y mínimo 5 reseñas)
+        DiscountedProducts = productsWithReviews
+            .Where(p => p.TotalReviews >= 5 && p.AverageRating < 3.5)
+            .OrderBy(p => p.AverageRating)
+            .ToList();
+
+        // Estadísticas por proveedor
+        var suppliers = await _context.Supplier.ToListAsync();
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
         foreach (var supplier in suppliers)
         {
             var supplierProducts = products
@@ -107,7 +149,11 @@ public class ReviewsDashboardModel : PageModel
     }
 }
 
+<<<<<<< HEAD
 // Clase auxiliar para estad�sticas de proveedores
+=======
+// Clase auxiliar para estadísticas de proveedores
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
 public class SupplierStatistics
 {
     public string SupplierName { get; set; } = string.Empty;

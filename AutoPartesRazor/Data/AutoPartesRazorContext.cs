@@ -18,18 +18,30 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
         // Relación Product - Brand
         modelBuilder.Entity<Product>()
             .HasOne(p => p.Brand)
+<<<<<<< HEAD
             .WithMany(b => b.Products)
             .HasForeignKey(b => b.BrandId)
             .OnDelete(DeleteBehavior.Restrict); 
 
+=======
+            .WithMany(b => b.products)
+            .HasForeignKey(b => b.idBrand)
+            .OnDelete(DeleteBehavior.Restrict);
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
 
         // Relación Product - Category
         modelBuilder.Entity<Product>()
             .HasOne(p => p.Category)
+<<<<<<< HEAD
             .WithMany(c => c.Products)
             .HasForeignKey(p => p.CategoryId)
             .OnDelete(DeleteBehavior.Restrict); 
 
+=======
+            .WithMany(c => c.products)
+            .HasForeignKey(p => p.idCategory)
+            .OnDelete(DeleteBehavior.Restrict);
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
 
         // Relación Order - OrderItem
         modelBuilder.Entity<OrderItem>()
@@ -44,6 +56,7 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
             .HasForeignKey(oi => oi.ProductId)
             .OnDelete(DeleteBehavior.Restrict);
 
+<<<<<<< HEAD
         // Relación Order - User
         modelBuilder.Entity<Order>()
             .HasOne(o => o.User)
@@ -72,6 +85,8 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
             .HasForeignKey(po => po.SupplierId)
             .OnDelete(DeleteBehavior.Restrict);
 
+=======
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
         // Relacion Notification - User
         modelBuilder.Entity<Notification>()
             .HasOne(n => n.User)
@@ -97,6 +112,7 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
             .HasForeignKey(ps => ps.SupplierId);
 
         // ============================================
+<<<<<<< HEAD
         // RELACIONES MÓDULO RECLAMOS
         // ============================================
 
@@ -127,6 +143,39 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
             .WithMany()
             .HasForeignKey(m => m.UsuarioId)
             .OnDelete(DeleteBehavior.Restrict);
+=======
+        // QUERY FILTERS - SOFT DELETE
+        // ============================================
+        // Estos filtros se aplican automáticamente a todas las consultas
+        // Solo muestra registros donde IsDeleted = false
+
+        modelBuilder.Entity<Product>()
+            .HasQueryFilter(p => !p.IsDeleted);
+
+        modelBuilder.Entity<Brand>()
+            .HasQueryFilter(b => !b.IsDeleted);
+
+        modelBuilder.Entity<Category>()
+            .HasQueryFilter(c => !c.IsDeleted);
+
+        modelBuilder.Entity<Order>()
+            .HasQueryFilter(o => !o.IsDeleted);
+
+        // ============================================
+        // ÍNDICES PARA MEJORAR RENDIMIENTO
+        // ============================================
+        modelBuilder.Entity<Product>()
+            .HasIndex(p => p.IsDeleted);
+
+        modelBuilder.Entity<Brand>()
+            .HasIndex(b => b.IsDeleted);
+
+        modelBuilder.Entity<Category>()
+            .HasIndex(c => c.IsDeleted);
+
+        modelBuilder.Entity<Order>()
+            .HasIndex(o => o.IsDeleted);
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
 
         // ============================================
         // NUEVAS RELACIONES DE RESEÑAS
@@ -169,6 +218,7 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
         modelBuilder.Entity<ProductReview>()
             .HasIndex(pr => new { pr.ProductId, pr.UserId })
             .IsUnique();
+<<<<<<< HEAD
 
         // ============================================
         // QUERY FILTERS - SOFT DELETE
@@ -257,6 +307,27 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
     public DbSet<AutoPartesRazor.Models.ProductReview> ProductReviews { get; set; } = default!;
     public DbSet<AutoPartesRazor.Models.ReviewHelpful> ReviewHelpfuls { get; set; } = default!;
 
+=======
+    }
+
+    public DbSet<AutoPartesRazor.Models.Product> Product { get; set; } = default!;
+    public DbSet<AutoPartesRazor.Models.Brand> Brand { get; set; }
+    public DbSet<AutoPartesRazor.Models.Category> Category { get; set; }
+    public DbSet<AutoPartesRazor.Models.Cart> Cart { get; set; }
+    public DbSet<AutoPartesRazor.Models.User> User { get; set; }
+    public DbSet<AutoPartesRazor.Models.Order> Order { get; set; }
+    public DbSet<AutoPartesRazor.Models.OrderItem> OrderItem { get; set; }
+    public DbSet<AutoPartesRazor.Models.Notification> Notification { get; set; }
+    public DbSet<AutoPartesRazor.Models.Supplier> Supplier { get; set; }
+    public DbSet<AutoPartesRazor.Models.ProductSupplier> ProductSupplier { get; set; }
+    public DbSet<AutoPartesRazor.Models.PurchaseOrder> PurchaseOrder { get; set; }
+
+    // ============================================
+    // NUEVAS TABLAS PARA RESEÑAS
+    // ============================================
+    public DbSet<AutoPartesRazor.Models.ProductReview> ProductReview { get; set; } = default!;
+    public DbSet<AutoPartesRazor.Models.ReviewHelpful> ReviewHelpful { get; set; } = default!;
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
 
     // ============================================
     // MÉTODO PARA GUARDAR CON SOFT DELETE AUTOMÁTICO

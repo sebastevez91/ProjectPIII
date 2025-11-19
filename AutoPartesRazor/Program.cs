@@ -4,13 +4,19 @@ using AutoPartesRazor.Models;
 using AutoPartesRazor.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+<<<<<<< HEAD
 
+=======
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddControllers();
+<<<<<<< HEAD
 
+=======
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
 builder.Services.AddDbContext<AutoPartesRazorContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AutoPartesRazorContext") ?? throw new InvalidOperationException("Connection string 'AutoPartesRazorContext' not found.")));
 
@@ -33,6 +39,7 @@ builder.Services.AddTransient<SeedDataIdentity>();
 
 // Servicio de generación de PDFs
 builder.Services.AddScoped<IPdfService, AutoPartesRazor.Services.PdfService>();
+<<<<<<< HEAD
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 
@@ -85,6 +92,22 @@ using (var scope = app.Services.CreateScope())
         logger.LogError(ex, "❌ Error al cargar datos de prueba: {Message}", ex.Message);
         // No lanzar la excepción para que la app siga ejecutándose
     }
+=======
+
+builder.Services.AddScoped<IUserService, UserService>();
+
+builder.Services.AddTransient<IEmailSender, EmailSender>();
+
+var app = builder.Build();
+
+
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Error");
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseHsts();
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
 }
 
 SeedDataIdentity(app);
@@ -99,6 +122,7 @@ void SeedDataIdentity(WebApplication app)
         service!.SeedAsync().Wait();
     }
 }
+<<<<<<< HEAD
 // ============================================
 
 // Configure the HTTP request pipeline.
@@ -118,3 +142,20 @@ app.UseAuthorization();
 app.MapRazorPages();
 
 app.Run();
+=======
+
+app.MapControllers();
+
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+
+app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapRazorPages();
+
+app.Run();
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090

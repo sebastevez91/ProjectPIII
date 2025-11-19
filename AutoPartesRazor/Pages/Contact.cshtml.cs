@@ -1,9 +1,17 @@
 ﻿using AutoPartesRazor.Data;
 using AutoPartesRazor.Models;
+<<<<<<< HEAD
+=======
+using Microsoft.AspNetCore.Authorization;
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+<<<<<<< HEAD
+=======
+using System.ComponentModel.DataAnnotations;
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
 
 namespace AutoPartesRazor.Pages;
 
@@ -67,7 +75,11 @@ public class ContactModel : PageModel
                 IsRead = false
             };
 
+<<<<<<< HEAD
             _context.Notifications.Add(notification);
+=======
+            _context.Notification.Add(notification);
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
             await _context.SaveChangesAsync();
 
             TempData["SuccessMessage"] = "¡Tu mensaje ha sido enviado exitosamente! Te responderemos pronto.";
@@ -83,6 +95,10 @@ public class ContactModel : PageModel
 
     private async Task<int> ObtenerContadorCarritoAsync()
     {
+<<<<<<< HEAD
         return await _context.Carts.CountAsync();
+=======
+        return await _context.Cart.CountAsync();
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
     }
 }

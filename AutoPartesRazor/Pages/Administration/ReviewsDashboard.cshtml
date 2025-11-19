@@ -1,21 +1,43 @@
+<<<<<<< HEAD
 ﻿@page
 @model AutoPartesRazor.Pages.Administration.ReviewsDashboardModel
 @{
     ViewData["Title"] = "Dashboard de Reseñas";
+=======
+﻿eviews_dashboard_cshtml.html
+24.76 KB •470 líneas
+•
+El formato puede ser inconsistente con la fuente
+@page
+@model AutoPartesRazor.Pages.Administration.ReviewsDashboardModel
+@{
+    ViewData["Title"] = "Dashboard de ReseÃ±as";
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
 }
 
 <div class="container-fluid py-4">
     <h2 class="mb-4">
         <i class="fa-solid fa-star text-warning me-2"></i>
+<<<<<<< HEAD
         Dashboard de Reseñas
     </h2>
 
     <!-- Estadísticas Generales -->
+=======
+        Dashboard de ReseÃ±as
+    </h2>
+
+    <!-- EstadÃ­sticas Generales -->
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
     <div class="row mb-4">
         <div class="col-md-3">
             <div class="card text-white bg-primary">
                 <div class="card-body">
+<<<<<<< HEAD
                     <h5 class="card-title">Total de Reseñas</h5>
+=======
+                    <h5 class="card-title">Total de ReseÃ±as</h5>
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                     <h2 class="mb-0">@Model.TotalReviews</h2>
                 </div>
             </div>
@@ -23,15 +45,24 @@
         <div class="col-md-3">
             <div class="card text-white bg-success">
                 <div class="card-body">
+<<<<<<< HEAD
                     <h5 class="card-title">Calificación Promedio</h5>
                     <h2 class="mb-0">@Model.AverageRating.ToString("0.0") ⭐</h2>
+=======
+                    <h5 class="card-title">CalificaciÃ³n Promedio</h5>
+                    <h2 class="mb-0">@Model.AverageRating.ToString("0.0") â­</h2>
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                 </div>
             </div>
         </div>
         <div class="col-md-3">
             <div class="card text-white bg-info">
                 <div class="card-body">
+<<<<<<< HEAD
                     <h5 class="card-title">Productos con Reseñas</h5>
+=======
+                    <h5 class="card-title">Productos con ReseÃ±as</h5>
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                     <h2 class="mb-0">@Model.ProductsWithReviews / @Model.TotalProducts</h2>
                 </div>
             </div>
@@ -39,49 +70,85 @@
         <div class="col-md-3">
             <div class="card text-white bg-danger">
                 <div class="card-body">
+<<<<<<< HEAD
                     <h5 class="card-title">Productos Críticos</h5>
+=======
+                    <h5 class="card-title">Productos CrÃ­ticos</h5>
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                     <h2 class="mb-0">@Model.CriticalProducts</h2>
                 </div>
             </div>
         </div>
     </div>
 
+<<<<<<< HEAD
     <!-- Pestañas de navegación -->
     <ul class="nav nav-tabs mb-4" id="reviewsTabs" role="tablist">
         <li class="nav-item" role="presentation">
             <button class="nav-link active" id="top-tab" data-bs-toggle="tab" data-bs-target="#top" type="button">
                 🏆 TOP Productos
+=======
+    <!-- PestaÃ±as de navegaciÃ³n -->
+    <ul class="nav nav-tabs mb-4" id="reviewsTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="top-tab" data-bs-toggle="tab" data-bs-target="#top" type="button">
+                ðŸ† TOP Productos
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
             </button>
         </li>
         <li class="nav-item" role="presentation">
             <button class="nav-link" id="bottom-tab" data-bs-toggle="tab" data-bs-target="#bottom" type="button">
+<<<<<<< HEAD
                 🚨 Productos Críticos
+=======
+                ðŸš¨ Productos CrÃ­ticos
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
             </button>
         </li>
         <li class="nav-item" role="presentation">
             <button class="nav-link" id="suppliers-tab" data-bs-toggle="tab" data-bs-target="#suppliers" type="button">
+<<<<<<< HEAD
                 📦 Por Proveedor
+=======
+                ðŸ“¦ Por Proveedor
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
             </button>
         </li>
         <li class="nav-item" role="presentation">
             <button class="nav-link" id="discounts-tab" data-bs-toggle="tab" data-bs-target="#discounts" type="button">
+<<<<<<< HEAD
                 💰 Descuentos
+=======
+                ðŸ’° Descuentos AutomÃ¡ticos
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
             </button>
         </li>
     </ul>
 
     <div class="tab-content" id="reviewsTabContent">
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
         <!-- TAB: TOP Productos -->
         <div class="tab-pane fade show active" id="top" role="tabpanel">
             <div class="card">
                 <div class="card-header bg-success text-white">
+<<<<<<< HEAD
                     <h5 class="mb-0">🏆 TOP 10 Productos Mejor Calificados</h5>
+=======
+                    <h5 class="mb-0">ðŸ† TOP 10 Productos Mejor Calificados</h5>
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                 </div>
                 <div class="card-body">
                     @if (!Model.TopProducts.Any())
                     {
+<<<<<<< HEAD
                         <div class="alert alert-info">No hay productos con reseñas suficientes.</div>
+=======
+                        <div class="alert alert-info">No hay productos con reseÃ±as suficientes.</div>
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                     }
                     else
                     {
@@ -91,28 +158,46 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Producto</th>
+<<<<<<< HEAD
                                         <th>Calificación</th>
                                         <th>Reseñas</th>
+=======
+                                        <th>CalificaciÃ³n</th>
+                                        <th>ReseÃ±as</th>
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                                         <th>Positivas</th>
                                         <th>Stock</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+<<<<<<< HEAD
                                     @{
                                         int topPos = 1;
                                     }
+=======
+                                    @{int topPos = 1;}
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                                     @foreach (var p in Model.TopProducts)
                                     {
                                         <tr>
                                             <td><strong>@topPos</strong></td>
                                             <td>
+<<<<<<< HEAD
                                                 <strong>@p.Name</strong><br />
                                                 <small class="text-muted">@p.Brand?.Name</small>
                                             </td>
                                             <td>
                                                 <span class="badge bg-warning text-dark">
                                                     ⭐ @p.AverageRating.ToString("0.0")
+=======
+                                                <strong>@p.name</strong><br/>
+                                                <small class="text-muted">@p.Brand?.name</small>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-warning text-dark">
+                                                    â­ @p.AverageRating.ToString("0.0")
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                                                 </span>
                                             </td>
                                             <td>@p.TotalReviews</td>
@@ -120,12 +205,21 @@
                                                 <strong>@p.PositiveReviewsPercentage%</strong>
                                             </td>
                                             <td>
+<<<<<<< HEAD
                                                 <span class="badge @(p.Stock < p.MinimumStock ? "bg-danger" : "bg-success")">
                                                     @p.Stock u.
                                                 </span>
                                             </td>
                                             <td>
                                                 <a asp-page="/Products/Reviews" asp-route-productId="@p.Id"
+=======
+                                                <span class="badge @(p.stock < p.MinimumStock ? "bg-danger" : "bg-success")">
+                                                    @p.stock u.
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <a asp-page="/Products/Reviews" asp-route-productId="@p.id" 
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                                                    class="btn btn-sm btn-primary" target="_blank">
                                                     <i class="fa-solid fa-eye"></i>
                                                 </a>
@@ -136,10 +230,17 @@
                                 </tbody>
                             </table>
                         </div>
+<<<<<<< HEAD
 
                         <div class="alert alert-success mt-3">
                             <i class="fa-solid fa-lightbulb me-2"></i>
                             <strong>Recomendación:</strong> Estos productos tienen alta satisfacción.
+=======
+                        
+                        <div class="alert alert-success mt-3">
+                            <i class="fa-solid fa-lightbulb me-2"></i>
+                            <strong>RecomendaciÃ³n:</strong> Estos productos tienen alta satisfacciÃ³n. 
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                             Considere aumentar stock y negociar mejores precios por volumen con proveedores.
                         </div>
                     }
@@ -147,16 +248,28 @@
             </div>
         </div>
 
+<<<<<<< HEAD
         <!-- TAB: Productos Críticos -->
         <div class="tab-pane fade" id="bottom" role="tabpanel">
             <div class="card">
                 <div class="card-header bg-danger text-white">
                     <h5 class="mb-0">🚨 Productos que Requieren Atención Inmediata</h5>
+=======
+        <!-- TAB: Productos CrÃ­ticos -->
+        <div class="tab-pane fade" id="bottom" role="tabpanel">
+            <div class="card">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="mb-0">ðŸš¨ Productos que Requieren AtenciÃ³n Inmediata</h5>
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                 </div>
                 <div class="card-body">
                     @if (!Model.BottomProducts.Any())
                     {
+<<<<<<< HEAD
                         <div class="alert alert-success">¡Excelente! No hay productos con calificaciones críticas.</div>
+=======
+                        <div class="alert alert-success">Â¡Excelente! No hay productos con calificaciones crÃ­ticas.</div>
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                     }
                     else
                     {
@@ -165,11 +278,17 @@
                                 <thead>
                                     <tr>
                                         <th>Producto</th>
+<<<<<<< HEAD
                                         <th>Calificación</th>
                                         <th>Reseñas</th>
                                         <th>Negativas</th>
                                         <th>Precio Actual</th>
                                         <th>Precio Sugerido</th>
+=======
+                                        <th>CalificaciÃ³n</th>
+                                        <th>ReseÃ±as</th>
+                                        <th>Negativas</th>
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                                         <th>Estado</th>
                                         <th>Acciones</th>
                                     </tr>
@@ -177,6 +296,7 @@
                                 <tbody>
                                     @foreach (var p in Model.BottomProducts)
                                     {
+<<<<<<< HEAD
                                         var status = p.AverageRating <= 2.0 ? "🚨 CRÍTICO" :
                                         p.AverageRating <= 2.5 ? "⚠️ MUY BAJO" :
                                         p.AverageRating <= 3.0 ? "⚠️ BAJO" : "📊 REGULAR";
@@ -203,6 +323,26 @@
                                             <td>
                                                 <span class="badge bg-danger">
                                                     ⭐ @p.AverageRating.ToString("0.0")
+=======
+                                        var status = p.AverageRating <= 2.0 ? "ðŸš¨ CRÃTICO" :
+                                                    p.AverageRating <= 2.5 ? "âš ï¸ MUY BAJO" :
+                                                    p.AverageRating <= 3.0 ? "âš ï¸ BAJO" : "ðŸ“Š REGULAR";
+                                        
+                                        var badgeClass = p.AverageRating <= 2.0 ? "bg-danger" :
+                                                        p.AverageRating <= 2.5 ? "bg-warning text-dark" :
+                                                        p.AverageRating <= 3.0 ? "bg-warning" : "bg-info";
+                                        
+                                        var negativePercent = 100 - p.PositiveReviewsPercentage;
+                                        
+                                        <tr>
+                                            <td>
+                                                <strong>@p.name</strong><br/>
+                                                <small class="text-muted">@p.Brand?.name</small>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-danger">
+                                                    â­ @p.AverageRating.ToString("0.0")
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                                                 </span>
                                             </td>
                                             <td>@p.TotalReviews</td>
@@ -210,6 +350,7 @@
                                                 <strong class="text-danger">@negativePercent%</strong>
                                             </td>
                                             <td>
+<<<<<<< HEAD
                                                 <strong>$@p.Price.ToString("N2")</strong>
                                             </td>
                                             <td>
@@ -226,6 +367,16 @@
                                                     Ver reseñas
                                                 </a>
                                                 <a asp-page="/Products/Edit" asp-route-id="@p.Id"
+=======
+                                                <span class="badge @badgeClass">@status</span>
+                                            </td>
+                                            <td>
+                                                <a asp-page="/Products/Reviews" asp-route-productId="@p.id" 
+                                                   class="btn btn-sm btn-primary" target="_blank">
+                                                    Ver reseÃ±as
+                                                </a>
+                                                <a asp-page="/Products/Edit" asp-route-id="@p.id" 
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                                                    class="btn btn-sm btn-warning">
                                                     Editar
                                                 </a>
@@ -239,10 +390,17 @@
                         <div class="alert alert-warning mt-3">
                             <h6><i class="fa-solid fa-exclamation-triangle me-2"></i>Acciones Sugeridas:</h6>
                             <ul class="mb-0">
+<<<<<<< HEAD
                                 <li>❌ Suspender nuevos pedidos de productos críticos</li>
                                 <li>📧 Contactar proveedor con evidencia de reseñas</li>
                                 <li>🔍 Buscar proveedor alternativo</li>
                                 <li>⚠️ Evaluar descontinuar el producto</li>
+=======
+                                <li>âŒ Suspender nuevos pedidos de productos crÃ­ticos</li>
+                                <li>ðŸ“§ Contactar proveedor con evidencia de reseÃ±as</li>
+                                <li>ðŸ” Buscar proveedor alternativo</li>
+                                <li>âš ï¸ Evaluar descontinuar el producto</li>
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                             </ul>
                         </div>
                     }
@@ -254,12 +412,20 @@
         <div class="tab-pane fade" id="suppliers" role="tabpanel">
             <div class="card">
                 <div class="card-header bg-info text-white">
+<<<<<<< HEAD
                     <h5 class="mb-0">📦 Resumen por Proveedor</h5>
+=======
+                    <h5 class="mb-0">ðŸ“¦ Resumen por Proveedor</h5>
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                 </div>
                 <div class="card-body">
                     @if (!Model.SupplierStats.Any())
                     {
+<<<<<<< HEAD
                         <div class="alert alert-info">No hay datos de proveedores con productos reseñados.</div>
+=======
+                        <div class="alert alert-info">No hay datos de proveedores con productos reseÃ±ados.</div>
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                     }
                     else
                     {
@@ -276,6 +442,7 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <p class="mb-1">
+<<<<<<< HEAD
                                                 <strong>Calificación promedio:</strong>
                                                 <span class="badge bg-warning text-dark">
                                                     ⭐ @stat.AverageRating.ToString("0.0")
@@ -283,10 +450,20 @@
                                             </p>
                                             <p class="mb-1">
                                                 <strong>Índice de satisfacción:</strong> @stat.SatisfactionIndex%
+=======
+                                                <strong>CalificaciÃ³n promedio:</strong> 
+                                                <span class="badge bg-warning text-dark">
+                                                    â­ @stat.AverageRating.ToString("0.0")
+                                                </span>
+                                            </p>
+                                            <p class="mb-1">
+                                                <strong>Ãndice de satisfacciÃ³n:</strong> @stat.SatisfactionIndex%
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                                             </p>
                                         </div>
                                         <div class="col-md-6">
                                             <p class="mb-1">
+<<<<<<< HEAD
                                                 <strong>Productos OK:</strong>
                                                 <span class="text-success">✅ @stat.GoodProducts</span>
                                             </p>
@@ -297,6 +474,18 @@
                                             <p class="mb-1">
                                                 <strong>Productos críticos:</strong>
                                                 <span class="text-danger">🚨 @stat.CriticalProducts</span>
+=======
+                                                <strong>Productos OK:</strong> 
+                                                <span class="text-success">âœ… @stat.GoodProducts</span>
+                                            </p>
+                                            <p class="mb-1">
+                                                <strong>Productos en revisiÃ³n:</strong> 
+                                                <span class="text-warning">âš ï¸ @stat.RegularProducts</span>
+                                            </p>
+                                            <p class="mb-1">
+                                                <strong>Productos crÃ­ticos:</strong> 
+                                                <span class="text-danger">ðŸš¨ @stat.CriticalProducts</span>
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                                             </p>
                                         </div>
                                     </div>
@@ -308,6 +497,7 @@
             </div>
         </div>
 
+<<<<<<< HEAD
         <!-- TAB: Descuentos -->
         <div class="tab-pane fade" id="discounts" role="tabpanel">
             <div class="card">
@@ -316,11 +506,25 @@
                 </div>
                 <div class="card-body">
                     <!-- Tabla de configuración -->
+=======
+        <!-- TAB: Descuentos AutomÃ¡ticos -->
+        <div class="tab-pane fade" id="discounts" role="tabpanel">
+            <div class="card">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="mb-0">ðŸ’° Sistema de Descuentos AutomÃ¡ticos</h5>
+                </div>
+                <div class="card-body">
+                    <!-- Tabla de configuraciÃ³n -->
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                     <div class="table-responsive mb-4">
                         <table class="table table-bordered">
                             <thead class="table-dark">
                                 <tr>
+<<<<<<< HEAD
                                     <th>Calificación</th>
+=======
+                                    <th>CalificaciÃ³n</th>
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                                     <th>Estado</th>
                                     <th>Descuento</th>
                                     <th>Badge</th>
@@ -328,6 +532,7 @@
                             </thead>
                             <tbody>
                                 <tr>
+<<<<<<< HEAD
                                     <td>⭐ 1.0 - 1.9</td>
                                     <td><span class="badge bg-danger">🚨 CRÍTICO</span></td>
                                     <td><strong>-40%</strong></td>
@@ -336,24 +541,49 @@
                                 <tr>
                                     <td>⭐⭐ 2.0 - 2.4</td>
                                     <td><span class="badge bg-warning text-dark">⚠️ MUY BAJO</span></td>
+=======
+                                    <td>â­ 1.0 - 1.9</td>
+                                    <td><span class="badge bg-danger">ðŸš¨ CRÃTICO</span></td>
+                                    <td><strong>-40%</strong></td>
+                                    <td><span class="badge bg-danger">LIQUIDACIÃ“N</span></td>
+                                </tr>
+                                <tr>
+                                    <td>â­â­ 2.0 - 2.4</td>
+                                    <td><span class="badge bg-warning text-dark">âš ï¸ MUY BAJO</span></td>
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                                     <td><strong>-30%</strong></td>
                                     <td><span class="badge bg-warning text-dark">OFERTA</span></td>
                                 </tr>
                                 <tr>
+<<<<<<< HEAD
                                     <td>⭐⭐ 2.5 - 2.9</td>
                                     <td><span class="badge bg-warning">⚠️ BAJO</span></td>
+=======
+                                    <td>â­â­ 2.5 - 2.9</td>
+                                    <td><span class="badge bg-warning">âš ï¸ BAJO</span></td>
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                                     <td><strong>-20%</strong></td>
                                     <td><span class="badge bg-info">REBAJA</span></td>
                                 </tr>
                                 <tr>
+<<<<<<< HEAD
                                     <td>⭐⭐⭐ 3.0 - 3.4</td>
                                     <td><span class="badge bg-info">📊 REGULAR</span></td>
+=======
+                                    <td>â­â­â­ 3.0 - 3.4</td>
+                                    <td><span class="badge bg-info">ðŸ“Š REGULAR</span></td>
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                                     <td><strong>-10%</strong></td>
                                     <td><span class="badge bg-secondary">DESCUENTO</span></td>
                                 </tr>
                                 <tr>
+<<<<<<< HEAD
                                     <td>⭐⭐⭐⭐ 3.5+</td>
                                     <td><span class="badge bg-success">✅ OK</span></td>
+=======
+                                    <td>â­â­â­â­ 3.5+</td>
+                                    <td><span class="badge bg-success">âœ… OK</span></td>
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                                     <td>Sin descuento</td>
                                     <td>-</td>
                                 </tr>
@@ -361,6 +591,7 @@
                         </table>
                     </div>
 
+<<<<<<< HEAD
                     <h6 class="mb-3">Productos con Descuento</h6>
                     @{
                         var totalOriginal = Model.DiscountedProducts.Sum(p => p.Price * p.Stock);
@@ -380,6 +611,14 @@
                     {
                         <div class="alert alert-success">
                             No hay productos con descuentos actualmente.
+=======
+                    <h6 class="mb-3">Productos con Descuento AutomÃ¡tico</h6>
+                    
+                    @if (!Model.DiscountedProducts.Any())
+                    {
+                        <div class="alert alert-success">
+                            No hay productos con descuentos automÃ¡ticos actualmente.
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                         </div>
                     }
                     else
@@ -389,7 +628,11 @@
                                 <thead>
                                     <tr>
                                         <th>Producto</th>
+<<<<<<< HEAD
                                         <th>Calificación</th>
+=======
+                                        <th>CalificaciÃ³n</th>
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                                         <th>Descuento</th>
                                         <th>Precio Original</th>
                                         <th>Precio con Descuento</th>
@@ -400,6 +643,7 @@
                                     @foreach (var p in Model.DiscountedProducts)
                                     {
                                         var discount = p.AverageRating <= 1.9 ? 40 :
+<<<<<<< HEAD
                                         p.AverageRating <= 2.4 ? 30 :
                                         p.AverageRating <= 2.9 ? 20 :
                                         p.AverageRating <= 3.4 ? 10 : 0;
@@ -417,29 +661,61 @@
                                         <tr>
                                             <td>
                                                 <strong>@p.Name</strong><br />
+=======
+                                                      p.AverageRating <= 2.4 ? 30 :
+                                                      p.AverageRating <= 2.9 ? 20 :
+                                                      p.AverageRating <= 3.4 ? 10 : 0;
+                                        
+                                        var discountedPrice = p.price * (1 - discount / 100m);
+                                        
+                                        var badge = p.AverageRating <= 1.9 ? "LIQUIDACIÃ“N" :
+                                                   p.AverageRating <= 2.4 ? "OFERTA" :
+                                                   p.AverageRating <= 2.9 ? "REBAJA" : "DESCUENTO";
+                                        
+                                        var badgeClass = p.AverageRating <= 1.9 ? "bg-danger" :
+                                                        p.AverageRating <= 2.4 ? "bg-warning text-dark" :
+                                                        p.AverageRating <= 2.9 ? "bg-info" : "bg-secondary";
+                                        
+                                        <tr>
+                                            <td>
+                                                <strong>@p.name</strong><br/>
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                                                 <span class="badge @badgeClass">@badge</span>
                                             </td>
                                             <td>
                                                 <span class="badge bg-danger">
+<<<<<<< HEAD
                                                     ⭐ @p.AverageRating.ToString("0.0")
+=======
+                                                    â­ @p.AverageRating.ToString("0.0")
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                                                 </span>
                                             </td>
                                             <td>
                                                 <strong class="text-danger">-@discount%</strong>
                                             </td>
                                             <td>
+<<<<<<< HEAD
                                                 <del>$@p.Price.ToString("N2")</del>
+=======
+                                                <del>$@p.price.ToString("N2")</del>
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                                             </td>
                                             <td>
                                                 <strong class="text-success">$@discountedPrice.ToString("N2")</strong>
                                             </td>
+<<<<<<< HEAD
                                             <td>@p.Stock u.</td>
+=======
+                                            <td>@p.stock u.</td>
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                                         </tr>
                                     }
                                 </tbody>
                             </table>
                         </div>
 
+<<<<<<< HEAD
                         <div class="card bg-light mt-3">
                             <div class="card-body">
                                 <h6>Resumen de Liquidación</h6>
@@ -448,6 +724,29 @@
                                 <p class="mb-1"><strong>Valor con descuento:</strong> $@totalWithDiscount.ToString("N2")</p>
                                 <p class="mb-0">
                                     <strong>Pérdida estimada:</strong>
+=======
+                        @{
+                            var totalOriginal = Model.DiscountedProducts.Sum(p => p.price * p.stock);
+                            var totalWithDiscount = Model.DiscountedProducts.Sum(p => {
+                                var discount = p.AverageRating <= 1.9 ? 40 :
+                                              p.AverageRating <= 2.4 ? 30 :
+                                              p.AverageRating <= 2.9 ? 20 :
+                                              p.AverageRating <= 3.4 ? 10 : 0;
+                                return p.price * (1 - discount / 100m) * p.stock;
+                            });
+                            var totalLoss = totalOriginal - totalWithDiscount;
+                            var lossPercentage = totalOriginal > 0 ? (totalLoss / totalOriginal) * 100 : 0;
+                        }
+
+                        <div class="card bg-light mt-3">
+                            <div class="card-body">
+                                <h6>Resumen de LiquidaciÃ³n</h6>
+                                <p class="mb-1"><strong>Total en liquidaciÃ³n:</strong> @Model.DiscountedProducts.Sum(p => p.stock) unidades</p>
+                                <p class="mb-1"><strong>Valor original:</strong> $@totalOriginal.ToString("N2")</p>
+                                <p class="mb-1"><strong>Valor con descuento:</strong> $@totalWithDiscount.ToString("N2")</p>
+                                <p class="mb-0">
+                                    <strong>PÃ©rdida estimada:</strong> 
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                                     <span class="text-danger">$@totalLoss.ToString("N2") (@lossPercentage.ToString("0.0")%)</span>
                                 </p>
                             </div>
@@ -456,11 +755,19 @@
                         <div class="alert alert-info mt-3">
                             <h6><i class="fa-solid fa-info-circle me-2"></i>Ventajas del Sistema:</h6>
                             <ul class="mb-0">
+<<<<<<< HEAD
                                 <li>✅ Liquida stock problemático rápidamente</li>
                                 <li>✅ Recupera parte de la inversión en productos deficientes</li>
                                 <li>✅ Transparencia con el cliente (saben por qué está en oferta)</li>
                                 <li>✅ Libera espacio en inventario para productos de calidad</li>
                                 <li>✅ Presión al proveedor (evidencia concreta de problemas)</li>
+=======
+                                <li>âœ… Liquida stock problemÃ¡tico rÃ¡pidamente</li>
+                                <li>âœ… Recupera parte de la inversiÃ³n en productos deficientes</li>
+                                <li>âœ… Transparencia con el cliente (saben por quÃ© estÃ¡ en oferta)</li>
+                                <li>âœ… Libera espacio en inventario para productos de calidad</li>
+                                <li>âœ… PresiÃ³n al proveedor (evidencia concreta de problemas)</li>
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                             </ul>
                         </div>
                     }
@@ -473,7 +780,11 @@
 
 @section Scripts {
     <script>
+<<<<<<< HEAD
         // Mantener la pestaña activa después de recargar
+=======
+        // Mantener la pestaÃ±a activa despuÃ©s de recargar
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
         const activeTab = localStorage.getItem('activeReviewsTab');
         if (activeTab) {
             const tabTrigger = new bootstrap.Tab(document.querySelector(`#${activeTab}`));

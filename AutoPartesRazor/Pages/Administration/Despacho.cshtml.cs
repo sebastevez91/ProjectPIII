@@ -17,7 +17,11 @@ public class DespachoModel : PageModel
 
     public async Task OnGetAsync()
     {
+<<<<<<< HEAD
         PedidosPendientes = await _context.Orders
+=======
+        PedidosPendientes = await _context.Order
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
             .Where(o => o.Status == "Pending")
             .OrderByDescending(o => o.CreatedAt)
             .ToListAsync();
@@ -25,7 +29,11 @@ public class DespachoModel : PageModel
 
     public async Task<IActionResult> OnPostDespacharAsync(int id)
     {
+<<<<<<< HEAD
         var pedido = await _context.Orders.FindAsync(id);
+=======
+        var pedido = await _context.Order.FindAsync(id);
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
         if (pedido == null)
             return NotFound();
         pedido.Status = "Despachado";

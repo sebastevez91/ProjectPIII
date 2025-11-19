@@ -11,9 +11,15 @@
     <div class="row">
         <!-- Columna de la imagen -->
         <div class="col-md-5">
+<<<<<<< HEAD
             <img src="@(string.IsNullOrEmpty(Model.Product.ImagePath) ? "/img/logoAzul.jpg" : Model.Product.ImagePath)"
                  class="img-fluid rounded shadow"
                  alt="@Model.Product.Name"
+=======
+            <img src="@(string.IsNullOrEmpty(Model.Product.ImagePath) ? "/img/logoAzul.jpg" : Model.Product.ImagePath)" 
+                 class="img-fluid rounded shadow" 
+                 alt="@Model.Product.name" 
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                  onerror="this.src='/img/logoAzul.jpg'" />
         </div>
 
@@ -22,6 +28,7 @@
             <hr />
             <dl class="row">
                 <dt class="col-sm-4">
+<<<<<<< HEAD
                     @Html.DisplayNameFor(model => model.Product.Name)
                 </dt>
                 <dd class="col-sm-8">
@@ -61,6 +68,47 @@
                 </dt>
                 <dd class="col-sm-8">
                     @Html.DisplayFor(model => model.Product.Brand.Name)
+=======
+                    @Html.DisplayNameFor(model => model.Product.name)
+                </dt>
+                <dd class="col-sm-8">
+                    <strong>@Html.DisplayFor(model => model.Product.name)</strong>
+                </dd>
+
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Product.description)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.Product.description)
+                </dd>
+
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Product.stock)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.Product.stock)
+                </dd>
+
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Product.price)
+                </dt>
+                <dd class="col-sm-8">
+                    <strong class="text-success">$ @Html.DisplayFor(model => model.Product.price)</strong>
+                </dd>
+
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Product.Category.name)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.Product.Category.name)
+                </dd>
+
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Product.Brand.name)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.Product.Brand.name)
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                 </dd>
             </dl>
 
@@ -72,16 +120,29 @@
             </div>
         </div>
     </div>
+<<<<<<< HEAD
     <!-- ⬇️⬇️⬇️ NUEVA SECCIÓN DE RESEÑAS ⬇️⬇️⬇️ -->
 
+=======
+
+    <!-- ============================================ -->
+    <!-- ⬇️⬇️⬇️ NUEVA SECCIÓN DE RESEÑAS ⬇️⬇️⬇️ -->
+    <!-- ============================================ -->
+    
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
     <div class="mt-5">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h4>
                 <i class="fa-solid fa-star text-warning me-2"></i>
                 Opiniones de clientes
             </h4>
+<<<<<<< HEAD
             <a asp-page="/Products/Reviews"
                asp-route-productId="@Model.Product.Id"
+=======
+            <a asp-page="/Products/Reviews" 
+               asp-route-productId="@Model.Product.id" 
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                class="btn btn-outline-primary btn-sm">
                 Ver todas (@Model.Product.TotalReviews)
             </a>
@@ -132,8 +193,13 @@
                                         <i class="fa-solid fa-check-circle me-2"></i>
                                         <strong>Ya has reseñado este producto</strong>
                                         <p class="mb-0 mt-2">
+<<<<<<< HEAD
                                             <a asp-page="/Products/Reviews"
                                                asp-route-productId="@Model.Product.Id"
+=======
+                                            <a asp-page="/Products/Reviews" 
+                                               asp-route-productId="@Model.Product.id" 
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                                                class="alert-link">
                                                 Ver tu reseña →
                                             </a>
@@ -143,8 +209,13 @@
                                 else
                                 {
                                     <h6 class="mb-3">¿Ya compraste este producto?</h6>
+<<<<<<< HEAD
                                     <a asp-page="/Products/CreateReview"
                                        asp-route-productId="@Model.Product.Id"
+=======
+                                    <a asp-page="/Products/CreateReview" 
+                                       asp-route-productId="@Model.Product.id" 
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                                        class="btn btn-warning btn-lg">
                                         <i class="fa-solid fa-star me-2"></i>
                                         Escribir reseña
@@ -157,8 +228,13 @@
                             else
                             {
                                 <h6 class="mb-3">¿Ya compraste este producto?</h6>
+<<<<<<< HEAD
                                 <a asp-page="/Account/Login"
                                    asp-route-returnUrl="@($"/Products/Details?id={Model.Product.Id}")"
+=======
+                                <a asp-page="/Account/Login" 
+                                   asp-route-returnUrl="@($"/Products/Details?id={Model.Product.id}")"
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                                    class="btn btn-outline-primary">
                                     <i class="fa-solid fa-right-to-bracket me-2"></i>
                                     Inicia sesión para reseñar
@@ -209,8 +285,13 @@
                 @if (Model.Product.TotalReviews > 3)
                 {
                     <div class="text-center mt-3">
+<<<<<<< HEAD
                         <a asp-page="/Products/Reviews"
                            asp-route-productId="@Model.Product.Id"
+=======
+                        <a asp-page="/Products/Reviews" 
+                           asp-route-productId="@Model.Product.id" 
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                            class="btn btn-outline-secondary">
                             Ver todas las reseñas (@Model.Product.TotalReviews) →
                         </a>
@@ -225,12 +306,21 @@
                 <div class="card-body text-center py-5">
                     <i class="fa-regular fa-star fs-1 text-muted mb-3"></i>
                     <h5>Este producto aún no tiene reseñas</h5>
+<<<<<<< HEAD
 
                     @if (User.Identity?.IsAuthenticated == true)
                     {
                         <p class="text-muted mb-3">¡Sé el primero en compartir tu opinión!</p>
                         <a asp-page="/Products/CreateReview"
                            asp-route-productId="@Model.Product.Id"
+=======
+                    
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <p class="text-muted mb-3">¡Sé el primero en compartir tu opinión!</p>
+                        <a asp-page="/Products/CreateReview" 
+                           asp-route-productId="@Model.Product.id" 
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                            class="btn btn-warning">
                             <i class="fa-solid fa-star me-2"></i>
                             Escribir la primera reseña
@@ -239,8 +329,13 @@
                     else
                     {
                         <p class="text-muted mb-3">Inicia sesión para ser el primero en reseñar este producto</p>
+<<<<<<< HEAD
                         <a asp-page="/Account/Login"
                            asp-route-returnUrl="@($"/Products/Details?id={Model.Product.Id}")"
+=======
+                        <a asp-page="/Account/Login" 
+                           asp-route-returnUrl="@($"/Products/Details?id={Model.Product.id}")"
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                            class="btn btn-outline-primary">
                             <i class="fa-solid fa-right-to-bracket me-2"></i>
                             Iniciar sesión
@@ -268,9 +363,16 @@
             transition: transform 0.2s, box-shadow 0.2s;
         }
 
+<<<<<<< HEAD
             .card:hover {
                 transform: translateY(-2px);
                 box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             }
+=======
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
     </style>
 }

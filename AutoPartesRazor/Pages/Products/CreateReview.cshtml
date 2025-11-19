@@ -11,7 +11,11 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a asp-page="/Products/Index">Productos</a></li>
+<<<<<<< HEAD
                     <li class="breadcrumb-item"><a asp-page="/Products/Details" asp-route-id="@Model.Product.Id">@Model.Product.Name</a></li>
+=======
+                    <li class="breadcrumb-item"><a asp-page="/Products/Details" asp-route-id="@Model.Product.id">@Model.Product.name</a></li>
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                     <li class="breadcrumb-item active">Escribir reseña</li>
                 </ol>
             </nav>
@@ -31,15 +35,23 @@
                              style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;"
                              onerror="this.src='/img/logoAzul.jpg'" />
                         <div>
+<<<<<<< HEAD
                             <h5 class="mb-1">@Model.Product.Name</h5>
                             <small class="text-muted">@Model.Product.Brand?.Name</small>
+=======
+                            <h5 class="mb-1">@Model.Product.name</h5>
+                            <small class="text-muted">@Model.Product.Brand?.name</small>
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                         </div>
                     </div>
 
                     <form method="post">
                         <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+<<<<<<< HEAD
                         <input type="hidden" asp-for="Review.ProductId" value="@Model.Product.Id"/>
                         <input type="hidden" asp-for="Review.UserId" value="123"/>
+=======
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
 
                         <!-- Calificación por estrellas -->
                         <div class="mb-4">
@@ -53,7 +65,10 @@
                                            id="star@(i)"
                                            name="Review.Rating"
                                            value="@i"
+<<<<<<< HEAD
                                            asp-for="Review.Rating"
+=======
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                                            required />
                                     <label for="star@(i)" class="star">
                                         <i class="fa-solid fa-star"></i>
@@ -87,7 +102,11 @@
                                 Publicar reseña
                             </button>
                             <a asp-page="/Products/Details"
+<<<<<<< HEAD
                                asp-route-id="@Model.Product.Id"
+=======
+                               asp-route-id="@Model.Product.id"
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
                                class="btn btn-outline-secondary">
                                 Cancelar
                             </a>

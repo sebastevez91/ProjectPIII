@@ -4,6 +4,7 @@
     ViewData["Title"] = "Registro";
 }
 
+<<<<<<< HEAD
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-11 col-md-9 col-lg-7">
@@ -67,5 +68,45 @@
                 </div>
             </div>
         </div>
+=======
+<div class="container w-50">
+    <h2>Registro</h2>
+    <div>
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ViewModels.Username">Usuario</label>
+                <input asp-for="ViewModels.Username" class="form-control" placeholder="Ingrese su nombre de usuario" />
+
+                <span asp-validation-for="ViewModels.Username" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ViewModels.Email">Email</label>
+                <input asp-for="ViewModels.Email" class="form-control" placeholder="Ingrese su email" />
+
+                <span asp-validation-for="ViewModels.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ViewModels.Password">Contraseña</label>
+                <input asp-for="ViewModels.Password" class="form-control" type="password" placeholder="Ingrese su contraseña" />
+
+                <span asp-validation-for="ViewModels.Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ViewModels.ConfirmPassword">Reingresa la contraseña</label>
+                <input asp-for="ViewModels.ConfirmPassword" class="form-control" type="password" placeholder="Vuelva a ingresar su contraseña" />
+
+                <span asp-validation-for="ViewModels.ConfirmPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ViewModels.FullName">Nombre Completo</label>
+                <input asp-for="ViewModels.FullName" class="form-control" placeholder="Ej: Pedro Garnacho" />
+
+                <span asp-validation-for="ViewModels.FullName" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary text-center m-2">Crear</button>
+        </form>
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
     </div>
 </div>

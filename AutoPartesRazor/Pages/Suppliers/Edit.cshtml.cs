@@ -19,7 +19,11 @@ public class EditModel : PageModel
 
     public async Task<IActionResult> OnGetAsync(int id)
     {
+<<<<<<< HEAD
         Supplier = await _context.Suppliers.FindAsync(id);
+=======
+        Supplier = await _context.Supplier.FindAsync(id);
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
 
         if (Supplier == null)
             return NotFound();
@@ -32,7 +36,11 @@ public class EditModel : PageModel
         if (!ModelState.IsValid)
             return Page();
 
+<<<<<<< HEAD
         _context.Suppliers.Update(Supplier);
+=======
+        _context.Supplier.Update(Supplier);
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
         await _context.SaveChangesAsync();
         return RedirectToPage("Index");
     }

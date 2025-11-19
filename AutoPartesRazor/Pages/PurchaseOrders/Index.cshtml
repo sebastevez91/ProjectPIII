@@ -1,6 +1,7 @@
 ﻿@page
 @model AutoPartesRazor.Pages.PurchaseOrders.IndexModel
 
+<<<<<<< HEAD
 @{
     ViewData["Title"] = "Órdenes de Compra";
 }
@@ -191,3 +192,32 @@
         padding: 0.35em 0.65em;
     }
 </style>
+=======
+<div class="container py-4">
+    <h2>Órdenes de Pedido</h2>
+
+    <a asp-page="Create" class="btn btn-primary mb-3">Nueva Orden</a>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Proveedor</th>
+                <th>Cantidad</th>
+                <th>Fecha</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var o in Model.PurchaseOrder)
+            {
+                <tr>
+                    <td>@o.Product.name</td>
+                    <td>@o.Supplier.Name</td>
+                    <td>@o.Quantity</td>
+                    <td>@o.CreatedAt.ToShortDateString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090

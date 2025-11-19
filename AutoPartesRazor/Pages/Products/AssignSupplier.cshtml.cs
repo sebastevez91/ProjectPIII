@@ -21,14 +21,24 @@ public class AssignSuppliersModel : PageModel
 
     public async Task<IActionResult> OnGetAsync(int id)
     {
+<<<<<<< HEAD
         Product = await _context.Products
             .Include(p => p.ProductSuppliers)
             .FirstOrDefaultAsync(p => p.Id == id);
+=======
+        Product = await _context.Product
+            .Include(p => p.ProductSuppliers)
+            .FirstOrDefaultAsync(p => p.id == id);
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
 
         if (Product == null)
             return NotFound();
 
+<<<<<<< HEAD
         AllSuppliers = await _context.Suppliers.ToListAsync();
+=======
+        AllSuppliers = await _context.Supplier.ToListAsync();
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
         AssignedSuppliers = Product.ProductSuppliers.Select(ps => ps.SupplierId).ToList();
 
         return Page();
@@ -36,9 +46,15 @@ public class AssignSuppliersModel : PageModel
 
     public async Task<IActionResult> OnPostAsync(int id, int[] selectedSuppliers)
     {
+<<<<<<< HEAD
         var product = await _context.Products
             .Include(p => p.ProductSuppliers)
             .FirstOrDefaultAsync(p => p.Id == id);
+=======
+        var product = await _context.Product
+            .Include(p => p.ProductSuppliers)
+            .FirstOrDefaultAsync(p => p.id == id);
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
 
         if (product == null)
             return NotFound();

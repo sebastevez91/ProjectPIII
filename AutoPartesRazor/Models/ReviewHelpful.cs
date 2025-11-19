@@ -1,6 +1,12 @@
 ﻿namespace AutoPartesRazor.Models;
 
+<<<<<<< HEAD
 /// Registro de votos útil/no útil por usuario (un voto por usuario por reseña)
+=======
+/// <summary>
+/// Registro de votos útil/no útil por usuario (un voto por usuario por reseña)
+/// </summary>
+>>>>>>> c21700ccb191ba5352ac20e138b4c311c4f8d090
 public class ReviewHelpful
 {
     public int Id { get; set; }
