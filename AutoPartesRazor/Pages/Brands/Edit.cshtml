@@ -14,16 +14,16 @@
                 <div class="card-body p-4">
                     <form method="post">
                         <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
-                        <input type="hidden" asp-for="Brand.id" />
+                        <input type="hidden" asp-for="Brand.Id" />
 
                         <div class="mb-4">
-                            <label asp-for="Brand.name" class="form-label fw-semibold">
+                            <label asp-for="Brand.Name" class="form-label fw-semibold">
                                 Nombre de la Marca
                             </label>
                             <div class="input-group">
-                                <input asp-for="Brand.name" class="form-control border-start-0" placeholder="Ej: Toyota, Ford, etc." />
+                                <input asp-for="Brand.Name" class="form-control border-start-0" placeholder="Ej: Toyota, Ford, etc." />
                             </div>
-                            <span asp-validation-for="Brand.name" class="text-danger small"></span>
+                            <span asp-validation-for="Brand.Name" class="text-danger small"></span>
                         </div>
 
                         <div class="d-grid gap-2 d-md-flex justify-content-md-between mt-4 pt-3 border-top">

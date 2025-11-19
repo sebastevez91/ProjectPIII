@@ -16,38 +16,34 @@
                 <img src="@(string.IsNullOrEmpty(Model.Product.ImagePath) ? "/img/logoAzul.jpg" : Model.Product.ImagePath)" class="img-fluid rounded mb-3" alt="Imagen del producto" oonerror="this.src='/img/logoAzul.jpg'">
             </div>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Product.id" />
+            <input type="hidden" asp-for="Product.Id" />
             <input type="hidden" asp-for="Product.ImagePath" />
+            <input type="hidden" asp-for="Product.Stock" />
             <div class="form-group">
-                <label asp-for="Product.name" class="control-label"></label>
-                <input asp-for="Product.name" class="form-control" />
-                <span asp-validation-for="Product.name" class="text-danger"></span>
+                <label asp-for="Product.Name" class="control-label"></label>
+                <input asp-for="Product.Name" class="form-control" />
+                <span asp-validation-for="Product.Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Product.description" class="control-label"></label>
-                <input asp-for="Product.description" class="form-control" />
-                <span asp-validation-for="Product.description" class="text-danger"></span>
+                <label asp-for="Product.Description" class="control-label"></label>
+                <input asp-for="Product.Description" class="form-control" />
+                <span asp-validation-for="Product.Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Product.stock" class="control-label"></label>
-                <input asp-for="Product.stock" class="form-control" />
-                <span asp-validation-for="Product.stock" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Product.price" class="control-label"></label>
+                <label asp-for="Product.Price" class="control-label"></label>
                 <input asp-for="@Model.PriceInteger" class="form-control" />
-                <span asp-validation-for="Product.price" class="text-danger"></span>
+                <span asp-validation-for="Product.Price" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Product.Category.name" class="control-label text-white"></label>
-                <select asp-for="Product.idCategory" class="form-select"
+                <label asp-for="Product.Category.Name" class="control-label text-white"></label>
+                <select asp-for="Product.CategoryId" class="form-select"
                         asp-items="Model.Categories">
                     <option value="">-- Seleccione una categoría --</option>
                 </select>
             </div>
             <div class="form-group">
-                <label asp-for="Product.Brand.name" class="control-label text-white"></label>
-                <select asp-for="Product.idBrand" class="form-select"
+                <label asp-for="Product.Brand.Name" class="control-label text-white"></label>
+                <select asp-for="Product.BrandId" class="form-select"
                         asp-items="Model.Brands">
                     <option value="">-- Seleccione una marca --</option>
                 </select>
@@ -58,7 +54,7 @@
             </div>
             <div class="form-group  text-center m-4">
                 <button type="submit" class="btn btn-primary btn-lg">Guardar</button>
-                <a asp-page="/Adminitration/AdminDashboard" class="btn btn-primary btn-lg">Cancelar</a>
+                <a asp-page="/Administration/AdminDashboard" class="btn btn-primary btn-lg">Cancelar</a>
             </div>
         </form>
     </div>

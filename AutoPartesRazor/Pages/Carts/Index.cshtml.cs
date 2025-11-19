@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using AutoPartesRazor.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using AutoPartesRazor.Data;
-using AutoPartesRazor.Models;
 
 namespace AutoPartesRazor.Pages.Carts
 {
@@ -19,23 +13,23 @@ namespace AutoPartesRazor.Pages.Carts
             _context = context;
         }
 
-        public IList<Cart> Cart { get;set; } = default!;
+        public IList<Cart> Cart { get; set; } = default!;
         public int CartCount { get; set; } = 0;
 
         public async Task OnGetAsync()
         {
             // Contar el número de items únicos en el carrito
-            var count = await _context.Cart.CountAsync();
+            var count = await _context.Carts.CountAsync();
             CartCount = count;
 
-            if (_context.Cart != null)
+            if (_context.Carts != null)
             {
-                Cart = await _context.Cart
-                .Include(c => c.producto).ToListAsync();
+                Cart = await _context.Carts
+                .Include(c => c.Product).ToListAsync();
             }
 
             // Calcular el número total de productos en el carrito
-            int total = Cart.Sum(item => item.quantity);
+            int total = Cart.Sum(item => item.Quantity);
         }
     }
 }

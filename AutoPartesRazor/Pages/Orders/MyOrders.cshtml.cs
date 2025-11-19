@@ -1,7 +1,7 @@
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using AutoPartesRazor.Data;
 using AutoPartesRazor.Models;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 
 public class MyOrdersModel : PageModel
 {
@@ -11,7 +11,7 @@ public class MyOrdersModel : PageModel
     public async Task OnGetAsync()
     {
         var userEmail = User.Identity?.Name;
-        Pedidos = await _context.Order
+        Pedidos = await _context.Orders
             .Where(o => o.CustomerEmail == userEmail)
             .OrderByDescending(o => o.CreatedAt)
             .ToListAsync();

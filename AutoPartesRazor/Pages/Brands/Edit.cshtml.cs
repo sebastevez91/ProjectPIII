@@ -3,69 +3,68 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
-namespace AutoPartesRazor.Pages.Brands
-{
-    public class EditModel : PageModel
-    {
-        private readonly AutoPartesRazor.Data.AutoPartesRazorContext _context;
+namespace AutoPartesRazor.Pages.Brands;
 
-        public EditModel(AutoPartesRazor.Data.AutoPartesRazorContext context)
+public class EditModel : PageModel
+{
+    private readonly AutoPartesRazor.Data.AutoPartesRazorContext _context;
+
+    public EditModel(AutoPartesRazor.Data.AutoPartesRazorContext context)
+    {
+        _context = context;
+    }
+
+    [BindProperty]
+    public Brand Brand { get; set; } = default!;
+
+    public async Task<IActionResult> OnGetAsync(int? id)
+    {
+        if (id == null || _context.Brands == null)
         {
-            _context = context;
+            return NotFound();
         }
 
-        [BindProperty]
-        public Brand Brand { get; set; } = default!;
-
-        public async Task<IActionResult> OnGetAsync(int? id)
+        var brand = await _context.Brands.FirstOrDefaultAsync(m => m.Id == id);
+        if (brand == null)
         {
-            if (id == null || _context.Brand == null)
-            {
-                return NotFound();
-            }
+            return NotFound();
+        }
+        Brand = brand;
+        return Page();
+    }
 
-            var brand = await _context.Brand.FirstOrDefaultAsync(m => m.id == id);
-            if (brand == null)
-            {
-                return NotFound();
-            }
-            Brand = brand;
+    // To protect from overposting attacks, enable the specific properties you want to bind to.
+    // For more details, see https://aka.ms/RazorPagesCRUD.
+    public async Task<IActionResult> OnPostAsync()
+    {
+        if (!ModelState.IsValid)
+        {
             return Page();
         }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
+        _context.Attach(Brand).State = EntityState.Modified;
+
+        try
         {
-            if (!ModelState.IsValid)
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!BrandExists(Brand.Id))
             {
-                return Page();
+                return NotFound();
             }
-
-            _context.Attach(Brand).State = EntityState.Modified;
-
-            try
+            else
             {
-                await _context.SaveChangesAsync();
+                throw;
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!BrandExists(Brand.id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return RedirectToPage("/Adminitration/AdminDashboard");
         }
 
-        private bool BrandExists(int id)
-        {
-            return (_context.Brand?.Any(e => e.id == id)).GetValueOrDefault();
-        }
+        return RedirectToPage("/Adminitration/AdminDashboard");
+    }
+
+    private bool BrandExists(int id)
+    {
+        return (_context.Brands?.Any(e => e.Id == id)).GetValueOrDefault();
     }
 }

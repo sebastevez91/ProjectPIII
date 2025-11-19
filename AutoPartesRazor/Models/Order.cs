@@ -1,23 +1,59 @@
-namespace AutoPartesRazor.Models
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace AutoPartesRazor.Models;
+
+public class Order
 {
-    public class Order
-    {
-        public int id { get; set; }
-        public string CustomerName { get; set; } = string.Empty;
-        public string CustomerEmail { get; set; } = string.Empty;
-        public string ShippingAddress { get; set; } = string.Empty;
-        public string PaymentMethod { get; set; } = string.Empty;
-        public decimal Total { get; set; }
-        public string Status { get; set; } = "Pending"; // Usaremos este campo para el ESTADO del despacho/tracking
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public int Id { get; set; }
 
-        // Soft Delete
-        public bool IsDeleted { get; set; } = false;
-        public DateTime? DeletedAt { get; set; }
+    // Foreign Key - User
+    public string? UserId { get; set; }
 
-        // navegación
-        public List<OrderItem> Items { get; set; } = new();
-        public int? Calificacion { get; set; }
+    [Required]
+    [StringLength(100)]
+    [Display(Name = "Nombre de cliente")]
+    public string CustomerName { get; set; } = string.Empty;
 
-    }
+    [Required]
+    [EmailAddress]
+    [StringLength(100)]
+    [Display(Name = "Email")]
+    public string CustomerEmail { get; set; } = string.Empty;
+
+    [Required]
+    [StringLength(200)]
+    [Display(Name = "Dirección de envio")]
+    public string ShippingAddress { get; set; } = string.Empty;
+
+
+    [Required]
+    [StringLength(50)]
+    [Display(Name = "Método de pago")]
+    public string PaymentMethod { get; set; } = string.Empty;
+
+    [Column(TypeName = "decimal(18, 2)")]
+    [Display(Name = "Total")]
+    public decimal Total { get; set; }
+
+    [Display(Name = "Estado")]
+    public string Status { get; set; } = "Pending";
+
+
+    [Display(Name = "Fecha de operación")]
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
+
+    [Display(Name = "Ultima actualización")]
+    public DateTime? UpdatedAt { get; set; }
+
+    // Soft Delete
+    public bool IsDeleted { get; set; } = false;
+    public DateTime? DeletedAt { get; set; }
+
+    // navegación
+    public List<OrderItem> Items { get; set; } = new();
+    public User? User { get; set; }
+
+    public int? Calificacion { get; set; }
+
 }

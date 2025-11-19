@@ -34,37 +34,37 @@ public class EditModel : PageModel
 
     public async Task<IActionResult> OnGetAsync(int? id)
     {
-        if (id == null || _context.Product == null)
+        if (id == null || _context.Products == null)
         {
             return NotFound();
         }
 
         //Llena la lista de categorias
-        Categories = _context.Category
+        Categories = _context.Categories
             .Select(c => new SelectListItem
             {
-                Value = c.id.ToString(),
-                Text = c.name
+                Value = c.Id.ToString(),
+                Text = c.Name
             })
             .ToList();
 
         //Llena la lista de marcas
-        Brands = _context.Brand
+        Brands = _context.Brands
             .Select(b => new SelectListItem
             {
-                Value = b.id.ToString(),
-                Text = b.name
+                Value = b.Id.ToString(),
+                Text = b.Name
             })
             .ToList();
 
-        var product = await _context.Product.FirstOrDefaultAsync(m => m.id == id);
+        var product = await _context.Products.FirstOrDefaultAsync(m => m.Id == id);
         if (product == null)
         {
             return NotFound();
         }
 
         Product = product;
-        PriceInteger = (int)Product.price;
+        PriceInteger = (int)Product.Price;
         return Page();
     }
 
@@ -76,7 +76,7 @@ public class EditModel : PageModel
         }
 
         _context.Attach(Product).State = EntityState.Modified;
-        Product.price = PriceInteger;
+        Product.Price = PriceInteger;
 
         try
         {
@@ -107,7 +107,7 @@ public class EditModel : PageModel
         }
         catch (DbUpdateConcurrencyException)
         {
-            if (!ProductExists(Product.id))
+            if (!ProductExists(Product.Id))
             {
                 return NotFound();
             }
@@ -117,11 +117,11 @@ public class EditModel : PageModel
             }
         }
 
-        return RedirectToPage("/Adminitration/AdminDashboard");
+        return RedirectToPage("/Administration/AdminDashboard");
     }
 
     private bool ProductExists(int id)
     {
-        return (_context.Product?.Any(e => e.id == id)).GetValueOrDefault();
+        return (_context.Products?.Any(e => e.Id == id)).GetValueOrDefault();
     }
 }

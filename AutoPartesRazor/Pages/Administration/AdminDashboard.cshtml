@@ -1,99 +1,271 @@
 ﻿@page
 @model AutoPartesRazor.Pages.Administration.AdminDashboardModel
+
 @{
     ViewData["Title"] = "Panel de Administración";
 }
 
-<div class="container py-4">
-    <h2 class="mb-4">Panel de Administración</h2>
-
-    <div class="mb-3 d-flex flex-wrap gap-2">
-        <button class="btn btn-primary btn-lg" onclick="toggleSection('notificationSection')">
-            <i class="fa-solid fa-envelope"></i> Ver Notificaciones
-        </button>
-        <button class="btn btn-primary btn-lg" onclick="toggleSection('orderSection')">
-            <i class="fa-solid fa-book"></i> Ver Órdenes
-        </button>
-        <button class="btn btn-primary btn-lg" onclick="toggleSection('usersSection')">
-            <i class="fa-solid fa-users"></i> Gestionar Usuarios
-        </button>
-        <button class="btn btn-primary btn-lg" onclick="toggleSection('productsSection')">
-            <i class="fa-solid fa-list-check"></i> Gestionar Productos
-        </button>
-        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
-        {
-            <button class="btn btn-success btn-lg" style="min-width:220px;" onclick="location.href='@Url.Page("/Administration/Despacho")'">
-                <i class="fa-solid fa-truck"></i> Despacho de pedidos
-            </button>
-        }
+<div class="container-fluid py-4">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="mb-1">
+                <i class="fas fa-tachometer-alt text-primary me-2"></i>
+                Panel de Administración
+            </h2>
+            <p class="text-muted mb-0">Gestiona tu tienda de autopartes</p>
+        </div>
+        <div>
+            <span class="badge bg-primary px-3 py-2">
+                <i class="fas fa-user-shield me-1"></i>Administrador
+            </span>
+        </div>
     </div>
 
-    <!-- Sección de Productos -->
-    <div id="productsSection" class="mt-4" style="display:none;">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h3 class="mb-0">Listado de Productos</h3>
-            <div>
-                <a asp-page="/Products/Create" class="btn btn-primary">Nuevo producto</a>
-                <button class="btn btn-primary ms-2" onclick="toggleSection('categoriesSection')">Categorías</button>
-                <button class="btn btn-primary ms-2" onclick="toggleSection('brandSection')">Marcas</button>
+    <!-- Gestión de Productos -->
+    <div class="mb-4">
+        <h5 class="mb-3 fw-bold">
+            <i class="fas fa-box text-primary me-2"></i>Gestión de Productos
+        </h5>
+        <div class="row g-3">
+            <div class="col-md-3 col-sm-6">
+                <a asp-page="/Products/Index" class="admin-card bg-gradient-blue">
+                    <div class="icon-circle">
+                        <i class="fas fa-list"></i>
+                    </div>
+                    <h6>Ver Productos</h6>
+                    <p class="small mb-0">Catálogo completo</p>
+                </a>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <a asp-page="/Products/Create" class="admin-card bg-gradient-blue">
+                    <div class="icon-circle">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <h6>Nuevo Producto</h6>
+                    <p class="small mb-0">Agregar al inventario</p>
+                </a>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <a asp-page="/Categories/Create" class="admin-card bg-gradient-blue">
+                    <div class="icon-circle">
+                        <i class="fas fa-tags"></i>
+                    </div>
+                    <h6>Agrega Categorías</h6>
+                    <p class="small mb-0">Organizar productos</p>
+                </a>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <a asp-page="/Brands/Create" class="admin-card bg-gradient-blue">
+                    <div class="icon-circle">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h6>Agregar Marcas</h6>
+                    <p class="small mb-0">Gestionar marcas</p>
+                </a>
             </div>
         </div>
-        <partial name="_ProductsTable" model="Model.Products" />
+    </div>
 
-        <!-- Sección de Categorías -->
-        <div id="categoriesSection" style="display:none;">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h3 class="mb-0">Listado de Categorías</h3>
-                <a asp-page="/Categories/Create" class=" btn btn-primary">Nueva categoría</a>
+    <!-- Gestión de Ventas -->
+    <div class="mb-4">
+        <h5 class="mb-3 fw-bold">
+            <i class="fas fa-shopping-cart text-success me-2"></i>Gestión de Ventas
+        </h5>
+        <div class="row g-3">
+            <div class="col-md-3 col-sm-6">
+                <a asp-page="/Orders/Index" class="admin-card bg-gradient-blue">
+                    <div class="icon-circle">
+                        <i class="fas fa-receipt"></i>
+                    </div>
+                    <h6>Ver Órdenes</h6>
+                    <p class="small mb-0">Historial de ventas</p>
+                </a>
             </div>
-            <partial name="_CategoriesTable" model="Model.Categories" />
-        </div>
-
-        <!-- Sección de Marcas -->
-        <div id="brandSection" style="display:none;">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h3 class="mb-0">Listado de Marcas</h3>
-                <a asp-page="/Brands/Create" class=" btn btn-primary m-2">Nueva marca</a>
+            <div class="col-md-3 col-sm-6">
+                <a asp-page="/Administration/Despacho" class="admin-card bg-gradient-blue">
+                    <div class="icon-circle">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    <h6>Despacho</h6>
+                    <p class="small mb-0">Gestionar envíos</p>
+                </a>
             </div>
-            <partial name="_BrandTable" model="Model.Brands" />
+            <div class="col-md-3 col-sm-6">
+                <a asp-page="/Administration/Reclamos/Index" class="admin-card bg-gradient-blue">
+                    <div class="icon-circle">
+                        <i class="fas fa-exclamation-circle"></i>
+                    </div>
+                    <h6>Reclamos</h6>
+                    <p class="small mb-0">Atención al cliente</p>
+                </a>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <a asp-page="/Carts/Index" class="admin-card bg-gradient-blue">
+                    <div class="icon-circle">
+                        <i class="fas fa-shopping-basket"></i>
+                    </div>
+                    <h6>Carritos Activos</h6>
+                    <p class="small mb-0">En proceso de compra</p>
+                </a>
+            </div>
         </div>
     </div>
 
-    <!-- Sección de Usuarios -->
-    <div id="usersSection" class="mt-4" style="display:none;">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h3 class="mb-0">Listado de Usuarios</h3>
-            <a asp-page="/Users/Create" class="btn btn-primary">Nuevo usuario</a>
+    <!-- Gestión de Inventario -->
+    <div class="mb-4">
+        <h5 class="mb-3 fw-bold">
+            <i class="fas fa-warehouse text-warning me-2"></i>Gestión de Inventario
+        </h5>
+        <div class="row g-3">
+            <div class="col-md-3 col-sm-6">
+                <a asp-page="/PurchaseOrders/Index" class="admin-card bg-gradient-blue">
+                    <div class="icon-circle">
+                        <i class="fas fa-file-invoice"></i>
+                    </div>
+                    <h6>Órdenes de Compra</h6>
+                    <p class="small mb-0">Pedidos a proveedores</p>
+                </a>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <a asp-page="/PurchaseOrders/Create" class="admin-card bg-gradient-blue">
+                    <div class="icon-circle">
+                        <i class="fas fa-plus-circle"></i>
+                    </div>
+                    <h6>Nueva Compra a Proveedor</h6>
+                    <p class="small mb-0">Reabastecer stock</p>
+                </a>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <a asp-page="/Suppliers/Index" class="admin-card bg-gradient-blue">
+                    <div class="icon-circle">
+                        <i class="fas fa-truck-loading"></i>
+                    </div>
+                    <h6>Proveedores</h6>
+                    <p class="small mb-0">Gestionar proveedores</p>
+                </a>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <a asp-page="/Products/LowStock" class="admin-card bg-gradient-blue">
+                    <div class="icon-circle">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h6>Stock Bajo</h6>
+                    <p class="small mb-0">Productos críticos</p>
+                </a>
+            </div>
         </div>
-        <partial name="_UsersTable" model="Model.Users" />
     </div>
 
-    <!-- Sección de Órdenes -->
-    <div id="orderSection" class="mt-4" style="display:none;">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h3 class="mb-0">Listado de Órdenes</h3>
+    <!-- Gestión de Usuarios -->
+    <div class="mb-4">
+        <h5 class="mb-3 fw-bold">
+            <i class="fas fa-users text-info me-2"></i>Gestión de Usuarios
+        </h5>
+        <div class="row g-3">
+            <div class="col-md-3 col-sm-6">
+                <a asp-page="/Administration/Users/Index" class="admin-card bg-gradient-blue">
+                    <div class="icon-circle">
+                        <i class="fas fa-user-friends"></i>
+                    </div>
+                    <h6>Ver Usuarios</h6>
+                    <p class="small mb-0">Gestionar cuentas</p>
+                </a>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <a asp-page="/Administration/Users/Roles" class="admin-card bg-gradient-blue">
+                    <div class="icon-circle">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <h6>Roles y Permisos</h6>
+                    <p class="small mb-0">Control de acceso</p>
+                </a>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <a asp-page="/Notifications/Index" class="admin-card bg-gradient-blue">
+                    <div class="icon-circle">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <h6>Notificaciones</h6>
+                    <p class="small mb-0">Centro de alertas</p>
+                </a>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <a asp-page="/Administration/ReviewsDashboard" class="admin-card bg-gradient-blue">
+                    <div class="icon-circle">
+                        <i class="fas fa-history"></i>
+                    </div>
+                    <h6>Reseñas</h6>
+                    <p class="small mb-0">Registro de reseñas</p>
+                </a>
+            </div>
         </div>
-        <partial name="_OrdenesTable" model="Model.Orders" />
-    </div>
-
-    <!-- Sección de Notificaciones -->
-    <div id="notificationSection" class="mt-4" style="display:none;">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h3 class="mb-0">Listado de Notificaciones</h3>
-        </div>
-        <form method="get" class="d-flex mb-3 gap-2">
-            <input type="text" name="OrderId" class="form-control" placeholder="Filtrar por ID Pedido" style="max-width:200px;" />
-            <button type="submit" class="btn btn-secondary btn-sm">Filtrar</button>
-        </form>
-        <partial name="_NotificationTable" model="Model.Notifications" />
     </div>
 </div>
 
-@section Scripts {
-    <script>
-        function toggleSection(id) {
-            const el = document.getElementById(id);
-            el.style.display = el.style.display === 'none' ? 'block' : 'none';
+@section Styles {
+    <style>
+        .admin-card {
+            display: block;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
         }
-    </script>
+
+            .admin-card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+                opacity: 0;
+                transition: opacity 0.3s;
+            }
+
+            .admin-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            }
+
+                .admin-card:hover::before {
+                    opacity: 1;
+                }
+
+            .admin-card .icon-circle {
+                width: 50px;
+                height: 50px;
+                background: rgba(255,255,255,0.2);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-bottom: 1rem;
+                font-size: 1.5rem;
+            }
+
+            .admin-card h6 {
+                font-weight: 600;
+                margin-bottom: 0.25rem;
+            }
+
+            .admin-card p {
+                opacity: 0.9;
+            }
+
+        .bg-gradient-blue {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        }
+
+        h5 {
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 0.5rem;
+        }
+    </style>
 }

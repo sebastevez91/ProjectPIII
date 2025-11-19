@@ -1,6 +1,5 @@
 using AutoPartesRazor.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,30 +22,41 @@ public class AdminDashboardModel : PageModel
     public IList<Brand> Brands { get; set; } = default!;
     public IList<Notification> Notifications { get; set; } = default!;
 
+    public List<Product> LowStockProducts { get; set; } = new();
+
+
     public async Task OnGetAsync()
     {
-        Users = _context.User != null
-            ? await _context.User.ToListAsync()
+        Users = _context.Users != null
+            ? await _context.Users.ToListAsync()
             : new List<User>();
 
-        Products = _context.Product != null
-            ? await _context.Product.Include(p => p.Category).ToListAsync()
+        Products = _context.Products != null
+            ? await _context.Products.Include(p => p.Category).ToListAsync()
             : new List<Product>();
 
-        Orders = _context.Order != null
-            ? await _context.Order.Include(o => o.Items).ThenInclude(oi => oi.Product).ToListAsync()
+        Orders = _context.Orders != null
+            ? await _context.Orders.Include(o => o.Items).ThenInclude(oi => oi.Product).ToListAsync()
             : new List<Order>();
 
-        Categories = _context.Category != null
-            ? await _context.Category.ToListAsync()
+        Categories = _context.Categories != null
+            ? await _context.Categories.ToListAsync()
             : new List<Category>();
 
-        Brands = _context.Brand != null
-            ? await _context.Brand.ToListAsync()
+        Brands = _context.Brands != null
+            ? await _context.Brands.ToListAsync()
             : new List<Brand>();
 
-        Notifications = _context.Notification != null
-            ? await _context.Notification.Include(n => n.User).ToListAsync()
+        Notifications = _context.Notifications != null
+            ? await _context.Notifications.Include(n => n.User).ToListAsync()
             : new List<Notification>();
+
+        // Obtener productos con bajo stock (por ejemplo, stock menor o igual a 5)
+        LowStockProducts = await _context.Products
+            .Where(p => !p.IsDeleted && p.Stock <= 5)
+            .OrderBy(p => p.Stock)
+            .ToListAsync();
+
     }
 }
+

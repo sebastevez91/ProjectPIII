@@ -17,6 +17,17 @@
         });
     </script>
 }
+@if (TempData["error"] != null)
+{
+    <script>
+        Swal.fire({
+            title: '¡Operación Inválida!',
+            text: '@TempData["error"]',
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+        });
+    </script>
+}
 
 @{
     var pasos = new List<(string Estado, string Icono, string ColorClase)>
@@ -59,7 +70,7 @@
         <div class="d-flex gap-2 flex-wrap">
             @if (Model.Pedido.Status == "Pendiente")
             {
-                <form method="post" asp-page-handler="Preparar" asp-route-id="@Model.Pedido.id">
+                <form method="post" asp-page-handler="Preparar" asp-route-id="@Model.Pedido.Id">
                     <button type="submit" class="btn btn-info shadow-sm animate__animated animate__pulse">
                         <i class="fa-solid fa-box-open"></i> Preparar
                     </button>
@@ -67,7 +78,7 @@
             }
             @if (Model.Pedido.Status == "Preparando")
             {
-                <form method="post" asp-page-handler="Despachar" asp-route-id="@Model.Pedido.id">
+                <form method="post" asp-page-handler="Despachar" asp-route-id="@Model.Pedido.Id">
                     <button type="submit" class="btn btn-warning shadow-sm animate__animated animate__pulse">
                         <i class="fa-solid fa-truck-loading"></i> Despachar
                     </button>
@@ -75,7 +86,7 @@
             }
             @if (Model.Pedido.Status == "Despachado")
             {
-                <form method="post" asp-page-handler="EnCamino" asp-route-id="@Model.Pedido.id">
+                <form method="post" asp-page-handler="EnCamino" asp-route-id="@Model.Pedido.Id">
                     <button type="submit" class="btn btn-primary shadow-sm animate__animated animate__pulse">
                         <i class="fa-solid fa-truck"></i> En camino
                     </button>
@@ -83,7 +94,7 @@
             }
             @if (Model.Pedido.Status == "En camino")
             {
-                <form method="post" asp-page-handler="Entregar" asp-route-id="@Model.Pedido.id">
+                <form method="post" asp-page-handler="Entregar" asp-route-id="@Model.Pedido.Id">
                     <button type="submit" class="btn btn-success shadow-sm animate__animated animate__pulse">
                         <i class="fa-solid fa-check-double"></i> Entregar
                     </button>
@@ -91,7 +102,7 @@
             }
             @if (Model.Pedido.Status != "Entregado" && Model.Pedido.Status != "Cancelado")
             {
-                <form method="post" asp-page-handler="Cancelar" asp-route-id="@Model.Pedido.id">
+                <form method="post" asp-page-handler="Cancelar" asp-route-id="@Model.Pedido.Id">
                     <button type="submit" class="btn btn-danger shadow-sm animate__animated animate__shakeX">
                         <i class="fa-solid fa-ban"></i> Cancelar
                     </button>
@@ -100,11 +111,17 @@
         </div>
     </div>
 
+    <div>
+    <a asp-page="/Orders/Confirmation" class="btn btn-primary m-2" asp-route-id="@Model.Pedido.Id">
+            ver recibo
+        </a>
+    </div>
+
 
     <table class="table table-hover table-striped shadow rounded animate__animated animate__fadeInUp">
         <tr>
             <td><b>ID:</b></td>
-            <td>@Model.Pedido.id</td>
+            <td>@Model.Pedido.Id</td>
         </tr>
         <tr>
             <td><b>Cliente:</b></td>
@@ -142,7 +159,7 @@
         @foreach (var item in Model.Pedido.Items)
         {
             <li class="list-group-item">
-                <b>@item.Product?.name</b> - @item.Quantity x $@item.UnitPrice
+                <b>@item.Product?.Name</b> - @item.Quantity x $@item.UnitPrice
             </li>
         }
     </ul>

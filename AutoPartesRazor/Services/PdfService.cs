@@ -3,7 +3,6 @@ using AutoPartesRazor.Models;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
-using System.IO;
 
 namespace AutoPartesRazor.Services;
 
@@ -78,7 +77,7 @@ public class PdfService : IPdfService
                                 .Bold()
                                 .FontColor(Colors.Grey.Darken2);
 
-                            col.Item().PaddingTop(5).AlignRight().Text($"Pedido N° {order.id}")
+                            col.Item().PaddingTop(5).AlignRight().Text($"Pedido N° {order.Id}")
                                 .FontSize(16)
                                 .Bold()
                                 .FontColor(Colors.Blue.Darken2);
@@ -150,7 +149,7 @@ public class PdfService : IPdfService
                     var isAlternate = false;
                     foreach (var item in order.Items)
                     {
-                        var productName = item.Product?.name ?? $"Producto #{item.ProductId}";
+                        var productName = item.Product?.Name ?? $"Producto #{item.ProductId}";
                         var unitPrice = item.UnitPrice;
                         var totalPrice = unitPrice * item.Quantity;
 

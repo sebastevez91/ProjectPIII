@@ -14,12 +14,11 @@
                     <form method="post">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="mb-4">
-                            <label asp-for="Brand.name" class="control-label fs-4 fw-bold"></label>
-                            <input asp-for="Brand.name" class="form-control" />
-                            <span asp-validation-for="Brand.name" class="text-danger"></span>
+                            <label asp-for="Brand.Name" class="control-label fs-4 fw-bold"></label>
+                            <input asp-for="Brand.Name" class="form-control" />
+                            <span asp-validation-for="Brand.Name" class="text-danger"></span>
                         </div>
                         <div class="d-grid gap-2 d-md-flex justify-content-md-between mt-4 pt-3 border-top">
-                            <a asp-page="Index" class="btn btn-outline-secondary">Volver</a>
                             <input type="submit" value="Crear" class="btn btn-success" />
                         </div>
                     </form>

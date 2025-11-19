@@ -1,63 +1,69 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AutoPartesRazor.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using AutoPartesRazor.Data;
-using AutoPartesRazor.Models;
 
-namespace AutoPartesRazor.Pages.Categories
+namespace AutoPartesRazor.Pages.Categories;
+
+[Authorize(Roles = "Admin")]
+public class DeleteModel : PageModel
 {
-    public class DeleteModel : PageModel
-    {
-        private readonly AutoPartesRazor.Data.AutoPartesRazorContext _context;
+    private readonly AutoPartesRazor.Data.AutoPartesRazorContext _context;
 
-        public DeleteModel(AutoPartesRazor.Data.AutoPartesRazorContext context)
+    public DeleteModel(AutoPartesRazor.Data.AutoPartesRazorContext context)
+    {
+        _context = context;
+    }
+
+    [BindProperty]
+    public Category Category { get; set; } = default!;
+
+    public async Task<IActionResult> OnGetAsync(int? id)
+    {
+        if (id == null || _context.Categories == null)
         {
-            _context = context;
+            return NotFound();
         }
 
-        [BindProperty]
-      public Category Category { get; set; } = default!;
+        var category = await _context.Categories.FirstOrDefaultAsync(m => m.Id == id);
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+
+        if (category == null)
         {
-            if (id == null || _context.Category == null)
-            {
-                return NotFound();
-            }
+            return NotFound();
+        }
+        else
+        {
+            Category = category;
+        }
+        return Page();
+    }
 
-            var category = await _context.Category.FirstOrDefaultAsync(m => m.id == id);
+    public async Task<IActionResult> OnPostAsync(int? id)
+    {
+        if (id == null || _context.Categories == null)
+        {
+            return NotFound();
+        }
+        var category = await _context.Categories.FindAsync(id);
 
+        if (category != null)
+        {
+            Category = category;
+            _context.Categories.Remove(Category);
+            await _context.SaveChangesAsync();
             if (category == null)
             {
                 return NotFound();
             }
-            else 
+            else
             {
                 Category = category;
             }
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(int? id)
-        {
-            if (id == null || _context.Category == null)
-            {
-                return NotFound();
-            }
-            var category = await _context.Category.FindAsync(id);
-
-            if (category != null)
-            {
-                Category = category;
-                _context.Category.Remove(Category);
-                await _context.SaveChangesAsync();
-            }
-
-            return RedirectToPage("./Index");
-        }
+        return RedirectToPage("./Index");
     }
 }

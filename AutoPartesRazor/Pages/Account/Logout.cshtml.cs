@@ -1,7 +1,7 @@
+using AutoPartesRazor.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using AutoPartesRazor.Models;
 
 namespace AutoPartesRazor.Pages.Account
 {
