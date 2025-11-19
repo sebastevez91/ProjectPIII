@@ -1,0 +1,35 @@
+﻿using AutoPartesRazor.Models;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+
+namespace AutoPartesRazor.Pages.Carts
+{
+    public class IndexModel : PageModel
+    {
+        private readonly AutoPartesRazor.Data.AutoPartesRazorContext _context;
+
+        public IndexModel(AutoPartesRazor.Data.AutoPartesRazorContext context)
+        {
+            _context = context;
+        }
+
+        public IList<Cart> Cart { get; set; } = default!;
+        public int CartCount { get; set; } = 0;
+
+        public async Task OnGetAsync()
+        {
+            // Contar el número de items únicos en el carrito
+            var count = await _context.Carts.CountAsync();
+            CartCount = count;
+
+            if (_context.Carts != null)
+            {
+                Cart = await _context.Carts
+                .Include(c => c.Product).ToListAsync();
+            }
+
+            // Calcular el número total de productos en el carrito
+            int total = Cart.Sum(item => item.Quantity);
+        }
+    }
+}

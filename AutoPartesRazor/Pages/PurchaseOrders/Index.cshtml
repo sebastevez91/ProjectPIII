@@ -1,0 +1,193 @@
+﻿@page
+@model AutoPartesRazor.Pages.PurchaseOrders.IndexModel
+
+@{
+    ViewData["Title"] = "Órdenes de Compra";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="fa-solid fa-clipboard-list me-2"></i>Órdenes de Compra</h2>
+        <a asp-page="Create" class="btn btn-primary">
+            <i class="fa-solid fa-plus me-1"></i>Nueva Orden
+        </a>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fa-solid fa-circle-check me-2"></i>@TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fa-solid fa-circle-exclamation me-2"></i>@TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (Model.PurchaseOrders.Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>N° Orden</th>
+                        <th>Producto</th>
+                        <th>Proveedor</th>
+                        <th>Cantidad</th>
+                        <th>Total</th>
+                        <th>Estado</th>
+                        <th>Fecha</th>
+                        <th style="width: 100px;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var order in Model.PurchaseOrders)
+                    {
+                        <tr>
+                            <td class="fw-bold">#@order.Id</td>
+                            <td>@order.Product?.Name</td>
+                            <td>@order.Supplier?.Name</td>
+                            <td>@order.Quantity</td>
+                            <td class="fw-bold">$@order.Total.ToString("N2")</td>
+                            <td>
+                                <form method="post" asp-page-handler="ChangeStatus" class="d-flex gap-2 align-items-center">
+                                    <input type="hidden" name="orderId" value="@order.Id" />
+                                    <select name="status"
+                                            class="form-select form-select-sm status-select"
+                                            asp-items="Model.StatusList"
+                                            data-current-status="@order.Status">
+                                        <option value="">-- Seleccionar --</option>
+                                    </select>
+                                    <button type="submit"
+                                            class="btn btn-sm btn-primary"
+                                            title="Actualizar estado">
+                                        <i class="fa-solid fa-check"></i>
+                                    </button>
+                                </form>
+                                <small class="d-block mt-1">
+                                    <span class="badge @GetStatusBadgeClass(order.Status)">
+                                        @GetStatusText(order.Status)
+                                    </span>
+                                </small>
+                            </td>
+                            <td>@order.CreatedAt.ToString("dd/MM/yyyy")</td>
+                            <td>
+                                <a asp-page="./Details"
+                                   asp-route-id="@order.Id"
+                                   class="btn btn-sm btn-info text-white"
+                                   title="Ver detalles">
+                                    <i class="fa-solid fa-eye"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info text-center py-5">
+            <i class="fa-solid fa-inbox fa-3x mb-3 d-block"></i>
+            <h5>No hay órdenes de compra registradas</h5>
+            <p class="text-muted">Crea tu primera orden de compra para comenzar.</p>
+            <a asp-page="Create" class="btn btn-primary mt-2">
+                <i class="fa-solid fa-plus me-1"></i>Crear Primera Orden
+            </a>
+        </div>
+    }
+</div>
+
+@functions {
+    string GetStatusText(string status)
+    {
+        return status switch
+        {
+            "Pending" => "Pendiente",
+            "Approved" => "Aprobado",
+            "Received" => "Recibido",
+            "Cancelled" => "Cancelado",
+            _ => status
+        };
+    }
+
+    string GetStatusBadgeClass(string status)
+    {
+        return status switch
+        {
+            "Pending" => "bg-warning text-dark",
+            "Approved" => "bg-info",
+            "Received" => "bg-success",
+            "Cancelled" => "bg-danger",
+            _ => "bg-secondary"
+        };
+    }
+}
+
+@section Scripts {
+    <script>
+        // Preseleccionar el estado actual en cada select
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.status-select').forEach(function(select) {
+                const currentStatus = select.getAttribute('data-current-status');
+                if (currentStatus) {
+                    select.value = currentStatus;
+                }
+            });
+
+            // Confirmación antes de cambiar estado
+            document.querySelectorAll('form[asp-page-handler="ChangeStatus"]').forEach(function(form) {
+                form.addEventListener('submit', function(e) {
+                    const select = form.querySelector('select[name="status"]');
+                    if (!select.value) {
+                        e.preventDefault();
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Atención',
+                            text: 'Debe seleccionar un estado',
+                            confirmButtonText: 'Entendido'
+                        });
+                        return false;
+                    }
+
+                    e.preventDefault();
+
+                    Swal.fire({
+                        title: '¿Confirmar cambio de estado?',
+                        text: 'Se actualizará el estado de la orden',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#6c757d',
+                        confirmButtonText: 'Sí, actualizar',
+                        cancelButtonText: 'Cancelar'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+}
+
+<style>
+    .status-select {
+        min-width: 140px;
+    }
+
+    .table td {
+        vertical-align: middle;
+    }
+
+    .badge {
+        font-size: 0.85rem;
+        padding: 0.35em 0.65em;
+    }
+</style>

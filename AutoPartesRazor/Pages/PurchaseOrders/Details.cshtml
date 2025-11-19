@@ -1,0 +1,48 @@
+﻿@page
+@model AutoPartesRazor.Pages.PurchaseOrders.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Detalles de la orden de pedido</h1>
+
+<div>
+    <h4>Orden N° #@Model.PurchaseOrder.Id</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PurchaseOrder.Product.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PurchaseOrder.Product.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PurchaseOrder.Supplier)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PurchaseOrder.Supplier.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PurchaseOrder.Quantity)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PurchaseOrder.Quantity)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PurchaseOrder.Status)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PurchaseOrder.Status)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PurchaseOrder.CreatedAt)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PurchaseOrder.CreatedAt)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Index" class="btn btn-primary btn-sm">Volver</a>
+</div>

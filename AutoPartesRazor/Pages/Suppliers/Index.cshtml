@@ -1,0 +1,36 @@
+﻿@page
+@model AutoPartesRazor.Pages.Suppliers.IndexModel
+@{
+    ViewData["Title"] = "Proveedores";
+}
+
+<div class="container py-4">
+    <h2 class="mb-3">Proveedores</h2>
+
+    <a asp-page="Create" class="btn btn-primary mb-3">Nuevo Proveedor</a>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Teléfono</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var s in Model.Suppliers)
+            {
+                <tr>
+                    <td>@s.Name</td>
+                    <td>@s.Email</td>
+                    <td>@s.Phone</td>
+                    <td>
+                        <a asp-page="Edit" asp-route-id="@s.Id" class="btn btn-warning btn-sm">Editar</a>
+                        <a asp-page="Delete" asp-route-id="@s.Id" class="btn btn-danger btn-sm">Eliminar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

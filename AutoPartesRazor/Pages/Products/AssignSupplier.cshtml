@@ -1,0 +1,22 @@
+﻿@page "{id:int}"
+@model AutoPartesRazor.Pages.Products.AssignSuppliersModel
+
+<div class="container py-4">
+    <h2>Asignar Proveedores a @Model.Product.Name</h2>
+
+    <form method="post">
+
+        @foreach (var supplier in Model.AllSuppliers)
+        {
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" name="selectedSuppliers" value="@supplier.Id"
+                       @(Model.AssignedSuppliers.Contains(supplier.Id) ? "checked" : "") />
+
+                <label class="form-check-label">@supplier.Name</label>
+            </div>
+        }
+
+        <button class="btn btn-success mt-3">Guardar</button>
+        <a asp-page="/Products/Index" class="btn btn-secondary mt-3">Volver</a>
+    </form>
+</div>

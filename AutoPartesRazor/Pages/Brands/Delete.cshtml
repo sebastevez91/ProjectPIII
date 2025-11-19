@@ -1,0 +1,37 @@
+﻿@page
+@model AutoPartesRazor.Pages.Brands.DeleteModel
+
+@{
+    ViewData["Title"] = "Eliminar Marca";
+}
+
+<h1>Eliminar</h1>
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8">
+            <div class="card bg-dark text-white mb-3 shadow-sm border-0">
+                <div class="card-body p-4">
+                    <div class="mb-3">
+                        <h3 class="text-danger">¿Estás seguro de que quieres eliminar esta Marca?</h3>
+                        <dt class="fs-5 fw-bold text-white mb-2">
+                            @Html.DisplayNameFor(model => model.Brand.Name)
+                        </dt>
+                        <dd class="fs-5 bg-light text-black p-3 rounded">
+                            @Html.DisplayFor(model => model.Brand.Name)
+                        </dd>
+                    </div>
+
+                    <form method="post">
+                        <input type="hidden" asp-for="Brand.Id" />
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-between mt-4 pt-3 border-top border-secondary">
+                            <a asp-page="./Index" class="btn btn-outline-secondary">Volver</a>
+                            <input type="submit" value="Eliminar" class="btn btn-danger" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
