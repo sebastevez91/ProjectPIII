@@ -1,0 +1,469 @@
+﻿@page
+@model AutoPartesRazor.Pages.Administration.ReviewsDashboardModel
+@{
+    ViewData["Title"] = "Dashboard de Reseñas";
+}
+
+<div class="container-fluid py-4">
+    <h2 class="mb-4">
+        <i class="fa-solid fa-star text-warning me-2"></i>
+        Dashboard de Reseñas
+    </h2>
+
+    <!-- Estadísticas Generales -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card text-white bg-primary">
+                <div class="card-body">
+                    <h5 class="card-title">Total de Reseñas</h5>
+                    <h2 class="mb-0">@Model.TotalReviews</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-success">
+                <div class="card-body">
+                    <h5 class="card-title">Calificación Promedio</h5>
+                    <h2 class="mb-0">@Model.AverageRating.ToString("0.0") ⭐</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-info">
+                <div class="card-body">
+                    <h5 class="card-title">Productos con Reseñas</h5>
+                    <h2 class="mb-0">@Model.ProductsWithReviews / @Model.TotalProducts</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-danger">
+                <div class="card-body">
+                    <h5 class="card-title">Productos Críticos</h5>
+                    <h2 class="mb-0">@Model.CriticalProducts</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pestañas de navegación -->
+    <ul class="nav nav-tabs mb-4" id="reviewsTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="top-tab" data-bs-toggle="tab" data-bs-target="#top" type="button">
+                🏆 TOP Productos
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="bottom-tab" data-bs-toggle="tab" data-bs-target="#bottom" type="button">
+                🚨 Productos Críticos
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="suppliers-tab" data-bs-toggle="tab" data-bs-target="#suppliers" type="button">
+                📦 Por Proveedor
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="discounts-tab" data-bs-toggle="tab" data-bs-target="#discounts" type="button">
+                💰 Descuentos Automáticos
+            </button>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="reviewsTabContent">
+        
+        <!-- TAB: TOP Productos -->
+        <div class="tab-pane fade show active" id="top" role="tabpanel">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">🏆 TOP 10 Productos Mejor Calificados</h5>
+                </div>
+                <div class="card-body">
+                    @if (!Model.TopProducts.Any())
+                    {
+                        <div class="alert alert-info">No hay productos con reseñas suficientes.</div>
+                    }
+                    else
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Producto</th>
+                                        <th>Calificación</th>
+                                        <th>Reseñas</th>
+                                        <th>Positivas</th>
+                                        <th>Stock</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{int topPos = 1;}
+                                    @foreach (var p in Model.TopProducts)
+                                    {
+                                        <tr>
+                                            <td><strong>@topPos</strong></td>
+                                            <td>
+                                                <strong>@p.Name</strong><br/>
+                                                <small class="text-muted">@p.Brand?.Name</small>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-warning text-dark">
+                                                    ⭐ @p.AverageRating.ToString("0.0")
+                                                </span>
+                                            </td>
+                                            <td>@p.TotalReviews</td>
+                                            <td>
+                                                <strong>@p.PositiveReviewsPercentage%</strong>
+                                            </td>
+                                            <td>
+                                                <span class="badge @(p.Stock < p.MinimumStock ? "bg-danger" : "bg-success")">
+                                                    @p.Stock u.
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <a asp-page="/Products/Reviews" asp-route-productId="@p.Id" 
+                                                   class="btn btn-sm btn-primary" target="_blank">
+                                                    <i class="fa-solid fa-eye"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        topPos++;
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="alert alert-success mt-3">
+                            <i class="fa-solid fa-lightbulb me-2"></i>
+                            <strong>Recomendación:</strong> Estos productos tienen alta satisfacción. 
+                            Considere aumentar stock y negociar mejores precios por volumen con proveedores.
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: Productos Críticos -->
+        <div class="tab-pane fade" id="bottom" role="tabpanel">
+            <div class="card">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="mb-0">🚨 Productos que Requieren Atención Inmediata</h5>
+                </div>
+                <div class="card-body">
+                    @if (!Model.BottomProducts.Any())
+                    {
+                        <div class="alert alert-success">¡Excelente! No hay productos con calificaciones críticas.</div>
+                    }
+                    else
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Producto</th>
+                                        <th>Calificación</th>
+                                        <th>Reseñas</th>
+                                        <th>Negativas</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var p in Model.BottomProducts)
+                                    {
+                                        var status = p.AverageRating <= 2.0 ? "🚨 CRÍTICO" :
+                                                    p.AverageRating <= 2.5 ? "⚠️ MUY BAJO" :
+                                                    p.AverageRating <= 3.0 ? "⚠️ BAJO" : "📊 REGULAR";
+                                        
+                                        var badgeClass = p.AverageRating <= 2.0 ? "bg-danger" :
+                                                        p.AverageRating <= 2.5 ? "bg-warning text-dark" :
+                                                        p.AverageRating <= 3.0 ? "bg-warning" : "bg-info";
+                                        
+                                        var negativePercent = 100 - p.PositiveReviewsPercentage;
+                                        
+                                        <tr>
+                                            <td>
+                                                <strong>@p.Name</strong><br/>
+                                                <small class="text-muted">@p.Brand?.Name</small>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-danger">
+                                                    ⭐ @p.AverageRating.ToString("0.0")
+                                                </span>
+                                            </td>
+                                            <td>@p.TotalReviews</td>
+                                            <td>
+                                                <strong class="text-danger">@negativePercent%</strong>
+                                            </td>
+                                            <td>
+                                                <span class="badge @badgeClass">@status</span>
+                                            </td>
+                                            <td>
+                                                <a asp-page="/Products/Reviews" asp-route-productId="@p.Id" 
+                                                   class="btn btn-sm btn-primary" target="_blank">
+                                                    Ver reseñas
+                                                </a>
+                                                <a asp-page="/Products/Edit" asp-route-id="@p.Id" 
+                                                   class="btn btn-sm btn-warning">
+                                                    Editar
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="alert alert-warning mt-3">
+                            <h6><i class="fa-solid fa-exclamation-triangle me-2"></i>Acciones Sugeridas:</h6>
+                            <ul class="mb-0">
+                                <li>❌ Suspender nuevos pedidos de productos críticos</li>
+                                <li>📧 Contactar proveedor con evidencia de reseñas</li>
+                                <li>🔍 Buscar proveedor alternativo</li>
+                                <li>⚠️ Evaluar descontinuar el producto</li>
+                            </ul>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: Por Proveedor -->
+        <div class="tab-pane fade" id="suppliers" role="tabpanel">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">📦 Resumen por Proveedor</h5>
+                </div>
+                <div class="card-body">
+                    @if (!Model.SupplierStats.Any())
+                    {
+                        <div class="alert alert-info">No hay datos de proveedores con productos reseñados.</div>
+                    }
+                    else
+                    {
+                        @foreach (var stat in Model.SupplierStats)
+                        {
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <h6 class="mb-0">
+                                        <i class="fa-solid fa-truck me-2"></i>
+                                        @stat.SupplierName
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p class="mb-1">
+                                                <strong>Calificación promedio:</strong> 
+                                                <span class="badge bg-warning text-dark">
+                                                    ⭐ @stat.AverageRating.ToString("0.0")
+                                                </span>
+                                            </p>
+                                            <p class="mb-1">
+                                                <strong>Índice de satisfacción:</strong> @stat.SatisfactionIndex%
+                                            </p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p class="mb-1">
+                                                <strong>Productos OK:</strong> 
+                                                <span class="text-success">✅ @stat.GoodProducts</span>
+                                            </p>
+                                            <p class="mb-1">
+                                                <strong>Productos en revisión:</strong> 
+                                                <span class="text-warning">⚠️ @stat.RegularProducts</span>
+                                            </p>
+                                            <p class="mb-1">
+                                                <strong>Productos críticos:</strong> 
+                                                <span class="text-danger">🚨 @stat.CriticalProducts</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: Descuentos Automáticos -->
+        <div class="tab-pane fade" id="discounts" role="tabpanel">
+            <div class="card">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="mb-0">💰 Sistema de Descuentos Automáticos</h5>
+                </div>
+                <div class="card-body">
+                    <!-- Tabla de configuración -->
+                    <div class="table-responsive mb-4">
+                        <table class="table table-bordered">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Calificación</th>
+                                    <th>Estado</th>
+                                    <th>Descuento</th>
+                                    <th>Badge</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>⭐ 1.0 - 1.9</td>
+                                    <td><span class="badge bg-danger">🚨 CRÍTICO</span></td>
+                                    <td><strong>-40%</strong></td>
+                                    <td><span class="badge bg-danger">LIQUIDACIÓN</span></td>
+                                </tr>
+                                <tr>
+                                    <td>⭐⭐ 2.0 - 2.4</td>
+                                    <td><span class="badge bg-warning text-dark">⚠️ MUY BAJO</span></td>
+                                    <td><strong>-30%</strong></td>
+                                    <td><span class="badge bg-warning text-dark">OFERTA</span></td>
+                                </tr>
+                                <tr>
+                                    <td>⭐⭐ 2.5 - 2.9</td>
+                                    <td><span class="badge bg-warning">⚠️ BAJO</span></td>
+                                    <td><strong>-20%</strong></td>
+                                    <td><span class="badge bg-info">REBAJA</span></td>
+                                </tr>
+                                <tr>
+                                    <td>⭐⭐⭐ 3.0 - 3.4</td>
+                                    <td><span class="badge bg-info">📊 REGULAR</span></td>
+                                    <td><strong>-10%</strong></td>
+                                    <td><span class="badge bg-secondary">DESCUENTO</span></td>
+                                </tr>
+                                <tr>
+                                    <td>⭐⭐⭐⭐ 3.5+</td>
+                                    <td><span class="badge bg-success">✅ OK</span></td>
+                                    <td>Sin descuento</td>
+                                    <td>-</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h6 class="mb-3">Productos con Descuento Automático</h6>
+                    @{
+                        var totalOriginal = Model.DiscountedProducts.Sum(p => p.Price * p.Stock);
+                        var totalWithDiscount = Model.DiscountedProducts.Sum(p =>
+                        {
+                            var discount = p.AverageRating <= 1.9 ? 40 :
+                            p.AverageRating <= 2.4 ? 30 :
+                            p.AverageRating <= 2.9 ? 20 :
+                            p.AverageRating <= 3.4 ? 10 : 0;
+                            return p.Price * (1 - discount / 100m) * p.Stock;
+                        });
+                        var totalLoss = totalOriginal - totalWithDiscount;
+                        var lossPercentage = totalOriginal > 0 ? (totalLoss / totalOriginal) * 100 : 0;
+                    }
+
+                    @if (!Model.DiscountedProducts.Any())
+                    {
+                        <div class="alert alert-success">
+                            No hay productos con descuentos automáticos actualmente.
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Producto</th>
+                                        <th>Calificación</th>
+                                        <th>Descuento</th>
+                                        <th>Precio Original</th>
+                                        <th>Precio con Descuento</th>
+                                        <th>Stock</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var p in Model.DiscountedProducts)
+                                    {
+                                        var discount = p.AverageRating <= 1.9 ? 40 :
+                                                      p.AverageRating <= 2.4 ? 30 :
+                                                      p.AverageRating <= 2.9 ? 20 :
+                                                      p.AverageRating <= 3.4 ? 10 : 0;
+                                        
+                                        var discountedPrice = p.Price * (1 - discount / 100m);
+                                        
+                                        var badge = p.AverageRating <= 1.9 ? "LIQUIDACIÓN" :
+                                                   p.AverageRating <= 2.4 ? "OFERTA" :
+                                                   p.AverageRating <= 2.9 ? "REBAJA" : "DESCUENTO";
+                                        
+                                        var badgeClass = p.AverageRating <= 1.9 ? "bg-danger" :
+                                                        p.AverageRating <= 2.4 ? "bg-warning text-dark" :
+                                                        p.AverageRating <= 2.9 ? "bg-info" : "bg-secondary";
+                                        
+                                        <tr>
+                                            <td>
+                                                <strong>@p.Name</strong><br/>
+                                                <span class="badge @badgeClass">@badge</span>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-danger">
+                                                    ⭐ @p.AverageRating.ToString("0.0")
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <strong class="text-danger">-@discount%</strong>
+                                            </td>
+                                            <td>
+                                                <del>$@p.Price.ToString("N2")</del>
+                                            </td>
+                                            <td>
+                                                <strong class="text-success">$@discountedPrice.ToString("N2")</strong>
+                                            </td>
+                                            <td>@p.Stock u.</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="card bg-light mt-3">
+                            <div class="card-body">
+                                <h6>Resumen de Liquidación</h6>
+                                <p class="mb-1"><strong>Total en liquidación:</strong> @Model.DiscountedProducts.Sum(p => p.Stock) unidades</p>
+                                <p class="mb-1"><strong>Valor original:</strong> $@totalOriginal.ToString("N2")</p>
+                                <p class="mb-1"><strong>Valor con descuento:</strong> $@totalWithDiscount.ToString("N2")</p>
+                                <p class="mb-0">
+                                    <strong>Pérdida estimada:</strong> 
+                                    <span class="text-danger">$@totalLoss.ToString("N2") (@lossPercentage.ToString("0.0")%)</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-info mt-3">
+                            <h6><i class="fa-solid fa-info-circle me-2"></i>Ventajas del Sistema:</h6>
+                            <ul class="mb-0">
+                                <li>✅ Liquida stock problemático rápidamente</li>
+                                <li>✅ Recupera parte de la inversión en productos deficientes</li>
+                                <li>✅ Transparencia con el cliente (saben por qué está en oferta)</li>
+                                <li>✅ Libera espacio en inventario para productos de calidad</li>
+                                <li>✅ Presión al proveedor (evidencia concreta de problemas)</li>
+                            </ul>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Mantener la pestaña activa después de recargar
+        const activeTab = localStorage.getItem('activeReviewsTab');
+        if (activeTab) {
+            const tabTrigger = new bootstrap.Tab(document.querySelector(`#${activeTab}`));
+            tabTrigger.show();
+        }
+
+        document.querySelectorAll('button[data-bs-toggle="tab"]').forEach(button => {
+            button.addEventListener('shown.bs.tab', function (e) {
+                localStorage.setItem('activeReviewsTab', e.target.id);
+            });
+        });
+    </script>
+}

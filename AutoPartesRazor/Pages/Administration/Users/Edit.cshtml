@@ -1,0 +1,280 @@
+﻿@page
+@model AutoPartesRazor.Pages.Users.EditModel
+
+@{
+    ViewData["Title"] = "Editar Usuario";
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>
+                    <i class="fas fa-user-edit text-primary me-2"></i>
+                    Editar Usuario
+                </h2>
+                <a asp-page="./Index" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-1"></i>Volver
+                </a>
+            </div>
+
+            <!-- Mensajes -->
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fas fa-check-circle me-2"></i>@TempData["SuccessMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+
+            <!-- Formulario -->
+            <form method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                <input type="hidden" asp-for="Input.Id" />
+                <input type="hidden" asp-for="Input.CurrentProfilePicturePath" />
+
+                <!-- Información Personal -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-id-card me-2"></i>Información Personal
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- Foto de Perfil -->
+                            <div class="col-12 mb-4 text-center">
+                                <label class="form-label fw-bold">Foto de Perfil</label>
+                                <div class="mb-3">
+                                    @if (!string.IsNullOrEmpty(Model.Input.CurrentProfilePicturePath))
+                                    {
+                                        <img id="profilePreview"
+                                             src="@Model.Input.CurrentProfilePicturePath"
+                                             alt="Perfil"
+                                             class="rounded-circle border border-3 border-primary"
+                                             style="width: 150px; height: 150px; object-fit: cover;">
+                                    }
+                                    else
+                                    {
+                                        <div id="profilePreview" class="avatar-large-edit mx-auto">
+                                            @Model.Input.FullName?.Substring(0, 1).ToUpper()
+                                        </div>
+                                    }
+                                </div>
+                                <input type="file"
+                                       asp-for="Input.ProfilePicture"
+                                       class="form-control w-50 mx-auto"
+                                       accept="image/*"
+                                       onchange="previewImage(this)">
+                                <span asp-validation-for="Input.ProfilePicture" class="text-danger"></span>
+                                <small class="text-muted d-block mt-2">
+                                    Formatos permitidos: JPG, PNG. Máximo 2MB
+                                </small>
+                            </div>
+
+                            <!-- Nombre Completo -->
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Input.FullName" class="form-label fw-bold">
+                                    <i class="fas fa-user me-1"></i>Nombre Completo
+                                </label>
+                                <input asp-for="Input.FullName" class="form-control" placeholder="Juan Pérez">
+                                <span asp-validation-for="Input.FullName" class="text-danger"></span>
+                            </div>
+
+                            <!-- Email -->
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Input.Email" class="form-label fw-bold">
+                                    <i class="fas fa-envelope me-1"></i>Email
+                                </label>
+                                <input asp-for="Input.Email" class="form-control" placeholder="usuario@ejemplo.com">
+                                <span asp-validation-for="Input.Email" class="text-danger"></span>
+                            </div>
+
+                            <!-- Teléfono -->
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Input.PhoneNumber" class="form-label fw-bold">
+                                    <i class="fas fa-phone me-1"></i>Teléfono
+                                </label>
+                                <input asp-for="Input.PhoneNumber" class="form-control" placeholder="1123456789">
+                                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                            </div>
+
+                            <!-- Rol -->
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Input.Role" class="form-label fw-bold">
+                                    <i class="fas fa-user-tag me-1"></i>Rol del Sistema
+                                </label>
+                                <select asp-for="Input.Role" class="form-select" asp-items="Model.RoleList">
+                                    <option value="">-- Seleccionar rol --</option>
+                                </select>
+                                <span asp-validation-for="Input.Role" class="text-danger"></span>
+                            </div>
+
+                            <!-- Dirección -->
+                            <div class="col-12 mb-3">
+                                <label asp-for="Input.Address" class="form-label fw-bold">
+                                    <i class="fas fa-map-marker-alt me-1"></i>Dirección
+                                </label>
+                                <input asp-for="Input.Address" class="form-control" placeholder="Av. Ejemplo 123, Buenos Aires">
+                                <span asp-validation-for="Input.Address" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Estado de la Cuenta -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-toggle-on me-2"></i>Estado de la Cuenta
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- Email Confirmado -->
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check form-switch">
+                                    <input asp-for="Input.EmailConfirmed"
+                                           class="form-check-input"
+                                           type="checkbox"
+                                           id="emailConfirmedSwitch">
+                                    <label class="form-check-label fw-semibold" for="emailConfirmedSwitch">
+                                        <i class="fas fa-check-circle me-1"></i>Email Confirmado
+                                    </label>
+                                </div>
+                                <small class="text-muted">
+                                    Permite al usuario acceder al sistema
+                                </small>
+                            </div>
+
+                            <!-- Teléfono Confirmado -->
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check form-switch">
+                                    <input asp-for="Input.PhoneNumberConfirmed"
+                                           class="form-check-input"
+                                           type="checkbox"
+                                           id="phoneConfirmedSwitch">
+                                    <label class="form-check-label fw-semibold" for="phoneConfirmedSwitch">
+                                        <i class="fas fa-phone-square me-1"></i>Teléfono Confirmado
+                                    </label>
+                                </div>
+                                <small class="text-muted">
+                                    Indica que el teléfono fue verificado
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botones de Acción -->
+                <div class="d-flex gap-2 justify-content-end">
+                    <a asp-page="./Details" asp-route-id="@Model.Input.Id" class="btn btn-outline-info">
+                        <i class="fas fa-eye me-1"></i>Ver Detalles
+                    </a>
+                    <a asp-page="./Index" class="btn btn-secondary">
+                        <i class="fas fa-times me-1"></i>Cancelar
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-1"></i>Guardar Cambios
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    const preview = document.getElementById('profilePreview');
+
+                    // Si es un div (avatar inicial), convertirlo a img
+                    if (preview.tagName === 'DIV') {
+                        const img = document.createElement('img');
+                        img.id = 'profilePreview';
+                        img.className = 'rounded-circle border border-3 border-primary';
+                        img.style.width = '150px';
+                        img.style.height = '150px';
+                        img.style.objectFit = 'cover';
+                        img.src = e.target.result;
+                        preview.parentNode.replaceChild(img, preview);
+                    } else {
+                        preview.src = e.target.result;
+                    }
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // Validación del formulario
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const fullName = document.querySelector('input[name="Input.FullName"]').value;
+            const email = document.querySelector('input[name="Input.Email"]').value;
+            const role = document.querySelector('select[name="Input.Role"]').value;
+
+            if (!fullName || !email || !role) {
+                e.preventDefault();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Campos requeridos',
+                    text: 'Por favor completa todos los campos obligatorios',
+                    confirmButtonText: 'Entendido'
+                });
+                return false;
+            }
+        });
+    </script>
+}
+
+@section Styles {
+    <style>
+        .avatar-large-edit {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 4rem;
+            border: 3px solid #fff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .card {
+            border: none;
+            border-radius: 10px;
+        }
+
+        .card-header {
+            border-radius: 10px 10px 0 0 !important;
+        }
+
+        .form-check-input:checked {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+        }
+
+        .form-check-input {
+            width: 3em;
+            height: 1.5em;
+            cursor: pointer;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+    </style>
+}

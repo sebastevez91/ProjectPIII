@@ -1,0 +1,28 @@
+﻿@page "{id:int}"
+@model AutoPartesRazor.Pages.Suppliers.EditModel
+
+<div class="container py-4">
+    <h2>Editar Proveedor</h2>
+
+    <form method="post">
+        <input type="hidden" asp-for="Supplier.Id" />
+
+        <div class="mb-3">
+            <label asp-for="Supplier.Name"></label>
+            <input asp-for="Supplier.Name" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Supplier.Email"></label>
+            <input asp-for="Supplier.Email" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Supplier.Phone"></label>
+            <input asp-for="Supplier.Phone" class="form-control" />
+        </div>
+
+        <button class="btn btn-primary">Actualizar</button>
+        <a asp-page="Index" class="btn btn-secondary">Volver</a>
+    </form>
+</div>
