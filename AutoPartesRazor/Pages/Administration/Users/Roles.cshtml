@@ -1,0 +1,258 @@
+﻿@page
+@model AutoPartesRazor.Pages.Users.RolesModel
+
+@{
+    ViewData["Title"] = "Gestión de Roles y Permisos";
+}
+
+<div class="container-fluid py-4">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="mb-1">
+                <i class="fas fa-user-shield text-primary me-2"></i>
+                Gestión de Roles y Permisos
+            </h2>
+            <p class="text-muted mb-0">Administra los roles del sistema y sus permisos</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a asp-page="/Administration/AdminDashboard" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-1"></i>Volver
+            </a>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createRoleModal">
+                <i class="fas fa-plus me-1"></i>Nuevo Rol
+            </button>
+        </div>
+    </div>
+
+    <!-- Mensajes -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i>@TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle me-2"></i>@TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- Tarjetas de Roles -->
+    <div class="row g-4">
+        @foreach (var role in Model.Roles)
+        {
+            <div class="col-md-6 col-lg-4">
+                <div class="card shadow-sm h-100 role-card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div class="flex-grow-1">
+                                <h5 class="card-title mb-1 fw-bold">
+                                    <i class="fas fa-shield-alt text-primary me-2"></i>
+                                    @role.Name
+                                </h5>
+                                <small class="text-muted">ID: @role.Id.Substring(0, 8)</small>
+                            </div>
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-light" type="button" data-bs-toggle="dropdown">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li>
+                                        <a class="dropdown-item" href="#"
+                                           onclick="editRole('@role.Id', '@role.Name')">
+                                            <i class="fas fa-edit me-2"></i>Editar nombre
+                                        </a>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <a class="dropdown-item text-danger" href="#"
+                                           onclick="confirmDeleteRole('@role.Id', '@role.Name')">
+                                            <i class="fas fa-trash me-2"></i>Eliminar
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="role-stats mb-3">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-muted">
+                                    <i class="fas fa-users me-1"></i>Usuarios:
+                                </span>
+                                <span class="badge bg-info">@role.UsersCount</span>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span class="text-muted">
+                                    <i class="fas fa-key me-1"></i>Permisos:
+                                </span>
+                                <span class="badge bg-success">@role.PermissionsCount</span>
+                            </div>
+                        </div>
+
+                        <a asp-page="./ManagePermissions" asp-route-id="@role.Id"
+                           class="btn btn-outline-primary w-100">
+                            <i class="fas fa-cog me-1"></i>Gestionar Permisos
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (!Model.Roles.Any())
+        {
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-body text-center py-5">
+                        <i class="fas fa-user-shield fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">No hay roles creados</h5>
+                        <p class="text-muted">Comienza creando tu primer rol del sistema.</p>
+                        <button type="button" class="btn btn-primary mt-3"
+                                data-bs-toggle="modal" data-bs-target="#createRoleModal">
+                            <i class="fas fa-plus me-1"></i>Crear Primer Rol
+                        </button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Modal Crear Rol -->
+<div class="modal fade" id="createRoleModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" asp-page-handler="Create">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-plus-circle me-2"></i>Crear Nuevo Rol
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label asp-for="NewRoleName" class="form-label fw-semibold">Nombre del Rol</label>
+                        <input asp-for="NewRoleName" class="form-control"
+                               placeholder="Ej: Gerente, Vendedor, etc." />
+                        <span asp-validation-for="NewRoleName" class="text-danger"></span>
+                    </div>
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <small>Después de crear el rol, podrás asignarle permisos específicos.</small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-1"></i>Crear Rol
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Editar Rol -->
+<div class="modal fade" id="editRoleModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" asp-page-handler="Edit" id="editRoleForm">
+                <input type="hidden" name="roleId" id="editRoleId" />
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-edit me-2"></i>Editar Rol
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Nombre del Rol</label>
+                        <input type="text" name="newRoleName" id="editRoleName"
+                               class="form-control" required />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-1"></i>Guardar Cambios
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function editRole(roleId, roleName) {
+            document.getElementById('editRoleId').value = roleId;
+            document.getElementById('editRoleName').value = roleName;
+
+            const modal = new bootstrap.Modal(document.getElementById('editRoleModal'));
+            modal.show();
+        }
+
+        function confirmDeleteRole(roleId, roleName) {
+            Swal.fire({
+                title: '¿Eliminar rol?',
+                html: `¿Estás seguro de eliminar el rol <strong>${roleName}</strong>?<br><small class="text-muted">Esta acción no se puede deshacer.</small>`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: '<i class="fas fa-trash me-1"></i>Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = '?handler=Delete&id=' + roleId;
+
+                    const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+                    const tokenInput = document.createElement('input');
+                    tokenInput.type = 'hidden';
+                    tokenInput.name = '__RequestVerificationToken';
+                    tokenInput.value = token;
+
+                    form.appendChild(tokenInput);
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            });
+        }
+    </script>
+}
+
+@section Styles {
+    <style>
+        .role-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: none;
+        }
+
+            .role-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+            }
+
+        .role-stats {
+            padding: 0.75rem;
+            background-color: #f8f9fa;
+            border-radius: 0.375rem;
+        }
+
+        .card-title {
+            color: #2c3e50;
+        }
+
+        .badge {
+            font-weight: 600;
+            font-size: 0.875rem;
+            padding: 0.35rem 0.65rem;
+        }
+    </style>
+}

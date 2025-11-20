@@ -1,0 +1,233 @@
+﻿@page
+@model AutoPartesRazor.Pages.Administration.Users.ManagePermissionsModel
+@{
+    ViewData["Title"] = $"Permisos - {Model.RoleName}";
+}
+
+<div class="container-fluid py-4">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="mb-1">
+                <i class="fas fa-key text-primary me-2"></i>
+                Gestión de Permisos
+            </h2>
+            <p class="text-muted mb-0">
+                Rol: <strong>@Model.RoleName</strong>
+            </p>
+        </div>
+        <a asp-page="./Index" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-1"></i>Volver a Roles
+        </a>
+    </div>
+
+    <!-- Mensajes -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i>@TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- Formulario de Permisos -->
+    <form method="post">
+        <input type="hidden" asp-for="RoleId" />
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-white py-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 fw-semibold">
+                        <i class="fas fa-sliders-h me-2 text-primary"></i>
+                        Configurar Permisos
+                    </h5>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-1"></i>Guardar Cambios
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <!-- Grupos de Permisos -->
+                @for (int i = 0; i < Model.PermissionGroups.Count; i++)
+                {
+                    var group = Model.PermissionGroups[i];
+                    
+                    <div class="permission-group mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6 class="fw-bold text-primary mb-0">
+                                <i class="fas fa-folder-open me-2"></i>
+                                @group.GroupName
+                            </h6>
+                            <div class="form-check">
+                                <input class="form-check-input group-checkbox" 
+                                       type="checkbox" 
+                                       id="selectAll_@i"
+                                       onchange="toggleGroupPermissions(this, 'group_@i')">
+                                <label class="form-check-label small text-muted" for="selectAll_@i">
+                                    Seleccionar todos
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 group_@i">
+                            @for (int j = 0; j < group.Permissions.Count; j++)
+                            {
+                                var permission = group.Permissions[j];
+                                var index = $"PermissionGroups[{i}].Permissions[{j}]";
+                                
+                                <div class="col-md-6">
+                                    <div class="permission-item p-3 border rounded">
+                                        <input type="hidden" asp-for="@permission.Name" name="@(index).Name" />
+                                        <input type="hidden" asp-for="@permission.Description" name="@(index).Description" />
+                                        
+                                        <div class="form-check">
+                                            <input class="form-check-input permission-checkbox" 
+                                                   type="checkbox" 
+                                                   asp-for="@permission.IsSelected"
+                                                   name="@(index).IsSelected"
+                                                   id="permission_@i @j">
+                                            <label class="form-check-label" for="permission_@i @j">
+                                                <div class="fw-semibold">@permission.Description</div>
+                                                <small class="text-muted d-block">@permission.Name</small>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    @if (i < Model.PermissionGroups.Count - 1)
+                    {
+                        <hr class="my-4">
+                    }
+                }
+            </div>
+            <div class="card-footer bg-white py-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="text-muted small">
+                        <i class="fas fa-info-circle me-1"></i>
+                        Los permisos seleccionados se aplicarán inmediatamente al rol.
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-1"></i>Guardar Cambios
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- Resumen de Permisos Seleccionados -->
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h6 class="fw-bold mb-3">
+                <i class="fas fa-list-check me-2"></i>
+                Resumen de Permisos
+            </h6>
+            <div id="permissionsSummary" class="text-muted">
+                <span id="selectedCount">0</span> permisos seleccionados
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function toggleGroupPermissions(selectAllCheckbox, groupClass) {
+            const groupElement = document.querySelector('.' + groupClass);
+            const checkboxes = groupElement.querySelectorAll('.permission-checkbox');
+            
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = selectAllCheckbox.checked;
+            });
+            
+            updatePermissionCount();
+        }
+
+        function updatePermissionCount() {
+            const checkedPermissions = document.querySelectorAll('.permission-checkbox:checked');
+            document.getElementById('selectedCount').textContent = checkedPermissions.length;
+        }
+
+        // Actualizar contador al cargar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            updatePermissionCount();
+            
+            // Actualizar contador cuando cambie cualquier checkbox
+            const allCheckboxes = document.querySelectorAll('.permission-checkbox');
+            allCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', updatePermissionCount);
+            });
+
+            // Verificar estado de "Seleccionar todos" al cargar
+            @for (int i = 0; i < Model.PermissionGroups.Count; i++)
+            {
+                <text>
+                checkGroupSelectAll('group_@i', 'selectAll_@i');
+                </text>
+            }
+        });
+
+        function checkGroupSelectAll(groupClass, selectAllId) {
+            const groupElement = document.querySelector('.' + groupClass);
+            const checkboxes = groupElement.querySelectorAll('.permission-checkbox');
+            const selectAllCheckbox = document.getElementById(selectAllId);
+            
+            let allChecked = true;
+            checkboxes.forEach(checkbox => {
+                if (!checkbox.checked) {
+                    allChecked = false;
+                }
+            });
+            
+            selectAllCheckbox.checked = allChecked;
+        }
+
+        // Actualizar "Seleccionar todos" cuando cambie un permiso individual
+        document.querySelectorAll('.permission-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const groupElement = this.closest('[class*="group_"]');
+                const groupClass = Array.from(groupElement.classList).find(c => c.startsWith('group_'));
+                const groupIndex = groupClass.replace('group_', '');
+                checkGroupSelectAll(groupClass, 'selectAll_' + groupIndex);
+            });
+        });
+    </script>
+}
+
+@section Styles {
+    <style>
+        .permission-group {
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border-radius: 0.5rem;
+        }
+
+        .permission-item {
+            transition: all 0.2s;
+            background-color: white;
+        }
+
+        .permission-item:hover {
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            transform: translateY(-2px);
+        }
+
+        .permission-item .form-check-input:checked ~ .form-check-label {
+            color: #0d6efd;
+        }
+
+        .group-checkbox {
+            cursor: pointer;
+        }
+
+        .form-check-label {
+            cursor: pointer;
+        }
+
+        hr {
+            border-color: #dee2e6;
+            opacity: 0.5;
+        }
+    </style>
+}

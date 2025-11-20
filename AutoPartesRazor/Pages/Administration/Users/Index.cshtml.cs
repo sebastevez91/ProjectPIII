@@ -1,5 +1,7 @@
 using AutoPartesRazor.Data;
+using AutoPartesRazor.Interfaces;
 using AutoPartesRazor.Models;
+using AutoPartesRazor.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,11 +16,13 @@ public class IndexModel : PageModel
 {
     private readonly AutoPartesRazorContext _context;
     private readonly UserManager<User> _userManager;
+    private readonly IUserService _userService;
 
-    public IndexModel(AutoPartesRazorContext context, UserManager<User> userManager)
+    public IndexModel(AutoPartesRazorContext context, UserManager<User> userManager, IUserService userService)
     {
         _context = context;
         _userManager = userManager;
+        _userService = userService;
     }
 
     public IList<User> Users { get; set; } = new List<User>();
@@ -108,20 +112,18 @@ public class IndexModel : PageModel
             return RedirectToPage();
         }
 
-        // Deshabilitar usuario (en lugar de eliminar)
-        user.EmailConfirmed = false;
-        user.LockoutEnabled = true;
-        user.LockoutEnd = DateTimeOffset.MaxValue; // Bloqueo permanente
-
-        var result = await _userManager.UpdateAsync(user);
+        var result = await _userService.ToggleLockoutAsync(id);
 
         if (result.Succeeded)
         {
-            TempData["SuccessMessage"] = $"Usuario {user.FullName} deshabilitado exitosamente.";
+            bool isLocked = await _userService.IsLockedOutAsync(id);
+            TempData["SuccessMessage"] = isLocked
+                ? $"Usuario {user.FullName} deshabilitado exitosamente."
+                : $"Usuario {user.FullName} habilitado exitosamente.";
         }
         else
         {
-            TempData["ErrorMessage"] = "Error al deshabilitar el usuario.";
+            TempData["ErrorMessage"] = "Error al cambiar el estado del usuario.";
         }
 
         return RedirectToPage();
