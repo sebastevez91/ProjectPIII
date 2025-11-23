@@ -20,7 +20,7 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
             .HasOne(p => p.Brand)
             .WithMany(b => b.Products)
             .HasForeignKey(b => b.BrandId)
-            .OnDelete(DeleteBehavior.Restrict); 
+            .OnDelete(DeleteBehavior.Restrict);
 
 
         // Relación Product - Category
@@ -28,7 +28,7 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
             .HasOne(p => p.Category)
             .WithMany(c => c.Products)
             .HasForeignKey(p => p.CategoryId)
-            .OnDelete(DeleteBehavior.Restrict); 
+            .OnDelete(DeleteBehavior.Restrict);
 
 
         // Relación Order - OrderItem
@@ -181,7 +181,7 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
             .OnDelete(DeleteBehavior.Restrict);
 
         // ============================================
-        // NUEVAS RELACIONES DE RESEÑAS
+        // RELACIONES DE RESEÑAS
         // ============================================
 
         // Relación Product - ProductReview
@@ -223,10 +223,52 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
             .IsUnique();
 
         // ============================================
+        // RELACIONES DE CUPONES
+        // ============================================
+
+        // Relación Coupon - User
+        modelBuilder.Entity<Coupon>()
+            .HasOne(c => c.User)
+            .WithMany()
+            .HasForeignKey(c => c.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // Relación Coupon - Product (opcional)
+        modelBuilder.Entity<Coupon>()
+            .HasOne(c => c.Product)
+            .WithMany()
+            .HasForeignKey(c => c.ProductId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // Relación Coupon - ProductReview (opcional)
+        modelBuilder.Entity<Coupon>()
+            .HasOne(c => c.Review)
+            .WithMany()
+            .HasForeignKey(c => c.ReviewId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // Relación Coupon - Order (opcional)
+        modelBuilder.Entity<Coupon>()
+            .HasOne(c => c.Order)
+            .WithMany()
+            .HasForeignKey(c => c.OrderId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // Índice único para códigos de cupón
+        modelBuilder.Entity<Coupon>()
+            .HasIndex(c => c.Code)
+            .IsUnique();
+
+        // Índices para mejorar rendimiento de cupones
+        modelBuilder.Entity<Coupon>()
+            .HasIndex(c => c.UserId);
+
+        modelBuilder.Entity<Coupon>()
+            .HasIndex(c => new { c.IsUsed, c.IsActive, c.ExpiresAt });
+
+        // ============================================
         // QUERY FILTERS - SOFT DELETE
         // ============================================
-        // Estos filtros se aplican automáticamente a todas las consultas
-        // Solo muestra registros donde IsDeleted = false
 
         modelBuilder.Entity<Product>()
             .HasQueryFilter(p => !p.IsDeleted);
@@ -250,7 +292,7 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
             .HasIndex(p => p.IsDeleted);
 
         modelBuilder.Entity<Brand>()
-            .HasIndex(b => b.IsDeleted); modelBuilder.Entity<Category>();
+            .HasIndex(b => b.IsDeleted);
 
         modelBuilder.Entity<Category>()
             .HasIndex(c => c.IsDeleted);
@@ -269,7 +311,6 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
 
         modelBuilder.Entity<SupplierClaim>()
             .HasIndex(sc => sc.Status);
-
 
         // ============================================
         // ÍNDICES MODULO RECLAMOS
@@ -324,6 +365,7 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
     public DbSet<AutoPartesRazor.Models.StockMovement> StockMovements { get; set; }
     public DbSet<AutoPartesRazor.Models.StockAdjustment> StockAdjustments { get; set; }
     public DbSet<AutoPartesRazor.Models.SupplierClaim> SupplierClaims { get; set; }
+    public DbSet<AutoPartesRazor.Models.Coupon> Coupons { get; set; } = default!;
 
 
     // ============================================

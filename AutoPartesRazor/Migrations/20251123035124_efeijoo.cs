@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AutoPartesRazor.Migrations
 {
-    public partial class InitialCreatiaDB : Migration
+    public partial class efeijoo : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -107,7 +107,9 @@ namespace AutoPartesRazor.Migrations
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CategoryId = table.Column<int>(type: "int", nullable: true),
-                    BrandId = table.Column<int>(type: "int", nullable: true)
+                    BrandId = table.Column<int>(type: "int", nullable: true),
+                    ActualStock = table.Column<int>(type: "int", nullable: true),
+                    LastStockCheck = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -239,6 +241,47 @@ namespace AutoPartesRazor.Migrations
                         column: x => x.CartId,
                         principalTable: "Carts",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StockAdjustments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    TheoreticalStock = table.Column<int>(type: "int", nullable: false),
+                    ActualStock = table.Column<int>(type: "int", nullable: false),
+                    Difference = table.Column<int>(type: "int", nullable: false),
+                    Reason = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    AdjustmentType = table.Column<int>(type: "int", nullable: false),
+                    AdjustmentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ResponsibleUser = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    SupplierId = table.Column<int>(type: "int", nullable: true),
+                    PurchaseOrderId = table.Column<int>(type: "int", nullable: true),
+                    RequiresClaim = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StockAdjustments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_StockAdjustments_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_StockAdjustments_PurchaseOrders_PurchaseOrderId",
+                        column: x => x.PurchaseOrderId,
+                        principalTable: "PurchaseOrders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_StockAdjustments_Suppliers_SupplierId",
+                        column: x => x.SupplierId,
+                        principalTable: "Suppliers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -440,6 +483,88 @@ namespace AutoPartesRazor.Migrations
                         name: "FK_Reclamo_AspNetUsers_ClienteId",
                         column: x => x.ClienteId,
                         principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StockMovements",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    MovementType = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    PreviousStock = table.Column<int>(type: "int", nullable: false),
+                    NewStock = table.Column<int>(type: "int", nullable: false),
+                    Reason = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PurchaseOrderId = table.Column<int>(type: "int", nullable: true),
+                    StockAdjustmentId = table.Column<int>(type: "int", nullable: true),
+                    UserName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StockMovements", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_StockMovements_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_StockMovements_PurchaseOrders_PurchaseOrderId",
+                        column: x => x.PurchaseOrderId,
+                        principalTable: "PurchaseOrders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_StockMovements_StockAdjustments_StockAdjustmentId",
+                        column: x => x.StockAdjustmentId,
+                        principalTable: "StockAdjustments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SupplierClaims",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SupplierId = table.Column<int>(type: "int", nullable: false),
+                    PurchaseOrderId = table.Column<int>(type: "int", nullable: true),
+                    StockAdjustmentId = table.Column<int>(type: "int", nullable: true),
+                    Subject = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    ExpectedQuantity = table.Column<int>(type: "int", nullable: true),
+                    ReceivedQuantity = table.Column<int>(type: "int", nullable: true),
+                    ClaimAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    ClaimDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ResolutionDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Resolution = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SupplierClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SupplierClaims_PurchaseOrders_PurchaseOrderId",
+                        column: x => x.PurchaseOrderId,
+                        principalTable: "PurchaseOrders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_SupplierClaims_StockAdjustments_StockAdjustmentId",
+                        column: x => x.StockAdjustmentId,
+                        principalTable: "StockAdjustments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_SupplierClaims_Suppliers_SupplierId",
+                        column: x => x.SupplierId,
+                        principalTable: "Suppliers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -733,6 +858,70 @@ namespace AutoPartesRazor.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_StockAdjustments_AdjustmentDate",
+                table: "StockAdjustments",
+                column: "AdjustmentDate");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StockAdjustments_ProductId",
+                table: "StockAdjustments",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StockAdjustments_PurchaseOrderId",
+                table: "StockAdjustments",
+                column: "PurchaseOrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StockAdjustments_SupplierId",
+                table: "StockAdjustments",
+                column: "SupplierId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StockMovements_CreatedAt",
+                table: "StockMovements",
+                column: "CreatedAt");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StockMovements_ProductId_CreatedAt",
+                table: "StockMovements",
+                columns: new[] { "ProductId", "CreatedAt" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StockMovements_PurchaseOrderId",
+                table: "StockMovements",
+                column: "PurchaseOrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StockMovements_StockAdjustmentId",
+                table: "StockMovements",
+                column: "StockAdjustmentId",
+                unique: true,
+                filter: "[StockAdjustmentId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SupplierClaims_PurchaseOrderId",
+                table: "SupplierClaims",
+                column: "PurchaseOrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SupplierClaims_Status",
+                table: "SupplierClaims",
+                column: "Status");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SupplierClaims_StockAdjustmentId",
+                table: "SupplierClaims",
+                column: "StockAdjustmentId",
+                unique: true,
+                filter: "[StockAdjustmentId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SupplierClaims_SupplierId",
+                table: "SupplierClaims",
+                column: "SupplierId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Suppliers_IsDeleted",
                 table: "Suppliers",
                 column: "IsDeleted");
@@ -768,10 +957,13 @@ namespace AutoPartesRazor.Migrations
                 name: "ProductSuppliers");
 
             migrationBuilder.DropTable(
-                name: "PurchaseOrders");
+                name: "ReviewHelpfuls");
 
             migrationBuilder.DropTable(
-                name: "ReviewHelpfuls");
+                name: "StockMovements");
+
+            migrationBuilder.DropTable(
+                name: "SupplierClaims");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -783,16 +975,22 @@ namespace AutoPartesRazor.Migrations
                 name: "Orders");
 
             migrationBuilder.DropTable(
-                name: "Suppliers");
+                name: "ProductReviews");
 
             migrationBuilder.DropTable(
-                name: "ProductReviews");
+                name: "StockAdjustments");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
+                name: "PurchaseOrders");
+
+            migrationBuilder.DropTable(
                 name: "Carts");
+
+            migrationBuilder.DropTable(
+                name: "Suppliers");
 
             migrationBuilder.DropTable(
                 name: "Products");

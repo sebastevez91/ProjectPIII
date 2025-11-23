@@ -69,7 +69,9 @@
         <div class="list-group">
             @foreach (var notification in Model.Notifications)
             {
-                <div class="list-group-item list-group-item-action @(!notification.IsRead ? "bg-light border-primary" : "")"
+                var isCouponNotification = notification.Title.Contains("cupón") || notification.Message.Contains("CÓDIGO:");
+
+                <div class="list-group-item list-group-item-action @(!notification.IsRead ? "bg-light border-primary" : "") @(isCouponNotification ? "border-warning" : "")"
                      style="cursor: pointer;"
                      data-bs-toggle="modal"
                      data-bs-target="#notificationModal_@notification.Id">
@@ -80,8 +82,21 @@
                                 {
                                     <span class="badge bg-primary me-2">Nueva</span>
                                 }
+                                @if (isCouponNotification)
+                                {
+                                    <span class="badge bg-warning text-dark me-2">
+                                        <i class="fa-solid fa-ticket"></i> Cupón
+                                    </span>
+                                }
                                 <h6 class="mb-0">
-                                    <i class="fa-solid fa-envelope me-2"></i>
+                                    @if (isCouponNotification)
+                                    {
+                                        <i class="fa-solid fa-gift me-2 text-warning"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="fa-solid fa-envelope me-2"></i>
+                                    }
                                     @notification.Title
                                 </h6>
                             </div>
@@ -89,10 +104,6 @@
                                 @notification.Message.Substring(0, Math.Min(100, notification.Message.Length))@(notification.Message.Length > 100 ? "..." : "")
                             </p>
                             <div class="d-flex gap-3">
-                                <small class="text-muted">
-                                    <i class="fa-solid fa-user me-1"></i>
-                                    @notification.User?.UserName
-                                </small>
                                 <small class="text-muted">
                                     <i class="fa-solid fa-clock me-1"></i>
                                     @notification.CreatedAt.ToString("dd/MM/yyyy HH:mm")
@@ -114,17 +125,47 @@
                 <div class="modal fade" id="notificationModal_@notification.Id" tabindex="-1">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
-                            <div class="modal-header">
+                            <div class="modal-header @(isCouponNotification ? "bg-warning bg-opacity-10" : "")">
                                 <h5 class="modal-title">
-                                    <i class="fa-solid fa-envelope me-2"></i>
+                                    @if (isCouponNotification)
+                                    {
+                                        <i class="fa-solid fa-gift me-2 text-warning"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="fa-solid fa-envelope me-2"></i>
+                                    }
                                     @notification.Title
                                 </h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                             </div>
                             <div class="modal-body">
-                                <div class="mb-3">
-                                    <strong>De:</strong> @notification.User?.UserName (@notification.User?.Email)
-                                </div>
+                                @if (isCouponNotification)
+                                {
+                                    string code = "";
+                                    var lines = notification.Message.Split('\n');
+                                    var codeLine = lines.FirstOrDefault(l => l.Contains("CÓDIGO:"));
+                                    if (codeLine != null)
+                                    {
+                                        code = codeLine.Replace("🎟️ CÓDIGO:", "").Trim();
+                                    }
+
+                                    <div class="text-center mb-4 p-4 bg-warning bg-opacity-10 rounded-3">
+                                        <i class="fa-solid fa-ticket fa-3x text-warning mb-3"></i>
+                                        <h3>Tu Cupón de Descuento</h3>
+
+                                        <div class="p-3 bg-white rounded-3 border border-warning border-3 my-3">
+                                            <h2 class="mb-0 font-monospace text-warning fw-bold">@code</h2>
+                                        </div>
+
+                                        <button type="button" class="btn btn-warning"
+                                                onclick="navigator.clipboard.writeText('@code'); alert('Código copiado!')">
+                                            <i class="fa-solid fa-copy me-1"></i> Copiar código
+                                        </button>
+                                    </div>
+                                    <hr />
+                                }
+
                                 <div class="mb-3">
                                     <strong>Fecha:</strong> @notification.CreatedAt.ToString("dd/MM/yyyy HH:mm")
                                 </div>
@@ -134,6 +175,12 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
+                                @if (isCouponNotification)
+                                {
+                                    <a asp-page="/Carts/Index" class="btn btn-warning" data-bs-dismiss="modal">
+                                        <i class="fa-solid fa-shopping-cart me-1"></i> Ir al carrito
+                                    </a>
+                                }
                                 @if (!notification.IsRead)
                                 {
                                     <form method="post" asp-page-handler="MarkAsRead" asp-route-id="@notification.Id">
@@ -167,7 +214,16 @@
         }
 
         .border-primary {
-            border-left: 4px solid var(--primary) !important;
+            border-left: 4px solid var(--bs-primary) !important;
+        }
+
+        .border-warning {
+            border-left: 4px solid var(--bs-warning) !important;
+        }
+
+        .font-monospace {
+            font-family: 'Courier New', monospace;
+            letter-spacing: 0.1em;
         }
     </style>
 }

@@ -166,6 +166,73 @@ namespace AutoPartesRazor.Migrations
                     b.ToTable("Reclamo");
                 });
 
+            modelBuilder.Entity("AutoPartesRazor.Models.Coupon", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DiscountPercentage")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsUsed")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int?>("ReviewId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UsedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("ReviewId");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("IsUsed", "IsActive", "ExpiresAt");
+
+                    b.ToTable("Coupons");
+                });
+
             modelBuilder.Entity("AutoPartesRazor.Models.MessageClaim", b =>
                 {
                     b.Property<int>("Id")
@@ -255,6 +322,16 @@ namespace AutoPartesRazor.Migrations
                     b.Property<int?>("Calificacion")
                         .HasColumnType("int");
 
+                    b.Property<string>("CouponCode")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int?>("CouponId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CouponId1")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -271,8 +348,14 @@ namespace AutoPartesRazor.Migrations
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<decimal>("DiscountAmount")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
+
+                    b.Property<decimal>("OriginalTotal")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("PaymentMethod")
                         .IsRequired()
@@ -298,6 +381,8 @@ namespace AutoPartesRazor.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CouponId1");
 
                     b.HasIndex("IsDeleted");
 
@@ -358,6 +443,9 @@ namespace AutoPartesRazor.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int?>("ActualStock")
+                        .HasColumnType("int");
+
                     b.Property<int?>("BrandId")
                         .HasColumnType("int");
 
@@ -377,6 +465,9 @@ namespace AutoPartesRazor.Migrations
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastStockCheck")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("MinimumStock")
                         .HasColumnType("int");
@@ -532,6 +623,118 @@ namespace AutoPartesRazor.Migrations
                     b.ToTable("ReviewHelpfuls");
                 });
 
+            modelBuilder.Entity("AutoPartesRazor.Models.StockAdjustment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("ActualStock")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("AdjustmentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("AdjustmentType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Difference")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PurchaseOrderId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<bool>("RequiresClaim")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ResponsibleUser")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int?>("SupplierId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TheoreticalStock")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdjustmentDate");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("PurchaseOrderId");
+
+                    b.HasIndex("SupplierId");
+
+                    b.ToTable("StockAdjustments");
+                });
+
+            modelBuilder.Entity("AutoPartesRazor.Models.StockMovement", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("MovementType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NewStock")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PreviousStock")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PurchaseOrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Reason")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int?>("StockAdjustmentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("PurchaseOrderId");
+
+                    b.HasIndex("StockAdjustmentId")
+                        .IsUnique()
+                        .HasFilter("[StockAdjustmentId] IS NOT NULL");
+
+                    b.HasIndex("ProductId", "CreatedAt");
+
+                    b.ToTable("StockMovements");
+                });
+
             modelBuilder.Entity("AutoPartesRazor.Models.Supplier", b =>
                 {
                     b.Property<int>("Id")
@@ -568,6 +771,70 @@ namespace AutoPartesRazor.Migrations
                     b.HasIndex("IsDeleted");
 
                     b.ToTable("Suppliers");
+                });
+
+            modelBuilder.Entity("AutoPartesRazor.Models.SupplierClaim", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<decimal?>("ClaimAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("ClaimDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<int?>("ExpectedQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PurchaseOrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ReceivedQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Resolution")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<DateTime?>("ResolutionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("StockAdjustmentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("SupplierId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PurchaseOrderId");
+
+                    b.HasIndex("Status");
+
+                    b.HasIndex("StockAdjustmentId")
+                        .IsUnique()
+                        .HasFilter("[StockAdjustmentId] IS NOT NULL");
+
+                    b.HasIndex("SupplierId");
+
+                    b.ToTable("SupplierClaims");
                 });
 
             modelBuilder.Entity("AutoPartesRazor.Models.User", b =>
@@ -825,6 +1092,38 @@ namespace AutoPartesRazor.Migrations
                     b.Navigation("Cliente");
                 });
 
+            modelBuilder.Entity("AutoPartesRazor.Models.Coupon", b =>
+                {
+                    b.HasOne("AutoPartesRazor.Models.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("AutoPartesRazor.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("AutoPartesRazor.Models.ProductReview", "Review")
+                        .WithMany()
+                        .HasForeignKey("ReviewId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("AutoPartesRazor.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("Review");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("AutoPartesRazor.Models.MessageClaim", b =>
                 {
                     b.HasOne("AutoPartesRazor.Models.Claim", "Reclamo")
@@ -857,10 +1156,16 @@ namespace AutoPartesRazor.Migrations
 
             modelBuilder.Entity("AutoPartesRazor.Models.Order", b =>
                 {
+                    b.HasOne("AutoPartesRazor.Models.Coupon", "Coupon")
+                        .WithMany()
+                        .HasForeignKey("CouponId1");
+
                     b.HasOne("AutoPartesRazor.Models.User", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Coupon");
 
                     b.Navigation("User");
                 });
@@ -981,6 +1286,81 @@ namespace AutoPartesRazor.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("AutoPartesRazor.Models.StockAdjustment", b =>
+                {
+                    b.HasOne("AutoPartesRazor.Models.Product", "Product")
+                        .WithMany("StockAdjustments")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("AutoPartesRazor.Models.PurchaseOrder", "RelatedPurchaseOrder")
+                        .WithMany()
+                        .HasForeignKey("PurchaseOrderId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("AutoPartesRazor.Models.Supplier", "Supplier")
+                        .WithMany()
+                        .HasForeignKey("SupplierId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Product");
+
+                    b.Navigation("RelatedPurchaseOrder");
+
+                    b.Navigation("Supplier");
+                });
+
+            modelBuilder.Entity("AutoPartesRazor.Models.StockMovement", b =>
+                {
+                    b.HasOne("AutoPartesRazor.Models.Product", "Product")
+                        .WithMany("StockMovements")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("AutoPartesRazor.Models.PurchaseOrder", "PurchaseOrder")
+                        .WithMany()
+                        .HasForeignKey("PurchaseOrderId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("AutoPartesRazor.Models.StockAdjustment", "StockAdjustment")
+                        .WithOne("StockMovement")
+                        .HasForeignKey("AutoPartesRazor.Models.StockMovement", "StockAdjustmentId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Product");
+
+                    b.Navigation("PurchaseOrder");
+
+                    b.Navigation("StockAdjustment");
+                });
+
+            modelBuilder.Entity("AutoPartesRazor.Models.SupplierClaim", b =>
+                {
+                    b.HasOne("AutoPartesRazor.Models.PurchaseOrder", "PurchaseOrder")
+                        .WithMany()
+                        .HasForeignKey("PurchaseOrderId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("AutoPartesRazor.Models.StockAdjustment", "StockAdjustment")
+                        .WithOne("SupplierClaim")
+                        .HasForeignKey("AutoPartesRazor.Models.SupplierClaim", "StockAdjustmentId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("AutoPartesRazor.Models.Supplier", "Supplier")
+                        .WithMany()
+                        .HasForeignKey("SupplierId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("PurchaseOrder");
+
+                    b.Navigation("StockAdjustment");
+
+                    b.Navigation("Supplier");
+                });
+
             modelBuilder.Entity("AutoPartesRazor.Models.User", b =>
                 {
                     b.HasOne("AutoPartesRazor.Models.Cart", "Cart")
@@ -1070,6 +1450,17 @@ namespace AutoPartesRazor.Migrations
                     b.Navigation("PurchaseOrders");
 
                     b.Navigation("Reviews");
+
+                    b.Navigation("StockAdjustments");
+
+                    b.Navigation("StockMovements");
+                });
+
+            modelBuilder.Entity("AutoPartesRazor.Models.StockAdjustment", b =>
+                {
+                    b.Navigation("StockMovement");
+
+                    b.Navigation("SupplierClaim");
                 });
 
             modelBuilder.Entity("AutoPartesRazor.Models.Supplier", b =>
