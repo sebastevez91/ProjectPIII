@@ -1,0 +1,132 @@
+﻿@page "{id:int}"
+@model AutoPartesRazor.Pages.PurchaseOrders.ReceiveModel
+@{
+    ViewData["Title"] = "Recibir Orden de Compra";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="bi bi-box-seam"></i> Recepción de Mercadería
+                    </h4>
+                </div>
+                <div class="card-body">
+                    @if (Model.PurchaseOrder != null)
+                    {
+                        <!-- Información de la Orden -->
+                        <div class="alert alert-info">
+                            <h5><strong>Orden de Compra #@Model.PurchaseOrder.Id</strong></h5>
+                            <hr />
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p><strong>Proveedor:</strong> @Model.PurchaseOrder.Supplier?.Name</p>
+                                    <p><strong>Producto:</strong> @Model.PurchaseOrder.Product?.Name</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><strong>Cantidad Ordenada:</strong> <span class="badge bg-secondary">@Model.PurchaseOrder.Quantity unidades</span></p>
+                                    <p><strong>Precio Unitario:</strong> $@Model.PurchaseOrder.UnitPrice.ToString("N2")</p>
+                                    <p><strong>Total:</strong> <strong>$@Model.PurchaseOrder.Total.ToString("N2")</strong></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Formulario de Recepción -->
+                        <form method="post" id="receiveForm">
+                            <input type="hidden" asp-for="OrderId" />
+
+                            <div class="mb-3">
+                                <label asp-for="ReceivedQuantity" class="form-label"></label>
+                                <input asp-for="ReceivedQuantity" class="form-control form-control-lg" id="receivedQty" />
+                                <span asp-validation-for="ReceivedQuantity" class="text-danger"></span>
+                                <small class="form-text text-muted">
+                                    Cantidad esperada: @Model.PurchaseOrder.Quantity unidades
+                                </small>
+                            </div>
+
+                            <!-- Alerta de discrepancia (se muestra con JavaScript) -->
+                            <div id="discrepancyAlert" class="alert alert-warning d-none">
+                                <h6><i class="bi bi-exclamation-triangle"></i> Discrepancia Detectada</h6>
+                                <p>Diferencia: <strong><span id="difference">0</span> unidades</strong></p>
+                                <p id="differenceText"></p>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="Observations" class="form-label"></label>
+                                <textarea asp-for="Observations" class="form-control" rows="3"
+                                          placeholder="Ingrese detalles sobre el estado de la mercadería, embalaje, etc."></textarea>
+                                <span asp-validation-for="Observations" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3 form-check" id="claimCheckbox" style="display: none;">
+                                <input asp-for="CreateClaim" class="form-check-input" />
+                                <label asp-for="CreateClaim" class="form-check-label">
+                                    <strong>Generar reclamo automático al proveedor</strong>
+                                </label>
+                                <small class="form-text text-muted d-block">
+                                    Se creará un reclamo formal debido a la diferencia en las cantidades.
+                                </small>
+                            </div>
+
+                            <hr />
+
+                            <div class="d-flex justify-content-between">
+                                <a asp-page="Index" class="btn btn-secondary">
+                                    <i class="bi bi-arrow-left"></i> Cancelar
+                                </a>
+                                <button type="submit" class="btn btn-success btn-lg">
+                                    <i class="bi bi-check-circle"></i> Confirmar Recepción
+                                </button>
+                            </div>
+                        </form>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const expectedQty = @Model.PurchaseOrder?.Quantity ?? 0;
+            const receivedInput = document.getElementById('receivedQty');
+            const discrepancyAlert = document.getElementById('discrepancyAlert');
+            const differenceSpan = document.getElementById('difference');
+            const differenceText = document.getElementById('differenceText');
+            const claimCheckbox = document.getElementById('claimCheckbox');
+
+            function checkDiscrepancy() {
+                const received = parseInt(receivedInput.value) || 0;
+                const diff = received - expectedQty;
+
+                if (diff !== 0) {
+                    discrepancyAlert.classList.remove('d-none');
+                    differenceSpan.textContent = diff > 0 ? '+' + diff : diff;
+
+                    if (diff > 0) {
+                        differenceText.textContent = 'Se recibieron MÁS unidades de las esperadas.';
+                        discrepancyAlert.classList.remove('alert-danger');
+                        discrepancyAlert.classList.add('alert-warning');
+                    } else {
+                        differenceText.textContent = 'Se recibieron MENOS unidades de las esperadas.';
+                        discrepancyAlert.classList.remove('alert-warning');
+                        discrepancyAlert.classList.add('alert-danger');
+                    }
+
+                    claimCheckbox.style.display = 'block';
+                } else {
+                    discrepancyAlert.classList.add('d-none');
+                    claimCheckbox.style.display = 'none';
+                }
+            }
+
+            receivedInput.addEventListener('input', checkDiscrepancy);
+            checkDiscrepancy(); // Verificar al cargar
+        });
+    </script>
+}
