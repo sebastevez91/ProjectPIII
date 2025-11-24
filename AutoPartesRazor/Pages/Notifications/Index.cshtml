@@ -177,7 +177,7 @@
                             <div class="modal-footer">
                                 @if (isCouponNotification)
                                 {
-                                    <a asp-page="/Carts/Index" class="btn btn-warning" data-bs-dismiss="modal">
+                                    <a href="/Carts/Index" class="btn btn-warning">
                                         <i class="fa-solid fa-shopping-cart me-1"></i> Ir al carrito
                                     </a>
                                 }
@@ -202,28 +202,54 @@
     }
 </div>
 
-@section Styles {
-    <style>
-        .notification-message {
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
+@section Scripts {
+    <script>
+        function goToCart() {
+            // Intentar varias rutas posibles
+            const possibleRoutes = [
+                '/Carts',
+                '/Carts/Index',
+                '@Url.Page("/Carts/Index")'
+            ];
 
-        .list-group-item:hover {
-            background-color: #f8f9fa !important;
-        }
+            // Cerrar modal
+            const modals = document.querySelectorAll('.modal.show');
+            modals.forEach(modal => {
+                const bsModal = bootstrap.Modal.getInstance(modal);
+                if (bsModal) {
+                    bsModal.hide();
+                }
+            });
 
-        .border-primary {
-            border-left: 4px solid var(--bs-primary) !important;
+            // Redirigir (prueba con la primera ruta)
+            setTimeout(function() {
+                console.log('Intentando ir a: /Carts');
+                window.location.href = '/Carts';
+            }, 300);
         }
+    </script>
+}
+<style>
+    .notification-message {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
 
-        .border-warning {
-            border-left: 4px solid var(--bs-warning) !important;
-        }
+    .list-group-item:hover {
+        background-color: #f8f9fa !important;
+    }
 
-        .font-monospace {
-            font-family: 'Courier New', monospace;
-            letter-spacing: 0.1em;
-        }
-    </style>
+    .border-primary {
+        border-left: 4px solid var(--bs-primary) !important;
+    }
+
+    .border-warning {
+        border-left: 4px solid var(--bs-warning) !important;
+    }
+
+    .font-monospace {
+        font-family: 'Courier New', monospace;
+        letter-spacing: 0.1em;
+    }
+</style>
 }

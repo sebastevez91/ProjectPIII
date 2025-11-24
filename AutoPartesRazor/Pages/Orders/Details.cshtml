@@ -1,6 +1,5 @@
 ﻿@page "{id:int}"
 @model AutoPartesRazor.Pages.Orders.DetailsModel
-
 @{
     ViewData["Title"] = "Detalles del pedido";
 }
@@ -12,53 +11,189 @@
     }
     else
     {
-        <h2>Pedido #@Model.Order.Id</h2>
+        <div class="d-flex align-items-center mb-3">
+            <i class="fa-solid fa-box me-2 fs-3 text-primary"></i>
+            <h2 class="mb-0">Pedido #@Model.Order.Id</h2>
+        </div>
+
         <div class="mb-3">
-            <small class="text-muted">Fecha: @Model.Order.CreatedAt.ToLocalTime().ToString("g")</small>
+            <span class="badge bg-info">
+                <i class="fa-solid fa-clock me-1"></i>
+                Fecha: @Model.Order.CreatedAt.ToString("dd/MM/yyyy HH:mm")
+            </span>
         </div>
 
         <div class="row mb-4">
             <div class="col-md-6">
-                <h5>Datos del cliente</h5>
-                <p class="mb-1"><strong>Nombre:</strong> @Model.Order.CustomerName</p>
-                <p class="mb-1"><strong>Email:</strong> @Model.Order.CustomerEmail</p>
-                <p class="mb-1"><strong>Dirección:</strong> @Model.Order.ShippingAddress</p>
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">
+                            <i class="fa-solid fa-user me-2"></i>Datos del cliente
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-2">
+                            <strong><i class="fa-solid fa-signature me-2 text-muted"></i>Nombre:</strong>
+                            @Model.Order.CustomerName
+                        </p>
+                        <p class="mb-2">
+                            <strong><i class="fa-solid fa-envelope me-2 text-muted"></i>Email:</strong>
+                            @Model.Order.CustomerEmail
+                        </p>
+                        <p class="mb-0">
+                            <strong><i class="fa-solid fa-map-marker-alt me-2 text-muted"></i>Dirección:</strong>
+                            @Model.Order.ShippingAddress
+                        </p>
+                    </div>
+                </div>
             </div>
+
             <div class="col-md-6">
-                <h5>Pago y resumen</h5>
-                <p class="mb-1"><strong>Método:</strong> @Model.Order.PaymentMethod</p>
-                <p class="mb-1"><strong>Total:</strong> @Model.Order.Total.ToString("C")</p>
+                <div class="card shadow-sm">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">
+                            <i class="fa-solid fa-credit-card me-2"></i>Pago y resumen
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-2">
+                            <strong><i class="fa-solid fa-money-bill-wave me-2 text-muted"></i>Método:</strong>
+                            @Model.Order.PaymentMethod
+                        </p>
+
+                        <!-- Subtotal original -->
+                        <p class="mb-2">
+                            <strong><i class="fa-solid fa-calculator me-2 text-muted"></i>Subtotal:</strong>
+                            @Model.Order.OriginalTotal.ToString("C")
+                        </p>
+
+                        <!-- Cupón aplicado -->
+                        @if (Model.AppliedCoupon != null && Model.Order.DiscountAmount > 0)
+                        {
+                            <div class="alert alert-success p-2 mb-2">
+                                <p class="mb-1">
+                                    <strong><i class="fa-solid fa-ticket me-2"></i>Cupón aplicado:</strong>
+                                    <span class="badge bg-warning text-dark">@Model.AppliedCoupon.Code</span>
+                                </p>
+                                <small class="text-muted">
+                                    Descuento del @Model.AppliedCoupon.DiscountPercentage%
+                                    @if (Model.AppliedCoupon.ProductId.HasValue && Model.AppliedCoupon.Product != null)
+                                    {
+                                        <br />
+                                        <span>Aplicado a: <strong>@Model.AppliedCoupon.Product.Name</strong></span>
+                                    }
+                                    else
+                                    {
+                                        <br />
+                                        <span>Aplicado a toda la compra</span>
+                                    }
+                                </small>
+                            </div>
+
+                            <p class="mb-2 text-success">
+                                <strong><i class="fa-solid fa-tag me-2"></i>Descuento:</strong>
+                                <strong>-@Model.Order.DiscountAmount.ToString("C")</strong>
+                            </p>
+                        }
+
+                        <hr />
+
+                        <!-- Total final -->
+                        <p class="mb-0 fs-5">
+                            <strong><i class="fa-solid fa-dollar-sign me-2 text-success"></i>Total pagado:</strong>
+                            <strong class="@(Model.Order.DiscountAmount > 0 ? "text-success" : "text-primary")">
+                                @Model.Order.Total.ToString("C")
+                            </strong>
+                        </p>
+
+                        @if (Model.Order.DiscountAmount > 0)
+                        {
+                            <div class="alert alert-success p-2 mt-2 mb-0">
+                                <small>
+                                    <i class="fa-solid fa-check-circle me-1"></i>
+                                    ¡Ahorraste @Model.Order.DiscountAmount.ToString("C")!
+                                </small>
+                            </div>
+                        }
+                    </div>
+                </div>
             </div>
         </div>
 
-        <h5>Artículos</h5>
-        <div class="table-responsive mb-4">
-            <table class="table table-bordered">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Producto</th>
-                        <th class="text-end">Precio u.</th>
-                        <th class="text-center">Cantidad</th>
-                        <th class="text-end">Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model.Order.Items)
-                    {
-                        <tr>
-                            <td>@(item.Product?.Name ?? ("Producto " + item.ProductId))</td>
-                            <td class="text-end">@item.UnitPrice.ToString("C")</td>
-                            <td class="text-center">@item.Quantity</td>
-                            <td class="text-end">@((item.UnitPrice * item.Quantity).ToString("C"))</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-dark text-white">
+                <h5 class="mb-0">
+                    <i class="fa-solid fa-list me-2"></i>Artículos
+                </h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Producto</th>
+                                <th class="text-end">Precio u.</th>
+                                <th class="text-center">Cantidad</th>
+                                <th class="text-end">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Order.Items)
+                            {
+                                <tr>
+                                    <td>
+                                        <i class="fa-solid fa-box me-2 text-muted"></i>
+                                        @(item.Product?.Name ?? ("Producto " + item.ProductId))
+                                    </td>
+                                    <td class="text-end">@item.UnitPrice.ToString("C")</td>
+                                    <td class="text-center">
+                                        <span class="badge bg-secondary">@item.Quantity</span>
+                                    </td>
+                                    <td class="text-end">
+                                        <strong>@item.Subtotal.ToString("C")</strong>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot class="table-light">
+                            <tr>
+                                <td colspan="3" class="text-end">
+                                    <strong>Subtotal:</strong>
+                                </td>
+                                <td class="text-end">
+                                    <strong>@Model.Order.OriginalTotal.ToString("C")</strong>
+                                </td>
+                            </tr>
+                            @if (Model.Order.DiscountAmount > 0)
+                            {
+                                <tr class="text-success">
+                                    <td colspan="3" class="text-end">
+                                        <strong>
+                                            <i class="fa-solid fa-tag me-1"></i>Descuento:
+                                        </strong>
+                                    </td>
+                                    <td class="text-end">
+                                        <strong>-@Model.Order.DiscountAmount.ToString("C")</strong>
+                                    </td>
+                                </tr>
+                            }
+                            <tr class="table-success fw-bold fs-5">
+                                <td colspan="3" class="text-end">Total:</td>
+                                <td class="text-end">@Model.Order.Total.ToString("C")</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
         </div>
 
         <div class="d-flex justify-content-between">
-            <a asp-page="/Orders/Confirmation" asp-route-id="@Model.Order.Id" class="btn btn-secondary">Ver confirmación</a>
-            <a asp-page="/Products/Index" class="btn btn-outline-primary"><i class="fa-solid fa-arrow-left me-1"></i> Seguir comprando</a>
+            <a asp-page="/Orders/Confirmation" asp-route-id="@Model.Order.Id" class="btn btn-secondary">
+                <i class="fa-solid fa-file-invoice me-2"></i>Ver confirmación
+            </a>
+            <a asp-page="/Products/Index" class="btn btn-outline-primary">
+                <i class="fa-solid fa-arrow-left me-2"></i>Seguir comprando
+            </a>
         </div>
     }
 </div>

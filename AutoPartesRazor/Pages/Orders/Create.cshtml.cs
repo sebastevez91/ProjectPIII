@@ -29,7 +29,8 @@ public class CreateModel : PageModel
     [BindProperty]
     public OrderInputModel Input { get; set; } = new();
 
-    [TempData]
+    // CAMBIO: Usar BindProperty con SupportsGet para mantener el cupón
+    [BindProperty(SupportsGet = true)]
     public string? AppliedCouponCode { get; set; }
 
     public class OrderInputModel
@@ -78,7 +79,7 @@ public class CreateModel : PageModel
         Subtotal = CartItems.Sum(item => (item.Product?.Price ?? 0) * item.Quantity);
         Total = Subtotal;
 
-        // Aplicar cupón si existe en TempData
+        // Aplicar cupón si existe
         if (!string.IsNullOrEmpty(AppliedCouponCode))
         {
             await LoadAppliedCouponAsync(AppliedCouponCode, user.Id);
@@ -191,9 +192,6 @@ public class CreateModel : PageModel
         // Limpiar el carrito
         _context.Carts.RemoveRange(CartItems);
 
-        // Limpiar el cupón aplicado de TempData
-        AppliedCouponCode = null;
-
         await _context.SaveChangesAsync();
 
         TempData["SuccessMessage"] = $"¡Pedido #{order.Id} creado exitosamente!";
@@ -202,7 +200,7 @@ public class CreateModel : PageModel
     }
 
     /// <summary>
-    /// Cargar cupón aplicado desde TempData
+    /// Cargar cupón aplicado
     /// </summary>
     private async Task LoadAppliedCouponAsync(string couponCode, string userId)
     {

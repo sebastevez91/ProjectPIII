@@ -220,9 +220,22 @@
                     <a asp-page="/Products/Index" class="btn btn-outline-primary w-100 mb-2">
                         <i class="fa-solid fa-arrow-left me-2"></i> Seguir comprando
                     </a>
-                    <a asp-page="/Orders/Create" class="btn btn-success w-100">
-                        <i class="fa-solid fa-credit-card me-2"></i> Proceder al pago
-                    </a>
+
+                    @* ✅ CAMBIO AQUÍ: Pasar el cupón al crear la orden *@
+                    @if (Model.AppliedCoupon != null)
+                    {
+                        <a asp-page="/Orders/Create"
+                           asp-route-appliedCouponCode="@Model.AppliedCoupon.Code"
+                           class="btn btn-success w-100">
+                            <i class="fa-solid fa-credit-card me-2"></i> Proceder al pago
+                        </a>
+                    }
+                    else
+                    {
+                        <a asp-page="/Orders/Create" class="btn btn-success w-100">
+                            <i class="fa-solid fa-credit-card me-2"></i> Proceder al pago
+                        </a>
+                    }
                 </div>
             </div>
         </div>
