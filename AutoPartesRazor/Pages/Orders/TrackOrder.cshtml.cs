@@ -1,5 +1,6 @@
 using AutoPartesRazor.Data;
 using AutoPartesRazor.Models;
+<<<<<<< HEAD
 using AutoPartesRazor.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -9,11 +10,16 @@ using Microsoft.AspNetCore.Routing; // Necesario para LinkGenerator
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+=======
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+>>>>>>> main
 
 namespace AutoPartesRazor.Pages.Orders // Asegúrate de que el namespace sea correcto
 {
     public class TrackOrderModel : PageModel
     {
+<<<<<<< HEAD
         private readonly AutoPartesRazorContext _context;
         private readonly IEmailSender _emailSender;
         private readonly IUserService _userService;
@@ -102,3 +108,28 @@ namespace AutoPartesRazor.Pages.Orders // Asegúrate de que el namespace sea corr
         }
     }
 }
+=======
+        Pedido = _context.Orders.FirstOrDefault(o => o.Id == id);
+        if (Pedido == null) return NotFound();
+        // Seguridad: permite solo al dueño del pedido o al admin
+        if (User.IsInRole("Admin") || Pedido.CustomerEmail == User.Identity?.Name)
+            return Page();
+        return Forbid();
+    }
+    public async Task<IActionResult> OnPostAsync(int id)
+    {
+        var pedido = await _context.Orders.FindAsync(id);
+        if (pedido == null || pedido.Status != "Entregado")
+            return NotFound();
+
+        if (Request.Form.TryGetValue("Calificacion", out var calif) && int.TryParse(calif, out int nota))
+            pedido.Calificacion = nota;
+
+        await _context.SaveChangesAsync();
+        return RedirectToPage(new { id });
+    }
+
+
+
+}
+>>>>>>> main

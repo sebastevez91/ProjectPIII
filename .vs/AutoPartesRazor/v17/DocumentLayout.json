@@ -1,8 +1,9 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\Usuario\\ProjectPIII-nuevo\\",
+  "WorkspaceRootPath": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\",
   "Documents": [
     {
+<<<<<<< HEAD
       "AbsoluteMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|c:\\users\\usuario\\projectpiii-nuevo\\autopartesrazor\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
       "RelativeMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|solutionrelative:autopartesrazor\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
@@ -57,6 +58,50 @@
     {
       "AbsoluteMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|c:\\users\\usuario\\projectpiii-nuevo\\autopartesrazor\\pages\\orders\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|solutionrelative:autopartesrazor\\pages\\orders\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+=======
+      "AbsoluteMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|c:\\users\\sebastian\\desktop\\practicas-tirar\\autopartesrazor\\autopartesrazor\\data\\autopartesrazorcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|solutionrelative:autopartesrazor\\data\\autopartesrazorcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|c:\\users\\sebastian\\desktop\\practicas-tirar\\autopartesrazor\\autopartesrazor\\pages\\stock\\movements.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|solutionrelative:autopartesrazor\\pages\\stock\\movements.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|c:\\users\\sebastian\\desktop\\practicas-tirar\\autopartesrazor\\autopartesrazor\\pages\\stock\\movements.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|solutionrelative:autopartesrazor\\pages\\stock\\movements.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|c:\\users\\sebastian\\desktop\\practicas-tirar\\autopartesrazor\\autopartesrazor\\pages\\suppliers\\products.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|solutionrelative:autopartesrazor\\pages\\suppliers\\products.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|c:\\users\\sebastian\\desktop\\practicas-tirar\\autopartesrazor\\autopartesrazor\\pages\\suppliers\\products.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|solutionrelative:autopartesrazor\\pages\\suppliers\\products.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|c:\\users\\sebastian\\desktop\\practicas-tirar\\autopartesrazor\\autopartesrazor\\pages\\suppliers\\claims.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|solutionrelative:autopartesrazor\\pages\\suppliers\\claims.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|c:\\users\\sebastian\\desktop\\practicas-tirar\\autopartesrazor\\autopartesrazor\\pages\\suppliers\\claims.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|solutionrelative:autopartesrazor\\pages\\suppliers\\claims.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|c:\\users\\sebastian\\desktop\\practicas-tirar\\autopartesrazor\\autopartesrazor\\pages\\stock\\adjustments.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|solutionrelative:autopartesrazor\\pages\\stock\\adjustments.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|c:\\users\\sebastian\\desktop\\practicas-tirar\\autopartesrazor\\autopartesrazor\\pages\\stock\\adjustments.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|solutionrelative:autopartesrazor\\pages\\stock\\adjustments.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|c:\\users\\sebastian\\desktop\\practicas-tirar\\autopartesrazor\\autopartesrazor\\pages\\purchaseorders\\receive.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|solutionrelative:autopartesrazor\\pages\\purchaseorders\\receive.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|c:\\users\\sebastian\\desktop\\practicas-tirar\\autopartesrazor\\autopartesrazor\\pages\\purchaseorders\\receive.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|solutionrelative:autopartesrazor\\pages\\purchaseorders\\receive.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+>>>>>>> main
     }
   ],
   "DocumentGroupContainers": [
@@ -66,6 +111,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
+<<<<<<< HEAD
           "SelectedChildIndex": 6,
           "Children": [
             {
@@ -77,12 +123,13 @@
               "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
             },
             {
+=======
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+>>>>>>> main
               "$type": "Bookmark",
               "Name": "ST:0:0:{eefa5220-e298-11d0-8f78-00a0c9110057}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
             },
             {
               "$type": "Bookmark",
@@ -95,6 +142,7 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+<<<<<<< HEAD
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Users\\Usuario\\ProjectPIII-nuevo\\AutoPartesRazor\\appsettings.json",
               "RelativeDocumentMoniker": "AutoPartesRazor\\appsettings.json",
@@ -103,10 +151,21 @@
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABEAAAAhAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2025-11-22T01:30:00.409Z",
+=======
+              "Title": "AutoPartesRazorContext.cs",
+              "DocumentMoniker": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\Data\\AutoPartesRazorContext.cs",
+              "RelativeDocumentMoniker": "AutoPartesRazor\\Data\\AutoPartesRazorContext.cs",
+              "ToolTip": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\Data\\AutoPartesRazorContext.cs",
+              "RelativeToolTip": "AutoPartesRazor\\Data\\AutoPartesRazorContext.cs",
+              "ViewState": "AgIAAPUAAAAAAAAAAAAQwAMBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-20T09:32:08.408Z",
+>>>>>>> main
               "EditorCaption": ""
             },
             {
               "$type": "Document",
+<<<<<<< HEAD
               "DocumentIndex": 7,
               "Title": "Order.cs",
               "DocumentMoniker": "C:\\Users\\Usuario\\ProjectPIII-nuevo\\AutoPartesRazor\\Models\\Order.cs",
@@ -188,10 +247,22 @@
               "ViewState": "AQIAAAAAAAAAAAAAAAAAACAAAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-19T21:47:15.397Z"
+=======
+              "DocumentIndex": 1,
+              "Title": "Movements.cshtml.cs",
+              "DocumentMoniker": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\Pages\\Stock\\Movements.cshtml.cs",
+              "RelativeDocumentMoniker": "AutoPartesRazor\\Pages\\Stock\\Movements.cshtml.cs",
+              "ToolTip": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\Pages\\Stock\\Movements.cshtml.cs",
+              "RelativeToolTip": "AutoPartesRazor\\Pages\\Stock\\Movements.cshtml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAG4AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-20T09:31:27.908Z"
+>>>>>>> main
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
+<<<<<<< HEAD
               "Title": "DetallePedido.cshtml.cs",
               "DocumentMoniker": "C:\\Users\\Usuario\\ProjectPIII-nuevo\\AutoPartesRazor\\Pages\\Administration\\DetallePedido.cshtml.cs",
               "RelativeDocumentMoniker": "AutoPartesRazor\\Pages\\Administration\\DetallePedido.cshtml.cs",
@@ -236,10 +307,21 @@
               "ViewState": "AQIAADQAAAAAAAAAAAA0wFEAAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-19T21:13:09.603Z"
+=======
+              "Title": "Movements.cshtml",
+              "DocumentMoniker": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\Pages\\Stock\\Movements.cshtml",
+              "RelativeDocumentMoniker": "AutoPartesRazor\\Pages\\Stock\\Movements.cshtml",
+              "ToolTip": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\Pages\\Stock\\Movements.cshtml",
+              "RelativeToolTip": "AutoPartesRazor\\Pages\\Stock\\Movements.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-20T09:31:23.76Z"
+>>>>>>> main
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
+<<<<<<< HEAD
               "Title": "TrackOrder.cshtml",
               "DocumentMoniker": "C:\\Users\\Usuario\\ProjectPIII-nuevo\\AutoPartesRazor\\Pages\\Orders\\TrackOrder.cshtml",
               "RelativeDocumentMoniker": "AutoPartesRazor\\Pages\\Orders\\TrackOrder.cshtml",
@@ -260,6 +342,100 @@
               "ViewState": "AQIAAAAAAAAAAAAAAAAAANMAAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-11-13T23:48:32.717Z"
+=======
+              "Title": "Products.cshtml.cs",
+              "DocumentMoniker": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\Pages\\Suppliers\\Products.cshtml.cs",
+              "RelativeDocumentMoniker": "AutoPartesRazor\\Pages\\Suppliers\\Products.cshtml.cs",
+              "ToolTip": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\Pages\\Suppliers\\Products.cshtml.cs",
+              "RelativeToolTip": "AutoPartesRazor\\Pages\\Suppliers\\Products.cshtml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAGcAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-20T09:30:24.355Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Products.cshtml",
+              "DocumentMoniker": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\Pages\\Suppliers\\Products.cshtml",
+              "RelativeDocumentMoniker": "AutoPartesRazor\\Pages\\Suppliers\\Products.cshtml",
+              "ToolTip": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\Pages\\Suppliers\\Products.cshtml",
+              "RelativeToolTip": "AutoPartesRazor\\Pages\\Suppliers\\Products.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-20T09:30:17.866Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Claims.cshtml.cs",
+              "DocumentMoniker": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\Pages\\Suppliers\\Claims.cshtml.cs",
+              "RelativeDocumentMoniker": "AutoPartesRazor\\Pages\\Suppliers\\Claims.cshtml.cs",
+              "ToolTip": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\Pages\\Suppliers\\Claims.cshtml.cs",
+              "RelativeToolTip": "AutoPartesRazor\\Pages\\Suppliers\\Claims.cshtml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFsAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-20T09:27:16.397Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Claims.cshtml",
+              "DocumentMoniker": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\Pages\\Suppliers\\Claims.cshtml",
+              "RelativeDocumentMoniker": "AutoPartesRazor\\Pages\\Suppliers\\Claims.cshtml",
+              "ToolTip": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\Pages\\Suppliers\\Claims.cshtml",
+              "RelativeToolTip": "AutoPartesRazor\\Pages\\Suppliers\\Claims.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-20T09:27:12.564Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Adjustments.cshtml.cs",
+              "DocumentMoniker": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\Pages\\Stock\\Adjustments.cshtml.cs",
+              "RelativeDocumentMoniker": "AutoPartesRazor\\Pages\\Stock\\Adjustments.cshtml.cs",
+              "ToolTip": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\Pages\\Stock\\Adjustments.cshtml.cs",
+              "RelativeToolTip": "AutoPartesRazor\\Pages\\Stock\\Adjustments.cshtml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAMwAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-20T09:24:39.462Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Adjustments.cshtml",
+              "DocumentMoniker": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\Pages\\Stock\\Adjustments.cshtml",
+              "RelativeDocumentMoniker": "AutoPartesRazor\\Pages\\Stock\\Adjustments.cshtml",
+              "ToolTip": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\Pages\\Stock\\Adjustments.cshtml",
+              "RelativeToolTip": "AutoPartesRazor\\Pages\\Stock\\Adjustments.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAPQAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-20T09:24:26.349Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Receive.cshtml.cs",
+              "DocumentMoniker": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\Pages\\PurchaseOrders\\Receive.cshtml.cs",
+              "RelativeDocumentMoniker": "AutoPartesRazor\\Pages\\PurchaseOrders\\Receive.cshtml.cs",
+              "ToolTip": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\Pages\\PurchaseOrders\\Receive.cshtml.cs",
+              "RelativeToolTip": "AutoPartesRazor\\Pages\\PurchaseOrders\\Receive.cshtml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAMAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-20T09:21:58.519Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Receive.cshtml",
+              "DocumentMoniker": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\Pages\\PurchaseOrders\\Receive.cshtml",
+              "RelativeDocumentMoniker": "AutoPartesRazor\\Pages\\PurchaseOrders\\Receive.cshtml",
+              "ToolTip": "C:\\Users\\Sebastian\\Desktop\\Practicas-Tirar\\AutoPartesRazor\\AutoPartesRazor\\Pages\\PurchaseOrders\\Receive.cshtml",
+              "RelativeToolTip": "AutoPartesRazor\\Pages\\PurchaseOrders\\Receive.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAIMAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-20T09:21:48.655Z"
+>>>>>>> main
             }
           ]
         }

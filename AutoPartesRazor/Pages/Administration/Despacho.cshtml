@@ -78,6 +78,7 @@
                     </span>
                 </td>
                 <td>
+<<<<<<< HEAD
                     @* LÓGICA DE BOTONES DINÁMICOS *@
 
                     @if (p.Status == "Pending" || p.Status == "Pendiente")
@@ -112,6 +113,15 @@
                     @* Botón Ver Detalle (Siempre visible) *@
                     <a asp-page="/Administration/DetallePedido" asp-route-id="@p.Id"
                        class="btn btn-info btn-sm shadow-sm ms-1">
+=======
+                    <form method="post" asp-page-handler="Despachar" asp-route-id="@p.Id" class="d-inline despachoForm" data-pid="@p.Id">
+                        <button type="submit" class="btn btn-success btn-sm shadow-sm animate__animated animate__bounceIn">
+                            <i class="fa-solid fa-dolly"></i> Despachar
+                        </button>
+                    </form>
+                    <a asp-page="/Administration/DetallePedido" asp-route-id="@p.Id"
+                       class="btn btn-info btn-sm shadow-sm animate__animated animate__fadeIn">
+>>>>>>> main
                         <i class="fa-solid fa-magnifying-glass"></i> Ver Detalle
                     </a>
                 </td>

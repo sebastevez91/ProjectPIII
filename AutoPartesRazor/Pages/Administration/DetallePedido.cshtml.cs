@@ -1,5 +1,6 @@
 using AutoPartesRazor.Data;
 using AutoPartesRazor.Models;
+<<<<<<< HEAD
 using AutoPartesRazor.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +9,11 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
 using System.Linq;
+=======
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+>>>>>>> main
 
 namespace AutoPartesRazor.Pages.Administration;
 
@@ -15,6 +21,7 @@ namespace AutoPartesRazor.Pages.Administration;
 public class DetallePedidoModel : PageModel
 {
     private readonly AutoPartesRazorContext _context;
+<<<<<<< HEAD
     private readonly IEmailSender _emailSender;
 
     // Constructor: Solo inyectamos Context e IEmailSender (Solución Estable)
@@ -118,6 +125,33 @@ public class DetallePedidoModel : PageModel
         }
 
         await HandleStatusChangeAsync(pedido, "Despachado");
+=======
+    public DetallePedidoModel(AutoPartesRazorContext context) => _context = context;
+    public Order Pedido { get; set; } = default!;
+    public IActionResult OnGet(int id)
+    {
+        Pedido = _context.Orders.FirstOrDefault(o => o.Id == id);
+        if (Pedido == null)
+            return NotFound();
+        return Page();
+    }
+    public async Task<IActionResult> OnPostPrepararAsync(int id)
+    {
+        var pedido = await _context.Orders.FindAsync(id);
+        if (pedido == null) return NotFound();
+        pedido.Status = "Preparando";
+        await _context.SaveChangesAsync();
+        TempData["orderMessage"] = "Pedido marcado como 'Preparando'";
+        return RedirectToPage(new { id });
+    }
+    // Repite para los otros estados cambiando el tipo y el status
+    public async Task<IActionResult> OnPostDespacharAsync(int id)
+    {
+        var pedido = await _context.Orders.FindAsync(id);
+        if (pedido == null) return NotFound();
+        pedido.Status = "Despachado";
+        await _context.SaveChangesAsync();
+>>>>>>> main
         TempData["orderMessage"] = "Pedido despachado.";
         return RedirectToPage(new { id });
     }
@@ -125,6 +159,7 @@ public class DetallePedidoModel : PageModel
     public async Task<IActionResult> OnPostEnCaminoAsync(int id)
     {
         var pedido = await _context.Orders.FindAsync(id);
+<<<<<<< HEAD
         if (pedido == null || pedido.Status != "Despachado")
         {
             TempData["error"] = $"Error: Debe estar en estado 'Despachado'. Estado actual: {pedido?.Status}.";
@@ -132,6 +167,11 @@ public class DetallePedidoModel : PageModel
         }
 
         await HandleStatusChangeAsync(pedido, "En camino");
+=======
+        if (pedido == null) return NotFound();
+        pedido.Status = "En camino";
+        await _context.SaveChangesAsync();
+>>>>>>> main
         TempData["orderMessage"] = "Pedido en camino.";
         return RedirectToPage(new { id });
     }
@@ -139,6 +179,7 @@ public class DetallePedidoModel : PageModel
     public async Task<IActionResult> OnPostEntregarAsync(int id)
     {
         var pedido = await _context.Orders.FindAsync(id);
+<<<<<<< HEAD
         if (pedido == null || pedido.Status != "En camino")
         {
             TempData["error"] = $"Error: Debe estar en estado 'En camino' para marcar como Entregado. Estado actual: {pedido?.Status}.";
@@ -146,6 +187,11 @@ public class DetallePedidoModel : PageModel
         }
 
         await HandleStatusChangeAsync(pedido, "Entregado");
+=======
+        if (pedido == null) return NotFound();
+        pedido.Status = "Entregado";
+        await _context.SaveChangesAsync();
+>>>>>>> main
         TempData["orderMessage"] = "Pedido entregado exitosamente.";
         return RedirectToPage(new { id });
     }
@@ -154,9 +200,19 @@ public class DetallePedidoModel : PageModel
     {
         var pedido = await _context.Orders.FindAsync(id);
         if (pedido == null) return NotFound();
+<<<<<<< HEAD
 
         await HandleStatusChangeAsync(pedido, "Cancelado");
         TempData["orderMessage"] = "Pedido cancelado.";
         return RedirectToPage(new { id });
     }
 }
+=======
+        pedido.Status = "Cancelado";
+        await _context.SaveChangesAsync();
+        TempData["orderMessage"] = "Pedido cancelado.";
+        return RedirectToPage(new { id });
+    }
+
+}
+>>>>>>> main

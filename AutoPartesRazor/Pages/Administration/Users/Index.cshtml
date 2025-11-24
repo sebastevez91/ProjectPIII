@@ -160,7 +160,14 @@
                                         <small>@user.RegistrationDate.ToString("dd/MM/yyyy")</small>
                                     </td>
                                     <td class="text-center">
+<<<<<<< HEAD
                                         @if (user.EmailConfirmed)
+=======
+                                        @{
+                                            bool isLocked = user.LockoutEnd.HasValue && user.LockoutEnd > DateTimeOffset.UtcNow;
+                                        }
+                                        @if (!isLocked)
+>>>>>>> main
                                         {
                                             <span class="badge bg-success-soft text-success">
                                                 <i class="fas fa-check-circle me-1"></i>Activo
@@ -168,8 +175,13 @@
                                         }
                                         else
                                         {
+<<<<<<< HEAD
                                             <span class="badge bg-warning-soft text-warning">
                                                 <i class="fas fa-clock me-1"></i>Inactivo
+=======
+                                            <span class="badge bg-danger-soft text-danger">
+                                                <i class="fas fa-ban me-1"></i>Bloqueado
+>>>>>>> main
                                             </span>
                                         }
                                     </td>
@@ -188,10 +200,17 @@
                                                 <i class="fas fa-edit"></i>
                                             </a>
                                             <button type="button"
+<<<<<<< HEAD
                                                     class="btn btn-sm btn-outline-danger"
                                                     onclick="confirmDelete('@user.Id', '@user.FullName')"
                                                     title="Deshabilitar">
                                                 <i class="fas fa-ban"></i>
+=======
+                                                    class="btn btn-sm @(isLocked ? "btn-outline-success" : "btn-outline-danger")"
+                                                    onclick="confirmToggle('@user.Id', '@user.FullName', @isLocked.ToString().ToLower())"
+                                                    title="@(isLocked ? "Habilitar" : "Deshabilitar")">
+                                                <i class="fas @(isLocked ? "fa-check" : "fa-ban")"></i>
+>>>>>>> main
                                             </button>
                                         </div>
                                     </td>
@@ -244,6 +263,7 @@
 
 @section Scripts {
     <script>
+<<<<<<< HEAD
         function confirmDelete(userId, userName) {
             Swal.fire({
                 title: '¿Deshabilitar usuario?',
@@ -257,6 +277,23 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     // Crear formulario para enviar POST
+=======
+        function confirmToggle(userId, userName, isLocked) {
+            const action = isLocked ? 'habilitar' : 'deshabilitar';
+            const actionCap = isLocked ? 'Habilitar' : 'Deshabilitar';
+
+            Swal.fire({
+                title: `¿${actionCap} usuario?`,
+                html: `¿Estás seguro de ${action} a <strong>${userName}</strong>?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: isLocked ? '#28a745' : '#dc3545',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: `<i class="fas fa-${isLocked ? 'check' : 'ban'} me-1"></i>Sí, ${action}`,
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+>>>>>>> main
                     const form = document.createElement('form');
                     form.method = 'POST';
                     form.action = '?handler=Delete&id=' + userId;

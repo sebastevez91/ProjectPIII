@@ -1,4 +1,5 @@
-﻿using AutoPartesRazor.Data;
+﻿using AutoPartesRazor.Constants;
+using AutoPartesRazor.Data;
 using AutoPartesRazor.Interfaces;
 using AutoPartesRazor.Models;
 using AutoPartesRazor.Services;
@@ -32,6 +33,42 @@ builder.Services.AddIdentity<User, IdentityRole>(x =>
 .AddDefaultTokenProviders();
 
 builder.Services.AddTransient<SeedDataIdentity>();
+
+// Configurar autorización basada en claims
+builder.Services.AddAuthorization(options =>
+{
+    // Políticas para Usuarios
+    options.AddPolicy("Users.View", policy =>
+        policy.RequireClaim(Permissions.ClaimType, Permissions.Users.View));
+    options.AddPolicy("Users.Create", policy =>
+        policy.RequireClaim(Permissions.ClaimType, Permissions.Users.Create));
+    options.AddPolicy("Users.Edit", policy =>
+        policy.RequireClaim(Permissions.ClaimType, Permissions.Users.Edit));
+    options.AddPolicy("Users.Delete", policy =>
+        policy.RequireClaim(Permissions.ClaimType, Permissions.Users.Delete));
+
+    // Políticas para Productos
+    options.AddPolicy("Products.View", policy =>
+        policy.RequireClaim(Permissions.ClaimType, Permissions.Products.View));
+    options.AddPolicy("Products.Create", policy =>
+        policy.RequireClaim(Permissions.ClaimType, Permissions.Products.Create));
+    options.AddPolicy("Products.Edit", policy =>
+        policy.RequireClaim(Permissions.ClaimType, Permissions.Products.Edit));
+    options.AddPolicy("Products.Delete", policy =>
+        policy.RequireClaim(Permissions.ClaimType, Permissions.Products.Delete));
+
+    // Políticas para Órdenes
+    options.AddPolicy("Orders.View", policy =>
+        policy.RequireClaim(Permissions.ClaimType, Permissions.Orders.View));
+    options.AddPolicy("Orders.Create", policy =>
+        policy.RequireClaim(Permissions.ClaimType, Permissions.Orders.Create));
+    options.AddPolicy("Orders.Edit", policy =>
+        policy.RequireClaim(Permissions.ClaimType, Permissions.Orders.Edit));
+    options.AddPolicy("Orders.Approve", policy =>
+        policy.RequireClaim(Permissions.ClaimType, Permissions.Orders.Approve));
+
+    // Agrega más políticas según necesites...
+});
 
 // Servicio de generación de PDFs
 builder.Services.AddScoped<IPdfService, AutoPartesRazor.Services.PdfService>();

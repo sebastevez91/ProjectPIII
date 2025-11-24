@@ -1,6 +1,10 @@
 ﻿@page
+<<<<<<< HEAD
 @model AutoPartesRazor.Pages.Notifications.IndexModel 
 
+=======
+@model AutoPartesRazor.Pages.Notifications.IndexModel
+>>>>>>> main
 @{
     ViewData["Title"] = "Notificaciones";
 }
@@ -36,6 +40,10 @@
         </div>
     }
 
+<<<<<<< HEAD
+=======
+    <!-- Filtros -->
+>>>>>>> main
     <div class="card mb-3">
         <div class="card-body">
             <form method="get" class="row g-3 align-items-center">
@@ -55,6 +63,10 @@
         </div>
     </div>
 
+<<<<<<< HEAD
+=======
+    <!-- Lista de notificaciones -->
+>>>>>>> main
     @if (!Model.Notifications.Any())
     {
         <div class="alert alert-info text-center py-5">
@@ -68,12 +80,21 @@
         <div class="list-group">
             @foreach (var notification in Model.Notifications)
             {
+<<<<<<< HEAD
                 <div class="list-group-item list-group-item-action @(!notification.IsRead ? "bg-light border-primary" : "") notification-item"
                      style="cursor: pointer;"
                      data-bs-toggle="@(string.IsNullOrEmpty(notification.RelatedUrl) ? "modal" : "")" 
                      data-bs-target="#notificationModal_@notification.Id"
                      data-related-url="@notification.RelatedUrl"
                      data-id="@notification.Id">
+=======
+                var isCouponNotification = notification.Title.Contains("cupón") || notification.Message.Contains("CÓDIGO:");
+
+                <div class="list-group-item list-group-item-action @(!notification.IsRead ? "bg-light border-primary" : "") @(isCouponNotification ? "border-warning" : "")"
+                     style="cursor: pointer;"
+                     data-bs-toggle="modal"
+                     data-bs-target="#notificationModal_@notification.Id">
+>>>>>>> main
                     <div class="d-flex w-100 justify-content-between align-items-start">
                         <div class="flex-grow-1">
                             <div class="d-flex align-items-center mb-2">
@@ -81,8 +102,26 @@
                                 {
                                     <span class="badge bg-primary me-2">Nueva</span>
                                 }
+<<<<<<< HEAD
                                 <h6 class="mb-0">
                                     <i class="fa-solid fa-envelope me-2"></i>
+=======
+                                @if (isCouponNotification)
+                                {
+                                    <span class="badge bg-warning text-dark me-2">
+                                        <i class="fa-solid fa-ticket"></i> Cupón
+                                    </span>
+                                }
+                                <h6 class="mb-0">
+                                    @if (isCouponNotification)
+                                    {
+                                        <i class="fa-solid fa-gift me-2 text-warning"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="fa-solid fa-envelope me-2"></i>
+                                    }
+>>>>>>> main
                                     @notification.Title
                                 </h6>
                             </div>
@@ -91,10 +130,13 @@
                             </p>
                             <div class="d-flex gap-3">
                                 <small class="text-muted">
+<<<<<<< HEAD
                                     <i class="fa-solid fa-user me-1"></i>
                                     @notification.User?.UserName
                                 </small>
                                 <small class="text-muted">
+=======
+>>>>>>> main
                                     <i class="fa-solid fa-clock me-1"></i>
                                     @notification.CreatedAt.ToString("dd/MM/yyyy HH:mm")
                                 </small>
@@ -102,7 +144,11 @@
                         </div>
                         <div class="ms-3">
                             <form method="post" asp-page-handler="Delete" asp-route-id="@notification.Id"
+<<<<<<< HEAD
                                     onsubmit="event.stopPropagation(); return confirm('¿Estás seguro de eliminar esta notificación?');">
+=======
+                                  onsubmit="event.stopPropagation(); return confirm('¿Estás seguro de eliminar esta notificación?');">
+>>>>>>> main
                                 <button type="submit" class="btn btn-sm btn-outline-danger">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
@@ -111,24 +157,71 @@
                     </div>
                 </div>
 
+<<<<<<< HEAD
                 <div class="modal fade" id="notificationModal_@notification.Id" tabindex="-1">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title">
                                     <i class="fa-solid fa-envelope me-2"></i>
+=======
+                <!-- Modal para ver notificación completa -->
+                <div class="modal fade" id="notificationModal_@notification.Id" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header @(isCouponNotification ? "bg-warning bg-opacity-10" : "")">
+                                <h5 class="modal-title">
+                                    @if (isCouponNotification)
+                                    {
+                                        <i class="fa-solid fa-gift me-2 text-warning"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="fa-solid fa-envelope me-2"></i>
+                                    }
+>>>>>>> main
                                     @notification.Title
                                 </h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                             </div>
                             <div class="modal-body">
+<<<<<<< HEAD
                                 <div class="mb-3">
                                     <strong>De:</strong> @notification.User?.UserName (@notification.User?.Email)
                                 </div>
+=======
+                                @if (isCouponNotification)
+                                {
+                                    string code = "";
+                                    var lines = notification.Message.Split('\n');
+                                    var codeLine = lines.FirstOrDefault(l => l.Contains("CÓDIGO:"));
+                                    if (codeLine != null)
+                                    {
+                                        code = codeLine.Replace("🎟️ CÓDIGO:", "").Trim();
+                                    }
+
+                                    <div class="text-center mb-4 p-4 bg-warning bg-opacity-10 rounded-3">
+                                        <i class="fa-solid fa-ticket fa-3x text-warning mb-3"></i>
+                                        <h3>Tu Cupón de Descuento</h3>
+
+                                        <div class="p-3 bg-white rounded-3 border border-warning border-3 my-3">
+                                            <h2 class="mb-0 font-monospace text-warning fw-bold">@code</h2>
+                                        </div>
+
+                                        <button type="button" class="btn btn-warning"
+                                                onclick="navigator.clipboard.writeText('@code'); alert('Código copiado!')">
+                                            <i class="fa-solid fa-copy me-1"></i> Copiar código
+                                        </button>
+                                    </div>
+                                    <hr />
+                                }
+
+>>>>>>> main
                                 <div class="mb-3">
                                     <strong>Fecha:</strong> @notification.CreatedAt.ToString("dd/MM/yyyy HH:mm")
                                 </div>
                                 <hr />
+<<<<<<< HEAD
                                 <div class="notification-message mb-3">
                                     @notification.Message
                                 </div>
@@ -142,6 +235,19 @@
                                 }
                             </div>
                             <div class="modal-footer">
+=======
+                                <div class="notification-message">
+                                    @notification.Message
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                @if (isCouponNotification)
+                                {
+                                    <a asp-page="/Carts/Index" class="btn btn-warning" data-bs-dismiss="modal">
+                                        <i class="fa-solid fa-shopping-cart me-1"></i> Ir al carrito
+                                    </a>
+                                }
+>>>>>>> main
                                 @if (!notification.IsRead)
                                 {
                                     <form method="post" asp-page-handler="MarkAsRead" asp-route-id="@notification.Id">
@@ -175,6 +281,7 @@
         }
 
         .border-primary {
+<<<<<<< HEAD
             border-left: 4px solid var(--primary) !important;
         }
     </style>
@@ -208,4 +315,18 @@
             });
         });
     </script>
+=======
+            border-left: 4px solid var(--bs-primary) !important;
+        }
+
+        .border-warning {
+            border-left: 4px solid var(--bs-warning) !important;
+        }
+
+        .font-monospace {
+            font-family: 'Courier New', monospace;
+            letter-spacing: 0.1em;
+        }
+    </style>
+>>>>>>> main
 }

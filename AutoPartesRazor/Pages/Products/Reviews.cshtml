@@ -161,9 +161,16 @@
                                     <form method="post" class="d-inline">
                                         <input type="hidden" name="reviewId" value="@review.Id" />
                                         <input type="hidden" name="isHelpful" value="true" />
+<<<<<<< HEAD
                                         <button type="submit"
                                                 asp-page-handler="Vote"
                                                 class="btn btn-sm @(userVote?.IsHelpful == true ? "btn-success" : "btn-outline-success")">
+=======
+                                        <button type="submit" 
+                                                asp-page-handler="Vote"
+                                                class="btn btn-sm @(userVote?.IsHelpful == true ? "btn-success" : "btn-outline-success")"
+                                                @* @(userVote != null ? "disabled" : "") *@>
+>>>>>>> main
                                             <i class="fa-solid fa-thumbs-up me-1"></i>
                                             Sí (@review.HelpfulCount)
                                         </button>
@@ -172,9 +179,16 @@
                                     <form method="post" class="d-inline">
                                         <input type="hidden" name="reviewId" value="@review.Id" />
                                         <input type="hidden" name="isHelpful" value="false" />
+<<<<<<< HEAD
                                         <button type="submit"
                                                 asp-page-handler="Vote"
                                                 class="btn btn-sm @(userVote?.IsHelpful == false ? "btn-danger" : "btn-outline-danger")">
+=======
+                                        <button type="submit" 
+                                                asp-page-handler="Vote"
+                                                class="btn btn-sm @(userVote?.IsHelpful == false ? "btn-danger" : "btn-outline-danger")"
+                                                @* @(userVote != null ? "disabled" : "") *@>
+>>>>>>> main
                                             <i class="fa-solid fa-thumbs-down me-1"></i>
                                             No (@review.NotHelpfulCount)
                                         </button>

@@ -1,8 +1,12 @@
 ﻿using AutoPartesRazor.Data;
+<<<<<<< HEAD
 using AutoPartesRazor.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AutoPartesRazor.Controllers;
+=======
+using Microsoft.AspNetCore.Mvc;
+>>>>>>> main
 
 [Route("api/[controller]")]
 [ApiController]
@@ -12,7 +16,13 @@ public class TrackController : ControllerBase
 
     public TrackController(AutoPartesRazorContext context)
     {
+<<<<<<< HEAD
         _context = context;
+=======
+        var pedido = _context.Orders.Find(id);
+        if (pedido == null) return NotFound();
+        return Ok(new { id = pedido.Id, estado = pedido.Status });
+>>>>>>> main
     }
 
     // GET: api/track/5

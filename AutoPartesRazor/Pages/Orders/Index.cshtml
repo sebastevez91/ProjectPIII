@@ -28,7 +28,16 @@
                     <td>@o.ShippingAddress</td>
                     <td>@o.Status</td>
                     <td>
+<<<<<<< HEAD
                         @* Este botón ya existía y es el correcto para manejar el flujo *@
+=======
+                        @if (o.Status == "Pending")
+                        {
+                            <form method="post" asp-page="/Administration/Despacho" asp-page-handler="Despachar" asp-route-id="@o.Id" style="display:inline;">
+                                <button type="submit" class="btn btn-success btn-sm">Despachar</button>
+                            </form>
+                        }
+>>>>>>> main
                         <a asp-page="/Administration/DetallePedido" asp-route-id="@o.Id" class="btn btn-info btn-sm">Ver detalle</a>
                     </td>
                 </tr>

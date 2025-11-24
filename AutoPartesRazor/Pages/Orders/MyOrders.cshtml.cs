@@ -8,6 +8,7 @@ namespace AutoPartesRazor.Pages.Orders
 {
     public class MyOrdersModel : PageModel
     {
+<<<<<<< HEAD
         private readonly AutoPartesRazorContext _context;
         public MyOrdersModel(AutoPartesRazorContext context) => _context = context;
         public IList<Order> Pedidos { get; set; } = new List<Order>(); // Propiedad correcta: Pedidos
@@ -19,5 +20,12 @@ namespace AutoPartesRazor.Pages.Orders
                 .OrderByDescending(o => o.CreatedAt)
                 .ToListAsync();
         }
+=======
+        var userEmail = User.Identity?.Name;
+        Pedidos = await _context.Orders
+            .Where(o => o.CustomerEmail == userEmail)
+            .OrderByDescending(o => o.CreatedAt)
+            .ToListAsync();
+>>>>>>> main
     }
 }

@@ -1,21 +1,29 @@
 ﻿@page
 @model AutoPartesRazor.Pages.Orders.CreateModel
-
 @{
     ViewData["Title"] = "Realizar pedido";
 }
 
 <div class="container py-4">
-    <h2>Confirmar pedido</h2>
+    <div class="d-flex align-items-center mb-4">
+        <i class="fa-solid fa-shopping-cart me-2 fs-3 text-success"></i>
+        <h2 class="mb-0">Confirmar pedido</h2>
+    </div>
 
     @if (!Model.CartItems.Any())
     {
-        <div class="alert alert-info">No hay productos en el carrito.</div>
-        <a asp-page="/Products/Index" class="btn btn-primary">Ir a productos</a>
+        <div class="alert alert-info">
+            <i class="fa-solid fa-info-circle me-2"></i>
+            No hay productos en el carrito.
+        </div>
+        <a asp-page="/Products/Index" class="btn btn-primary">
+            <i class="fa-solid fa-store me-2"></i>Ir a productos
+        </a>
     }
     else
     {
         <div class="row">
+<<<<<<< HEAD
             <div class="col-md-7">
                 <h5>Resumen de artículos</h5>
                 <ul class="list-group mb-3">
@@ -32,12 +40,107 @@
                         </li>
                     }
                 </ul>
+=======
+            <!-- Columna izquierda: Resumen de artículos -->
+            <div class="col-lg-7">
+                <div class="card shadow-sm mb-3">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">
+                            <i class="fa-solid fa-list-ul me-2"></i>Resumen de artículos
+                        </h5>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        @foreach (var item in Model.CartItems)
+                        {
+                            <li class="list-group-item">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="flex-grow-1">
+                                        <strong>@item.Product?.Name</strong>
+                                        <div class="text-muted small">
+                                            Cantidad: @item.Quantity × @(item.Product?.Price.ToString("C"))
+                                        </div>
+                                    </div>
+                                    <div class="text-end">
+                                        <strong>@(item.Product != null ? (item.Product.Price * item.Quantity).ToString("C") : "—")</strong>
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+>>>>>>> main
 
-                <div class="mb-3 text-end">
-                    <h4>Total: <span class="fw-bold">@Model.Subtotal.ToString("C")</span></h4>
+                <!-- Resumen de precios -->
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <!-- Subtotal -->
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Subtotal:</span>
+                            <span>@Model.Subtotal.ToString("C")</span>
+                        </div>
+
+                        <!-- Cupón aplicado -->
+                        @if (Model.AppliedCoupon != null && Model.DiscountAmount > 0)
+                        {
+                            <div class="alert alert-success mb-2 p-2">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <i class="fa-solid fa-ticket me-1"></i>
+                                        <strong>Cupón aplicado:</strong> @Model.AppliedCoupon.Code
+                                        <br />
+                                        <small class="text-muted">
+                                            Descuento del @Model.AppliedCoupon.DiscountPercentage%
+                                            @if (Model.AppliedCoupon.ProductId.HasValue)
+                                            {
+                                                <span> en @Model.AppliedCoupon.Product?.Name</span>
+                                            }
+                                        </small>
+                                    </div>
+                                    <a asp-page="/Carts/Index" class="btn btn-sm btn-outline-secondary">
+                                        <i class="fa-solid fa-edit"></i> Cambiar
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Descuento -->
+                            <div class="d-flex justify-content-between mb-2 text-success">
+                                <span>
+                                    <i class="fa-solid fa-tag me-1"></i>Descuento:
+                                </span>
+                                <span><strong>-@Model.DiscountAmount.ToString("C")</strong></span>
+                            </div>
+                        }
+
+                        <!-- Envío -->
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Envío:</span>
+                            <span class="text-success">Gratis</span>
+                        </div>
+
+                        <hr />
+
+                        <!-- Total final -->
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h4 class="mb-0">Total a pagar:</h4>
+                            <h4 class="mb-0 @(Model.DiscountAmount > 0 ? "text-success" : "text-primary")">
+                                @Model.Total.ToString("C")
+                            </h4>
+                        </div>
+
+                        @if (Model.DiscountAmount > 0)
+                        {
+                            <div class="alert alert-success p-2 mt-2 mb-0">
+                                <small>
+                                    <i class="fa-solid fa-check-circle me-1"></i>
+                                    ¡Estás ahorrando @Model.DiscountAmount.ToString("C")!
+                                </small>
+                            </div>
+                        }
+                    </div>
                 </div>
             </div>
 
+<<<<<<< HEAD
             <div class="col-md-5">
                 <h5>Datos de envío y pago</h5>
                 <form method="post">
@@ -47,33 +150,90 @@
                         <label class="form-label">Nombre completo</label>
                         <input asp-for="Input.CustomerName" value="@Model.UserSesion.FullName" class="form-control" />
                         <span asp-validation-for="Input.CustomerName" class="text-danger"></span>
+=======
+            <!-- Columna derecha: Formulario de datos -->
+            <div class="col-lg-5">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">
+                            <i class="fa-solid fa-credit-card me-2"></i>Datos de envío y pago
+                        </h5>
+>>>>>>> main
                     </div>
+                    <div class="card-body">
+                        <form method="post">
+                            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
 
+<<<<<<< HEAD
                     <div class="mb-2">
                         <label class="form-label">Email</label>
                         <input asp-for="Input.CustomerEmail" value="@Model.UserSesion.Email" class="form-control" />
                         <span asp-validation-for="Input.CustomerEmail" class="text-danger"></span>
-                    </div>
+=======
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    <i class="fa-solid fa-user me-1"></i>Nombre completo
+                                </label>
+                                <input asp-for="Input.CustomerName"
+                                       value="@Model.UserSesion.FullName"
+                                       class="form-control"
+                                       placeholder="Juan Pérez" />
+                                <span asp-validation-for="Input.CustomerName" class="text-danger small"></span>
+                            </div>
 
-                    <div class="mb-2">
-                        <label class="form-label">Dirección de envío</label>
-                        <textarea asp-for="Input.ShippingAddress" class="form-control"></textarea>
-                        <span asp-validation-for="Input.ShippingAddress" class="text-danger"></span>
-                    </div>
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    <i class="fa-solid fa-envelope me-1"></i>Email
+                                </label>
+                                <input asp-for="Input.CustomerEmail"
+                                       value="@Model.UserSesion.Email"
+                                       class="form-control"
+                                       placeholder="correo@ejemplo.com" />
+                                <span asp-validation-for="Input.CustomerEmail" class="text-danger small"></span>
+                            </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Método de pago</label>
-                        <select asp-for="Input.PaymentMethod" class="form-select">
-                            <option value="Efectivo">Efectivo</option>
-                            <option value="Tarjeta débito">Tarjeta débito</option>
-                            <option value="Tarjeta credito">Tarjeta credito</option>
-                            <option value="Transferencia">Transferencia bancaria</option>
-                        </select>
-                    </div>
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    <i class="fa-solid fa-map-marker-alt me-1"></i>Dirección de envío
+                                </label>
+                                <textarea asp-for="Input.ShippingAddress"
+                                          class="form-control"
+                                          rows="3"
+                                          placeholder="Calle, número, ciudad, código postal"></textarea>
+                                <span asp-validation-for="Input.ShippingAddress" class="text-danger small"></span>
+                            </div>
 
-                    <button type="submit" class="btn btn-success w-100">Pagar y crear pedido</button>
-                    <a asp-page="/Carts/Index" class="btn btn-outline-secondary w-100 mt-2">Volver al carrito</a>
-                </form>
+                            <div class="mb-4">
+                                <label class="form-label">
+                                    <i class="fa-solid fa-money-bill-wave me-1"></i>Método de pago
+                                </label>
+                                <select asp-for="Input.PaymentMethod" class="form-select">
+                                    <option value="">-- Seleccione --</option>
+                                    <option value="Efectivo">💵 Efectivo</option>
+                                    <option value="Tarjeta débito">💳 Tarjeta débito</option>
+                                    <option value="Tarjeta credito">💳 Tarjeta crédito</option>
+                                    <option value="Transferencia">🏦 Transferencia bancaria</option>
+                                </select>
+                                <span asp-validation-for="Input.PaymentMethod" class="text-danger small"></span>
+                            </div>
+
+                            <button type="submit" class="btn btn-success w-100 mb-2">
+                                <i class="fa-solid fa-check-circle me-2"></i>Confirmar y pagar
+                            </button>
+
+                            <a asp-page="/Carts/Index" class="btn btn-outline-secondary w-100">
+                                <i class="fa-solid fa-arrow-left me-2"></i>Volver al carrito
+                            </a>
+                        </form>
+>>>>>>> main
+                    </div>
+                </div>
+
+                <!-- Nota de seguridad -->
+                <div class="alert alert-info mt-3 small">
+                    <i class="fa-solid fa-shield-alt me-2"></i>
+                    <strong>Compra segura:</strong> Tus datos están protegidos.
+                </div>
             </div>
         </div>
     }

@@ -1,5 +1,11 @@
 using AutoPartesRazor.Data;
+<<<<<<< HEAD
 using AutoPartesRazor.Models;
+=======
+using AutoPartesRazor.Interfaces;
+using AutoPartesRazor.Models;
+using AutoPartesRazor.Services;
+>>>>>>> main
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,11 +20,21 @@ public class IndexModel : PageModel
 {
     private readonly AutoPartesRazorContext _context;
     private readonly UserManager<User> _userManager;
+<<<<<<< HEAD
 
     public IndexModel(AutoPartesRazorContext context, UserManager<User> userManager)
     {
         _context = context;
         _userManager = userManager;
+=======
+    private readonly IUserService _userService;
+
+    public IndexModel(AutoPartesRazorContext context, UserManager<User> userManager, IUserService userService)
+    {
+        _context = context;
+        _userManager = userManager;
+        _userService = userService;
+>>>>>>> main
     }
 
     public IList<User> Users { get; set; } = new List<User>();
@@ -108,6 +124,7 @@ public class IndexModel : PageModel
             return RedirectToPage();
         }
 
+<<<<<<< HEAD
         // Deshabilitar usuario (en lugar de eliminar)
         user.EmailConfirmed = false;
         user.LockoutEnabled = true;
@@ -122,8 +139,26 @@ public class IndexModel : PageModel
         else
         {
             TempData["ErrorMessage"] = "Error al deshabilitar el usuario.";
+=======
+        var result = await _userService.ToggleLockoutAsync(id);
+
+        if (result.Succeeded)
+        {
+            bool isLocked = await _userService.IsLockedOutAsync(id);
+            TempData["SuccessMessage"] = isLocked
+                ? $"Usuario {user.FullName} deshabilitado exitosamente."
+                : $"Usuario {user.FullName} habilitado exitosamente.";
+        }
+        else
+        {
+            TempData["ErrorMessage"] = "Error al cambiar el estado del usuario.";
+>>>>>>> main
         }
 
         return RedirectToPage();
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> main
