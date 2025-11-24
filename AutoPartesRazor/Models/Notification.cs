@@ -20,6 +20,10 @@ public class Notification
 
     public bool IsRead { get; set; } = false;
 
+    // AÑADIDO: Propiedad para enlazar la notificación a un recurso (ej: el pedido)
+    [StringLength(500)]
+    public string? RelatedUrl { get; set; } // <--- CORRECCIÓN AÑADIDA
+
     // Foreign Key - User
     [Required]
     public string UserId { get; set; }

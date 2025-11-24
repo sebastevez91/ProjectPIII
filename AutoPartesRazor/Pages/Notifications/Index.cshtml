@@ -1,5 +1,6 @@
 ﻿@page
-@model AutoPartesRazor.Pages.Notifications.IndexModel
+@model AutoPartesRazor.Pages.Notifications.IndexModel 
+
 @{
     ViewData["Title"] = "Notificaciones";
 }
@@ -35,7 +36,6 @@
         </div>
     }
 
-    <!-- Filtros -->
     <div class="card mb-3">
         <div class="card-body">
             <form method="get" class="row g-3 align-items-center">
@@ -55,7 +55,6 @@
         </div>
     </div>
 
-    <!-- Lista de notificaciones -->
     @if (!Model.Notifications.Any())
     {
         <div class="alert alert-info text-center py-5">
@@ -69,10 +68,12 @@
         <div class="list-group">
             @foreach (var notification in Model.Notifications)
             {
-                <div class="list-group-item list-group-item-action @(!notification.IsRead ? "bg-light border-primary" : "")"
+                <div class="list-group-item list-group-item-action @(!notification.IsRead ? "bg-light border-primary" : "") notification-item"
                      style="cursor: pointer;"
-                     data-bs-toggle="modal"
-                     data-bs-target="#notificationModal_@notification.Id">
+                     data-bs-toggle="@(string.IsNullOrEmpty(notification.RelatedUrl) ? "modal" : "")" 
+                     data-bs-target="#notificationModal_@notification.Id"
+                     data-related-url="@notification.RelatedUrl"
+                     data-id="@notification.Id">
                     <div class="d-flex w-100 justify-content-between align-items-start">
                         <div class="flex-grow-1">
                             <div class="d-flex align-items-center mb-2">
@@ -101,7 +102,7 @@
                         </div>
                         <div class="ms-3">
                             <form method="post" asp-page-handler="Delete" asp-route-id="@notification.Id"
-                                  onsubmit="event.stopPropagation(); return confirm('¿Estás seguro de eliminar esta notificación?');">
+                                    onsubmit="event.stopPropagation(); return confirm('¿Estás seguro de eliminar esta notificación?');">
                                 <button type="submit" class="btn btn-sm btn-outline-danger">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
@@ -110,7 +111,6 @@
                     </div>
                 </div>
 
-                <!-- Modal para ver notificación completa -->
                 <div class="modal fade" id="notificationModal_@notification.Id" tabindex="-1">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
@@ -129,9 +129,17 @@
                                     <strong>Fecha:</strong> @notification.CreatedAt.ToString("dd/MM/yyyy HH:mm")
                                 </div>
                                 <hr />
-                                <div class="notification-message">
+                                <div class="notification-message mb-3">
                                     @notification.Message
                                 </div>
+                                
+                                @* Botón de ACCIÓN en el Modal para Calificación/Enlace *@
+                                @if (!string.IsNullOrEmpty(notification.RelatedUrl))
+                                {
+                                    <a href="@notification.RelatedUrl" class="btn btn-warning w-100">
+                                        <i class="fa-solid fa-star me-1"></i> Ir a la Acción
+                                    </a>
+                                }
                             </div>
                             <div class="modal-footer">
                                 @if (!notification.IsRead)
@@ -170,4 +178,34 @@
             border-left: 4px solid var(--primary) !important;
         }
     </style>
+}
+
+@section Scripts {
+    <script>
+        // LÓGICA JAVASCRIPT PARA REDIRECCIÓN (Evita que el modal se abra si hay una URL de acción)
+        document.addEventListener('DOMContentLoaded', () => {
+            const notificationItems = document.querySelectorAll('.notification-item');
+
+            notificationItems.forEach(item => {
+                const relatedUrl = item.getAttribute('data-related-url');
+                
+                if (relatedUrl && relatedUrl.length > 0) {
+                    // Si hay un RelatedUrl, interceptamos el click y redirigimos.
+                    item.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        
+                        // Redirigir al usuario al link de la acción (ej. Calificar).
+                        window.location.href = relatedUrl;
+                    });
+                }
+            });
+            
+            // Asegurar que el click en el botón de eliminar no active el modal
+            document.querySelectorAll('.btn-outline-danger').forEach(btn => {
+                 btn.addEventListener('click', (e) => {
+                     e.stopPropagation();
+                 });
+            });
+        });
+    </script>
 }

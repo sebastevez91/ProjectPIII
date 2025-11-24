@@ -1,11 +1,11 @@
 ﻿@page "{id:int}"
-@model TrackOrderModel
+@model AutoPartesRazor.Pages.Orders.TrackOrderModel
 
 <h2 class="fw-bold text-success animate__animated animate__fadeInLeft">
-    <i class="fa-solid fa-location-arrow"></i> Seguimiento del Pedido [#@Model.Pedido.Id](mailto:#@Model.Pedido.Id)
+    <i class="fa-solid fa-location-arrow"></i> Seguimiento del Pedido [#@Model.Pedido.Id]
 </h2>
 
-@* Stepper visual (busca el estado actual y muestra la barra con animaciones) *@
+@* Stepper visual *@
 @{
     var steps = new List<(string Estado, string Icon, string ColorClass)>
     {
@@ -25,7 +25,7 @@
             var (estado, icono, colorClase) = steps[i];
             var alcanzado = i <= currentStep;
             <div class="text-center flex-fill">
-                <div class="step-circle @colorClase @(alcanzado ? "step-active animate__animated animate__bounce" : "step-inactive")">
+                <div class="step-circle @colorClase @(alcanzado ? "step-active animate__animated animate__bounce" : "inactive")">
                     <i class="fa-solid @(icono)"></i>
                 </div>
                 <div class="step-label mt-2 fw-semibold" style="font-size:1em; color:@(alcanzado ? "#18202E" : "#bbb");">
@@ -40,69 +40,57 @@
     </div>
 </div>
 
-@* ... Código del Stepper ... *@
+@* Código QR y API REST (NUEVA FUNCIÓN) *@
 
-@* BOTÓN DE CONFIRMACIÓN DE RECEPCIÓN *@
-@if (Model.Pedido.Status == "En camino")
-{
-    <div class="card border-primary mb-4 shadow-sm animate__animated animate__pulse">
-        <div class="card-body text-center">
-            <h4 class="card-title text-primary"><i class="fa-solid fa-hand-holding-box"></i> ¿Ya recibiste tu pedido?</h4>
-            <p class="card-text">Si ya tienes el paquete en tus manos, avísanos para cerrar la orden.</p>
+<div class="card shadow mt-5 border-0 bg-light">
+    <div class="card-body text-center">
+        <h4 class="card-title text-primary"><i class="fa-solid fa-qrcode me-2"></i> Seguimiento con Código QR</h4>
+        <p class="card-text text-muted">Escanea este código o usa el enlace para ver el estado actual del pedido a través de nuestra API REST.</p>
 
-            <form method="post" asp-page-handler="ConfirmarEntrega" asp-route-id="@Model.Pedido.Id">
-                <button type="submit" class="btn btn-primary btn-lg">
-                    <i class="fa-solid fa-check-double"></i> ¡Sí, ya lo tengo!
-                </button>
-            </form>
-        </div>
-    </div>
-}
-
-@* ... Sección de Calificación existente ... *@
-
-@if (Model.Pedido.Status == "Entregado" && Model.Pedido.Calificacion == null)
-{
-    <h4 class="mt-4 animate__animated animate__fadeInDown">¿Cómo fue tu experiencia?</h4>
-    <form method="post">
         <div class="mb-3">
-            <label><b>Califica la entrega:</b></label>
-            <div>
-                @for (int i = 1; i <= 5; i++)
-                {
-                    <input type="radio" id="star-@i" name="Calificacion" value="@i" required />
-                    <label for="star-@i" style="font-size:1.6em; color:#fcc419;">★</label>
-                }
-            </div>
+            <span class="badge bg-dark fs-5 p-3">ID: @Model.Pedido.Id</span>
         </div>
-        <button type="submit" class="btn btn-success animate__animated animate__pulse">
-            <i class="fa-solid fa-paper-plane"></i> Enviar opinión
-        </button>
-    </form>
-}
-else if (Model.Pedido.Status == "Entregado")
-{
-    <div class="alert alert-success mt-4">
-        <b>¡Gracias por tu calificación!</b><br />
-        @if (Model.Pedido.Calificacion != null)
-        {
-            <span>
-                Calificación:&nbsp;
-                @for (int star = 1; star <= 5; star++)
-                {
-                    <span style="font-size:1.3em; color:@(star <= Model.Pedido.Calificacion ? "#fcc419" : "#ccd1d1");">★</span>
-                }
-            </span>
-        }
+
+        <div id="qrcode" class="d-inline-block p-2 border rounded bg-white"></div>
+
+        <p class="small mt-2 text-muted">El código apunta a: <span class="fw-bold">/api/track/@Model.Pedido.Id</span></p>
+
+        <a href="/api/track/@Model.Pedido.Id" target="_blank" class="btn btn-outline-primary btn-sm">
+            <i class="fa-solid fa-magnifying-glass me-1"></i> Consultar Estado vía API REST
+        </a>
     </div>
-}
+</div>
 
-
-
-
-<a asp-page="/Orders/MyOrders" class="btn btn-secondary btn-lg shadow-sm animate__animated animate__fadeInUp">
+<a asp-page="/Orders/MyOrders" class="btn btn-secondary btn-lg shadow-sm animate__animated animate__fadeInUp mt-4">
     <i class="fa-solid fa-arrow-left"></i> Volver a mis pedidos
 </a>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 💡 CORRECCIÓN CRÍTICA: Reemplaza window.location.origin con tu IP y HTTP.
+            // REEMPLAZA [TU_IP_LOCAL] con la dirección IPv4 que copiaste (Ej: 'http://192.168.1.105:7204')
+            const apiBaseUrl = 'http://192.168.0.162:7204';
+
+            const trackingId = @Model.Pedido.Id;
+            const apiPath = `${apiBaseUrl}/api/track/${trackingId}`;
+
+            if (document.getElementById("qrcode")) {
+                new QRCode(document.getElementById("qrcode"), {
+                    text: apiPath,
+                    width: 128,
+                    height: 128,
+                    colorDark: "#000000",
+                    colorLight: "#ffffff",
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+            }
+        });
+    </script>
+}
 
 @functions {
     public string GetProgress()
@@ -112,7 +100,7 @@ else if (Model.Pedido.Status == "Entregado")
         if (Model.Pedido.Status == "Despachado") return "60%";
         if (Model.Pedido.Status == "En camino") return "85%";
         if (Model.Pedido.Status == "Entregado") return "100%";
-        if (Model.Pedido.Status == "Cancelado") return "100%"; // Si hay cancelado/otro, puedes personalizarlo
+        if (Model.Pedido.Status == "Cancelado") return "100%";
         return "0%";
     }
     public string GetProgressColor()
@@ -126,4 +114,3 @@ else if (Model.Pedido.Status == "Entregado")
         return "bg-info";
     }
 }
-

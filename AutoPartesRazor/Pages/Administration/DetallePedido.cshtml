@@ -30,6 +30,7 @@
 }
 
 @{
+    // Definición de pasos (Clave para que el Stepper se actualice)
     var pasos = new List<(string Estado, string Icono, string ColorClase)>
     {
         ("Pendiente", "fa-file-lines", "bg-secondary"),
@@ -38,7 +39,9 @@
         ("En camino", "fa-truck", "bg-primary"),
         ("Entregado", "fa-check-circle", "bg-success")
     };
-    int pasoActual = pasos.FindIndex(s => s.Estado == Model.Pedido.Status);
+
+    // Búsqueda del índice actual
+    int pasoActual = pasos.FindIndex(s => s.Estado == Model.Pedido.Status || (Model.Pedido.Status == "Pending" && s.Estado == "Pendiente"));
     if (pasoActual == -1) { pasoActual = 0; }
 }
 
@@ -66,9 +69,10 @@
 
 @if (Model.Pedido != null)
 {
+    @* Sección de Botones de Acción *@
     <div class="my-3">
         <div class="d-flex gap-2 flex-wrap">
-            @if (Model.Pedido.Status == "Pendiente")
+            @if (Model.Pedido.Status == "Pendiente" || Model.Pedido.Status == "Pending")
             {
                 <form method="post" asp-page-handler="Preparar" asp-route-id="@Model.Pedido.Id">
                     <button type="submit" class="btn btn-info shadow-sm animate__animated animate__pulse">
@@ -96,7 +100,7 @@
             {
                 <form method="post" asp-page-handler="Entregar" asp-route-id="@Model.Pedido.Id">
                     <button type="submit" class="btn btn-success shadow-sm animate__animated animate__pulse">
-                        <i class="fa-solid fa-check-double"></i> Entregar
+                        <i class="fa-solid fa-check-double"></i> Entregar (Manual)
                     </button>
                 </form>
             }
@@ -111,13 +115,14 @@
         </div>
     </div>
 
+    @* Enlace para ver recibo *@
     <div>
-    <a asp-page="/Orders/Confirmation" class="btn btn-primary m-2" asp-route-id="@Model.Pedido.Id">
+        <a asp-page="/Orders/Confirmation" class="btn btn-primary m-2" asp-route-id="@Model.Pedido.Id">
             ver recibo
         </a>
     </div>
 
-
+    @* Sección de Detalle del Pedido *@
     <table class="table table-hover table-striped shadow rounded animate__animated animate__fadeInUp">
         <tr>
             <td><b>ID:</b></td>
@@ -135,8 +140,8 @@
             <td><b>Estado:</b></td>
             <td>
                 <span class="badge
-                    @(Model.Pedido.Status == "Pendiente" ? "bg-warning text-dark animate__animated animate__pulse" :
-                      Model.Pedido.Status == "Despachado" ? "bg-success animate__animated animate__tada" :
+                    @(Model.Pedido.Status == "Pendiente" || Model.Pedido.Status == "Pending" ? "bg-warning text-dark animate__animated animate__pulse" :
+                      Model.Pedido.Status == "Despachado" ? "bg-warning animate__animated animate__tada" :
                       Model.Pedido.Status == "Preparando" ? "bg-info animate__animated animate__flash" :
                       Model.Pedido.Status == "En camino" ? "bg-primary animate__animated animate__heartBeat" :
                       Model.Pedido.Status == "Entregado" ? "bg-success animate__animated animate__bounce" :
@@ -154,6 +159,8 @@
             <td>$@Model.Pedido.Total</td>
         </tr>
     </table>
+
+    @* Sección de Productos del Pedido *@
     <h4 class="mt-4"><i class="fa-solid fa-box"></i> Productos</h4>
     <ul class="list-group shadow-sm animate__animated animate__fadeInUp">
         @foreach (var item in Model.Pedido.Items)
@@ -163,6 +170,8 @@
             </li>
         }
     </ul>
+
+    @* Sección de Calificación *@
     @if (Model.Pedido.Status == "Entregado")
     {
         <div class="alert alert-success shadow mt-4">
@@ -185,7 +194,7 @@
     }
 
 
-
+    @* Botón de Volver *@
     <div class="mt-4">
         <a asp-page="/Administration/Despacho"
            class="btn btn-outline-primary btn-lg shadow-sm animate__animated animate__fadeInUp">
@@ -200,49 +209,4 @@ else
 
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        function abrirMensajeCliente(email) {
-            Swal.fire({
-                title: 'Enviar mensaje al cliente',
-                input: 'textarea',
-                inputLabel: 'Mensaje a ' + email,
-                inputPlaceholder: 'Escribe tu mensaje aquí...',
-                inputAttributes: {
-                    'aria-label': 'Escribe tu mensaje aquí'
-                },
-                showCancelButton: true,
-                confirmButtonText: 'Enviar',
-                cancelButtonText: 'Cancelar',
-                preConfirm: (mensaje) => {
-                    if (!mensaje) {
-                        Swal.showValidationMessage('¡El mensaje no puede estar vacío!');
-                        return false;
-                    }
-                    // Aquí puedes hacer un fetch/AJAX para guardar la notificación y asociarla al email
-                    return fetch(location.pathname + '?handler=EnviarNotificacion', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            customerEmail: email,
-                            mensaje: mensaje
-                        })
-                    }).then(resp => resp.ok ? true : Swal.showValidationMessage('Error al enviar mensaje'));
-                }
-            }).then((result) => {
-                if (result.isConfirmed && result.value) {
-                    Swal.fire({
-                        title: 'Mensaje enviado',
-                        text: 'El mensaje fue enviado exitosamente.',
-                        icon: 'success',
-                        timer: 1800,
-                        showConfirmButton: false
-                    });
-                }
-            });
-        }
-
-
-    </script>
 }

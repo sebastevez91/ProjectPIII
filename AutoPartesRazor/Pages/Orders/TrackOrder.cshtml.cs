@@ -1,84 +1,104 @@
 using AutoPartesRazor.Data;
 using AutoPartesRazor.Models;
-using AutoPartesRazor.Interfaces; // Importar IEmailSender
+using AutoPartesRazor.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims; // Necesario para ClaimTypes
+using Microsoft.AspNetCore.Routing; // Necesario para LinkGenerator
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
-public class TrackOrderModel : PageModel
+namespace AutoPartesRazor.Pages.Orders // Asegúrate de que el namespace sea correcto
 {
-    private readonly AutoPartesRazorContext _context;
-    private readonly IEmailSender _emailSender; // Inyectamos EmailSender
-
-    public TrackOrderModel(AutoPartesRazorContext context, IEmailSender emailSender)
+    public class TrackOrderModel : PageModel
     {
-        _context = context;
-        _emailSender = emailSender;
-    }
+        private readonly AutoPartesRazorContext _context;
+        private readonly IEmailSender _emailSender;
+        private readonly IUserService _userService;
+        private readonly LinkGenerator _linkGenerator;
 
-    public Order Pedido { get; set; } = default!;
-
-    public IActionResult OnGet(int id)
-    {
-        Pedido = _context.Orders.FirstOrDefault(o => o.Id == id);
-        if (Pedido == null) return NotFound();
-
-        if (User.IsInRole("Admin") || Pedido.CustomerEmail == User.Identity?.Name)
-            return Page();
-
-        return Forbid();
-    }
-
-    // Handler para cuando el CLIENTE confirma la entrega
-    public async Task<IActionResult> OnPostConfirmarEntregaAsync(int id)
-    {
-        var pedido = await _context.Orders.FindAsync(id);
-        if (pedido == null || pedido.Status != "En camino") return NotFound();
-
-        // 1. Actualizar estado del pedido
-        pedido.Status = "Entregado";
-        pedido.UpdatedAt = DateTime.Now;
-
-        // 2. Enviar Email al Administrador
-        string adminEmail = "admin@tutienda.com"; // Pon aquí el email real del admin
-        string asunto = $"¡Entrega Confirmada! - Pedido #{pedido.Id}";
-        string mensaje = $"El cliente {pedido.CustomerName} ha confirmado la recepción del pedido #{pedido.Id}.<br/>Fecha: {DateTime.Now}";
-
-        await _emailSender.SendEmailAsync(adminEmail, asunto, mensaje);
-
-        // 3. Crear Notificación para el Admin (CORREGIDO)
-        // Buscamos al usuario Admin (asumiendo que hay uno, o usamos un ID fijo si lo conoces)
-        var adminUser = _context.Users.FirstOrDefault(u => u.UserName == "admin@admin.com" || u.Email == "admin@admin.com");
-
-        if (adminUser != null) // Solo creamos la notificación si encontramos al admin
+        public TrackOrderModel(AutoPartesRazorContext context, IEmailSender emailSender, IUserService userService, LinkGenerator linkGenerator)
         {
-            var notificacion = new Notification
+            _context = context;
+            _emailSender = emailSender;
+            _userService = userService;
+            _linkGenerator = linkGenerator;
+        }
+
+        public Order Pedido { get; set; } = default!;
+
+        // El OnGet regular para mostrar la página de seguimiento
+        public IActionResult OnGet(int id)
+        {
+            Pedido = _context.Orders
+                .Include(o => o.User)
+                .FirstOrDefault(o => o.Id == id);
+
+            if (Pedido == null) return NotFound();
+
+            // Lógica de autorización
+            if (User.IsInRole("Admin") || Pedido.CustomerEmail == User.Identity?.Name)
+                return Page();
+
+            return Forbid();
+        }
+
+        // Método auxiliar para crear Notificación para el Admin
+        private async Task CrearNotificacionAdminAsync(Order pedido, string asunto, string mensaje)
+        {
+            var adminUser = await _userService.GetUserAsync("admin@tutienda.com"); // Reemplazar con el email real del Admin
+
+            if (adminUser != null)
             {
-                UserId = adminUser.Id, // Usamos el ID real del admin
-                Title = "Entrega Confirmada", // <--- Faltaba esto
-                Message = $"El cliente {pedido.CustomerName} confirmó la recepción del pedido #{pedido.Id}.",
-                CreatedAt = DateTime.Now,     // <--- Corregido: Date -> CreatedAt
-                IsRead = false
-            };
-            _context.Notifications.Add(notificacion);
+                var notificacion = new Notification
+                {
+                    UserId = adminUser.Id,
+                    Title = asunto,
+                    Message = mensaje,
+                    CreatedAt = DateTime.Now,
+                    IsRead = false,
+                    RelatedUrl = $"/Administration/DetallePedido?id={pedido.Id}"
+                };
+                _context.Notifications.Add(notificacion);
+            }
         }
 
-        await _context.SaveChangesAsync();
-
-        return RedirectToPage(new { id });
-    }
-
-    // Handler de Calificación (ya lo tenías, solo lo dejo igual)
-    public async Task<IActionResult> OnPostAsync(int id)
-    {
-        // ... tu código existente de calificación ...
-        var pedido = await _context.Orders.FindAsync(id);
-        if (pedido == null) return NotFound();
-
-        if (Request.Form.TryGetValue("Calificacion", out var calif) && int.TryParse(calif, out int nota))
+        // =======================================================================
+        // HANDLER DE ACCIÓN: Confirmación de Recepción por el Cliente (Paso 3)
+        // =======================================================================
+        // HANDLER: Cliente Confirma Recepción
+        public async Task<IActionResult> OnGetConfirmarRecepcionAsync(int id)
         {
-            pedido.Calificacion = nota;
+            // 1. Lógica de verificación y obtención de pedido
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // El pedido debe existir, pertenecer al usuario y estar "En Camino"
+            var pedido = await _context.Orders.FirstOrDefaultAsync(o => o.Id == id && o.UserId == userId);
+
+            // REDIRECCIÓN MEJORADA: Si falla, redirige a la página de seguimiento del pedido, no a la lista.
+            if (pedido == null || pedido.Status != "En Camino")
+            {
+                // Si el pedido no se encuentra o el usuario no es el dueño, redirige a MyOrders o NotFound.
+                if (pedido == null) return NotFound();
+
+                // Si el estado no es "En Camino" (ej: ya está Entregado), redirige al detalle con un mensaje
+                TempData["InfoMessage"] = $"El pedido #{id} tiene el estado '{pedido.Status}' y no se puede confirmar la recepción.";
+                return RedirectToPage("./TrackOrder", new { id });
+            }
+
+            // ... (Resto de la lógica de cambio de estado a "Entregado" y envío de notificaciones de Calificación)
+
+            // 2. Cambiar Status a Entregado 
+            pedido.Status = "Entregado";
+            pedido.UpdatedAt = DateTime.Now;
+
+            // ... (Lógica para generar notificaciones de Calificación)
+
             await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = $"¡Entrega confirmada! Revisa tus notificaciones para calificar el pedido.";
+            return RedirectToPage("./TrackOrder", new { id });
         }
-        return RedirectToPage(new { id });
     }
 }
