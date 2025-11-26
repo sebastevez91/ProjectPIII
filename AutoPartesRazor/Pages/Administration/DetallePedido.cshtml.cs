@@ -137,12 +137,8 @@ public class DetallePedidoModel : PageModel
         string mensajeHtml = $@"
             <p>Estimado/a cliente,</p>
             <p>Tu pedido <strong>#{pedido.Id}</strong> ha sido marcado como <strong>Entregado</strong>.</p>
-            <p>Para confirmar la recepción de los productos, por favor visita el siguiente enlace:</p>
-            <p>
-                <a href='{trackingUrl}' style='color: #1565C0; text-decoration: none;'>
-                    Ver Seguimiento del Pedido #{pedido.Id}
-                </a>
-            </p>
+            <p>Para confirmar la recepción de los productos, por favor visita en la seccion de Ver Tracking en Mis Pedidos para Confirmar el Pedido</p>
+            
             <p>Una vez allí, podrás confirmar la recepción y calificar tu experiencia. Gracias por tu compra.</p>";
 
         await _emailSender.SendEmailAsync(pedido.CustomerEmail, $"Aviso de Entrega Pedido #{pedido.Id}", mensajeHtml);
