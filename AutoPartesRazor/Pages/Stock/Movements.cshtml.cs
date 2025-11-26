@@ -86,7 +86,7 @@ public class MovementsModel : PageModel
     {
         var products = await _context.Products
             .Where(p => !p.IsDeleted)
-            .Select(p => new { p.Id, p.Name, p.Code })
+            .Select(p => new { p.Id, p.Name })
             .ToListAsync();
 
         return new JsonResult(products);

@@ -41,7 +41,6 @@ public class ProductsModel : PageModel
             {
                 ProductId = ps.ProductId,
                 ProductName = ps.Product.Name,
-                ProductCode = ps.Product.Code,
                 CurrentStock = ps.Product.Stock,
                 SupplyPrice = ps.SupplyPrice,
                 SalePrice = ps.Product.Price,

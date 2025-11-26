@@ -37,8 +37,6 @@
                     <tr>
                         <th>N° Orden</th>
                         <th>Producto</th>
-                        <th>Proveedor</th>
-                        <th>Cantidad</th>
                         <th>Total</th>
                         <th>Estado</th>
                         <th>Fecha</th>
@@ -51,24 +49,26 @@
                         <tr>
                             <td class="fw-bold">#@order.Id</td>
                             <td>@order.Product?.Name</td>
-                            <td>@order.Supplier?.Name</td>
-                            <td>@order.Quantity</td>
                             <td class="fw-bold">$@order.Total.ToString("N2")</td>
                             <td>
-                                <form method="post" asp-page-handler="ChangeStatus" class="d-flex gap-2 align-items-center">
-                                    <input type="hidden" name="orderId" value="@order.Id" />
-                                    <select name="status"
-                                            class="form-select form-select-sm status-select"
-                                            asp-items="Model.StatusList"
-                                            data-current-status="@order.Status">
-                                        <option value="">-- Seleccionar --</option>
-                                    </select>
-                                    <button type="submit"
-                                            class="btn btn-sm btn-primary"
-                                            title="Actualizar estado">
-                                        <i class="fa-solid fa-check"></i>
-                                    </button>
-                                </form>
+                                @if (GetStatusText(order.Status) != "Recibido")
+                                {
+                                    <form method="post" asp-page-handler="ChangeStatus" class="d-flex gap-2 align-items-center">
+                                        <input type="hidden" name="orderId" value="@order.Id" />
+                                        <select name="status"
+                                                class="form-select form-select-sm status-select"
+                                                asp-items="Model.StatusList"
+                                                data-current-status="@order.Status">
+                                            <option value="">-- Seleccionar --</option>
+                                        </select>
+                                        <button type="submit"
+                                                class="btn btn-sm btn-primary"
+                                                title="Actualizar estado">
+                                            <i class="fa-solid fa-check"></i>
+                                        </button>
+                                    </form>                                    
+                                }
+
                                 <small class="d-block mt-1">
                                     <span class="badge @GetStatusBadgeClass(order.Status)">
                                         @GetStatusText(order.Status)
@@ -83,6 +83,25 @@
                                    title="Ver detalles">
                                     <i class="fa-solid fa-eye"></i>
                                 </a>
+                                @if (GetStatusText(order.Status) == "Aprobado")
+                                {
+                                    <a asp-page="./Receive"
+                                       asp-route-id="@order.Id"
+                                       class="btn btn-sm btn-success text-white"
+                                       title="Recibir orden">
+                                        <i class="fa-solid fa-check"></i>
+                                    </a>                                    
+                                }
+                                @if (GetStatusText(order.Status) == "Cancelado")
+                                {
+                                    <a asp-page="/Suppliers/CreateClaim"
+                                       asp-route-id="@order.Id"
+                                       class="btn btn-sm btn-danger text-white"
+                                       title="Hacer reclamo">
+                                        <i class="fa-solid fa-circle-exclamation"></i>
+                                    </a>
+                                }
+
                             </td>
                         </tr>
                     }

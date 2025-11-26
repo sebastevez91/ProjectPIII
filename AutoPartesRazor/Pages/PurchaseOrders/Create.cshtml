@@ -118,6 +118,15 @@
         $(document).ready(function() {
             let unitPrice = 0;
 
+                            // Verificar si hay un precio inicial (cuando se carga con datos pre-cargados)
+                @if (ViewData["InitialPrice"] != null)
+                {
+                            <text>
+                            unitPrice = @ViewData["InitialPrice"];
+                            calculateTotal();
+                            </text>
+                }
+
             // Función para calcular y mostrar el total
             function calculateTotal() {
                 const quantity = parseInt($('#quantityInput').val()) || 0;
