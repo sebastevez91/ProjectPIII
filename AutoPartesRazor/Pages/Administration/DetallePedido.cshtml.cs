@@ -3,8 +3,9 @@ using AutoPartesRazor.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using AutoPartesRazor.Interfaces; // Necesario para IEmailSender
-using Microsoft.EntityFrameworkCore; // Necesario para Include y DateTime
+using AutoPartesRazor.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace AutoPartesRazor.Pages.Administration;
 
@@ -12,9 +13,8 @@ namespace AutoPartesRazor.Pages.Administration;
 public class DetallePedidoModel : PageModel
 {
     private readonly AutoPartesRazorContext _context;
-    private readonly IEmailSender _emailSender; // Inyección de IEmailSender
+    private readonly IEmailSender _emailSender;
 
-    // Constructor modificado
     public DetallePedidoModel(AutoPartesRazorContext context, IEmailSender emailSender)
     {
         _context = context;
@@ -23,7 +23,7 @@ public class DetallePedidoModel : PageModel
 
     public Order Pedido { get; set; } = default!;
 
-    // Asumimos que CrearNotificacion existe en una capa de negocio o la definimos aquí
+    // Método auxiliar para crear notificaciones (se mantiene)
     private async Task CrearNotificacion(string? userId, string titulo, string mensaje)
     {
         if (string.IsNullOrEmpty(userId)) return;
@@ -39,13 +39,29 @@ public class DetallePedidoModel : PageModel
         _context.Notifications.Add(notificacion);
     }
 
+    // MÉTODO NUEVO: Creación del Evento para la Línea de Tiempo
+    private void CrearEvento(Order pedido, string status, string description, string? reference = null)
+    {
+        var nuevoEvento = new OrderEvent
+        {
+            OrderId = pedido.Id,
+            Status = status,
+            Description = description,
+            Timestamp = DateTime.Now,
+            Reference = reference
+        };
+        _context.OrderEvents.Add(nuevoEvento);
+    }
+
     public IActionResult OnGet(int id)
     {
-        // Añadir Includes necesarios para el detalle, ej. items y usuario
+        // Añadimos Includes necesarios para la vista de detalle
         Pedido = _context.Orders
             .Include(o => o.Items)!
                 .ThenInclude(oi => oi.Product)
             .Include(o => o.User)
+            // IMPORTANTE: Incluir OrderEvents para mostrarlos en el detalle
+            .Include(o => o.OrderEvents.OrderByDescending(e => e.Timestamp))
             .FirstOrDefault(o => o.Id == id);
 
         if (Pedido == null)
@@ -59,7 +75,10 @@ public class DetallePedidoModel : PageModel
         if (pedido == null) return NotFound();
         pedido.Status = "Preparando";
         pedido.UpdatedAt = DateTime.Now;
+
+        CrearEvento(pedido, "Preparando", "El pedido ha sido recibido y está siendo preparado para el despacho.");
         await CrearNotificacion(pedido.UserId, "Pedido en Preparación", $"Tu pedido #{pedido.Id} se está preparando.");
+
         await _context.SaveChangesAsync();
         TempData["orderMessage"] = "Pedido marcado como 'Preparando'";
         return RedirectToPage(new { id });
@@ -71,7 +90,10 @@ public class DetallePedidoModel : PageModel
         if (pedido == null) return NotFound();
         pedido.Status = "Despachado";
         pedido.UpdatedAt = DateTime.Now;
+
+        CrearEvento(pedido, "Despachado", "El pedido ha sido embalado y entregado al servicio de correos.");
         await CrearNotificacion(pedido.UserId, "Pedido Despachado", $"Tu pedido #{pedido.Id} ha sido despachado.");
+
         await _context.SaveChangesAsync();
         TempData["orderMessage"] = "Pedido despachado.";
         return RedirectToPage(new { id });
@@ -83,13 +105,15 @@ public class DetallePedidoModel : PageModel
         if (pedido == null) return NotFound();
         pedido.Status = "En camino";
         pedido.UpdatedAt = DateTime.Now;
-        await CrearNotificacion(pedido.UserId, "Pedido En Camino", $"Tu pedido #{pedido.Id} está en camino a tu domicilio.");
+
+        CrearEvento(pedido, "En camino", "El paquete se encuentra en tránsito hacia la dirección de envío.");
+        await CrearNotificacion(pedido.UserId, "Pedido En Camino", $"¡Buenas noticias! Tu pedido #{pedido.Id} está en camino a tu domicilio.");
+
         await _context.SaveChangesAsync();
         TempData["orderMessage"] = "Pedido en camino.";
         return RedirectToPage(new { id });
     }
 
-    // HANDLER MODIFICADO: Solo Envía Email de Aviso
     public async Task<IActionResult> OnPostEntregarAsync(int id)
     {
         var pedido = await _context.Orders.FindAsync(id);
@@ -97,11 +121,8 @@ public class DetallePedidoModel : PageModel
 
         pedido.Status = "Entregado";
         pedido.UpdatedAt = DateTime.Now;
-        // pedido.DeliveryDate = DateTime.Now; // La fecha real se establece al confirmar el cliente
 
-        // 1. ELIMINADA LA NOTIFICACIÓN INTERNA
-
-        // 2. MODIFICAR EL CONTENIDO DEL EMAIL
+        // 1. OBTENER URL DE SEGUIMIENTO
         var trackingUrl = Url.Page(
             "/Orders/TrackOrder",
             pageHandler: null,
@@ -109,16 +130,24 @@ public class DetallePedidoModel : PageModel
             protocol: Request.Scheme
         );
 
-        // CONTENIDO DEL CORREO SIN BOTONES DE CONFIRMACIÓN
+        // 2. CREACIÓN DEL EVENTO
+        CrearEvento(pedido, "Entregado", "El transportista marcó la entrega como completada.");
+
+        // 3. CONTENIDO DEL CORREO (Aviso)
         string mensajeHtml = $@"
             <p>Estimado/a cliente,</p>
             <p>Tu pedido <strong>#{pedido.Id}</strong> ha sido marcado como <strong>Entregado</strong>.</p>
+            <p>Para confirmar la recepción de los productos, por favor visita el siguiente enlace:</p>
             <p>
-                Para confirmar la recepción de los productos o ver el detalle completo de tu pedido, por favor visita el Ver Tracking para confirmar el pedido.
+                <a href='{trackingUrl}' style='color: #1565C0; text-decoration: none;'>
+                    Ver Seguimiento del Pedido #{pedido.Id}
+                </a>
             </p>
-            <p>Gracias por tu compra.</p>";
+            <p>Una vez allí, podrás confirmar la recepción y calificar tu experiencia. Gracias por tu compra.</p>";
 
         await _emailSender.SendEmailAsync(pedido.CustomerEmail, $"Aviso de Entrega Pedido #{pedido.Id}", mensajeHtml);
+
+        // 4. ELIMINADA LA CREACIÓN DE NOTIFICACIÓN INTERNA
 
         await _context.SaveChangesAsync();
         TempData["orderMessage"] = "Pedido marcado como Entregado. Se envió correo de aviso al cliente.";
@@ -131,7 +160,10 @@ public class DetallePedidoModel : PageModel
         if (pedido == null) return NotFound();
         pedido.Status = "Cancelado";
         pedido.UpdatedAt = DateTime.Now;
+
+        CrearEvento(pedido, "Cancelado", "El pedido ha sido cancelado por el administrador.");
         await CrearNotificacion(pedido.UserId, "Pedido Cancelado", $"Tu pedido #{pedido.Id} ha sido cancelado.");
+
         await _context.SaveChangesAsync();
         TempData["orderMessage"] = "Pedido cancelado.";
         return RedirectToPage(new { id });

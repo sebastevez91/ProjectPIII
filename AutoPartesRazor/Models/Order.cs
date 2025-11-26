@@ -78,4 +78,5 @@ public class Order
     public Coupon? Coupon { get; set; }
 
     public int? Calificacion { get; set; }
+    public List<OrderEvent>? OrderEvents { get; set; } = new();
 }

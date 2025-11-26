@@ -39,13 +39,13 @@
             </dd>
 
             <dt class="col-sm-4">Cliente:</dt>
-            <dd class="col-sm-8">@(Model.Pedido.User?.FullName)</dd>
+            <dd class="col-sm-8">@(Model.Pedido.User?.FullName)</dd> @* Usamos FirstName y LastName *@
 
             <dt class="col-sm-4">Fecha de Creación:</dt>
             <dd class="col-sm-8">@Model.Pedido.CreatedAt.ToShortDateString()</dd>
 
             <dt class="col-sm-4">Dirección de Envío:</dt>
-            <dd class="col-sm-8">@Model.Pedido.ShippingAddress</dd> @* Asumo que tienes esta propiedad en Order *@
+            <dd class="col-sm-8">@Model.Pedido.ShippingAddress</dd>
         </dl>
 
         <hr />
@@ -99,7 +99,7 @@
             else
             {
                 <div class="card-body border border-warning rounded shadow-lg mt-3 p-4
-            animate__animated animate__pulse animate__infinite"
+                     animate__animated animate__pulse animate__infinite"
                      style="--animate-duration: 2s;">
 
                     <div class="d-flex justify-content-between align-items-center flex-wrap">
@@ -109,18 +109,12 @@
                             <span class="fs-5 fw-semibold text-dark">¡Acción Requerida! Por favor, confirma que has recibido el pedido.</span>
                         </div>
 
-                        <div class="alert alert-info border-0 mt-3 d-flex justify-content-between align-items-center flex-wrap">
-                            <div class="py-2">
-                                <i class="fa-solid fa-box-open"></i> Por favor, confirma que has recibido el pedido.
-                            </div>
-
-                            <form method="post" asp-page-handler="ConfirmReception" class="py-2 js-confirm-reception-form">
-                                <input type="hidden" asp-for="Id" />
-                                <button type="submit" class="btn btn-success btn-lg shadow-sm">
-                                    <i class="fa-solid fa-check"></i> Confirmar Pedido
-                                </button>
-                            </form>
-                        </div>
+                        <form method="post" asp-page-handler="ConfirmReception" class="py-2 js-confirm-reception-form">
+                            <input type="hidden" asp-for="Id" />
+                            <button type="submit" class="btn btn-success btn-lg shadow-sm">
+                                <i class="fa-solid fa-check"></i> Confirmar Pedido
+                            </button>
+                        </form>
                     </div>
                 </div>
             }
@@ -154,6 +148,40 @@
                 <li class="list-group-item text-center text-muted">No se encontraron artículos en este pedido.</li>
             }
         </ul>
+
+        <hr class="my-5" />
+        <h4 class="mt-4 mb-4"><i class="fa-solid fa-clock-rotate-left"></i> Historial Detallado de Seguimiento</h4>
+
+        @if (Model.Pedido.OrderEvents != null && Model.Pedido.OrderEvents.Any())
+        {
+            <div class="timeline-container">
+                @foreach (var evento in Model.Pedido.OrderEvents.OrderBy(e => e.Timestamp))
+                {
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content card border-light shadow-sm mb-3">
+                            <div class="card-body">
+                                <h6 class="mb-1 text-primary">@evento.Status</h6>
+                                <p class="mb-1">@evento.Description</p>
+                                <small class="text-muted">
+                                    <i class="fa-solid fa-clock"></i> @evento.Timestamp.ToString("dd/MM/yyyy HH:mm")
+                                </small>
+                                @if (!string.IsNullOrEmpty(evento.Reference))
+                                {
+                                    <p class="mb-0 mt-1"><small>Ref: @evento.Reference</small></p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-info text-center">
+                Aún no hay eventos registrados para este pedido.
+            </div>
+        }
     </div>
     <div class="card-footer text-end">
         <h4>Total: $@Model.Pedido.Total.ToString("N2")</h4>
@@ -163,6 +191,39 @@
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+        // ===============================================
+        // INICIO: LÓGICA DE CONFIRMACIÓN CON SWEETALERT2
+        // ===============================================
+
+        document.querySelectorAll('.js-confirm-reception-form').forEach(form => {
+            form.addEventListener('submit', function (event) {
+                event.preventDefault(); // Detener el envío de formulario por defecto
+                const formActual = this;
+                const pedidoId = @Model.Pedido.Id;
+
+                Swal.fire({
+                    title: '¿Confirmar Recepción?',
+                    html: `Estás a punto de confirmar la recepción del <strong>Pedido #${pedidoId}</strong>. <br> Esta acción es **irreversible**.`,
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#28a745', // Verde
+                    cancelButtonColor: '#d33', // Rojo
+                    confirmButtonText: '¡Sí, Confirmo haber recibido!',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Si el usuario confirma, enviamos el formulario programáticamente
+                        formActual.submit();
+                    }
+                });
+            });
+        });
+
+        // ===============================================
+        // FIN: LÓGICA DE CONFIRMACIÓN CON SWEETALERT2
+        // ===============================================
+
+
         // Lógica para la selección de estrellas (Rating)
         const ratingContainer = document.querySelector('.rating-stars');
         const inputCalificacion = document.getElementById('inputCalificacion');
@@ -174,7 +235,7 @@
             function highlightStars(count, permanent = false) {
                 document.querySelectorAll('.star-rating').forEach((star, index) => {
                     if (index < count) {
-                        star.style.color = permanent ? '#fcc419' : '#ffea00'; // Color permanente vs. color de hover
+                        star.style.color = permanent ? '#fcc419' : '#ffea00';
                     } else {
                         star.style.color = '#ccd1d1';
                     }
@@ -194,8 +255,8 @@
                 if (e.target.classList.contains('star-rating')) {
                     const value = parseInt(e.target.getAttribute('data-value'));
                     inputCalificacion.value = value;
-                    highlightStars(value, true); // Establecer color permanente
-                    btnCalificar.disabled = false; // Habilitar el botón de envío
+                    highlightStars(value, true);
+                    btnCalificar.disabled = false;
                 }
             });
 
@@ -219,4 +280,43 @@
             }
         }
     </script>
+
+    @* ESTILOS PARA EL TIMELINE (Implementación de Línea de Tiempo de Eventos) *@
+    <style>
+        .timeline-container {
+            position: relative;
+            padding-left: 30px;
+        }
+
+            .timeline-container::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 10px;
+                width: 2px;
+                background: #e9ecef;
+            }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            top: 6px;
+            left: 0;
+            width: 20px;
+            height: 20px;
+            background: #0d6efd; /* Color primario de Bootstrap */
+            border-radius: 50%;
+            border: 4px solid #fff;
+            z-index: 10;
+        }
+
+        .timeline-content {
+            margin-left: 30px;
+        }
+    </style>
 }

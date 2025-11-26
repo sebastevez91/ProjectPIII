@@ -20,7 +20,7 @@ public class TrackOrderModel : PageModel
     public Order? Pedido { get; set; }
 
     [TempData]
-    public string? StatusMessage { get; set; } // Mensaje para éxito/error en cualquier acción
+    public string? StatusMessage { get; set; }
 
     public async Task<IActionResult> OnGetAsync()
     {
@@ -31,6 +31,8 @@ public class TrackOrderModel : PageModel
             .Include(o => o.Items)!
                 .ThenInclude(oi => oi.Product)
             .Include(o => o.User)
+            // IMPORTANTE: Incluir OrderEvents y ordenarlos para el Timeline
+            .Include(o => o.OrderEvents.OrderByDescending(e => e.Timestamp))
             .Where(m => m.Id == Id);
 
         if (!isAdmin)
@@ -46,23 +48,20 @@ public class TrackOrderModel : PageModel
         return Page();
     }
 
-    // HANDLER DE CALIFICACIÓN (Usa OnPostAsync por defecto, se llama desde el formulario)
     public async Task<IActionResult> OnPostAsync()
     {
+        // Lógica de Calificación
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
         var pedido = await _context.Orders
             .Include(o => o.User)
             .FirstOrDefaultAsync(o => o.Id == Id);
 
-        // 1. Verificación de propiedad y estado
         if (pedido == null || pedido.UserId != userId || pedido.Status != "Entregado")
         {
             StatusMessage = "Error: El pedido no puede ser calificado en este momento.";
             return RedirectToPage(new { id = Id });
         }
 
-        // 2. REGLA CLAVE: Solo puede calificar si ya confirmó la recepción
         if (pedido.ClientConfirmed != true)
         {
             StatusMessage = "Error: Primero debes confirmar la recepción del pedido para calificarlo.";
@@ -73,7 +72,7 @@ public class TrackOrderModel : PageModel
         {
             pedido.Calificacion = nota;
             await _context.SaveChangesAsync();
-            StatusMessage = $"¡Gracias! Has calificado el pedido #{Id} con {nota} estrellas. ";
+            StatusMessage = $"¡Gracias! Has calificado el pedido #{Id} con {nota} estrellas. ?";
         }
         else
         {
@@ -83,7 +82,6 @@ public class TrackOrderModel : PageModel
         return RedirectToPage(new { id = Id });
     }
 
-    // HANDLER DE CONFIRMACIÓN (Desde el botón web)
     public async Task<IActionResult> OnPostConfirmReceptionAsync()
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -102,7 +100,7 @@ public class TrackOrderModel : PageModel
         {
             order.ClientConfirmed = true;
             order.UpdatedAt = DateTime.Now;
-            order.DeliveryDate = DateTime.Now; // Establece la fecha de entrega real
+            order.DeliveryDate = DateTime.Now;
 
             await _context.SaveChangesAsync();
 

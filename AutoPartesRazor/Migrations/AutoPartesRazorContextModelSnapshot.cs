@@ -397,6 +397,40 @@ namespace AutoPartesRazor.Migrations
                     b.ToTable("Orders");
                 });
 
+            modelBuilder.Entity("AutoPartesRazor.Models.OrderEvent", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Reference")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderEvents");
+                });
+
             modelBuilder.Entity("AutoPartesRazor.Models.OrderItem", b =>
                 {
                     b.Property<int>("Id")
@@ -1176,6 +1210,17 @@ namespace AutoPartesRazor.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("AutoPartesRazor.Models.OrderEvent", b =>
+                {
+                    b.HasOne("AutoPartesRazor.Models.Order", "Order")
+                        .WithMany("OrderEvents")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+                });
+
             modelBuilder.Entity("AutoPartesRazor.Models.OrderItem", b =>
                 {
                     b.HasOne("AutoPartesRazor.Models.Order", "Order")
@@ -1445,6 +1490,8 @@ namespace AutoPartesRazor.Migrations
             modelBuilder.Entity("AutoPartesRazor.Models.Order", b =>
                 {
                     b.Navigation("Items");
+
+                    b.Navigation("OrderEvents");
                 });
 
             modelBuilder.Entity("AutoPartesRazor.Models.Product", b =>

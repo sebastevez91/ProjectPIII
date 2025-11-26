@@ -15,6 +15,16 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
     {
         base.OnModelCreating(modelBuilder);
 
+        // ============================================
+        // RELACIÓN AGREGADA: Order - OrderEvent (Timeline)
+        // ============================================
+        modelBuilder.Entity<OrderEvent>()
+            .HasOne(oe => oe.Order)
+            .WithMany(o => o.OrderEvents) // Asumiendo que agregaste 'public List<OrderEvent>? OrderEvents { get; set; }' a tu modelo Order.cs
+            .HasForeignKey(oe => oe.OrderId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+
         // Relación Product - Brand
         modelBuilder.Entity<Product>()
             .HasOne(p => p.Brand)
@@ -366,7 +376,7 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
     public DbSet<AutoPartesRazor.Models.StockAdjustment> StockAdjustments { get; set; }
     public DbSet<AutoPartesRazor.Models.SupplierClaim> SupplierClaims { get; set; }
     public DbSet<AutoPartesRazor.Models.Coupon> Coupons { get; set; } = default!;
-
+    public DbSet<AutoPartesRazor.Models.OrderEvent> OrderEvents { get; set; } = default!; // <- ¡NUEVO!
 
     // ============================================
     // MÉTODO PARA GUARDAR CON SOFT DELETE AUTOMÁTICO
