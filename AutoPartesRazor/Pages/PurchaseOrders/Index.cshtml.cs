@@ -1,5 +1,6 @@
 using AutoPartesRazor.Data;
 using AutoPartesRazor.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -7,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AutoPartesRazor.Pages.PurchaseOrders;
 
+[Authorize]
 public class IndexModel : PageModel
 {
     private readonly AutoPartesRazorContext _context;
@@ -33,7 +35,7 @@ public class IndexModel : PageModel
         {
             new { Value = "Pending", Text = "Pendiente" },
             new { Value = "Approved", Text = "Aprobado" },
-            new { Value = "Received", Text = "Recibido" },
+            //new { Value = "Received", Text = "Recibido" },
             new { Value = "Cancelled", Text = "Cancelado" }
         }, "Value", "Text");
     }
@@ -68,7 +70,7 @@ public class IndexModel : PageModel
 
         await _context.SaveChangesAsync();
 
-        TempData["SuccessMessage"] = $"Estado actualizado a: {GetStatusText(status)}";
+        TempData["SuccessMessage"] = $"Orden N° #{orderId} Estado actualizado a: {GetStatusText(status)}";
         return RedirectToPage();
     }
 

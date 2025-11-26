@@ -22,9 +22,39 @@ public class CreateModel : PageModel
     public SelectList ProductList { get; set; }
     public SelectList SupplierList { get; set; }
 
-    public async Task<IActionResult> OnGetAsync()
+    // Método GET sin parámetros - Carga la página vacía
+    public async Task<IActionResult> OnGetAsync(int? productId = null, int? supplierId = null)
     {
         await LoadListsAsync();
+
+        // Si se reciben productId y supplierId, pre-cargar los datos
+        if (productId.HasValue && supplierId.HasValue)
+        {
+            PurchaseOrder.ProductId = productId.Value;
+            PurchaseOrder.SupplierId = supplierId.Value;
+            PurchaseOrder.Quantity = 1;
+
+            // Obtener el precio del proveedor para mostrarlo
+            var productSupplier = await _context.ProductSuppliers
+                .FirstOrDefaultAsync(ps =>
+                    ps.ProductId == productId.Value &&
+                    ps.SupplierId == supplierId.Value);
+
+            if (productSupplier?.SupplyPrice != null)
+            {
+                ViewData["InitialPrice"] = productSupplier.SupplyPrice;
+            }
+            else
+            {
+                // Si no hay precio del proveedor, calcular el 65% del precio de venta
+                var product = await _context.Products.FindAsync(productId.Value);
+                if (product != null)
+                {
+                    ViewData["InitialPrice"] = product.Price * 0.65m;
+                }
+            }
+        }
+
         return Page();
     }
 

@@ -167,7 +167,7 @@ public class AdjustmentsModel : PageModel
                 .Cast<AdjustmentType>()
                 .Select(e => new {
                     Value = (int)e,
-                    Text = e.ToString()
+                    Text = GetAdjustmentType(e)
                 }),
             "Value", "Text");
 
@@ -175,7 +175,22 @@ public class AdjustmentsModel : PageModel
             await _context.Suppliers.Where(s => !s.IsDeleted).ToListAsync(),
             "Id", "Name");
     }
+
+    public string GetAdjustmentType(AutoPartesRazor.Models.Enum.AdjustmentType status)
+    {
+        return status switch
+        {
+            AutoPartesRazor.Models.Enum.AdjustmentType.DamagedProduct => "Producto dañado",
+            AutoPartesRazor.Models.Enum.AdjustmentType.LostProduct => "Producto perdido",
+            AutoPartesRazor.Models.Enum.AdjustmentType.Other => "Otro",
+            AutoPartesRazor.Models.Enum.AdjustmentType.PhysicalInventory => "Inventario",
+            AutoPartesRazor.Models.Enum.AdjustmentType.ReceptionDiscrepancy => "Discrepancia",
+            AutoPartesRazor.Models.Enum.AdjustmentType.SystemError => "Error de sistema",
+            _ => status.ToString()
+        };
+    }
 }
+
 
 public class StockAdjustmentInput
 {

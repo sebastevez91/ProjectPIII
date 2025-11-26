@@ -1,4 +1,267 @@
 ﻿@page
 @model AutoPartesRazor.Pages.Suppliers.ClaimsModel
 @{
+    ViewData["Title"] = "Reclamos a Proveedores";
+}
+
+<div class="container-fluid mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2><i class="bi bi-exclamation-triangle"></i> Reclamos a Proveedores</h2>
+        <div>
+            <a asp-page="CreateClaim" class="btn btn-warning me-2">
+                <i class="bi bi-plus-circle"></i> Nuevo Reclamo
+            </a>
+            <a asp-page="Index" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Volver a Proveedores
+            </a>
+        </div>
+    </div>
+    <hr />
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+            <i class="bi bi-check-circle"></i> @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show">
+            <i class="bi bi-x-circle"></i> @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- Filtros -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="get">
+                <div class="row g-3 align-items-end">
+                    <div class="col-md-3">
+                        <label class="form-label">Filtrar por Estado</label>
+                        <select name="status" class="form-select" onchange="this.form.submit()">
+                            <option value="all">Todos los Estados</option>
+                            <option value="Pending">Pendientes</option>
+                            <option value="InProgress">En Proceso</option>
+                            <option value="ResolvedAccepted">Resueltos - Aceptados</option>
+                            <option value="ResolvedRejected">Resueltos - Rechazados</option>
+                            <option value="Cancelled">Cancelados</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Lista de Reclamos -->
+    @if (Model.Claims.Any())
+    {
+        <div class="row">
+            @foreach (var claim in Model.Claims)
+            {
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 @GetCardBorderClass(claim.Status)">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">
+                                <i class="bi bi-file-text"></i> Reclamo #@claim.Id
+                            </h5>
+                            <span class="badge @GetStatusBadgeClass(claim.Status)">
+                                @GetStatusText(claim.Status)
+                            </span>
+                        </div>
+                        <div class="card-body">
+                            <h6 class="card-subtitle mb-2 text-muted">@claim.Subject</h6>
+
+                            <div class="mb-3">
+                                <strong><i class="bi bi-building"></i> Proveedor:</strong>
+                                @claim.Supplier?.Name
+                            </div>
+
+                            @if (claim.PurchaseOrder != null)
+                            {
+                                <div class="mb-2">
+                                    <strong><i class="bi bi-box"></i> Producto:</strong>
+                                    @claim.PurchaseOrder.Product?.Name
+                                </div>
+                                <div class="mb-2">
+                                    <strong><i class="bi bi-receipt"></i> Orden de Compra:</strong>
+                                    #@claim.PurchaseOrderId
+                                </div>
+                            }
+
+                            @if (claim.StockAdjustment != null)
+                            {
+                                <div class="mb-2">
+                                    <strong><i class="bi bi-box"></i> Producto:</strong>
+                                    @claim.StockAdjustment.Product?.Name
+                                </div>
+                                <div class="mb-2">
+                                    <strong><i class="bi bi-sliders"></i> Ajuste de Stock:</strong>
+                                    #@claim.StockAdjustmentId
+                                </div>
+                            }
+
+                            @if (claim.ExpectedQuantity.HasValue && claim.ReceivedQuantity.HasValue)
+                            {
+                                <div class="row mt-3">
+                                    <div class="col-6">
+                                        <div class="text-center p-2 bg-light rounded">
+                                            <small class="text-muted">Esperado</small>
+                                            <div class="fs-5 fw-bold">@claim.ExpectedQuantity</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="text-center p-2 bg-light rounded">
+                                            <small class="text-muted">Recibido</small>
+                                            <div class="fs-5 fw-bold text-danger">@claim.ReceivedQuantity</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-center mt-2">
+                                    <span class="badge bg-danger">
+                                        Diferencia: @(claim.ReceivedQuantity - claim.ExpectedQuantity) unidades
+                                    </span>
+                                </div>
+                            }
+
+                            @if (claim.ClaimAmount.HasValue)
+                            {
+                                <div class="mt-3 text-center">
+                                    <strong>Monto Reclamado:</strong>
+                                    <span class="text-danger fs-5">$@claim.ClaimAmount.Value.ToString("N2")</span>
+                                </div>
+                            }
+
+                            <hr />
+
+                            <div class="mb-2">
+                                <strong>Descripción:</strong>
+                                <p class="mb-0 small" style="white-space: pre-line;">@claim.Description</p>
+                            </div>
+
+                            <div class="mt-3">
+                                <small class="text-muted">
+                                    <i class="bi bi-calendar"></i> Fecha: @claim.ClaimDate.ToString("dd/MM/yyyy HH:mm")
+                                </small>
+                            </div>
+
+                            @if (claim.ResolutionDate.HasValue)
+                            {
+                                <div class="mt-2">
+                                    <small class="text-muted">
+                                        <i class="bi bi-check-circle"></i> Resuelto: @claim.ResolutionDate.Value.ToString("dd/MM/yyyy HH:mm")
+                                    </small>
+                                </div>
+                            }
+
+                            @if (!string.IsNullOrEmpty(claim.Resolution))
+                            {
+                                <div class="alert alert-info mt-3 mb-0">
+                                    <strong>Resolución:</strong>
+                                    <p class="mb-0 small">@claim.Resolution</p>
+                                </div>
+                            }
+                        </div>
+
+                        @if (claim.Status == AutoPartesRazor.Models.Enum.ClaimStatus.Pending ||
+                                        claim.Status == AutoPartesRazor.Models.Enum.ClaimStatus.InProgress)
+                        {
+                            <div class="card-footer">
+                                <button type="button" class="btn btn-sm btn-primary w-100"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#updateModal@claim.Id">
+                                    <i class="bi bi-pencil"></i> Actualizar Estado
+                                </button>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <!-- Modal para actualizar estado -->
+                <div class="modal fade" id="updateModal@claim.Id" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form method="post" asp-page-handler="UpdateStatus">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Actualizar Reclamo #@claim.Id</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <input type="hidden" name="UpdateInput.ClaimId" value="@claim.Id" />
+
+                                    <div class="mb-3">
+                                        <label class="form-label">Nuevo Estado</label>
+                                        <select name="UpdateInput.NewStatus" class="form-select" required>
+                                            <option value="">-- Seleccione --</option>
+                                            <option value="InProgress">En Proceso</option>
+                                            <option value="ResolvedAccepted">Resuelto - Aceptado</option>
+                                            <option value="ResolvedRejected">Resuelto - Rechazado</option>
+                                            <option value="Cancelled">Cancelar</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label">Resolución / Comentarios</label>
+                                        <textarea name="UpdateInput.Resolution" class="form-control"
+                                          rows="4" placeholder="Describa la resolución o acción tomada..."></textarea>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info text-center">
+            <i class="bi bi-info-circle"></i> No hay reclamos registrados
+        </div>
+    }
+</div>
+
+@functions {
+    private string GetStatusBadgeClass(AutoPartesRazor.Models.Enum.ClaimStatus status)
+    {
+        return status switch
+        {
+            AutoPartesRazor.Models.Enum.ClaimStatus.Pending => "bg-warning text-dark",
+            AutoPartesRazor.Models.Enum.ClaimStatus.InProgress => "bg-info",
+            AutoPartesRazor.Models.Enum.ClaimStatus.ResolvedAccepted => "bg-success",
+            AutoPartesRazor.Models.Enum.ClaimStatus.ResolvedRejected => "bg-danger",
+            AutoPartesRazor.Models.Enum.ClaimStatus.Cancelled => "bg-secondary",
+            _ => "bg-secondary"
+        };
+    }
+
+    private string GetCardBorderClass(AutoPartesRazor.Models.Enum.ClaimStatus status)
+    {
+        return status switch
+        {
+            AutoPartesRazor.Models.Enum.ClaimStatus.Pending => "border-warning",
+            AutoPartesRazor.Models.Enum.ClaimStatus.InProgress => "border-info",
+            AutoPartesRazor.Models.Enum.ClaimStatus.ResolvedAccepted => "border-success",
+            AutoPartesRazor.Models.Enum.ClaimStatus.ResolvedRejected => "border-danger",
+            _ => ""
+        };
+    }
+
+    private string GetStatusText(AutoPartesRazor.Models.Enum.ClaimStatus status)
+    {
+        return status switch
+        {
+            AutoPartesRazor.Models.Enum.ClaimStatus.Pending => "Pendiente",
+            AutoPartesRazor.Models.Enum.ClaimStatus.InProgress => "En Proceso",
+            AutoPartesRazor.Models.Enum.ClaimStatus.ResolvedAccepted => "Resuelto - Aceptado",
+            AutoPartesRazor.Models.Enum.ClaimStatus.ResolvedRejected => "Resuelto - Rechazado",
+            AutoPartesRazor.Models.Enum.ClaimStatus.Cancelled => "Cancelado",
+            _ => status.ToString()
+        };
+    }
 }
