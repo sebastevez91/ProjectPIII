@@ -2,34 +2,121 @@ using AutoPartesRazor.Data;
 using AutoPartesRazor.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
+namespace AutoPartesRazor.Pages.Orders;
+
+[Authorize]
 public class TrackOrderModel : PageModel
 {
     private readonly AutoPartesRazorContext _context;
     public TrackOrderModel(AutoPartesRazorContext context) => _context = context;
-    public Order Pedido { get; set; } = default!;
-    public IActionResult OnGet(int id)
+
+    [BindProperty(SupportsGet = true)]
+    public int Id { get; set; }
+
+    public Order? Pedido { get; set; }
+
+    [TempData]
+    public string? StatusMessage { get; set; } // Mensaje para éxito/error en cualquier acción
+
+    public async Task<IActionResult> OnGetAsync()
     {
-        Pedido = _context.Orders.FirstOrDefault(o => o.Id == id);
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var isAdmin = User.IsInRole("Admin");
+
+        var query = _context.Orders
+            .Include(o => o.Items)!
+                .ThenInclude(oi => oi.Product)
+            .Include(o => o.User)
+            .Where(m => m.Id == Id);
+
+        if (!isAdmin)
+        {
+            if (userId == null) return Forbid();
+            query = query.Where(o => o.UserId == userId);
+        }
+
+        Pedido = await query.FirstOrDefaultAsync();
+
         if (Pedido == null) return NotFound();
-        // Seguridad: permite solo al dueño del pedido o al admin
-        if (User.IsInRole("Admin") || Pedido.CustomerEmail == User.Identity?.Name)
-            return Page();
-        return Forbid();
+
+        return Page();
     }
-    public async Task<IActionResult> OnPostAsync(int id)
+
+    // HANDLER DE CALIFICACIÓN (Usa OnPostAsync por defecto, se llama desde el formulario)
+    public async Task<IActionResult> OnPostAsync()
     {
-        var pedido = await _context.Orders.FindAsync(id);
-        if (pedido == null || pedido.Status != "Entregado")
-            return NotFound();
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-        if (Request.Form.TryGetValue("Calificacion", out var calif) && int.TryParse(calif, out int nota))
+        var pedido = await _context.Orders
+            .Include(o => o.User)
+            .FirstOrDefaultAsync(o => o.Id == Id);
+
+        // 1. Verificación de propiedad y estado
+        if (pedido == null || pedido.UserId != userId || pedido.Status != "Entregado")
+        {
+            StatusMessage = "Error: El pedido no puede ser calificado en este momento.";
+            return RedirectToPage(new { id = Id });
+        }
+
+        // 2. REGLA CLAVE: Solo puede calificar si ya confirmó la recepción
+        if (pedido.ClientConfirmed != true)
+        {
+            StatusMessage = "Error: Primero debes confirmar la recepción del pedido para calificarlo.";
+            return RedirectToPage(new { id = Id });
+        }
+
+        if (Request.Form.TryGetValue("Calificacion", out var calif) && int.TryParse(calif, out int nota) && nota >= 1 && nota <= 5)
+        {
             pedido.Calificacion = nota;
+            await _context.SaveChangesAsync();
+            StatusMessage = $"¡Gracias! Has calificado el pedido #{Id} con {nota} estrellas. ";
+        }
+        else
+        {
+            StatusMessage = "Error: Calificación no válida.";
+        }
 
-        await _context.SaveChangesAsync();
-        return RedirectToPage(new { id });
+        return RedirectToPage(new { id = Id });
     }
 
+    // HANDLER DE CONFIRMACIÓN (Desde el botón web)
+    public async Task<IActionResult> OnPostConfirmReceptionAsync()
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
+        var order = await _context.Orders
+            .Include(o => o.User)
+            .FirstOrDefaultAsync(o => o.Id == Id && o.UserId == userId);
 
+        if (order == null)
+        {
+            StatusMessage = "Error: Pedido no encontrado o no autorizado.";
+            return RedirectToPage(new { id = Id });
+        }
+
+        if (order.Status == "Entregado" && !order.ClientConfirmed)
+        {
+            order.ClientConfirmed = true;
+            order.UpdatedAt = DateTime.Now;
+            order.DeliveryDate = DateTime.Now; // Establece la fecha de entrega real
+
+            await _context.SaveChangesAsync();
+
+            StatusMessage = $"¡Gracias, {order.User.FullName ?? "Cliente"}! Has confirmado la recepción del pedido #{order.Id} exitosamente. ? Ahora puedes calificar tu experiencia.";
+        }
+        else if (order.ClientConfirmed)
+        {
+            StatusMessage = $"El pedido #{order.Id} ya había sido confirmado previamente. ??";
+        }
+        else
+        {
+            StatusMessage = "El pedido no está en el estado 'Entregado' o no puede ser confirmado. ??";
+        }
+
+        return RedirectToPage(new { id = Id });
+    }
 }

@@ -48,6 +48,11 @@ public class Order
     public bool IsDeleted { get; set; } = false;
     public DateTime? DeletedAt { get; set; }
 
+    [Display(Name = "Confirmado por Cliente")]
+    public bool ClientConfirmed { get; set; } = false;
+
+    public DateTime? DeliveryDate { get; set; }
+
     // ============================================
     // CAMPOS DE CUPÓN
     // ============================================

@@ -35,7 +35,7 @@ public class ConfirmationModel : PageModel
     public async Task<IActionResult> OnGetDownloadAsync(int id)
     {
         var order = await _context.Orders
-            .Include(o => o.Items)
+            .Include(o => o.Items)!
                 .ThenInclude(oi => oi.Product)
             .FirstOrDefaultAsync(o => o.Id == id);
 

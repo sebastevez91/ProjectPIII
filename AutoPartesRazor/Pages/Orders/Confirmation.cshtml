@@ -14,6 +14,6 @@
     <div class="mb-3">
         <a asp-page="/Products/Index" class="btn btn-primary">Seguir comprando</a>
         <a asp-page="./Confirmation" asp-route-id="@Model.OrderId" asp-route-handler="Download" class="btn btn-primary ms-2">Descargar comprobante</a>
-        <a asp-page="/Orders/Details" asp-route-id="@Model.OrderId" class="btn btn-link ms-2">Ver detalles del pedido</a>
+        <a asp-page="/Orders/TrackOrder" asp-route-id="@Model.OrderId" class="btn btn-link ms-2">Ver Seguimiento del Pedido</a>
     </div>
 </div>

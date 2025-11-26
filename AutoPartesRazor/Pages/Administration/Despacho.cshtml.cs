@@ -23,14 +23,26 @@ public class DespachoModel : PageModel
             .ToListAsync();
     }
 
-    public async Task<IActionResult> OnPostDespacharAsync(int id)
+    // Método Modificado: Ahora el primer paso es "Preparando"
+    public async Task<IActionResult> OnPostPrepararAsync(int id)
     {
         var pedido = await _context.Orders.FindAsync(id);
+
         if (pedido == null)
             return NotFound();
-        pedido.Status = "Despachado";
+
+        // El nuevo estado es "Preparando"
+        pedido.Status = "Preparando";
+
+        // Aquí podrías integrar el registro en OrderEvent si sigues la idea del Timeline.
+        // Por ahora, solo guardamos el cambio de estado.
         await _context.SaveChangesAsync();
+
         TempData["DespachoOK"] = true;
-        return RedirectToPage();
+
+        // Recargamos la lista para que el pedido despachado desaparezca.
+        await OnGetAsync();
+
+        return Page();
     }
 }

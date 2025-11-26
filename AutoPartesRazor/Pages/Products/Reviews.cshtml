@@ -157,14 +157,13 @@
                                 @if (User.Identity?.IsAuthenticated == true)
                                 {
                                     var userVote = Model.UserVotes.FirstOrDefault(v => v.ReviewId == review.Id);
-                                    
+
                                     <form method="post" class="d-inline">
                                         <input type="hidden" name="reviewId" value="@review.Id" />
                                         <input type="hidden" name="isHelpful" value="true" />
-                                        <button type="submit" 
+                                        <button type="submit"
                                                 asp-page-handler="Vote"
-                                                class="btn btn-sm @(userVote?.IsHelpful == true ? "btn-success" : "btn-outline-success")"
-                                                @* @(userVote != null ? "disabled" : "") *@>
+                                                class="btn btn-sm @(userVote?.IsHelpful == true ? "btn-success" : "btn-outline-success")">
                                             <i class="fa-solid fa-thumbs-up me-1"></i>
                                             Sí (@review.HelpfulCount)
                                         </button>
@@ -173,10 +172,9 @@
                                     <form method="post" class="d-inline">
                                         <input type="hidden" name="reviewId" value="@review.Id" />
                                         <input type="hidden" name="isHelpful" value="false" />
-                                        <button type="submit" 
+                                        <button type="submit"
                                                 asp-page-handler="Vote"
-                                                class="btn btn-sm @(userVote?.IsHelpful == false ? "btn-danger" : "btn-outline-danger")"
-                                                @* @(userVote != null ? "disabled" : "") *@>
+                                                class="btn btn-sm @(userVote?.IsHelpful == false ? "btn-danger" : "btn-outline-danger")">
                                             <i class="fa-solid fa-thumbs-down me-1"></i>
                                             No (@review.NotHelpfulCount)
                                         </button>

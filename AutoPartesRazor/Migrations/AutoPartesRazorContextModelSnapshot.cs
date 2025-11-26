@@ -322,6 +322,9 @@ namespace AutoPartesRazor.Migrations
                     b.Property<int?>("Calificacion")
                         .HasColumnType("int");
 
+                    b.Property<bool>("ClientConfirmed")
+                        .HasColumnType("bit");
+
                     b.Property<string>("CouponCode")
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
@@ -346,6 +349,9 @@ namespace AutoPartesRazor.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeliveryDate")
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("DiscountAmount")

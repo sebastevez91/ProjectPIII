@@ -1,108 +1,222 @@
 ﻿@page "{id:int}"
-@model TrackOrderModel
+@model AutoPartesRazor.Pages.Orders.TrackOrderModel
 
-<h2 class="fw-bold text-success animate__animated animate__fadeInLeft">
-    <i class="fa-solid fa-location-arrow"></i> Seguimiento del Pedido [#@Model.Pedido.Id](mailto:#@Model.Pedido.Id)
-</h2>
-
-@* Stepper visual (busca el estado actual y muestra la barra con animaciones) *@
 @{
-    var steps = new List<(string Estado, string Icon, string ColorClass)>
-    {
-        ("Pending", "fa-file-lines", "bg-secondary"),
-        ("Preparando", "fa-box-open", "bg-info"),
-        ("Despachado", "fa-truck-loading", "bg-warning"),
-        ("En camino", "fa-truck", "bg-primary"),
-        ("Entregado", "fa-check-circle", "bg-success")
-    };
-    int currentStep = steps.FindIndex(s => s.Estado == Model.Pedido.Status);
-    if (currentStep == -1) { currentStep = 0; }
+    ViewData["Title"] = $"Seguimiento del Pedido #{Model.Id}";
 }
-<div class="stepper my-4 p-2 animate__animated animate__fadeIn">
-    <div class="d-flex justify-content-between align-items-center flex-wrap">
-        @for (int i = 0; i < steps.Count; i++)
+
+<h1 class="text-center mb-4">Seguimiento del Pedido #@Model.Id</h1>
+
+@if (Model.Pedido == null)
+{
+    <div class="alert alert-danger text-center">
+        Pedido no encontrado o no tienes permiso para verlo.
+    </div>
+    return;
+}
+
+@if (!string.IsNullOrEmpty(Model.StatusMessage))
+{
+    // Lógica para determinar el color de la alerta (Mensaje de confirmación vs. Error)
+    string alertClass = Model.StatusMessage.Contains("Error") || Model.StatusMessage.Contains("no puede") || Model.StatusMessage.Contains("previamente") ? "alert-warning" : "alert-success";
+
+    <div class="alert @alertClass alert-dismissible fade show text-center mb-4 shadow-sm" role="alert">
+        <strong>@Model.StatusMessage</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+<div class="card shadow-lg">
+    <div class="card-header bg-primary text-white">
+        Detalles del Pedido
+    </div>
+    <div class="card-body">
+
+        <h5 class="mb-3 text-primary"><i class="fa-solid fa-file-invoice"></i> Resumen de la Orden</h5>
+        <dl class="row">
+            <dt class="col-sm-4">Estado:</dt>
+            <dd class="col-sm-8">
+                <span class="badge @(Model.Pedido.Status == "Entregado" ? "bg-success" : "bg-warning")">@Model.Pedido.Status</span>
+            </dd>
+
+            <dt class="col-sm-4">Cliente:</dt>
+            <dd class="col-sm-8">@(Model.Pedido.User?.FullName)</dd>
+
+            <dt class="col-sm-4">Fecha de Creación:</dt>
+            <dd class="col-sm-8">@Model.Pedido.CreatedAt.ToShortDateString()</dd>
+
+            <dt class="col-sm-4">Dirección de Envío:</dt>
+            <dd class="col-sm-8">@Model.Pedido.ShippingAddress</dd> @* Asumo que tienes esta propiedad en Order *@
+        </dl>
+
+        <hr />
+
+        @if (Model.Pedido.Status == "Entregado" && User.Identity.IsAuthenticated)
         {
-            var (estado, icono, colorClase) = steps[i];
-            var alcanzado = i <= currentStep;
-            <div class="text-center flex-fill">
-                <div class="step-circle @colorClase @(alcanzado ? "step-active animate__animated animate__bounce" : "step-inactive")">
-                    <i class="fa-solid @(icono)"></i>
-                </div>
-                <div class="step-label mt-2 fw-semibold" style="font-size:1em; color:@(alcanzado ? "#18202E" : "#bbb");">
-                    @estado
-                </div>
-            </div>
-            @if (i < steps.Count - 1)
+            <h4 class="card-title"><i class="fa-solid fa-handshake"></i> Confirmación de Recepción</h4>
+
+            @if (Model.Pedido.ClientConfirmed)
             {
-                <div class="flex-grow-1 px-1 step-line @(i < currentStep ? "step-line-active" : "")"></div>
+                <div class="alert alert-success border-0 mt-3">
+                    <i class="fa-solid fa-check-circle"></i> ¡Has confirmado la recepción de este pedido!
+                    @if (Model.Pedido.DeliveryDate.HasValue)
+                    {
+                        <p class="mb-0 mt-1"><small>Confirmado el: @Model.Pedido.DeliveryDate.Value.ToShortDateString()</small></p>
+                    }
+                </div>
+
+                <div class="card mt-4 border-info">
+                    <div class="card-body">
+                        <h5 class="card-title text-info"><i class="fa-solid fa-star"></i> Calificar tu Experiencia</h5>
+
+                        @if (Model.Pedido.Calificacion.HasValue)
+                        {
+                            <p>Ya has calificado este pedido:</p>
+                            @for (int star = 1; star <= 5; star++)
+                            {
+                                <span style="font-size:1.5em; color:@(star <= Model.Pedido.Calificacion ? "#fcc419" : "#ccd1d1");">★</span>
+                            }
+                        }
+                        else
+                        {
+                            <p>Califica tu experiencia con el pedido (1 estrella es el peor, 5 es el mejor).</p>
+
+                            <form method="post" class="d-flex align-items-center">
+                                <input type="hidden" asp-for="Id" />
+                                <div class="rating-stars" style="font-size: 2em; color: #ccd1d1; cursor: pointer;">
+                                    <span data-value="1" class="star-rating">★</span>
+                                    <span data-value="2" class="star-rating">★</span>
+                                    <span data-value="3" class="star-rating">★</span>
+                                    <span data-value="4" class="star-rating">★</span>
+                                    <span data-value="5" class="star-rating">★</span>
+                                </div>
+                                <input type="hidden" id="inputCalificacion" name="Calificacion" required min="1" max="5" />
+                                <button type="submit" id="btnCalificar" class="btn btn-primary ms-3" disabled>Enviar Calificación</button>
+                            </form>
+                        }
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="card-body border border-warning rounded shadow-lg mt-3 p-4
+            animate__animated animate__pulse animate__infinite"
+                     style="--animate-duration: 2s;">
+
+                    <div class="d-flex justify-content-between align-items-center flex-wrap">
+
+                        <div class="py-2 d-flex align-items-center gap-2">
+                            <i class="fa-solid fa-box-open fa-2x text-warning"></i>
+                            <span class="fs-5 fw-semibold text-dark">¡Acción Requerida! Por favor, confirma que has recibido el pedido.</span>
+                        </div>
+
+                        <div class="alert alert-info border-0 mt-3 d-flex justify-content-between align-items-center flex-wrap">
+                            <div class="py-2">
+                                <i class="fa-solid fa-box-open"></i> Por favor, confirma que has recibido el pedido.
+                            </div>
+
+                            <form method="post" asp-page-handler="ConfirmReception" class="py-2 js-confirm-reception-form">
+                                <input type="hidden" asp-for="Id" />
+                                <button type="submit" class="btn btn-success btn-lg shadow-sm">
+                                    <i class="fa-solid fa-check"></i> Confirmar Pedido
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             }
         }
+
+        <h4 class="mt-4"><i class="fa-solid fa-boxes-stacked"></i> Artículos del Pedido</h4>
+        <ul class="list-group shadow-sm animate__animated animate__fadeInUp">
+            @if (Model.Pedido.Items != null)
+            {
+                @foreach (var item in Model.Pedido.Items)
+                {
+                    <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                        <div class="d-flex flex-column py-2">
+                            <h6 class="mb-1">@item.Product?.Name</h6>
+                            <small class="text-muted">
+                                Cantidad: **@item.Quantity** | Precio Unitario: $@item.UnitPrice.ToString("N2")
+                            </small>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="fw-bold me-3">Subtotal: $@((item.Quantity * item.UnitPrice).ToString("N2"))</span>
+
+                            <a asp-page="/Products/Details" asp-route-id="@item.ProductId" class="btn btn-sm btn-outline-info" target="_blank">
+                                <i class="fa-solid fa-magnifying-glass"></i> Ver Producto
+                            </a>
+                        </div>
+                    </li>
+                }
+            }
+            else
+            {
+                <li class="list-group-item text-center text-muted">No se encontraron artículos en este pedido.</li>
+            }
+        </ul>
+    </div>
+    <div class="card-footer text-end">
+        <h4>Total: $@Model.Pedido.Total.ToString("N2")</h4>
     </div>
 </div>
 
-@if (Model.Pedido.Status == "Entregado" && Model.Pedido.Calificacion == null)
-{
-    <h4 class="mt-4 animate__animated animate__fadeInDown">¿Cómo fue tu experiencia?</h4>
-    <form method="post">
-        <div class="mb-3">
-            <label><b>Califica la entrega:</b></label>
-            <div>
-                @for (int i = 1; i <= 5; i++)
-                {
-                    <input type="radio" id="star-@i" name="Calificacion" value="@i" required />
-                    <label for="star-@i" style="font-size:1.6em; color:#fcc419;">★</label>
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Lógica para la selección de estrellas (Rating)
+        const ratingContainer = document.querySelector('.rating-stars');
+        const inputCalificacion = document.getElementById('inputCalificacion');
+        const btnCalificar = document.getElementById('btnCalificar');
+
+        if (ratingContainer) {
+
+            // Función para resaltar estrellas
+            function highlightStars(count, permanent = false) {
+                document.querySelectorAll('.star-rating').forEach((star, index) => {
+                    if (index < count) {
+                        star.style.color = permanent ? '#fcc419' : '#ffea00'; // Color permanente vs. color de hover
+                    } else {
+                        star.style.color = '#ccd1d1';
+                    }
+                });
+            }
+
+            // Evento al pasar el ratón (hover)
+            ratingContainer.addEventListener('mouseover', function (e) {
+                if (e.target.classList.contains('star-rating')) {
+                    const value = parseInt(e.target.getAttribute('data-value'));
+                    highlightStars(value);
                 }
-            </div>
-        </div>
-        <button type="submit" class="btn btn-success animate__animated animate__pulse">
-            <i class="fa-solid fa-paper-plane"></i> Enviar opinión
-        </button>
-    </form>
-}
-else if (Model.Pedido.Status == "Entregado")
-{
-    <div class="alert alert-success mt-4">
-        <b>¡Gracias por tu calificación!</b><br />
-        @if (Model.Pedido.Calificacion != null)
-        {
-            <span>
-                Calificación:&nbsp;
-                @for (int star = 1; star <= 5; star++)
-                {
-                    <span style="font-size:1.3em; color:@(star <= Model.Pedido.Calificacion ? "#fcc419" : "#ccd1d1");">★</span>
+            });
+
+            // Evento al hacer click (selección)
+            ratingContainer.addEventListener('click', function (e) {
+                if (e.target.classList.contains('star-rating')) {
+                    const value = parseInt(e.target.getAttribute('data-value'));
+                    inputCalificacion.value = value;
+                    highlightStars(value, true); // Establecer color permanente
+                    btnCalificar.disabled = false; // Habilitar el botón de envío
                 }
-            </span>
+            });
+
+            // Evento al salir del contenedor
+            ratingContainer.addEventListener('mouseout', function () {
+                if (!inputCalificacion.value) {
+                    highlightStars(0);
+                } else {
+                    highlightStars(parseInt(inputCalificacion.value), true);
+                }
+            });
+
+            // Lógica para inicializar si hay una calificación guardada
+            if (@(Model.Pedido.Calificacion.HasValue ? "true" : "false")) {
+                inputCalificacion.value = @(Model.Pedido.Calificacion.HasValue ? Model.Pedido.Calificacion.Value.ToString() : "0");
+                highlightStars(parseInt(inputCalificacion.value), true);
+                // Ocultamos el botón si ya calificó
+                if (btnCalificar) {
+                    btnCalificar.style.display = 'none';
+                }
+            }
         }
-    </div>
+    </script>
 }
-
-
-
-
-<a asp-page="/Orders/MyOrders" class="btn btn-secondary btn-lg shadow-sm animate__animated animate__fadeInUp">
-    <i class="fa-solid fa-arrow-left"></i> Volver a mis pedidos
-</a>
-
-@functions {
-    public string GetProgress()
-    {
-        if (Model.Pedido.Status == "Pending") return "10%";
-        if (Model.Pedido.Status == "Preparando") return "30%";
-        if (Model.Pedido.Status == "Despachado") return "60%";
-        if (Model.Pedido.Status == "En camino") return "85%";
-        if (Model.Pedido.Status == "Entregado") return "100%";
-        if (Model.Pedido.Status == "Cancelado") return "100%"; // Si hay cancelado/otro, puedes personalizarlo
-        return "0%";
-    }
-    public string GetProgressColor()
-    {
-        if (Model.Pedido.Status == "Pending") return "bg-warning text-dark";
-        if (Model.Pedido.Status == "Preparando") return "bg-info text-dark";
-        if (Model.Pedido.Status == "Despachado") return "bg-primary";
-        if (Model.Pedido.Status == "En camino") return "bg-primary";
-        if (Model.Pedido.Status == "Entregado") return "bg-success";
-        if (Model.Pedido.Status == "Cancelado") return "bg-danger";
-        return "bg-info";
-    }
-}
-
