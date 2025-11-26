@@ -166,6 +166,73 @@ namespace AutoPartesRazor.Migrations
                     b.ToTable("Reclamo");
                 });
 
+            modelBuilder.Entity("AutoPartesRazor.Models.Coupon", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DiscountPercentage")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsUsed")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int?>("ReviewId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UsedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("ReviewId");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("IsUsed", "IsActive", "ExpiresAt");
+
+                    b.ToTable("Coupons");
+                });
+
             modelBuilder.Entity("AutoPartesRazor.Models.MessageClaim", b =>
                 {
                     b.Property<int>("Id")
@@ -255,6 +322,16 @@ namespace AutoPartesRazor.Migrations
                     b.Property<int?>("Calificacion")
                         .HasColumnType("int");
 
+                    b.Property<string>("CouponCode")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int?>("CouponId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CouponId1")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -271,8 +348,14 @@ namespace AutoPartesRazor.Migrations
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<decimal>("DiscountAmount")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
+
+                    b.Property<decimal>("OriginalTotal")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("PaymentMethod")
                         .IsRequired()
@@ -298,6 +381,8 @@ namespace AutoPartesRazor.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CouponId1");
 
                     b.HasIndex("IsDeleted");
 
@@ -1007,6 +1092,38 @@ namespace AutoPartesRazor.Migrations
                     b.Navigation("Cliente");
                 });
 
+            modelBuilder.Entity("AutoPartesRazor.Models.Coupon", b =>
+                {
+                    b.HasOne("AutoPartesRazor.Models.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("AutoPartesRazor.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("AutoPartesRazor.Models.ProductReview", "Review")
+                        .WithMany()
+                        .HasForeignKey("ReviewId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("AutoPartesRazor.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("Review");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("AutoPartesRazor.Models.MessageClaim", b =>
                 {
                     b.HasOne("AutoPartesRazor.Models.Claim", "Reclamo")
@@ -1039,10 +1156,16 @@ namespace AutoPartesRazor.Migrations
 
             modelBuilder.Entity("AutoPartesRazor.Models.Order", b =>
                 {
+                    b.HasOne("AutoPartesRazor.Models.Coupon", "Coupon")
+                        .WithMany()
+                        .HasForeignKey("CouponId1");
+
                     b.HasOne("AutoPartesRazor.Models.User", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Coupon");
 
                     b.Navigation("User");
                 });

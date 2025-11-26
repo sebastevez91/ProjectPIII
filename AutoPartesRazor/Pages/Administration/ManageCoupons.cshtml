@@ -1,0 +1,252 @@
+﻿@@page
+@model AutoPartesRazor.Pages.Administration.ManageCouponsModel
+@{
+    ViewData["Title"] = "Gestión de Cupones";
+}
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="mb-1">
+                <i class="fa-solid fa-tags text-primary me-2"></i>
+                Gestión de Cupones
+            </h2>
+            <p class="text-muted mb-0">Administra todos los cupones del sistema</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a asp-page="/Administration/CouponsFromReviews" class="btn btn-success">
+                <i class="fa-solid fa-plus me-1"></i>Generar desde Reseñas
+            </a>
+            <a asp-page="/Administration/AdminDashboard" class="btn btn-outline-secondary">
+                <i class="fa-solid fa-arrow-left me-1"></i>Dashboard
+            </a>
+        </div>
+    </div>
+
+    <!-- Mensajes -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+            <i class="fa-solid fa-check-circle me-2"></i>@TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show">
+            <i class="fa-solid fa-exclamation-circle me-2"></i>@TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- Estadísticas -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h6 class="text-uppercase mb-2">Total Cupones</h6>
+                    <h2 class="mb-0">@Model.TotalCoupons</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h6 class="text-uppercase mb-2">Activos</h6>
+                    <h2 class="mb-0">@Model.ActiveCoupons</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h6 class="text-uppercase mb-2">Usados</h6>
+                    <h2 class="mb-0">@Model.UsedCoupons</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-dark">
+                <div class="card-body">
+                    <h6 class="text-uppercase mb-2">Expirados</h6>
+                    <h2 class="mb-0">@Model.ExpiredCoupons</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="get" class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Estado</label>
+                    <select name="statusFilter" class="form-select" onchange="this.form.submit()">
+                        <option value="all" selected="@(Model.StatusFilter == "all")">Todos</option>
+                        <option value="active" selected="@(Model.StatusFilter == "active")">Activos</option>
+                        <option value="used" selected="@(Model.StatusFilter == "used")">Usados</option>
+                        <option value="expired" selected="@(Model.StatusFilter == "expired")">Expirados</option>
+                        <option value="inactive" selected="@(Model.StatusFilter == "inactive")">Inactivos</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Tabla de Cupones -->
+    @if (!Model.Coupons.Any())
+    {
+        <div class="card">
+            <div class="card-body text-center py-5">
+                <i class="fa-solid fa-ticket fa-3x text-muted mb-3"></i>
+                <h5 class="text-muted">No hay cupones que mostrar</h5>
+                <p class="text-muted">Genera cupones desde el Dashboard de Reseñas.</p>
+                <a asp-page="/Administration/CouponsFromReviews" class="btn btn-primary mt-3">
+                    <i class="fa-solid fa-plus me-1"></i>Generar Cupones
+                </a>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="card">
+            <div class="card-header bg-white py-3">
+                <h5 class="mb-0">
+                    <i class="fa-solid fa-list me-2"></i>
+                    Lista de Cupones (@Model.Coupons.Count)
+                </h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Código</th>
+                                <th>Usuario</th>
+                                <th>Descuento</th>
+                                <th>Producto</th>
+                                <th>Creado</th>
+                                <th>Expira</th>
+                                <th>Estado</th>
+                                <th>Motivo</th>
+                                <th class="text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var coupon in Model.Coupons)
+                            {
+                                <tr class="@(coupon.IsUsed ? "table-success" : "")">
+                                    <td>
+                                        <strong class="text-primary">@coupon.Code</strong>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <strong>@coupon.User?.FullName</strong><br />
+                                            <small class="text-muted">@coupon.User?.Email</small>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-danger" style="font-size: 1rem;">
+                                            -@coupon.DiscountPercentage%
+                                        </span>
+                                    </td>
+                                    <td>
+                                        @if (coupon.ProductId.HasValue)
+                                        {
+                                            <small>@coupon.Product?.Name</small>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-info">Todos los productos</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <small>@coupon.CreatedAt.ToString("dd/MM/yyyy")</small>
+                                    </td>
+                                    <td>
+                                        @if (coupon.ExpiresAt < DateTime.Now && !coupon.IsUsed)
+                                        {
+                                            <span class="text-danger fw-bold">
+                                                <i class="fa-solid fa-exclamation-triangle me-1"></i>
+                                                @coupon.ExpiresAt.ToString("dd/MM/yyyy")
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <small>@coupon.ExpiresAt.ToString("dd/MM/yyyy")</small>
+                                            @if (coupon.IsAvailable)
+                                            {
+                                                <br />
+                                
+                                                <small class="text-success">(@coupon.DaysUntilExpiration días)</small>
+                                            }
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (coupon.IsUsed)
+                                        {
+                                            <span class="badge bg-success">
+                                                <i class="fa-solid fa-check me-1"></i>Usado
+                                            </span>
+                                            <br />
+
+                                            <small class="text-muted">@coupon.UsedAt?.ToString("dd/MM/yy")</small>
+                                        }
+                                        else if (!coupon.IsActive)
+                                        {
+                                            <span class="badge bg-secondary">
+                                                <i class="fa-solid fa-ban me-1"></i>Inactivo
+                                            </span>
+                                        }
+                                        else if (coupon.ExpiresAt < DateTime.Now)
+                                        {
+                                            <span class="badge bg-warning text-dark">
+                                                <i class="fa-solid fa-clock me-1"></i>Expirado
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-primary">
+                                                <i class="fa-solid fa-check-circle me-1"></i>Activo
+                                            </span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <small class="text-muted">@coupon.Reason</small>
+                                    </td>
+                                    <td class="text-center">
+                                        @if (!coupon.IsUsed)
+                                        {
+                                            @if (coupon.IsActive)
+                                            {
+                                                <form method="post" asp-page-handler="Deactivate" asp-route-id="@coupon.Id" class="d-inline">
+                                                    <button type="submit" class="btn btn-sm btn-warning"
+                                                            onclick="return confirm('¿Desactivar este cupón?')">
+                                                        <i class="fa-solid fa-ban"></i>
+                                                    </button>
+                                                </form>
+                                            }
+                                            <form method="post" asp-page-handler="Delete" asp-route-id="@coupon.Id" class="d-inline">
+                                                <button type="submit" class="btn btn-sm btn-danger"
+                                                        onclick="return confirm('¿Eliminar este cupón? Esta acción no se puede deshacer.')">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">
+                                                <i class="fa-solid fa-lock"></i>
+                                            </span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+</div>
