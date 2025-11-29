@@ -1,0 +1,454 @@
+﻿@page "{supplierId:int}"
+@model AutoPartesRazor.Pages.Suppliers.AssignProductsModel
+@{
+    ViewData["Title"] = $"Asignar Productos - {Model.SupplierName}";
+}
+
+<div class="container py-4">
+    <!-- Encabezado -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2>
+                <i class="fa-solid fa-link me-2"></i>
+                Asignar Productos a @Model.SupplierName
+            </h2>
+            <p class="text-muted mb-0">
+                <i class="fa-solid fa-info-circle me-1"></i>
+                Selecciona los productos que este proveedor puede suministrar
+            </p>
+        </div>
+        <div class="d-flex gap-2">
+            <a asp-page="./Products"
+               asp-route-id="@Model.SupplierId"
+               class="btn btn-info">
+                <i class="fa-solid fa-eye me-1"></i>Ver Catálogo
+            </a>
+            <a asp-page="./Index" class="btn btn-secondary">
+                <i class="fa-solid fa-arrow-left me-1"></i>Volver
+            </a>
+        </div>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fa-solid fa-circle-check me-2"></i>@TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fa-solid fa-circle-exclamation me-2"></i>@TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- Resumen -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card bg-primary text-white">
+                <div class="card-body text-center">
+                    <h3 class="mb-1">@Model.AssignedProducts.Count</h3>
+                    <small>Productos Asignados</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-success text-white">
+                <div class="card-body text-center">
+                    <h3 class="mb-1">@Model.AvailableProducts.Count</h3>
+                    <small>Disponibles para Asignar</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-info text-white">
+                <div class="card-body text-center">
+                    <h3 class="mb-1">@(Model.AssignedProducts.Count + Model.AvailableProducts.Count)</h3>
+                    <small>Total de Productos</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Productos Disponibles -->
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">
+                        <i class="fa-solid fa-circle-plus me-2"></i>
+                        Productos Disponibles (@Model.AvailableProducts.Count)
+                    </h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.AvailableProducts.Any())
+                    {
+                        <!-- Buscador -->
+                        <div class="mb-3">
+                            <input type="text"
+                                   id="searchAvailable"
+                                   class="form-control"
+                                   placeholder="🔍 Buscar producto...">
+                        </div>
+
+                        <div class="list-group" id="availableList" style="max-height: 600px; overflow-y: auto;">
+                            @foreach (var product in Model.AvailableProducts)
+                            {
+                                <div class="list-group-item list-group-item-action available-product"
+                                     data-product-name="@product.Name.ToLower()">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div class="flex-grow-1">
+                                            <h6 class="mb-1">@product.Name</h6>
+                                            <small class="text-muted d-block">
+                                                <i class="fa-solid fa-box me-1"></i>Stock: @product.Stock |
+                                                <i class="fa-solid fa-dollar-sign me-1"></i>Precio: $@product.Price.ToString("N2")
+                                            </small>
+                                            @if (!string.IsNullOrEmpty(product.Description) &&
+                                                                                product.Description != "No se ingresó descripción.")
+                                            {
+                                                <small class="text-muted d-block mt-1">@product.Description</small>
+                                            }
+                                        </div>
+                                        <button type="button"
+                                                class="btn btn-sm btn-success"
+                                                onclick="showAssignModal(@product.Id, '@product.Name', @product.Price)">
+                                            <i class="fa-solid fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-5">
+                            <i class="fa-solid fa-check-circle fa-3x text-success mb-3"></i>
+                            <h5 class="text-muted">¡Todos los productos están asignados!</h5>
+                            <p class="text-muted">No hay más productos disponibles para asignar</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Productos Asignados -->
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="fa-solid fa-check-circle me-2"></i>
+                        Productos Asignados (@Model.AssignedProducts.Count)
+                    </h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.AssignedProducts.Any())
+                    {
+                        <!-- Buscador -->
+                        <div class="mb-3">
+                            <input type="text"
+                                   id="searchAssigned"
+                                   class="form-control"
+                                   placeholder="🔍 Buscar producto...">
+                        </div>
+
+                        <div class="list-group" id="assignedList" style="max-height: 600px; overflow-y: auto;">
+                            @foreach (var ps in Model.AssignedProducts)
+                            {
+                                var margin = ps.Product != null && ps.SupplyPrice.HasValue
+                                ? ((ps.Product.Price - ps.SupplyPrice.Value) / ps.Product.Price * 100)
+                                : 0;
+
+                                <div class="list-group-item assigned-product"
+                                     data-product-name="@ps.Product?.Name.ToLower()">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div class="flex-grow-1">
+                                            <h6 class="mb-1">@ps.Product?.Name</h6>
+                                            <small class="text-muted d-block">
+                                                <i class="fa-solid fa-box me-1"></i>Stock: @ps.Product?.Stock
+                                            </small>
+                                            <div class="mt-2">
+                                                @if (ps.SupplyPrice.HasValue)
+                                                {
+                                                    <span class="badge bg-info me-1">
+                                                        Suministro: $@ps.SupplyPrice.Value.ToString("N2")
+                                                    </span>
+                                                    <span class="badge bg-secondary me-1">
+                                                        Venta: $@ps.Product?.Price.ToString("N2")
+                                                    </span>
+                                                    <span class="badge bg-@(margin > 30 ? "success" : margin > 15 ? "warning" : "danger")">
+                                                        Margen: @margin.ToString("N1")%
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-warning text-dark">Sin precio definido</span>
+                                                }
+                                            </div>
+                                        </div>
+                                        <div class="btn-group-vertical">
+                                            <button type="button"
+                                                    class="btn btn-sm btn-warning"
+                                                    onclick="showEditModal(@ps.ProductId, '@ps.Product?.Name', @(ps.SupplyPrice ?? 0), @ps.Product?.Price)">
+                                                <i class="fa-solid fa-pen"></i>
+                                            </button>
+                                            <button type="button"
+                                                    class="btn btn-sm btn-danger"
+                                                    onclick="confirmRemove(@ps.ProductId, '@ps.Product?.Name')">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-5">
+                            <i class="fa-solid fa-inbox fa-3x text-muted mb-3"></i>
+                            <h5 class="text-muted">No hay productos asignados</h5>
+                            <p class="text-muted">Comienza asignando productos de la lista de la izquierda</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Asignar Producto -->
+<div class="modal fade" id="assignModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" asp-page-handler="Assign">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title">
+                        <i class="fa-solid fa-plus-circle me-2"></i>Asignar Producto
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="supplierId" value="@Model.SupplierId" />
+                    <input type="hidden" name="productId" id="assignProductId" />
+
+                    <div class="alert alert-info">
+                        <strong>Producto:</strong> <span id="assignProductName"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="assignSupplyPrice" class="form-label fw-bold">
+                            <i class="fa-solid fa-dollar-sign me-1"></i>Precio de Suministro
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-text">$</span>
+                            <input type="number"
+                                   name="supplyPrice"
+                                   id="assignSupplyPrice"
+                                   class="form-control"
+                                   step="0.01"
+                                   min="0.01"
+                                   placeholder="0.00"
+                                   required />
+                        </div>
+                        <small class="text-muted" id="assignPriceReference"></small>
+                    </div>
+
+                    <div class="alert alert-warning py-2">
+                        <small>
+                            <i class="fa-solid fa-exclamation-triangle me-1"></i>
+                            El precio de suministro debe ser menor al precio de venta
+                        </small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fa-solid fa-check me-1"></i>Asignar Producto
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Editar Precio -->
+<div class="modal fade" id="editModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" asp-page-handler="UpdatePrice">
+                <div class="modal-header bg-warning text-dark">
+                    <h5 class="modal-title">
+                        <i class="fa-solid fa-edit me-2"></i>Actualizar Precio
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="supplierId" value="@Model.SupplierId" />
+                    <input type="hidden" name="productId" id="editProductId" />
+
+                    <div class="alert alert-info">
+                        <strong>Producto:</strong> <span id="editProductName"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="editSupplyPrice" class="form-label fw-bold">Precio de Suministro</label>
+                        <div class="input-group">
+                            <span class="input-group-text">$</span>
+                            <input type="number"
+                                   name="supplyPrice"
+                                   id="editSupplyPrice"
+                                   class="form-control"
+                                   step="0.01"
+                                   min="0.01"
+                                   required />
+                        </div>
+                        <small class="text-muted" id="editPriceReference"></small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-warning">
+                        <i class="fa-solid fa-save me-1"></i>Guardar Cambios
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Confirmar Eliminación -->
+<div class="modal fade" id="removeModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" asp-page-handler="Remove">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">
+                        <i class="fa-solid fa-trash me-2"></i>Confirmar Eliminación
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="supplierId" value="@Model.SupplierId" />
+                    <input type="hidden" name="productId" id="removeProductId" />
+
+                    <div class="alert alert-danger">
+                        <i class="fa-solid fa-exclamation-triangle me-2"></i>
+                        ¿Está seguro que desea eliminar el producto <strong id="removeProductName"></strong> de este proveedor?
+                    </div>
+
+                    <p class="mb-0">
+                        <small class="text-muted">
+                            Nota: Esto no eliminará el producto del sistema, solo la relación con este proveedor.
+                        </small>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fa-solid fa-trash me-1"></i>Sí, Eliminar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Buscador para productos disponibles
+        document.getElementById('searchAvailable').addEventListener('input', function() {
+            const filter = this.value.toLowerCase();
+            const items = document.querySelectorAll('.available-product');
+
+            items.forEach(item => {
+                const productName = item.getAttribute('data-product-name');
+                item.style.display = productName.includes(filter) ? '' : 'none';
+            });
+        });
+
+        // Buscador para productos asignados
+        document.getElementById('searchAssigned').addEventListener('input', function() {
+            const filter = this.value.toLowerCase();
+            const items = document.querySelectorAll('.assigned-product');
+
+            items.forEach(item => {
+                const productName = item.getAttribute('data-product-name');
+                item.style.display = productName.includes(filter) ? '' : 'none';
+            });
+        });
+
+        // Mostrar modal de asignar
+        function showAssignModal(productId, productName, salePrice) {
+            document.getElementById('assignProductId').value = productId;
+            document.getElementById('assignProductName').textContent = productName;
+
+            const suggestedPrice = (salePrice * 0.65).toFixed(2);
+            document.getElementById('assignSupplyPrice').value = suggestedPrice;
+            document.getElementById('assignPriceReference').innerHTML =
+                `<strong>Precio venta:</strong> $${salePrice.toFixed(2)} | <strong>Sugerido (65%):</strong> $${suggestedPrice}`;
+
+            const modal = new bootstrap.Modal(document.getElementById('assignModal'));
+            modal.show();
+        }
+
+        // Mostrar modal de editar
+        function showEditModal(productId, productName, currentPrice, salePrice) {
+            document.getElementById('editProductId').value = productId;
+            document.getElementById('editProductName').textContent = productName;
+            document.getElementById('editSupplyPrice').value = currentPrice;
+            document.getElementById('editPriceReference').innerHTML =
+                `<strong>Precio venta:</strong> $${salePrice.toFixed(2)}`;
+
+            const modal = new bootstrap.Modal(document.getElementById('editModal'));
+            modal.show();
+        }
+
+        // Confirmar eliminación
+        function confirmRemove(productId, productName) {
+            document.getElementById('removeProductId').value = productId;
+            document.getElementById('removeProductName').textContent = productName;
+
+            const modal = new bootstrap.Modal(document.getElementById('removeModal'));
+            modal.show();
+        }
+
+        // Auto-cerrar alertas
+        setTimeout(function() {
+            $('.alert-dismissible').fadeOut('slow');
+        }, 5000);
+    </script>
+
+    <style>
+        .list-group-item {
+            border-left: 4px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+            .list-group-item:hover {
+                border-left-color: #0d6efd;
+                transform: translateX(5px);
+            }
+
+        .available-product:hover {
+            border-left-color: #198754;
+        }
+
+        .card {
+            border: none;
+            border-radius: 10px;
+        }
+
+        .badge {
+            font-size: 0.8rem;
+        }
+    </style>
+}

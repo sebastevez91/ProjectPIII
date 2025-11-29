@@ -225,21 +225,30 @@
                     </div>
                     <div class="card-body">
                         <div class="d-flex gap-2 flex-wrap">
+                            <a asp-page="AssignProducts"
+                               asp-route-supplierId="@Model.Supplier.Id"
+                               class="btn btn-success">
+                                <i class="bi bi-link-45deg"></i> Asignar Productos
+                            </a>
+
                             <a asp-page="/PurchaseOrders/Create"
                                asp-route-supplierId="@Model.Supplier.Id"
                                class="btn btn-primary">
                                 <i class="bi bi-plus-circle"></i> Nueva Orden de Compra
                             </a>
+
                             <a asp-page="/PurchaseOrders/Index"
                                asp-route-supplierId="@Model.Supplier.Id"
                                class="btn btn-info">
                                 <i class="bi bi-list-ul"></i> Ver Órdenes del Proveedor
                             </a>
+
                             <a asp-page="Claims"
                                asp-route-supplierId="@Model.Supplier.Id"
                                class="btn btn-warning">
                                 <i class="bi bi-exclamation-triangle"></i> Ver Reclamos
                             </a>
+
                             <a asp-page="Edit"
                                asp-route-id="@Model.Supplier.Id"
                                class="btn btn-secondary">

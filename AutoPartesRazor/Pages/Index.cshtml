@@ -10,7 +10,7 @@
     <div class="container text-center py-4">
         @if (User.Identity!.IsAuthenticated)
         {
-            <h1 class="display-4 fw-bold mb-3">Bienvenido, @User.Identity.Name</h1>
+            <h1 class="display-4 fw-bold mb-3">Bienvenido, @Model.NameUserSesion</h1>
             <p class="lead">Encuentra las mejores autopartes para tu vehículo</p>
         }
         else

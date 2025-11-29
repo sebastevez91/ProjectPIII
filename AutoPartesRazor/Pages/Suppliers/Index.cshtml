@@ -26,9 +26,21 @@
                     <td>@s.Email</td>
                     <td>@s.Phone</td>
                     <td>
-                        <a asp-page="Edit" asp-route-id="@s.Id" class="btn btn-warning btn-sm">Editar</a>
-                        <a asp-page="Delete" asp-route-id="@s.Id" class="btn btn-danger btn-sm">Eliminar</a>
-                        <a asp-page="Products" asp-route-id="@s.Id" class="btn btn-info btn-sm">Productos</a>
+                        <!-- Botón de editar (si ya lo tienes) -->
+                        <a asp-page="./Edit"
+                           asp-route-id="@s.Id"
+                           class="btn btn-sm btn-warning text-white"
+                           title="Editar">
+                            <i class="fa-solid fa-pen"></i>
+                        </a>
+                        <a asp-page="Delete" asp-route-id="@s.Id" class="btn btn-danger btn-sm" title="Eliminar"><i class="fa-solid fa-trash"></i></a>
+                        <!-- Botón para gestionar productos del proveedor -->
+                        <a asp-page="./Products"
+                           asp-route-id="@s.Id"
+                           class="btn btn-sm btn-info text-white"
+                           title="Gestionar productos">
+                            <i class="fa-solid fa-boxes-stacked"></i>
+                        </a>
                     </td>
                 </tr>
             }

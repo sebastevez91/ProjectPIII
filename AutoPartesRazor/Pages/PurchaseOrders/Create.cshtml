@@ -18,21 +18,7 @@
                     <form method="post" id="purchaseOrderForm">
                         <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
 
-                        <!-- Producto -->
-                        <div class="mb-3">
-                            <label asp-for="PurchaseOrder.ProductId" class="form-label fw-bold">
-                                <i class="fa-solid fa-box me-1"></i>Producto
-                            </label>
-                            <select asp-for="PurchaseOrder.ProductId"
-                                    class="form-select"
-                                    asp-items="Model.ProductList"
-                                    id="productSelect">
-                                <option value="">-- Seleccione un producto --</option>
-                            </select>
-                            <span asp-validation-for="PurchaseOrder.ProductId" class="text-danger"></span>
-                        </div>
-
-                        <!-- Proveedor -->
+                        <!-- Proveedor (Ahora va primero) -->
                         <div class="mb-3">
                             <label asp-for="PurchaseOrder.SupplierId" class="form-label fw-bold">
                                 <i class="fa-solid fa-truck me-1"></i>Proveedor
@@ -44,6 +30,43 @@
                                 <option value="">-- Seleccione un proveedor --</option>
                             </select>
                             <span asp-validation-for="PurchaseOrder.SupplierId" class="text-danger"></span>
+                            <small class="text-muted d-block mt-1">
+                                <i class="fa-solid fa-info-circle me-1"></i>
+                                Primero seleccione el proveedor
+                            </small>
+                        </div>
+
+                        <!-- Producto -->
+                        <div class="mb-3">
+                            <label asp-for="PurchaseOrder.ProductId" class="form-label fw-bold">
+                                <i class="fa-solid fa-box me-1"></i>Producto
+                            </label>
+                            <select asp-for="PurchaseOrder.ProductId"
+                                    class="form-select"
+                                    asp-items="Model.ProductList"
+                                    id="productSelect"
+                                    disabled>
+                                <option value="">-- Primero seleccione un proveedor --</option>
+                            </select>
+                            <span asp-validation-for="PurchaseOrder.ProductId" class="text-danger"></span>
+                            <small class="text-muted d-block mt-1" id="productInfo">
+                                <i class="fa-solid fa-info-circle me-1"></i>
+                                Solo se mostrarán productos asignados al proveedor
+                            </small>
+                        </div>
+
+                        <!-- Alerta de sin productos -->
+                        <div id="noProductsAlert" class="alert alert-warning" style="display: none;">
+                            <i class="fa-solid fa-exclamation-triangle me-2"></i>
+                            <strong>Este proveedor no tiene productos asignados.</strong>
+                            <br>
+                            <small>
+                                Por favor,
+                                <a href="#" id="assignProductsLink" class="alert-link" target="_blank">
+                                    asigne productos al proveedor
+                                </a>
+                                antes de crear una orden.
+                            </small>
                         </div>
 
                         <!-- Cantidad -->
@@ -104,8 +127,8 @@
             <!-- Información adicional -->
             <div class="alert alert-info mt-3">
                 <i class="fa-solid fa-lightbulb me-2"></i>
-                <strong>Nota:</strong> El precio unitario se calculará automáticamente según el proveedor seleccionado.
-                Si no hay precio configurado, se usará el 65% del precio de venta del producto.
+                <strong>Nota:</strong> Solo podrá crear órdenes con productos que el proveedor tenga asignados.
+                El precio se calculará según el precio de suministro configurado.
             </div>
         </div>
     </div>
@@ -117,15 +140,16 @@
     <script>
         $(document).ready(function() {
             let unitPrice = 0;
+            let allProducts = []; // Guardar todos los productos del proveedor
 
-                            // Verificar si hay un precio inicial (cuando se carga con datos pre-cargados)
-                @if (ViewData["InitialPrice"] != null)
-                {
-                            <text>
-                            unitPrice = @ViewData["InitialPrice"];
-                            calculateTotal();
-                            </text>
-                }
+            // Verificar si hay un precio inicial (cuando se carga con datos pre-cargados)
+            @if (ViewData["InitialPrice"] != null)
+            {
+                    <text>
+                    unitPrice = @ViewData["InitialPrice"];
+                    calculateTotal();
+                    </text>
+            }
 
             // Función para calcular y mostrar el total
             function calculateTotal() {
@@ -142,34 +166,80 @@
                 }
             }
 
-            // Función para obtener el precio del proveedor
-            async function loadSupplierPrice() {
-                const productId = $('#productSelect').val();
-                const supplierId = $('#supplierSelect').val();
+            // ✅ NUEVO: Cargar productos cuando se selecciona un proveedor
+            $('#supplierSelect').on('change', async function() {
+                const supplierId = $(this).val();
+                const productSelect = $('#productSelect');
+                const noProductsAlert = $('#noProductsAlert');
+                const assignProductsLink = $('#assignProductsLink');
 
-                if (!productId || !supplierId) {
-                    unitPrice = 0;
-                    calculateTotal();
+                // Resetear
+                productSelect.html('<option value="">-- Seleccione un producto --</option>');
+                productSelect.prop('disabled', true);
+                unitPrice = 0;
+                calculateTotal();
+                noProductsAlert.hide();
+
+                if (!supplierId) {
+                    productSelect.html('<option value="">-- Primero seleccione un proveedor --</option>');
                     return;
                 }
 
                 try {
-                    const response = await fetch(
-                        `?handler=SupplierPrice&productId=${productId}&supplierId=${supplierId}`
-                    );
+                    const response = await fetch(`?handler=SupplierProducts&supplierId=${supplierId}`);
                     const data = await response.json();
 
-                    if (data.success) {
-                        unitPrice = data.price;
-                        calculateTotal();
+                    if (data.success && data.products.length > 0) {
+                        allProducts = data.products;
+
+                        data.products.forEach(product => {
+                            const option = new Option(
+                                `${product.name} (Stock: ${product.stock})`,
+                                product.id
+                            );
+                            $(option).data('price', product.price);
+                            productSelect.append(option);
+                        });
+
+                        productSelect.prop('disabled', false);
+                        $('#productInfo').html(
+                            '<i class="fa-solid fa-check-circle me-1 text-success"></i>' +
+                            `${data.products.length} producto(s) disponible(s) de este proveedor`
+                        );
+                    } else {
+                        productSelect.html('<option value="">-- Este proveedor no tiene productos --</option>');
+                        assignProductsLink.attr('href', `/Suppliers/AssignProducts/${supplierId}`);
+                        noProductsAlert.show();
+                        $('#productInfo').html(
+                            '<i class="fa-solid fa-exclamation-triangle me-1 text-warning"></i>' +
+                            'Este proveedor no tiene productos asignados'
+                        );
                     }
                 } catch (error) {
-                    console.error('Error al obtener precio:', error);
+                    console.error('Error al cargar productos:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'No se pudieron cargar los productos del proveedor'
+                    });
                 }
-            }
+            });
+
+            // Cuando se selecciona un producto, cargar su precio
+            $('#productSelect').on('change', function() {
+                const selectedOption = $(this).find(':selected');
+                const price = selectedOption.data('price');
+
+                if (price) {
+                    unitPrice = parseFloat(price);
+                    calculateTotal();
+                } else {
+                    unitPrice = 0;
+                    calculateTotal();
+                }
+            });
 
             // Eventos para recalcular
-            $('#productSelect, #supplierSelect').on('change', loadSupplierPrice);
             $('#quantityInput').on('input', calculateTotal);
 
             // Validación del formulario
@@ -180,11 +250,11 @@
 
                 let errors = [];
 
-                if (!productId) {
-                    errors.push('Debe seleccionar un producto');
-                }
                 if (!supplierId) {
                     errors.push('Debe seleccionar un proveedor');
+                }
+                if (!productId) {
+                    errors.push('Debe seleccionar un producto');
                 }
                 if (quantity <= 0) {
                     errors.push('La cantidad debe ser mayor a 0');
@@ -205,10 +275,16 @@
 
                 // Confirmación antes de crear
                 e.preventDefault();
+
+                const productName = $('#productSelect option:selected').text();
+                const supplierName = $('#supplierSelect option:selected').text();
+
                 Swal.fire({
                     title: '¿Crear orden de compra?',
                     html: `
                         <div class="text-start">
+                            <p><strong>Proveedor:</strong> ${supplierName}</p>
+                            <p><strong>Producto:</strong> ${productName}</p>
                             <p><strong>Cantidad:</strong> ${quantity} unidades</p>
                             <p><strong>Precio unitario:</strong> $${unitPrice.toFixed(2)}</p>
                             <p><strong>Total:</strong> <span class="text-success fs-5">$${(unitPrice * quantity).toFixed(2)}</span></p>
@@ -228,6 +304,12 @@
                     }
                 });
             });
+
+            // Si hay un proveedor pre-seleccionado, cargar sus productos
+            const preSelectedSupplier = $('#supplierSelect').val();
+            if (preSelectedSupplier) {
+                $('#supplierSelect').trigger('change');
+            }
         });
     </script>
 
@@ -255,6 +337,11 @@
         .form-control:focus {
             border-color: #0d6efd;
             box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+
+        select:disabled {
+            background-color: #e9ecef;
+            cursor: not-allowed;
         }
     </style>
 }
