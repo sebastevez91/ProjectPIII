@@ -9,7 +9,7 @@
 @{
     var steps = new List<(string Estado, string Icon, string ColorClass)>
     {
-        ("Pending", "fa-file-lines", "bg-secondary"),
+        ("Pendiente", "fa-file-lines", "bg-secondary"),
         ("Preparando", "fa-box-open", "bg-info"),
         ("Despachado", "fa-truck-loading", "bg-warning"),
         ("En camino", "fa-truck", "bg-primary"),
@@ -86,7 +86,7 @@ else if (Model.Pedido.Status == "Entregado")
 @functions {
     public string GetProgress()
     {
-        if (Model.Pedido.Status == "Pending") return "10%";
+        if (Model.Pedido.Status == "Pendiente") return "10%";
         if (Model.Pedido.Status == "Preparando") return "30%";
         if (Model.Pedido.Status == "Despachado") return "60%";
         if (Model.Pedido.Status == "En camino") return "85%";
@@ -96,7 +96,7 @@ else if (Model.Pedido.Status == "Entregado")
     }
     public string GetProgressColor()
     {
-        if (Model.Pedido.Status == "Pending") return "bg-warning text-dark";
+        if (Model.Pedido.Status == "Pendiente") return "bg-warning text-dark";
         if (Model.Pedido.Status == "Preparando") return "bg-info text-dark";
         if (Model.Pedido.Status == "Despachado") return "bg-primary";
         if (Model.Pedido.Status == "En camino") return "bg-primary";

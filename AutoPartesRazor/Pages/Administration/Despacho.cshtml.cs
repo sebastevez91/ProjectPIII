@@ -18,7 +18,7 @@ public class DespachoModel : PageModel
     public async Task OnGetAsync()
     {
         PedidosPendientes = await _context.Orders
-            .Where(o => o.Status == "Pending")
+            .Where(o => o.Status == "Pendiente")
             .OrderByDescending(o => o.CreatedAt)
             .ToListAsync();
     }

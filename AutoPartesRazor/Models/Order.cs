@@ -36,7 +36,7 @@ public class Order
     public decimal Total { get; set; }
 
     [Display(Name = "Estado")]
-    public string Status { get; set; } = "Pending";
+    public string Status { get; set; } = "Pendiente";
 
     [Display(Name = "Fecha de operación")]
     public DateTime CreatedAt { get; set; } = DateTime.Now;
@@ -73,4 +73,6 @@ public class Order
     public Coupon? Coupon { get; set; }
 
     public int? Calificacion { get; set; }
+
 }
+

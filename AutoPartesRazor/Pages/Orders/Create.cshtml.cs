@@ -150,7 +150,7 @@ public class CreateModel : PageModel
             OriginalTotal = Subtotal,
             DiscountAmount = DiscountAmount,
             Total = Total,
-            Status = "Pending",
+            Status = "Pendiente",
             CreatedAt = DateTime.Now
         };
 

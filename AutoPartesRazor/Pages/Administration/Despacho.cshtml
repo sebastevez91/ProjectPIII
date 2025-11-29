@@ -35,7 +35,7 @@
             string badgeClass = "bg-secondary";
             string anim = "animate__pulse";
             string badgeIcon = "<i class='fa-solid fa-truck-ramp-box'></i>";
-            if (p.Status == "Pending") { badgeClass = "bg-warning text-dark"; badgeIcon = "<i class='fa-solid fa-clock'></i>"; }
+            if (p.Status == "Pendiente") { badgeClass = "bg-warning text-dark"; badgeIcon = "<i class='fa-solid fa-clock'></i>"; }
             else if (p.Status == "Despachado") { badgeClass = "bg-success"; badgeIcon = "<i class='fa-solid fa-truck'></i>"; anim = "animate__tada"; }
             else if (p.Status == "Cancelado") { badgeClass = "bg-danger"; badgeIcon = "<i class='fa-solid fa-xmark'></i>"; }
             <tr class="align-middle animate__animated animate__fadeInUp">

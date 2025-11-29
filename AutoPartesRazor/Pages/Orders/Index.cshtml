@@ -1,20 +1,55 @@
 ﻿@page
 @model AutoPartesRazor.Pages.Orders.IndexModel
-
 @{
     ViewData["Title"] = "Index";
 }
+<div class="hero-section bg-primary bg-gradient text-white py-2 text-center m-2">
+    <div class="container py-4">
+        <h1 class="display-4 fw-bold mb-1">Lista de Órdenes de Ventas</h1>
+    </div>
+</div>
 
-<h1>Lista de Órdenes de Ventas</h1>
+<!--Filtros de búsqueda-->
+<div class="row mb-3 g-2 align-items-center">
+    <form method="get" class="row g-2 align-items-center" id="filterForm">
+        <div class="col-md-3">
+            <select name="searchStatus" class="form-select" asp-for="SearchStatus">
+                <option value="">Todas los estados</option>
+                <option value="Pendiente">Pendiente</option>
+                <option value="Preparando">Preparando</option>
+                <option value="Despacho">Despachado</option>
+                <option value="En Camino">En camino</option>
+                <option value="Entregado">Entregado</option>
+                <option value="Cancelado">Cancelado</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <input type="search" 
+                   name="searchCode" 
+                   class="form-control" 
+                   placeholder="Código" 
+                   value="@Model.SearchCode" />
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100">
+                <i class="fa-solid fa-search me-1"></i>Buscar
+            </button>
+        </div>
+        <div class="col-md-2">
+            <a asp-page="/Orders/Index" class="btn btn-secondary w-100">
+                <i class="fa-solid fa-rotate-right me-1"></i>Limpiar
+            </a>
+        </div>
+    </form>
+</div>
 
 @if (Model != null && Model.Order.Any())
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>ID</th>
+    <table class="table table-hover table-striped shadow-lg rounded">
+        <thead class="table-dark">
+            <tr class="animate__animated animate__fadeInDown">
+                <th>Código</th>
                 <th>Cliente</th>
-                <th>Dirección</th>
                 <th>Estado</th>
                 <th>Acciones</th>
             </tr>
@@ -23,26 +58,47 @@
             @foreach (var o in Model.Order)
             {
                 <tr>
-                    <td>@o.Id</td>
+                    <td>OV-#@o.Id</td>
                     <td>@o.CustomerName</td>
-                    <td>@o.ShippingAddress</td>
-                    <td>@o.Status</td>
+                    <td>
+                        <span class="badge bg-@GetStatusBadgeClass(o.Status)">
+                            @o.Status
+                        </span>
+                    </td>
                     <td>
                         @if (o.Status == "Pending")
                         {
                             <form method="post" asp-page="/Administration/Despacho" asp-page-handler="Despachar" asp-route-id="@o.Id" style="display:inline;">
-                                <button type="submit" class="btn btn-success btn-sm">Despachar</button>
+                                <button type="submit" class="btn btn-success">Despachar</button>
                             </form>
                         }
-                        <a asp-page="/Administration/DetallePedido" asp-route-id="@o.Id" class="btn btn-info btn-sm">Ver detalle</a>
+                        <a asp-page="/Administration/DetallePedido" asp-route-id="@o.Id" class="btn btn-info">Ver detalle</a>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
-
 }
 else
 {
-    <div class="alert alert-warning">No se encontraron órdenes.</div>
+    <div class="alert alert-warning">
+        <i class="fa-solid fa-info-circle me-2"></i>
+        No se encontraron órdenes con los criterios seleccionados.
+    </div>
+}
+
+@functions {
+    string GetStatusBadgeClass(string status)
+    {
+        return status switch
+        {
+            "Pendiente" => "warning",
+            "Preparando" => "info",
+            "Despacho" => "primary",
+            "En Camino" => "primary",
+            "Entregado" => "success",
+            "Cancelado" => "danger",
+            _ => "secondary"
+        };
+    }
 }
