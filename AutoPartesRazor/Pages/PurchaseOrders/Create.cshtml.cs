@@ -45,6 +45,7 @@ public class CreateModel : PageModel
             {
                 var productSupplier = await _context.ProductSuppliers
                     .Include(ps => ps.Supplier)
+                    .Include(p => p.Product)
                     .FirstOrDefaultAsync(ps => ps.ProductId == productId.Value);
 
                 if (productSupplier != null)

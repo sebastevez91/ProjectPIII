@@ -57,7 +57,6 @@ public class UserService : IUserService
     {
         return await _userManager.RemoveFromRoleAsync(user, roleName);
     }
-
     #endregion
 
     #region Métodos de Autenticación
