@@ -375,19 +375,19 @@ AutoPartesRazor/
 ## 📸 Capturas de Pantalla
 
 ### Página Principal
-![Home Page](screenshots/home.png)
+![Home Page](screenshots/Home.png)
 
 ### Catálogo de Productos
 ![Products Catalog](screenshots/Catalog.png)
 
 ### Carrito de Compras
-![Shopping Cart](screenshots/cart.png)
+![Shopping Cart](screenshots/Cart.png)
 
 ### Panel de Administración
-![Admin Dashboard](screenshots/administration.png)
+![Admin Dashboard](screenshots/Administration.png)
 
 ### Sistema de Reclamos
-![Claims System](screenshots/claim.png)
+![Claims System](screenshots/Claim.png)
 
 ---
 
