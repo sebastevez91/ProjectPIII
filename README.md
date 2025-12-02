@@ -378,16 +378,16 @@ AutoPartesRazor/
 ![Home Page](screenshots/home.png)
 
 ### Catálogo de Productos
-![Products Catalog](screenshots/products.png)
+![Products Catalog](screenshots/Catalog.png)
 
 ### Carrito de Compras
 ![Shopping Cart](screenshots/cart.png)
 
 ### Panel de Administración
-![Admin Dashboard](screenshots/admin.png)
+![Admin Dashboard](screenshots/administration.png)
 
 ### Sistema de Reclamos
-![Claims System](screenshots/claims.png)
+![Claims System](screenshots/claim.png)
 
 ---
 
