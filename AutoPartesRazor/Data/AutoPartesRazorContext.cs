@@ -254,6 +254,16 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
             .HasForeignKey(c => c.OrderId)
             .OnDelete(DeleteBehavior.Restrict);
 
+        // ============================================
+        // RELACIÓN AGREGADA: Order - OrderEvent (Timeline)
+        // ============================================
+        modelBuilder.Entity<OrderEvent>()
+            .HasOne(oe => oe.Order)
+            .WithMany(o => o.OrderEvents) // Asumiendo que agregaste 'public List<OrderEvent>? OrderEvents { get; set; }' a tu modelo Order.cs
+            .HasForeignKey(oe => oe.OrderId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+
         // Índice único para códigos de cupón
         modelBuilder.Entity<Coupon>()
             .HasIndex(c => c.Code)
@@ -347,7 +357,7 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
     // ============================================
     // TABLAS EN BASE DE DATOS
     // ============================================
-    public DbSet<AutoPartesRazor.Models.Claim> Reclamo { get; set; }
+    public DbSet<AutoPartesRazor.Models.Claim> Claims { get; set; }
     public DbSet<AutoPartesRazor.Models.MessageClaim> MensajeReclamo { get; set; }
     public DbSet<AutoPartesRazor.Models.Product> Products { get; set; } = default!;
     public DbSet<AutoPartesRazor.Models.Brand> Brands { get; set; }
@@ -366,6 +376,7 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
     public DbSet<AutoPartesRazor.Models.StockAdjustment> StockAdjustments { get; set; }
     public DbSet<AutoPartesRazor.Models.SupplierClaim> SupplierClaims { get; set; }
     public DbSet<AutoPartesRazor.Models.Coupon> Coupons { get; set; } = default!;
+    public DbSet<AutoPartesRazor.Models.OrderEvent> OrderEvents { get; set; } = default!;
 
 
     // ============================================
