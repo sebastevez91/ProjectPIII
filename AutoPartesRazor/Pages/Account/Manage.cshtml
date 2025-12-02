@@ -10,7 +10,7 @@
         <!-- Sidebar -->
         <div class="col-md-3 mb-4">
             <div class="card shadow-sm">
-                <div class="card-body text-center">
+                <div class="card-body bg-dark text-white text-center">
                     <!-- Foto de perfil -->
                     <div class="profile-picture-container mb-3">
                         <div class="profile-picture">
@@ -26,11 +26,11 @@
                         </div>
                     </div>
 
-                    <h5 class="mb-1">@User.Identity?.Name</h5>
+                    <h5 class="mb-1">@Model.UpdateUser.FullName</h5>
                     <p class="text-muted small mb-3">@Model.UpdateUser?.Email</p>
 
                     <!-- Navegación del perfil -->
-                    <div class="list-group list-group-flush">
+                    <div class="list-group list-group-flush border-4">
                         <a href="#perfil" class="list-group-item list-group-item-action active" data-bs-toggle="pill">
                             <i class="fa-solid fa-user me-2"></i>Datos Personales
                         </a>
@@ -71,7 +71,7 @@
                 <!-- Tab: Datos Personales -->
                 <div class="tab-pane fade show active" id="perfil">
                     <div class="card shadow-sm">
-                        <div class="card-header bg-white">
+                        <div class="card-header bg-dark text-white">
                             <h5 class="mb-0">
                                 <i class="fa-solid fa-user me-2 text-primary"></i>
                                 Información Personal
@@ -135,7 +135,7 @@
                 <!-- Tab: Dirección -->
                 <div class="tab-pane fade" id="direccion">
                     <div class="card shadow-sm">
-                        <div class="card-header bg-white">
+                        <div class="card-header bg-dark text-white">
                             <h5 class="mb-0">
                                 <i class="fa-solid fa-map-marker-alt me-2 text-primary"></i>
                                 Dirección de Envío
@@ -174,7 +174,7 @@
                 <!-- Tab: Seguridad -->
                 <div class="tab-pane fade" id="seguridad">
                     <div class="card shadow-sm">
-                        <div class="card-header bg-white">
+                        <div class="card-header bg-dark text-white">
                             <h5 class="mb-0">
                                 <i class="fa-solid fa-lock me-2 text-primary"></i>
                                 Cambiar Contraseña
@@ -233,7 +233,7 @@
                 <!-- Tab: Photo Perfile -->
                 <div class="tab-pane fade" id="profile">
                     <div class="card shadow-sm">
-                        <div class="card-header bg-white">
+                        <div class="card-header bg-dark text-white">
                             <h5 class="mb-0">
                                 <i class="fa-solid fa-camera me-2 text-primary"></i>
                                 Foto de Perfil
@@ -267,7 +267,7 @@
     </div>
 </div>
 
-@section Styles {
+@section Styles{
     <style>
         .profile-picture-container {
             position: relative;
@@ -277,54 +277,166 @@
             width: 120px;
             height: 120px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto 1rem;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease;
         }
+
+            .profile-picture:hover {
+                transform: scale(1.05);
+            }
 
             .profile-picture i {
                 color: white;
             }
 
-        .list-group-item {
-            border: none;
-            border-left: 3px solid transparent;
-            transition: all 0.2s;
+            .profile-picture img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+        /* Navegación del perfil - MEJORADA */
+        .list-group-flush {
+            border-radius: 0.5rem;
+            overflow: hidden;
         }
 
+        .list-group-item {
+            border: none;
+            border-left: 4px solid transparent;
+            transition: all 0.3s ease;
+            background-color: #f8f9fa;
+            color: #495057;
+            font-weight: 500;
+            padding: 1rem 1.25rem;
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+            .list-group-item:last-child {
+                margin-bottom: 0;
+            }
+
             .list-group-item:hover {
-                background-color: #f8f9fa;
-                border-left-color: var(--primary);
+                background-color: #e9ecef;
+                border-left-color: #6c757d;
+                transform: translateX(5px);
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             }
 
             .list-group-item.active {
-                background-color: rgba(11, 94, 215, 0.1);
-                border-left-color: var(--primary);
-                color: var(--primary);
+                background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+                border-left-color: #343a40;
+                color: white;
                 font-weight: 600;
+                box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
             }
 
+                .list-group-item.active i {
+                    color: white;
+                }
+
+            .list-group-item i {
+                width: 20px;
+                text-align: center;
+                transition: transform 0.3s ease;
+            }
+
+            .list-group-item:hover i {
+                transform: scale(1.2);
+            }
+
+        /* Tarjeta del sidebar */
+        .card {
+            border-radius: 1rem;
+            overflow: hidden;
+        }
+
+        .card-body.bg-dark {
+            background: linear-gradient(135deg, #495057 0%, #343a40 100%) !important;
+            border-radius: 1rem;
+        }
+
+        /* Headers de las tarjetas */
         .card-header {
             border-bottom: 2px solid #f0f0f0;
             padding: 1.25rem;
+            border-radius: 1rem 1rem 0 0;
         }
 
+            .card-header.bg-dark {
+                background: linear-gradient(135deg, #495057 0%, #343a40 100%) !important;
+            }
+
+        /* Input groups mejorados */
         .input-group-text {
             background-color: #f8f9fa;
             border-right: none;
+            border-radius: 0.5rem 0 0 0.5rem;
         }
 
         .input-group .form-control,
         .input-group .form-select {
             border-left: none;
+            border-radius: 0 0.5rem 0.5rem 0;
         }
 
         .input-group:focus-within .input-group-text {
-            border-color: #86b7fe;
-            background-color: #e7f1ff;
+            border-color: #6c757d;
+            background-color: #e9ecef;
+        }
+
+        /* Botones mejorados */
+        .btn {
+            border-radius: 0.5rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+            .btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            }
+
+        /* Alertas con bordes redondeados */
+        .alert {
+            border-radius: 0.75rem;
+        }
+
+        /* Tab content */
+        .tab-content .card {
+            animation: fadeIn 0.3s ease;
+        }
+
+        keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Texto muted con mejor color */
+        .text-muted {
+            color: #6c757d !important;
+        }
+
+        /* Hover effect para el nombre de usuario */
+        h5.mb-1 {
+            transition: color 0.3s ease;
+        }
+
+        .card-body.bg-dark:hover h5.mb-1 {
+            color: #ffffff !important;
         }
     </style>
 }

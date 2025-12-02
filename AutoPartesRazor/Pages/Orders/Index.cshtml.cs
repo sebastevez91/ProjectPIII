@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using AutoPartesRazor.Data;
 using AutoPartesRazor.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AutoPartesRazor.Pages.Orders
 {
+    [Authorize(Roles = "Admin")]
     public class IndexModel : PageModel
     {
         private readonly AutoPartesRazorContext _context;
@@ -58,6 +60,54 @@ namespace AutoPartesRazor.Pages.Orders
                 .Include(o => o.User)
                 .Include(o => o.Items)
                 .ToListAsync();
+        }
+
+        // Handler para cambiar estado a "Preparando"
+        public async Task<IActionResult> OnPostPrepararAsync(int id)
+        {
+            var pedido = await _context.Orders.FindAsync(id);
+
+            if (pedido == null)
+                return NotFound();
+
+            // Cambiar estado a "Preparando"
+            pedido.Status = "Preparando";
+            pedido.UpdatedAt = DateTime.Now;
+
+            await _context.SaveChangesAsync();
+
+            TempData["DespachoOK"] = true;
+
+            // Mantener los filtros actuales al recargar
+            return RedirectToPage(new
+            {
+                searchStatus = SearchStatus,
+                searchCode = SearchCode
+            });
+        }
+
+        // Handler para cambiar estado a "Despachado"
+        public async Task<IActionResult> OnPostDespacharAsync(int id)
+        {
+            var pedido = await _context.Orders.FindAsync(id);
+
+            if (pedido == null)
+                return NotFound();
+
+            // Cambiar estado a "Despachado"
+            pedido.Status = "Despachado";
+            pedido.UpdatedAt = DateTime.Now;
+
+            await _context.SaveChangesAsync();
+
+            TempData["DespachoOK"] = true;
+
+            // Mantener los filtros actuales al recargar
+            return RedirectToPage(new
+            {
+                searchStatus = SearchStatus,
+                searchCode = SearchCode
+            });
         }
     }
 }

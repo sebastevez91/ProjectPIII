@@ -67,17 +67,21 @@
                         <a asp-page="/Products/Index" class="nav-link">Catálogo</a>
                     </li>
                     
+                    <!--Carrito-->
                     <li class="nav-item me-3">
                         <a asp-page="/Carts/Index" class="nav-link position-relative">
                             <i class="fa-solid fa-shopping-cart fa-lg"></i>
                             <span id="navCartCount" class="badge-cart"></span>
                         </a>
                     </li>
+
+                    <!--Foto de perfil-->
                     @{
                         var currentUser = await UserManager.GetUserAsync(User);
                         var profilePic = currentUser?.ProfilePicturePath;
                     }
 
+                    <!--Menú desplegable-->
                     @if (SignInManager.IsSignedIn(User))
                     {
                         <li class="nav-item user-dropdown">
@@ -93,7 +97,6 @@
                                 {
                                     <i class="fa-solid fa-user-circle me-1"></i>
                                 }
-                                @* @User.Identity?.Name *@
                                 @currentUser.FullName
                                 <i class="fa-solid fa-chevron-down ms-1 small"></i>
                             </a>

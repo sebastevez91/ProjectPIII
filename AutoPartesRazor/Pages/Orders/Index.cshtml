@@ -1,104 +1,312 @@
 ﻿@page
 @model AutoPartesRazor.Pages.Orders.IndexModel
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Gestión de Órdenes";
 }
+
 <div class="hero-section bg-primary bg-gradient text-white py-2 text-center m-2">
     <div class="container py-4">
-        <h1 class="display-4 fw-bold mb-1">Lista de Órdenes de Ventas</h1>
+        <h1 class="display-4 fw-bold mb-1">
+            <i class="fa-solid fa-clipboard-list"></i> Gestión de Órdenes de Ventas
+        </h1>
     </div>
 </div>
 
+@if (TempData["DespachoOK"] != null)
+{
+    <script>
+        Swal.fire({
+            title: '¡Pedido actualizado!',
+            text: 'El estado del pedido fue actualizado correctamente.',
+            icon: 'success',
+            showConfirmButton: false,
+            timer: 1500
+        });
+    </script>
+}
+
 <!--Filtros de búsqueda-->
-<div class="row mb-3 g-2 align-items-center">
-    <form method="get" class="row g-2 align-items-center" id="filterForm">
-        <div class="col-md-3">
-            <select name="searchStatus" class="form-select" asp-for="SearchStatus">
-                <option value="">Todas los estados</option>
-                <option value="Pendiente">Pendiente</option>
-                <option value="Preparando">Preparando</option>
-                <option value="Despacho">Despachado</option>
-                <option value="En Camino">En camino</option>
-                <option value="Entregado">Entregado</option>
-                <option value="Cancelado">Cancelado</option>
-            </select>
+<div class="container">
+    <div class="row mb-3 g-2 align-items-center">
+        <form method="get" class="row g-2 align-items-center" id="filterForm">
+            <div class="col-md-3">
+                <select name="searchStatus" class="form-select" asp-for="SearchStatus">
+                    <option value="">Todos los estados</option>
+                    <option value="Pendiente">Pendiente</option>
+                    <option value="Preparando">Preparando</option>
+                    <option value="Despachado">Despachado</option>
+                    <option value="En Camino">En camino</option>
+                    <option value="Entregado">Entregado</option>
+                    <option value="Cancelado">Cancelado</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <input type="search" 
+                       name="searchCode" 
+                       class="form-control" 
+                       placeholder="Buscar por código..." 
+                       value="@Model.SearchCode" />
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="fa-solid fa-search me-1"></i>Buscar
+                </button>
+            </div>
+            <div class="col-md-2">
+                <a asp-page="/Orders/Index" class="btn btn-secondary w-100">
+                    <i class="fa-solid fa-rotate-right me-1"></i>Limpiar
+                </a>
+            </div>
+            <div class="col-md-2">
+                <span class="badge bg-info fs-6 w-100 py-2">
+                    <i class="fa-solid fa-box"></i> @Model.Order.Count orden(es)
+                </span>
+            </div>
+        </form>
+    </div>
+
+    @* Mostrar filtros activos *@
+    @if (!string.IsNullOrWhiteSpace(Model.SearchStatus) || !string.IsNullOrWhiteSpace(Model.SearchCode))
+    {
+        <div class="row mb-3">
+            <div class="col-12">
+                <div class="alert alert-light d-flex justify-content-between align-items-center">
+                    <div>
+                        <i class="fa-solid fa-filter me-2"></i>
+                        <strong>Filtros activos:</strong>
+                        @if (!string.IsNullOrWhiteSpace(Model.SearchStatus))
+                        {
+                            <span class="badge bg-primary ms-2">Estado: @Model.SearchStatus</span>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(Model.SearchCode))
+                        {
+                            <span class="badge bg-info ms-2">Código: @Model.SearchCode</span>
+                        }
+                    </div>
+                    <a asp-page="/Orders/Index" class="btn btn-sm btn-outline-secondary">
+                        <i class="fa-solid fa-times me-1"></i>Limpiar filtros
+                    </a>
+                </div>
+            </div>
         </div>
-        <div class="col-md-3">
-            <input type="search" 
-                   name="searchCode" 
-                   class="form-control" 
-                   placeholder="Código" 
-                   value="@Model.SearchCode" />
-        </div>
-        <div class="col-md-2">
-            <button type="submit" class="btn btn-primary w-100">
-                <i class="fa-solid fa-search me-1"></i>Buscar
-            </button>
-        </div>
-        <div class="col-md-2">
-            <a asp-page="/Orders/Index" class="btn btn-secondary w-100">
-                <i class="fa-solid fa-rotate-right me-1"></i>Limpiar
-            </a>
-        </div>
-    </form>
+    }
 </div>
 
 @if (Model != null && Model.Order.Any())
 {
-    <table class="table table-hover table-striped shadow-lg rounded">
-        <thead class="table-dark">
-            <tr class="animate__animated animate__fadeInDown">
-                <th>Código</th>
-                <th>Cliente</th>
-                <th>Estado</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var o in Model.Order)
-            {
-                <tr>
-                    <td>OV-#@o.Id</td>
-                    <td>@o.CustomerName</td>
-                    <td>
-                        <span class="badge bg-@GetStatusBadgeClass(o.Status)">
-                            @o.Status
-                        </span>
-                    </td>
-                    <td>
-                        @if (o.Status == "Pending")
-                        {
-                            <form method="post" asp-page="/Administration/Despacho" asp-page-handler="Despachar" asp-route-id="@o.Id" style="display:inline;">
-                                <button type="submit" class="btn btn-success">Despachar</button>
-                            </form>
-                        }
-                        <a asp-page="/Administration/DetallePedido" asp-route-id="@o.Id" class="btn btn-info">Ver detalle</a>
-                    </td>
+    <div class="container">
+        <table class="table table-hover table-striped shadow-lg rounded">
+            <thead class="table-dark">
+                <tr class="animate__animated animate__fadeInDown">
+                    <th>Código</th>
+                    <th>Cliente</th>
+                    <th>Estado</th>
+                    <th>Fecha</th>
+                    <th>Acciones</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var o in Model.Order)
+                {
+                    string badgeClass = "bg-secondary";
+                    string anim = "";
+                    string badgeIcon = "<i class='fa-solid fa-truck-ramp-box'></i>";
+
+                    if (o.Status == "Pendiente") 
+                    { 
+                        badgeClass = "bg-warning text-dark"; 
+                        badgeIcon = "<i class='fa-solid fa-clock'></i>"; 
+                        anim = "animate__pulse"; 
+                    }
+                    else if (o.Status == "Preparando") 
+                    { 
+                        badgeClass = "bg-primary"; 
+                        badgeIcon = "<i class='fa-solid fa-box'></i>"; 
+                        anim = "animate__pulse"; 
+                    }
+                    else if (o.Status == "Despachado") 
+                    { 
+                        badgeClass = "bg-info"; 
+                        badgeIcon = "<i class='fa-solid fa-truck'></i>"; 
+                    }
+                    else if (o.Status == "En Camino") 
+                    { 
+                        badgeClass = "bg-primary"; 
+                        badgeIcon = "<i class='fa-solid fa-truck-fast'></i>"; 
+                        anim = "animate__tada"; 
+                    }
+                    else if (o.Status == "Entregado") 
+                    { 
+                        badgeClass = "bg-success"; 
+                        badgeIcon = "<i class='fa-solid fa-circle-check'></i>"; 
+                    }
+                    else if (o.Status == "Cancelado") 
+                    { 
+                        badgeClass = "bg-danger"; 
+                        badgeIcon = "<i class='fa-solid fa-xmark'></i>"; 
+                    }
+
+                    <tr class="align-middle animate__animated animate__fadeInUp">
+                        <td class="fw-bold">OV-#@o.Id</td>
+                        <td>@o.CustomerName</td>
+                        <td>
+                            <span class="badge @badgeClass px-3 py-2 animate__animated @anim" style="font-size:0.9em;">
+                                @Html.Raw(badgeIcon) @o.Status
+                            </span>
+                        </td>
+                        <td>
+                            <small class="text-muted">
+                                @o.CreatedAt.ToString("dd/MM/yyyy")
+                                <br />
+                                @o.CreatedAt.ToString("HH:mm")
+                            </small>
+                        </td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                @if (o.Status == "Pendiente" && User.IsInRole("Admin"))
+                                {
+                                    <form method="post" 
+                                          asp-page-handler="Preparar" 
+                                          asp-route-id="@o.Id" 
+                                          class="d-inline prepararForm" 
+                                          data-pid="@o.Id">
+                                        <button type="submit" 
+                                                class="btn btn-warning btn-sm shadow-sm">
+                                            <i class="fa-solid fa-box-open"></i> Preparar
+                                        </button>
+                                    </form>
+                                }
+                                
+                                @if (o.Status == "Preparando" && User.IsInRole("Admin"))
+                                {
+                                    <form method="post" 
+                                          asp-page-handler="Despachar" 
+                                          asp-route-id="@o.Id" 
+                                          class="d-inline despacharForm" 
+                                          data-pid="@o.Id">
+                                        <button type="submit" 
+                                                class="btn btn-success btn-sm shadow-sm">
+                                            <i class="fa-solid fa-truck"></i> Despachar
+                                        </button>
+                                    </form>
+                                }
+
+                                <a asp-page="/Administration/DetallePedido" 
+                                   asp-route-id="@o.Id"
+                                   class="btn btn-info btn-sm shadow-sm">
+                                    <i class="fa-solid fa-magnifying-glass"></i> Ver Detalle
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 }
 else
 {
-    <div class="alert alert-warning">
-        <i class="fa-solid fa-info-circle me-2"></i>
-        No se encontraron órdenes con los criterios seleccionados.
+    <div class="container">
+        <div class="alert alert-warning text-center py-5">
+            <i class="fa-solid fa-search fa-3x mb-3 d-block text-muted"></i>
+            <h5>No se encontraron órdenes</h5>
+            <p class="mb-0">
+                @if (!string.IsNullOrWhiteSpace(Model.SearchCode) || !string.IsNullOrWhiteSpace(Model.SearchStatus))
+                {
+                    <span>No hay órdenes que coincidan con los filtros aplicados.</span>
+                }
+                else
+                {
+                    <span>Aún no hay órdenes registradas en el sistema.</span>
+                }
+            </p>
+        </div>
     </div>
 }
 
-@functions {
-    string GetStatusBadgeClass(string status)
-    {
-        return status switch
-        {
-            "Pendiente" => "warning",
-            "Preparando" => "info",
-            "Despacho" => "primary",
-            "En Camino" => "primary",
-            "Entregado" => "success",
-            "Cancelado" => "danger",
-            _ => "secondary"
-        };
-    }
+@section Scripts {
+    <script>
+        // Confirmación para preparar pedido
+        document.querySelectorAll('.prepararForm').forEach(form => {
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                const formActual = this;
+                Swal.fire({
+                    title: '¿Preparar pedido?',
+                    text: "Esta acción marcará el pedido como en preparación.",
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#ffc107',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: '¡Sí, preparar!',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            title: '¡Preparando!',
+                            text: 'Procesando el cambio de estado...',
+                            icon: 'info',
+                            showConfirmButton: false,
+                            timer: 500
+                        }).then(() => {
+                            formActual.submit();
+                        });
+                    }
+                });
+            });
+        });
+
+        // Confirmación para despachar pedido
+        document.querySelectorAll('.despacharForm').forEach(form => {
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                const formActual = this;
+                Swal.fire({
+                    title: '¿Despachar pedido?',
+                    text: "El pedido será marcado como despachado y en camino.",
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#28a745',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: '¡Sí, despachar!',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            title: '¡Despachando!',
+                            text: 'Procesando el despacho...',
+                            icon: 'success',
+                            showConfirmButton: false,
+                            timer: 500
+                        }).then(() => {
+                            formActual.submit();
+                        });
+                    }
+                });
+            });
+        });
+
+        // Auto-submit cuando cambia el filtro de estado
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('filterForm');
+            const statusSelect = form.querySelector('select[name="searchStatus"]');
+
+            if (statusSelect) {
+                statusSelect.addEventListener('change', function() {
+                    form.submit();
+                });
+            }
+
+            // Búsqueda con Enter en el campo de código
+            const searchInput = form.querySelector('input[name="searchCode"]');
+            if (searchInput) {
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        form.submit();
+                    }
+                });
+            }
+        });
+    </script>
 }
