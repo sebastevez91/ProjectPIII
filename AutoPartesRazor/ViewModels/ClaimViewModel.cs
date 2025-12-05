@@ -21,6 +21,12 @@ namespace AutoPartesRazor.ViewModels
 
         [Display(Name = "Nivel de Urgencia Sugerido")]
         public LevelUrgency NivelUrgencia { get; set; } = LevelUrgency.Media;
+
+        [Display(Name = "Pedido relacionado (opcional)")]
+        public int? OrderId { get; set; }
+
+        // Lista de pedidos del usuario
+        public List<Order>? PedidosDisponibles { get; set; }
     }
 
     /// ViewModel para mostrar detalles de un reclamo

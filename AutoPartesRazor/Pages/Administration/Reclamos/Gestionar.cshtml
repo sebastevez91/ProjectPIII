@@ -62,7 +62,7 @@
                                         </div>
                                     </div>
                                     <div class="flex-shrink-0">
-                                        <div class="bg-primary rounded-circle text-white d-flex align-items-center justify-content-center" 
+                                        <div class="bg-primary rounded-circle text-white d-flex align-items-center justify-content-center"
                                              style="width: 40px; height: 40px;">
                                             <i class="bi bi-person-gear"></i>
                                         </div>
@@ -74,7 +74,7 @@
                                 <!-- Mensaje del cliente (izquierda) -->
                                 <div class="d-flex mb-3">
                                     <div class="flex-shrink-0">
-                                        <div class="bg-secondary rounded-circle text-white d-flex align-items-center justify-content-center" 
+                                        <div class="bg-secondary rounded-circle text-white d-flex align-items-center justify-content-center"
                                              style="width: 40px; height: 40px;">
                                             <i class="bi bi-person-fill"></i>
                                         </div>
@@ -103,10 +103,10 @@
                         <hr />
                         <form method="post" asp-page-handler="Responder">
                             <input type="hidden" name="reclamoId" value="@Model.ViewModel.Reclamo.Id" />
-                            
+
                             <div class="mb-3">
                                 <label asp-for="ViewModel.Respuesta" class="form-label fw-bold">Responder al Cliente</label>
-                                <textarea asp-for="ViewModel.Respuesta" class="form-control" rows="4" 
+                                <textarea asp-for="ViewModel.Respuesta" class="form-control" rows="4"
                                           placeholder="Escribe tu respuesta aquí..."></textarea>
                                 <span asp-validation-for="ViewModel.Respuesta" class="text-danger"></span>
                             </div>
@@ -132,6 +132,112 @@
 
         <!-- Columna lateral: Gestión -->
         <div class="col-lg-4">
+            <!-- ✅ INFORMACIÓN DEL PEDIDO RELACIONADO (NUEVO) -->
+            @if (Model.ViewModel.Reclamo.Order != null)
+            {
+                <div class="card shadow-sm mb-3 border-primary">
+                    <div class="card-header bg-primary text-white">
+                        <h6 class="mb-0">
+                            <i class="bi bi-box-seam me-2"></i>
+                            Pedido Relacionado
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-2">
+                            <span class="badge bg-primary fs-6">Pedido #@Model.ViewModel.Reclamo.Order.Id</span>
+                        </div>
+
+                        <hr />
+
+                        <p class="mb-2">
+                            <strong><i class="bi bi-calendar me-1"></i> Fecha:</strong><br />
+                            <small class="text-muted">@Model.ViewModel.Reclamo.Order.CreatedAt.ToString("dd/MM/yyyy HH:mm")</small>
+                        </p>
+
+                        <p class="mb-2">
+                            <strong><i class="bi bi-cash me-1"></i> Total:</strong><br />
+                            <span class="text-success fw-bold fs-5">$@Model.ViewModel.Reclamo.Order.Total.ToString("N2")</span>
+                        </p>
+
+                        <p class="mb-2">
+                            <strong><i class="bi bi-truck me-1"></i> Estado:</strong><br />
+                            @switch (Model.ViewModel.Reclamo.Order.Status)
+                            {
+                                case "Pending":
+                                    <span class="badge bg-warning text-dark">Pendiente</span>
+                                    break;
+                                case "Processing":
+                                    <span class="badge bg-info">En Proceso</span>
+                                    break;
+                                case "Shipped":
+                                    <span class="badge bg-primary">Enviado</span>
+                                    break;
+                                case "Delivered":
+                                    <span class="badge bg-success">Entregado</span>
+                                    break;
+                                case "Cancelled":
+                                    <span class="badge bg-danger">Cancelado</span>
+                                    break;
+                                default:
+                                    <span class="badge bg-secondary">@Model.ViewModel.Reclamo.Order.Status</span>
+                                    break;
+                            }
+                        </p>
+
+                        <p class="mb-2">
+                            <strong><i class="bi bi-credit-card me-1"></i> Método de Pago:</strong><br />
+                            <small class="text-muted">@Model.ViewModel.Reclamo.Order.PaymentMethod</small>
+                        </p>
+
+                        <p class="mb-3">
+                            <strong><i class="bi bi-geo-alt me-1"></i> Dirección de Envío:</strong><br />
+                            <small class="text-muted">@Model.ViewModel.Reclamo.Order.ShippingAddress</small>
+                        </p>
+                        @if (Model.ViewModel.Reclamo.Order.Items != null && Model.ViewModel.Reclamo.Order.Items.Any())
+                        {
+                            <hr />
+                            <div class="mb-3">
+                                <strong class="d-block mb-2">
+                                    <i class="bi bi-box me-1"></i>Productos del Pedido:
+                                </strong>
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-bordered mb-0">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th style="width: 60%;">Producto</th>
+                                                <th class="text-center">Cant.</th>
+                                                <th class="text-end">Precio Unit.</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model.ViewModel.Reclamo.Order.Items)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        <small>@item.Product.Name</small>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <span class="badge bg-light text-dark">@item.Quantity</span>
+                                                    </td>
+                                                    <td class="text-end">
+                                                        <small class="text-muted">$@item.UnitPrice.ToString("N2")</small>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        }
+                        <div class="d-grid">
+                            <a asp-page="/Orders/Details" asp-route-id="@Model.ViewModel.Reclamo.Order.Id"
+                               class="btn btn-outline-primary btn-sm" target="_blank">
+                                <i class="bi bi-box-arrow-up-right me-1"></i>Ver Detalles Completos del Pedido
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
             <!-- Información del cliente -->
             <div class="card shadow-sm mb-3">
                 <div class="card-header bg-info text-white">
@@ -199,22 +305,58 @@
                         <input type="hidden" name="reclamoId" value="@Model.ViewModel.Reclamo.Id" />
 
                         <div class="mb-3">
-                            <label asp-for="ViewModel.AdministradorAsignadoId" class="form-label fw-bold">Asignar a</label>
+                            <label asp-for="ViewModel.AdministradorAsignadoId" class="form-label fw-bold">
+                                <i class="bi bi-person-badge me-1"></i>Asignar Responsable
+                            </label>
                             <select asp-for="ViewModel.AdministradorAsignadoId" class="form-select">
-                                <option value="">Sin asignar</option>
+                                <option value="">─── Sin asignar ───</option>
+
+                                <!-- ADMINISTRACIÓN - Seleccionable -->
+                                <option value="ADMIN_AREA"> ADMINISTRACIÓN </option>
                                 @foreach (var admin in Model.ViewModel.AdministradoresDisponibles)
                                 {
                                     <option value="@admin.Id" selected="@(Model.ViewModel.Reclamo.AdministradorAsignadoId == admin.Id)">
-                                        @admin.FullName
+                                        &nbsp;&nbsp;&nbsp;&nbsp;@admin.FullName
+                                    </option>
+                                }
+
+                                <!-- LOGÍSTICA - Seleccionable -->
+                                <option value="LOGISTICA_AREA"> LOGÍSTICA </option>
+                                @foreach (var admin in Model.ViewModel.AdministradoresDisponibles)
+                                {
+                                    <option value="@admin.Id" selected="@(Model.ViewModel.Reclamo.AdministradorAsignadoId == admin.Id)">
+                                        &nbsp;&nbsp;&nbsp;&nbsp;@admin.FullName
+                                    </option>
+                                }
+
+                                <!-- DEPÓSITO - Seleccionable -->
+                                <option value="DEPOSITO_AREA"> DEPÓSITO </option>
+                                @foreach (var admin in Model.ViewModel.AdministradoresDisponibles)
+                                {
+                                    <option value="@admin.Id" selected="@(Model.ViewModel.Reclamo.AdministradorAsignadoId == admin.Id)">
+                                        &nbsp;&nbsp;&nbsp;&nbsp;@admin.FullName
+                                    </option>
+                                }
+
+                                <!-- COMPRAS - Seleccionable -->
+                                <option value="COMPRAS_AREA"> COMPRAS </option>
+                                @foreach (var admin in Model.ViewModel.AdministradoresDisponibles)
+                                {
+                                    <option value="@admin.Id" selected="@(Model.ViewModel.Reclamo.AdministradorAsignadoId == admin.Id)">
+                                        &nbsp;&nbsp;&nbsp;&nbsp;@admin.FullName
                                     </option>
                                 }
                             </select>
+                            <small class="form-text text-muted">
+                                <i class="bi bi-info-circle me-1"></i>
+                                Puedes asignar a un área general o a una persona específica
+                            </small>
                         </div>
 
                         <div class="d-grid">
                             <button type="submit" class="btn btn-warning">
                                 <i class="bi bi-person-check me-2"></i>
-                                Asignar
+                                Asignar Responsable
                             </button>
                         </div>
                     </form>
@@ -249,6 +391,62 @@
                                 break;
                         }
                     </p>
+
+                    @* ✅ AGREGAR ESTA SECCIÓN NUEVA *@
+                    @if (Model.ViewModel.Reclamo.AdministradorAsignado != null)
+                    {
+                        <p>
+                            <strong>Asignado a:</strong><br />
+                            <span class="badge bg-success">
+                                <i class="bi bi-person-check me-1"></i>
+                                @Model.ViewModel.Reclamo.AdministradorAsignado.FullName
+                            </span>
+                        </p>
+                    }
+                    else if (!string.IsNullOrEmpty(Model.ViewModel.Reclamo.AreaAsignada))
+                    {
+                        <p>
+                            <strong>Área Asignada:</strong><br />
+                            @switch (Model.ViewModel.Reclamo.AreaAsignada)
+                            {
+                                case "Administracion":
+                                    <span class="badge bg-danger">
+                                        <i class="bi bi-buildings me-1"></i> Administración
+                                    </span>
+                                    break;
+                                case "Logistica":
+                                    <span class="badge bg-primary">
+                                        <i class="bi bi-truck me-1"></i> Logística
+                                    </span>
+                                    break;
+                                case "Deposito":
+                                    <span class="badge bg-warning text-dark">
+                                        <i class="bi bi-box-seam me-1"></i> Depósito
+                                    </span>
+                                    break;
+                                case "Compras":
+                                    <span class="badge bg-success">
+                                        <i class="bi bi-cart me-1"></i> Compras
+                                    </span>
+                                    break;
+                                default:
+                                    <span class="badge bg-secondary">
+                                        <i class="bi bi-tag me-1"></i>@Model.ViewModel.Reclamo.AreaAsignada
+                                    </span>
+                                    break;
+                            }
+                        </p>
+                    }
+                    else
+                    {
+                        <p>
+                            <strong>Asignado a:</strong><br />
+                            <span class="text-muted">
+                                <i class="bi bi-person-x me-1"></i>Sin asignar
+                            </span>
+                        </p>
+                    }
+
                     <p><strong>Creado:</strong><br />@Model.ViewModel.Reclamo.FechaCreacion.ToString("dd/MM/yyyy HH:mm")</p>
                     <p><strong>Actualizado:</strong><br />@Model.ViewModel.Reclamo.FechaActualizacion.ToString("dd/MM/yyyy HH:mm")</p>
                     @if (Model.ViewModel.Reclamo.FechaCierre.HasValue)
@@ -288,7 +486,9 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
     <script>
         // Scroll automático al final del chat
         const chatContainer = document.getElementById('chatContainer');

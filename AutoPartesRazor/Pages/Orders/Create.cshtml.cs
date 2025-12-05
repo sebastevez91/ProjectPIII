@@ -99,8 +99,12 @@ public class CreateModel : PageModel
         using var transaction = await _context.Database.BeginTransactionAsync();
         try
         {
+            // ✅ OBTENER EL USUARIO ACTUAL
+            var user = await _userManager.GetUserAsync(User);
+
             var order = new Order
             {
+                UserId = user?.Id,  // ✅ LÍNEA AGREGADA
                 CustomerName = Input.CustomerName,
                 CustomerEmail = Input.CustomerEmail,
                 ShippingAddress = Input.ShippingAddress,

@@ -52,6 +52,9 @@ namespace AutoPartesRazor.Models
         [Display(Name = "Cliente")]
         public virtual User? Cliente { get; set; }
 
+        public int? OrderId { get; set; }  // Nullable porque puede ser un reclamo general
+        public virtual Order? Order { get; set; }
+
         // Relación con Administrador asignado (opcional)
         [Display(Name = "ID del Administrador Asignado")]
         public string? AdministradorAsignadoId { get; set; }
@@ -59,6 +62,9 @@ namespace AutoPartesRazor.Models
         [ForeignKey(nameof(AdministradorAsignadoId))]
         [Display(Name = "Administrador Asignado")]
         public virtual User? AdministradorAsignado { get; set; }
+
+        // AGREGAR ESTA PROPIEDAD
+        public string? AreaAsignada { get; set; }
 
         // Colección de mensajes del reclamo
         public virtual ICollection<MessageClaim> Mensajes { get; set; } = new List<MessageClaim>();
