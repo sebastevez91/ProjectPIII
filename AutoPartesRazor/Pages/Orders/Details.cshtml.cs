@@ -18,6 +18,7 @@ public class DetailsModel : PageModel
     }
 
     public Order? Order { get; set; }
+    public Coupon? AppliedCoupon { get; set; }
 
     public async Task<IActionResult> OnGetAsync(int? id)
     {
@@ -29,6 +30,14 @@ public class DetailsModel : PageModel
             .FirstOrDefaultAsync(o => o.Id == id.Value);
 
         if (Order == null) return NotFound();
+
+        // Cargar el cupón si existe
+        if (Order.CouponId.HasValue)
+        {
+            AppliedCoupon = await _context.Coupons
+                .Include(c => c.Product)
+                .FirstOrDefaultAsync(c => c.Id == Order.CouponId.Value);
+        }
 
         return Page();
     }

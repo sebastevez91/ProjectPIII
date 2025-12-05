@@ -1,0 +1,259 @@
+﻿@page
+@model AutoPartesRazor.Pages.Stock.AdjustmentsModel
+@{
+    ViewData["Title"] = "Ajustes de Stock";
+}
+
+<div class="container-fluid mt-4">
+    <h2><i class="bi bi-sliders"></i> Ajustes de Stock</h2>
+    <hr />
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+            <i class="bi bi-check-circle"></i> @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show">
+            <i class="bi bi-x-circle"></i> @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="row">
+        <!-- Formulario de Nuevo Ajuste -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="mb-0"><i class="bi bi-plus-circle"></i> Nuevo Ajuste</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post" asp-page-handler="CreateAdjustment" id="adjustmentForm">
+                        <div class="mb-3">
+                            <label asp-for="Input.ProductId" class="form-label"></label>
+                            <select asp-for="Input.ProductId" asp-items="Model.Products"
+                                    class="form-select" id="productSelect">
+                                <option value="">-- Seleccione --</option>
+                            </select>
+                            <span asp-validation-for="Input.ProductId" class="text-danger"></span>
+                        </div>
+
+                        <!-- Info del Producto -->
+                        <div id="productInfo" class="alert alert-info d-none mb-3">
+                            <small>
+                                <strong>Stock Teórico:</strong> <span id="theoreticalStock">0</span><br />
+                                <strong>Stock Real Anterior:</strong> <span id="previousActualStock">-</span><br />
+                                <strong>Última Verificación:</strong> <span id="lastCheck">-</span>
+                            </small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Input.ActualStock" class="form-label"></label>
+                            <input asp-for="Input.ActualStock" class="form-control" id="actualStockInput" />
+                            <span asp-validation-for="Input.ActualStock" class="text-danger"></span>
+                        </div>
+
+                        <!-- Alerta de diferencia -->
+                        <div id="differenceAlert" class="alert d-none mb-3">
+                            <strong>Diferencia: <span id="differenceValue">0</span> unidades</strong>
+                            <p class="mb-0 small" id="differenceDescription"></p>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Input.AdjustmentType" class="form-label"></label>
+                            <select asp-for="Input.AdjustmentType" asp-items="Model.AdjustmentTypes"
+                                    class="form-select">
+                            </select>
+                            <span asp-validation-for="Input.AdjustmentType" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Input.Reason" class="form-label"></label>
+                            <textarea asp-for="Input.Reason" class="form-control" rows="3"
+                                      placeholder="Describa detalladamente el motivo del ajuste..."></textarea>
+                            <span asp-validation-for="Input.Reason" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Input.SupplierId" class="form-label"></label>
+                            <select asp-for="Input.SupplierId" asp-items="Model.Suppliers"
+                                    class="form-select" id="supplierSelect">
+                                <option value="">-- Opcional --</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3 form-check" id="claimSection" style="display: none;">
+                            <input asp-for="Input.CreateClaim" class="form-check-input" />
+                            <label asp-for="Input.CreateClaim" class="form-check-label"></label>
+                        </div>
+
+                        <button type="submit" class="btn btn-warning w-100">
+                            <i class="bi bi-save"></i> Registrar Ajuste
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Historial de Ajustes -->
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0"><i class="bi bi-clock-history"></i> Historial de Ajustes</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.StockAdjustments.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>Producto</th>
+                                        <th>Teórico</th>
+                                        <th>Real</th>
+                                        <th>Diferencia</th>
+                                        <th>Tipo</th>
+                                        <th>Motivo</th>
+                                        <th>Proveedor</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var adj in Model.StockAdjustments)
+                                    {
+                                        <tr>
+                                            <td>@adj.AdjustmentDate.ToString("dd/MM/yyyy HH:mm")</td>
+                                            <td>
+                                                <strong>@adj.Product?.Name</strong><br />
+                                                <small class="text-muted">@adj.Product?.Id</small>
+                                            </td>
+                                            <td>@adj.TheoreticalStock</td>
+                                            <td>@adj.ActualStock</td>
+                                            <td>
+                                                @if (adj.Difference > 0)
+                                                {
+                                                    <span class="badge bg-success">+@adj.Difference</span>
+                                                }
+                                                else if (adj.Difference < 0)
+                                                {
+                                                    <span class="badge bg-danger">@adj.Difference</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-secondary">0</span>
+                                                }
+                                            </td>
+                                            <td><small>@adj.AdjustmentType</small></td>
+                                            <td>
+                                                <small title="@adj.Reason">
+                                                    @(adj.Reason.Length > 30 ? adj.Reason.Substring(0, 30) + "..." : adj.Reason)
+                                                </small>
+                                            </td>
+                                            <td>
+                                                @if (adj.Supplier != null)
+                                                {
+                                                    <small>@adj.Supplier.Name</small>
+                                                    @if (adj.RequiresClaim)
+                                                    {
+                                                        <br />
+                                        
+                                                        <span class="badge bg-warning text-dark">Con Reclamo</span>
+                                                    }
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted text-center py-4">No hay ajustes registrados</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@functions{
+    string GetStatusText(string status)
+    {
+        return status switch
+        {
+            "Pending" => "Pendiente",
+            "Approved" => "Aprobado",
+            "Received" => "Recibido",
+            "Cancelled" => "Cancelado",
+            _ => status
+        };
+    }
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        let theoreticalStockValue = 0;
+
+        document.getElementById('productSelect').addEventListener('change', async function() {
+            const productId = this.value;
+            if (!productId) {
+                document.getElementById('productInfo').classList.add('d-none');
+                return;
+            }
+
+            try {
+                const response = await fetch(`?handler=ProductStock&productId=${productId}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    theoreticalStockValue = data.stock;
+                    document.getElementById('theoreticalStock').textContent = data.stock;
+                    document.getElementById('previousActualStock').textContent = data.actualStock;
+                    document.getElementById('lastCheck').textContent = data.lastCheck || 'Nunca';
+                    document.getElementById('productInfo').classList.remove('d-none');
+
+                    // Auto-rellenar con el stock actual si existe
+                    document.getElementById('actualStockInput').value = data.actualStock;
+                    checkDifference();
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+
+        document.getElementById('actualStockInput').addEventListener('input', checkDifference);
+        document.getElementById('supplierSelect').addEventListener('change', function() {
+            const claimSection = document.getElementById('claimSection');
+            claimSection.style.display = this.value ? 'block' : 'none';
+        });
+
+        function checkDifference() {
+            const actualStock = parseInt(document.getElementById('actualStockInput').value) || 0;
+            const diff = actualStock - theoreticalStockValue;
+            const diffAlert = document.getElementById('differenceAlert');
+            const diffValue = document.getElementById('differenceValue');
+            const diffDesc = document.getElementById('differenceDescription');
+
+            if (diff !== 0 && theoreticalStockValue > 0) {
+                diffAlert.classList.remove('d-none');
+                diffValue.textContent = diff > 0 ? '+' + diff : diff;
+
+                if (diff > 0) {
+                    diffAlert.className = 'alert alert-success mb-3';
+                    diffDesc.textContent = 'Hay más stock del registrado en el sistema';
+                } else {
+                    diffAlert.className = 'alert alert-danger mb-3';
+                    diffDesc.textContent = 'Hay menos stock del registrado en el sistema';
+                }
+            } else {
+                diffAlert.classList.add('d-none');
+            }
+        }
+    </script>
+}

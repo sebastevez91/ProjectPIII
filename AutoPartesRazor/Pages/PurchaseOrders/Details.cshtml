@@ -33,7 +33,11 @@
             @Html.DisplayNameFor(model => model.PurchaseOrder.Status)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.PurchaseOrder.Status)
+            <small class="d-block mt-1">
+                <span class="badge @GetStatusBadgeClass(Model.PurchaseOrder.Status)">
+                    @GetStatusText(Model.PurchaseOrder.Status)
+                </span>
+            </small>
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.PurchaseOrder.CreatedAt)
@@ -46,3 +50,29 @@
 <div>
     <a asp-page="./Index" class="btn btn-primary btn-sm">Volver</a>
 </div>
+
+@functions {
+    private string GetStatusText(string status)
+    {
+        return status switch
+        {
+            "Pending" => "PENDIENTE",
+            "Approved" => "APROBADA",
+            "Received" => "RECIBIDA",
+            "Cancelled" => "CANCELADA",
+            _ => status.ToString()
+        };
+    }
+
+    string GetStatusBadgeClass(string status)
+    {
+        return status switch
+        {
+            "Pending" => "bg-warning text-dark",
+            "Approved" => "bg-info",
+            "Received" => "bg-success",
+            "Cancelled" => "bg-danger",
+            _ => "bg-secondary"
+        };
+    }
+}

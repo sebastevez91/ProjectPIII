@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\patou\\Documentos\\Analista en Sistemas\\ISTIC\\2do a\u00F1o\\2do CUATRIMESTRE\\PP3 INTEGRADOR PGM\\ProjectPIII\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|c:\\users\\patou\\documentos\\analista en sistemas\\istic\\2do a\u00F1o\\2do cuatrimestre\\pp3 integrador pgm\\projectpiii\\autopartesrazor\\pages\\orders\\create.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|solutionrelative:autopartesrazor\\pages\\orders\\create.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|c:\\users\\patou\\documentos\\analista en sistemas\\istic\\2do a\u00F1o\\2do cuatrimestre\\pp3 integrador pgm\\projectpiii\\autopartesrazor\\models\\claim.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{87CB4919-2214-42C6-8638-2038E8A9B44F}|AutoPartesRazor\\AutoPartesRazor.csproj|solutionrelative:autopartesrazor\\models\\claim.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -51,6 +55,19 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "Create.cshtml.cs",
+              "DocumentMoniker": "C:\\Users\\patou\\Documentos\\Analista en Sistemas\\ISTIC\\2do a\u00F1o\\2do CUATRIMESTRE\\PP3 INTEGRADOR PGM\\ProjectPIII\\AutoPartesRazor\\Pages\\Orders\\Create.cshtml.cs",
+              "RelativeDocumentMoniker": "AutoPartesRazor\\Pages\\Orders\\Create.cshtml.cs",
+              "ToolTip": "C:\\Users\\patou\\Documentos\\Analista en Sistemas\\ISTIC\\2do a\u00F1o\\2do CUATRIMESTRE\\PP3 INTEGRADOR PGM\\ProjectPIII\\AutoPartesRazor\\Pages\\Orders\\Create.cshtml.cs",
+              "RelativeToolTip": "AutoPartesRazor\\Pages\\Orders\\Create.cshtml.cs",
+              "ViewState": "AgIAAMMAAAAAAAAAAAAAwOEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-05T02:02:13.975Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "Claim.cs",
               "DocumentMoniker": "C:\\Users\\patou\\Documentos\\Analista en Sistemas\\ISTIC\\2do a\u00F1o\\2do CUATRIMESTRE\\PP3 INTEGRADOR PGM\\ProjectPIII\\AutoPartesRazor\\Models\\Claim.cs",
               "RelativeDocumentMoniker": "AutoPartesRazor\\Models\\Claim.cs",
@@ -63,7 +80,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\Users\\patou\\Documentos\\Analista en Sistemas\\ISTIC\\2do a\u00F1o\\2do CUATRIMESTRE\\PP3 INTEGRADOR PGM\\ProjectPIII\\AutoPartesRazor\\Pages\\Claims\\Index.cshtml",
               "RelativeDocumentMoniker": "AutoPartesRazor\\Pages\\Claims\\Index.cshtml",
@@ -75,7 +92,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "Crear.cshtml",
               "DocumentMoniker": "C:\\Users\\patou\\Documentos\\Analista en Sistemas\\ISTIC\\2do a\u00F1o\\2do CUATRIMESTRE\\PP3 INTEGRADOR PGM\\ProjectPIII\\AutoPartesRazor\\Pages\\Claims\\Crear.cshtml",
               "RelativeDocumentMoniker": "AutoPartesRazor\\Pages\\Claims\\Crear.cshtml",
@@ -87,7 +104,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "Detalle.cshtml",
               "DocumentMoniker": "C:\\Users\\patou\\Documentos\\Analista en Sistemas\\ISTIC\\2do a\u00F1o\\2do CUATRIMESTRE\\PP3 INTEGRADOR PGM\\ProjectPIII\\AutoPartesRazor\\Pages\\Claims\\Detalle.cshtml",
               "RelativeDocumentMoniker": "AutoPartesRazor\\Pages\\Claims\\Detalle.cshtml",
@@ -99,7 +116,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "Gestionar.cshtml.cs",
               "DocumentMoniker": "C:\\Users\\patou\\Documentos\\Analista en Sistemas\\ISTIC\\2do a\u00F1o\\2do CUATRIMESTRE\\PP3 INTEGRADOR PGM\\ProjectPIII\\AutoPartesRazor\\Pages\\Administration\\Reclamos\\Gestionar.cshtml.cs",
               "RelativeDocumentMoniker": "AutoPartesRazor\\Pages\\Administration\\Reclamos\\Gestionar.cshtml.cs",
@@ -111,7 +128,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "Gestionar.cshtml",
               "DocumentMoniker": "C:\\Users\\patou\\Documentos\\Analista en Sistemas\\ISTIC\\2do a\u00F1o\\2do CUATRIMESTRE\\PP3 INTEGRADOR PGM\\ProjectPIII\\AutoPartesRazor\\Pages\\Administration\\Reclamos\\Gestionar.cshtml",
               "RelativeDocumentMoniker": "AutoPartesRazor\\Pages\\Administration\\Reclamos\\Gestionar.cshtml",

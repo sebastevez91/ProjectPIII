@@ -8,7 +8,7 @@ public class Category
 
     [Required]
     [StringLength(50)]
-    [Display(Name = "Nombre de categoría")]
+    [Display(Name = "Categoría")]
     public string Name { get; set; }
 
     // Delete

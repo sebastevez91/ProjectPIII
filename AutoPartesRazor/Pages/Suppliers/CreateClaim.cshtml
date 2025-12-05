@@ -1,0 +1,315 @@
+﻿@page
+@model AutoPartesRazor.Pages.Suppliers.CreateClaimModel
+@{
+    ViewData["Title"] = "Crear Reclamo a Proveedor";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-10 offset-md-1">
+            <div class="card">
+                <div class="card-header bg-warning text-dark">
+                    <h4 class="mb-0">
+                        <i class="bi bi-exclamation-triangle"></i> Nuevo Reclamo a Proveedor
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" id="claimForm">
+                        <div class="row">
+                            <!-- Proveedor -->
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Input.SupplierId" class="form-label">
+                                    <i class="bi bi-building"></i> <strong>@Html.DisplayNameFor(m => m.Input.SupplierId)</strong>
+                                </label>
+                                <select asp-for="Input.SupplierId"
+                                        asp-items="Model.Suppliers"
+                                        class="form-select"
+                                        id="supplierSelect"
+                                        required>
+                                    <option value="">-- Seleccione un proveedor --</option>
+                                </select>
+                                <span asp-validation-for="Input.SupplierId" class="text-danger"></span>
+                            </div>
+
+                            <!-- Asunto -->
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Input.Subject" class="form-label">
+                                    <strong>@Html.DisplayNameFor(m => m.Input.Subject)</strong>
+                                </label>
+                                <input asp-for="Input.Subject"
+                                       class="form-control"
+                                       placeholder="Ej: Productos dañados en envío"
+                                       required />
+                                <span asp-validation-for="Input.Subject" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Referencias Opcionales -->
+                        <div class="card mb-3 bg-light">
+                            <div class="card-body">
+                                <h6 class="card-title">
+                                    <i class="bi bi-link-45deg"></i> Referencias (Opcional)
+                                </h6>
+                                <small class="text-muted">Si el reclamo está relacionado con una orden o ajuste específico</small>
+
+                                <div class="row mt-3">
+                                    <div class="col-md-6 mb-3">
+                                        <label asp-for="Input.PurchaseOrderId" class="form-label">
+                                            @Html.DisplayNameFor(m => m.Input.PurchaseOrderId)
+                                        </label>
+                                        <select asp-for="Input.PurchaseOrderId"
+                                                class="form-select"
+                                                id="orderSelect">
+                                            <option value="">-- Ninguna --</option>
+                                        </select>
+                                        <button type="button"
+                                                class="btn btn-sm btn-outline-info mt-1"
+                                                id="loadOrderBtn"
+                                                style="display: none;">
+                                            <i class="bi bi-arrow-down-circle"></i> Cargar datos de la orden
+                                        </button>
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <label asp-for="Input.StockAdjustmentId" class="form-label">
+                                            @Html.DisplayNameFor(m => m.Input.StockAdjustmentId)
+                                        </label>
+                                        <select asp-for="Input.StockAdjustmentId"
+                                                class="form-select"
+                                                id="adjustmentSelect">
+                                            <option value="">-- Ninguno --</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div id="orderDetails" class="alert alert-info mt-2" style="display: none;">
+                                    <h6>Detalles de la Orden:</h6>
+                                    <div id="orderDetailsContent"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Cantidades -->
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="Input.ExpectedQuantity" class="form-label">
+                                    @Html.DisplayNameFor(m => m.Input.ExpectedQuantity)
+                                </label>
+                                <input asp-for="Input.ExpectedQuantity"
+                                       type="number"
+                                       class="form-control"
+                                       id="expectedQty"
+                                       placeholder="0" />
+                                <span asp-validation-for="Input.ExpectedQuantity" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="Input.ReceivedQuantity" class="form-label">
+                                    @Html.DisplayNameFor(m => m.Input.ReceivedQuantity)
+                                </label>
+                                <input asp-for="Input.ReceivedQuantity"
+                                       type="number"
+                                       class="form-control"
+                                       id="receivedQty"
+                                       placeholder="0" />
+                                <span asp-validation-for="Input.ReceivedQuantity" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="Input.ClaimAmount" class="form-label">
+                                    @Html.DisplayNameFor(m => m.Input.ClaimAmount)
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text">$</span>
+                                    <input asp-for="Input.ClaimAmount"
+                                           type="number"
+                                           step="0.01"
+                                           class="form-control"
+                                           placeholder="0.00" />
+                                </div>
+                                <span asp-validation-for="Input.ClaimAmount" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Alerta de diferencia -->
+                        <div id="differenceAlert" class="alert alert-warning" style="display: none;">
+                            <strong><i class="bi bi-exclamation-circle"></i> Diferencia detectada:</strong>
+                            <span id="differenceText"></span>
+                        </div>
+
+                        <!-- Descripción -->
+                        <div class="mb-3">
+                            <label asp-for="Input.Description" class="form-label">
+                                <strong>@Html.DisplayNameFor(m => m.Input.Description)</strong>
+                            </label>
+                            <textarea asp-for="Input.Description"
+                                      class="form-control"
+                                      rows="6"
+                                      placeholder="Describa detalladamente el motivo del reclamo, los problemas encontrados y las acciones esperadas..."
+                                      required></textarea>
+                            <span asp-validation-for="Input.Description" class="text-danger"></span>
+                            <small class="form-text text-muted">
+                                Mínimo 20 caracteres. Sea lo más específico posible.
+                            </small>
+                        </div>
+
+                        <!-- Ejemplo de formato -->
+                        <div class="alert alert-secondary">
+                            <strong><i class="bi bi-info-circle"></i> Ejemplo de descripción:</strong>
+                            <p class="mb-0 small mt-2">
+                                "En la recepción de la orden #123 del día 15/11/2024, se detectó que de las 100 unidades solicitadas del producto XYZ, solo se recibieron 85 unidades. Las 15 unidades faltantes representan un valor de $1,500. Además, 5 de las unidades recibidas presentan daños en el embalaje. Se solicita el reenvío de las 15 unidades faltantes y el reemplazo de las 5 unidades dañadas."
+                            </p>
+                        </div>
+
+                        <hr />
+
+                        <!-- Botones -->
+                        <div class="d-flex justify-content-between">
+                            <a asp-page="Claims" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-warning btn-lg">
+                                <i class="bi bi-send"></i> Crear Reclamo
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Consejos -->
+            <div class="card mt-3 border-info">
+                <div class="card-body">
+                    <h6 class="card-title text-info">
+                        <i class="bi bi-lightbulb"></i> Consejos para un reclamo efectivo:
+                    </h6>
+                    <ul class="mb-0">
+                        <li>Sea específico con fechas, números de orden y cantidades</li>
+                        <li>Incluya todos los detalles relevantes (embalaje, calidad, tiempos)</li>
+                        <li>Mencione el impacto en sus operaciones</li>
+                        <li>Indique claramente qué solución espera</li>
+                        <li>Adjunte evidencia fotográfica si está disponible</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        const supplierSelect = document.getElementById('supplierSelect');
+        const orderSelect = document.getElementById('orderSelect');
+        const adjustmentSelect = document.getElementById('adjustmentSelect');
+        const loadOrderBtn = document.getElementById('loadOrderBtn');
+        const orderDetails = document.getElementById('orderDetails');
+        const orderDetailsContent = document.getElementById('orderDetailsContent');
+        const expectedQty = document.getElementById('expectedQty');
+        const receivedQty = document.getElementById('receivedQty');
+        const differenceAlert = document.getElementById('differenceAlert');
+        const differenceText = document.getElementById('differenceText');
+
+        // Cargar órdenes cuando se selecciona un proveedor
+        supplierSelect.addEventListener('change', async function() {
+            const supplierId = this.value;
+            orderSelect.innerHTML = '<option value="">-- Ninguna --</option>';
+            adjustmentSelect.innerHTML = '<option value="">-- Ninguno --</option>';
+
+            if (!supplierId) return;
+
+            try {
+                // Cargar órdenes del proveedor
+                const ordersResponse = await fetch(`?handler=SupplierOrders&supplierId=${supplierId}`);
+                const orders = await ordersResponse.json();
+
+                orders.forEach(order => {
+                    const option = document.createElement('option');
+                    option.value = order.id;
+                    option.textContent = order.text;
+                    orderSelect.appendChild(option);
+                });
+
+                // Cargar ajustes del proveedor
+                const adjustmentsResponse = await fetch(`?handler=SupplierAdjustments&supplierId=${supplierId}`);
+                const adjustments = await adjustmentsResponse.json();
+
+                adjustments.forEach(adj => {
+                    const option = document.createElement('option');
+                    option.value = adj.id;
+                    option.textContent = adj.text;
+                    adjustmentSelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error cargando datos:', error);
+            }
+        });
+
+        // Mostrar botón de cargar orden
+        orderSelect.addEventListener('change', function() {
+            loadOrderBtn.style.display = this.value ? 'block' : 'none';
+            orderDetails.style.display = 'none';
+        });
+
+        // Cargar detalles de la orden
+        loadOrderBtn.addEventListener('click', async function() {
+            const orderId = orderSelect.value;
+            if (!orderId) return;
+
+            try {
+                const response = await fetch(`?handler=OrderDetails&orderId=${orderId}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    orderDetailsContent.innerHTML = `
+                        <p><strong>Producto:</strong> ${data.productName}</p>
+                        <p><strong>Cantidad:</strong> ${data.quantity} unidades</p>
+                        <p><strong>Precio Unitario:</strong> $${data.unitPrice.toFixed(2)}</p>
+                        <p><strong>Total:</strong> $${data.total.toFixed(2)}</p>
+                        <p><strong>Estado:</strong> ${data.status}</p>
+                    `;
+                    orderDetails.style.display = 'block';
+
+                    // Pre-llenar cantidades
+                    expectedQty.value = data.quantity;
+                }
+            } catch (error) {
+                console.error('Error cargando detalles:', error);
+            }
+        });
+
+        // Calcular diferencia
+        function updateDifference() {
+            const expected = parseInt(expectedQty.value) || 0;
+            const received = parseInt(receivedQty.value) || 0;
+
+            if (expected > 0 && received > 0 && expected !== received) {
+                const diff = received - expected;
+                differenceAlert.style.display = 'block';
+
+                if (diff > 0) {
+                    differenceText.textContent = `Se recibieron ${diff} unidades MÁS de las esperadas`;
+                    differenceAlert.className = 'alert alert-info';
+                } else {
+                    differenceText.textContent = `Faltan ${Math.abs(diff)} unidades`;
+                    differenceAlert.className = 'alert alert-danger';
+                }
+            } else {
+                differenceAlert.style.display = 'none';
+            }
+        }
+
+        expectedQty.addEventListener('input', updateDifference);
+        receivedQty.addEventListener('input', updateDifference);
+
+        // Validación del formulario
+        document.getElementById('claimForm').addEventListener('submit', function(e) {
+            const description = document.querySelector('textarea[name="Input.Description"]').value;
+
+            if (description.length < 20) {
+                e.preventDefault();
+                alert('La descripción debe tener al menos 20 caracteres para proporcionar suficiente detalle.');
+            }
+        });
+    </script>
+}

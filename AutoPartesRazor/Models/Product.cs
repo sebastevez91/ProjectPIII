@@ -43,6 +43,13 @@ public class Product
     [Display(Name = "Marca")]
     public int? BrandId { get; set; }
 
+    [Display(Name = "Stock Real")]
+    public int? ActualStock { get; set; } // Stock físico real
+
+    [Display(Name = "Última Verificación")]
+    public DateTime? LastStockCheck { get; set; }
+
+
 
     /// <summary>
     /// Colección de todas las reseñas asociadas a este producto.
@@ -86,4 +93,6 @@ public class Product
     public ICollection<OrderItem>? OrderItems { get; set; }
     //public ICollection<CartItem>? CartItems { get; set; }
     public ICollection<PurchaseOrder>? PurchaseOrders { get; set; }
+    public ICollection<StockMovement>? StockMovements { get; set; }
+    public ICollection<StockAdjustment>? StockAdjustments { get; set; }
 }

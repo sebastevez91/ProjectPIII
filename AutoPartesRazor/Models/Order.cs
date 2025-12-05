@@ -26,7 +26,6 @@ public class Order
     [Display(Name = "Dirección de envio")]
     public string ShippingAddress { get; set; } = string.Empty;
 
-
     [Required]
     [StringLength(50)]
     [Display(Name = "Método de pago")]
@@ -39,7 +38,6 @@ public class Order
     [Display(Name = "Estado")]
     public string Status { get; set; } = "Pending";
 
-
     [Display(Name = "Fecha de operación")]
     public DateTime CreatedAt { get; set; } = DateTime.Now;
 
@@ -50,10 +48,29 @@ public class Order
     public bool IsDeleted { get; set; } = false;
     public DateTime? DeletedAt { get; set; }
 
+    // ============================================
+    // CAMPOS DE CUPÓN
+    // ============================================
+
+    [Display(Name = "Cupón aplicado")]
+    public int? CouponId { get; set; }
+
+    [StringLength(20)]
+    [Display(Name = "Código del cupón")]
+    public string? CouponCode { get; set; }
+
+    [Column(TypeName = "decimal(18, 2)")]
+    [Display(Name = "Descuento aplicado")]
+    public decimal DiscountAmount { get; set; } = 0m;
+
+    [Column(TypeName = "decimal(18, 2)")]
+    [Display(Name = "Total original")]
+    public decimal OriginalTotal { get; set; }
+
     // navegación
     public List<OrderItem> Items { get; set; } = new();
     public User? User { get; set; }
+    public Coupon? Coupon { get; set; }
 
     public int? Calificacion { get; set; }
-
 }

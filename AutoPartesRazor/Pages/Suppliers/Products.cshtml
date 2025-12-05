@@ -1,0 +1,290 @@
+﻿@page "{id:int}"
+@model AutoPartesRazor.Pages.Suppliers.ProductsModel
+@{
+    ViewData["Title"] = "Productos del Proveedor";
+}
+
+<div class="container-fluid mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>
+            <i class="bi bi-building"></i> @Model.Supplier?.Name
+        </h2>
+        <a asp-page="Index" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Volver a Proveedores
+        </a>
+    </div>
+    <hr />
+
+    @if (Model.Supplier != null)
+    {
+        <!-- Información del Proveedor -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <p class="mb-1"><strong><i class="bi bi-envelope"></i> Email:</strong></p>
+                        <p>@(Model.Supplier.Email ?? "No registrado")</p>
+                    </div>
+                    <div class="col-md-3">
+                        <p class="mb-1"><strong><i class="bi bi-telephone"></i> Teléfono:</strong></p>
+                        <p>@(Model.Supplier.Phone ?? "No registrado")</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="mb-1"><strong><i class="bi bi-geo-alt"></i> Domicilio:</strong></p>
+                        <p>@(Model.Supplier.Address ?? "No registrado")</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Estadísticas -->
+        <div class="row mb-4">
+            <div class="col-md-2">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h3 class="text-primary mb-0">@Model.Statistics.TotalProducts</h3>
+                        <small class="text-muted">Productos</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h3 class="text-info mb-0">@Model.Statistics.TotalOrders</h3>
+                        <small class="text-muted">Órdenes Totales</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h3 class="text-success mb-0">@Model.Statistics.TotalReceived</h3>
+                        <small class="text-muted">Recibidas</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h3 class="text-warning mb-0">@Model.Statistics.TotalPending</h3>
+                        <small class="text-muted">Pendientes</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h3 class="text-success mb-0">$@Model.Statistics.TotalAmount.ToString("N2")</h3>
+                        <small class="text-muted">Total Comprado</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h3 class="text-danger mb-0">@Model.Statistics.ActiveClaims</h3>
+                        <small class="text-muted">Reclamos Activos</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabla de Productos -->
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="bi bi-box-seam"></i> Catálogo de Productos</h5>
+            </div>
+            <div class="card-body">
+                @if (Model.Products.Any())
+                {
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="productsTable">
+                            <thead>
+                                <tr>
+                                    <th>Código</th>
+                                    <th>Producto</th>
+                                    <th>Stock Actual</th>
+                                    <th>Precio Suministro</th>
+                                    <th>Precio Venta</th>
+                                    <th>Margen</th>
+                                    <th>Total Comprado</th>
+                                    <th>Órdenes Pendientes</th>
+                                    <th>Última Compra</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var product in Model.Products)
+                                {
+                                    var margin = product.SupplyPrice.HasValue && product.SupplyPrice.Value > 0
+                                    ? ((product.SalePrice - product.SupplyPrice.Value) / product.SupplyPrice.Value * 100)
+                                    : 0;
+
+                                    <tr>
+                                        <td><span class="badge bg-secondary">@product.ProductCode</span></td>
+                                        <td><strong>@product.ProductName</strong></td>
+                                        <td>
+                                            @if (product.CurrentStock < 10)
+                                            {
+                                                <span class="badge bg-danger">@product.CurrentStock</span>
+                                            }
+                                            else if (product.CurrentStock < 50)
+                                            {
+                                                <span class="badge bg-warning text-dark">@product.CurrentStock</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-success">@product.CurrentStock</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (product.SupplyPrice.HasValue)
+                                            {
+                                                <text>$@product.SupplyPrice.Value.ToString("N2")</text>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted">No definido</span>
+                                            }
+                                        </td>
+                                        <td><strong>$@product.SalePrice.ToString("N2")</strong></td>
+                                        <td>
+                                            @if (product.SupplyPrice.HasValue)
+                                            {
+                                                if (margin > 30)
+                                                {
+                                                    <span class="badge bg-success">@margin.ToString("F1")%</span>
+                                                }
+                                                else if (margin > 15)
+                                                {
+                                                    <span class="badge bg-warning text-dark">@margin.ToString("F1")%</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-danger">@margin.ToString("F1")%</span>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted">-</span>
+                                            }
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge bg-info">@product.TotalPurchased un.</span>
+                                        </td>
+                                        <td class="text-center">
+                                            @if (product.PendingOrders > 0)
+                                            {
+                                                <span class="badge bg-warning text-dark">@product.PendingOrders</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted">-</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (product.LastPurchaseDate.HasValue)
+                                            {
+                                                <small>@product.LastPurchaseDate.Value.ToString("dd/MM/yyyy")</small>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted">Nunca</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            <a asp-page="/PurchaseOrders/Create"
+                                               asp-route-productId="@product.ProductId"
+                                               asp-route-supplierId="@Model.Supplier.Id"
+                                               class="btn btn-sm btn-primary"
+                                               title="Crear Orden de Compra">
+                                                <i class="bi bi-cart-plus"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-info text-center">
+                        <i class="bi bi-info-circle"></i> Este proveedor no tiene productos asociados
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Acciones Rápidas -->
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header bg-secondary text-white">
+                        <h5 class="mb-0"><i class="bi bi-lightning"></i> Acciones Rápidas</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex gap-2 flex-wrap">
+                            <a asp-page="AssignProducts"
+                               asp-route-supplierId="@Model.Supplier.Id"
+                               class="btn btn-success">
+                                <i class="bi bi-link-45deg"></i> Asignar Productos
+                            </a>
+
+                            <a asp-page="/PurchaseOrders/Create"
+                               asp-route-supplierId="@Model.Supplier.Id"
+                               class="btn btn-primary">
+                                <i class="bi bi-plus-circle"></i> Nueva Orden de Compra
+                            </a>
+
+                            <a asp-page="/PurchaseOrders/Index"
+                               asp-route-supplierId="@Model.Supplier.Id"
+                               class="btn btn-info">
+                                <i class="bi bi-list-ul"></i> Ver Órdenes del Proveedor
+                            </a>
+
+                            <a asp-page="Claims"
+                               asp-route-supplierId="@Model.Supplier.Id"
+                               class="btn btn-warning">
+                                <i class="bi bi-exclamation-triangle"></i> Ver Reclamos
+                            </a>
+
+                            <a asp-page="Edit"
+                               asp-route-id="@Model.Supplier.Id"
+                               class="btn btn-secondary">
+                                <i class="bi bi-pencil"></i> Editar Proveedor
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        // Opcional: Agregar búsqueda en la tabla
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.createElement('input');
+            searchInput.type = 'text';
+            searchInput.className = 'form-control mb-3';
+            searchInput.placeholder = 'Buscar producto...';
+
+            const table = document.getElementById('productsTable');
+            if (table) {
+                table.parentElement.insertBefore(searchInput, table);
+
+                searchInput.addEventListener('input', function() {
+                    const filter = this.value.toLowerCase();
+                    const rows = table.querySelectorAll('tbody tr');
+
+                    rows.forEach(row => {
+                        const text = row.textContent.toLowerCase();
+                        row.style.display = text.includes(filter) ? '' : 'none';
+                    });
+                });
+            }
+        });
+    </script>
+}

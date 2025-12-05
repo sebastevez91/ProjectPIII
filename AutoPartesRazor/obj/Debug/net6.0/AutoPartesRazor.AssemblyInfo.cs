@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AutoPartesRazor")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+39412e6ddead60cf574e0c8d78f27c897f25bbc4")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b2bdb9cd9c6244adfe2200f173c4f05734557b36")]
 [assembly: System.Reflection.AssemblyProductAttribute("AutoPartesRazor")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AutoPartesRazor")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

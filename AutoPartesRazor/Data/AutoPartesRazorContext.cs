@@ -20,7 +20,7 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
             .HasOne(p => p.Brand)
             .WithMany(b => b.Products)
             .HasForeignKey(b => b.BrandId)
-            .OnDelete(DeleteBehavior.Restrict); 
+            .OnDelete(DeleteBehavior.Restrict);
 
 
         // Relación Product - Category
@@ -28,7 +28,7 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
             .HasOne(p => p.Category)
             .WithMany(c => c.Products)
             .HasForeignKey(p => p.CategoryId)
-            .OnDelete(DeleteBehavior.Restrict); 
+            .OnDelete(DeleteBehavior.Restrict);
 
 
         // Relación Order - OrderItem
@@ -91,10 +91,62 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
             .WithMany(p => p.ProductSuppliers)
             .HasForeignKey(ps => ps.ProductId);
 
-        modelBuilder.Entity<ProductSupplier>()
-            .HasOne(ps => ps.Supplier)
-            .WithMany(s => s.ProductSuppliers)
-            .HasForeignKey(ps => ps.SupplierId);
+        // Configurar StockMovement
+        modelBuilder.Entity<StockMovement>()
+            .HasOne(sm => sm.Product)
+            .WithMany(p => p.StockMovements)
+            .HasForeignKey(sm => sm.ProductId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<StockMovement>()
+            .HasOne(sm => sm.PurchaseOrder)
+            .WithMany()
+            .HasForeignKey(sm => sm.PurchaseOrderId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<StockMovement>()
+            .HasOne(sm => sm.StockAdjustment)
+            .WithOne(sa => sa.StockMovement)
+            .HasForeignKey<StockMovement>(sm => sm.StockAdjustmentId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // Configurar StockAdjustment
+        modelBuilder.Entity<StockAdjustment>()
+            .HasOne(sa => sa.Product)
+            .WithMany(p => p.StockAdjustments)
+            .HasForeignKey(sa => sa.ProductId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<StockAdjustment>()
+            .HasOne(sa => sa.Supplier)
+            .WithMany()
+            .HasForeignKey(sa => sa.SupplierId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<StockAdjustment>()
+            .HasOne(sa => sa.RelatedPurchaseOrder)
+            .WithMany()
+            .HasForeignKey(sa => sa.PurchaseOrderId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // Configurar SupplierClaim
+        modelBuilder.Entity<SupplierClaim>()
+            .HasOne(sc => sc.Supplier)
+            .WithMany()
+            .HasForeignKey(sc => sc.SupplierId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<SupplierClaim>()
+            .HasOne(sc => sc.PurchaseOrder)
+            .WithMany()
+            .HasForeignKey(sc => sc.PurchaseOrderId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<SupplierClaim>()
+            .HasOne(sc => sc.StockAdjustment)
+            .WithOne(sa => sa.SupplierClaim)
+            .HasForeignKey<SupplierClaim>(sc => sc.StockAdjustmentId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         // ============================================
         // RELACIONES MÓDULO RECLAMOS
@@ -136,7 +188,7 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
             .OnDelete(DeleteBehavior.Restrict);
 
         // ============================================
-        // NUEVAS RELACIONES DE RESEÑAS
+        // RELACIONES DE RESEÑAS
         // ============================================
 
         // Relación Product - ProductReview
@@ -178,10 +230,52 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
             .IsUnique();
 
         // ============================================
+        // RELACIONES DE CUPONES
+        // ============================================
+
+        // Relación Coupon - User
+        modelBuilder.Entity<Coupon>()
+            .HasOne(c => c.User)
+            .WithMany()
+            .HasForeignKey(c => c.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // Relación Coupon - Product (opcional)
+        modelBuilder.Entity<Coupon>()
+            .HasOne(c => c.Product)
+            .WithMany()
+            .HasForeignKey(c => c.ProductId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // Relación Coupon - ProductReview (opcional)
+        modelBuilder.Entity<Coupon>()
+            .HasOne(c => c.Review)
+            .WithMany()
+            .HasForeignKey(c => c.ReviewId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // Relación Coupon - Order (opcional)
+        modelBuilder.Entity<Coupon>()
+            .HasOne(c => c.Order)
+            .WithMany()
+            .HasForeignKey(c => c.OrderId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // Índice único para códigos de cupón
+        modelBuilder.Entity<Coupon>()
+            .HasIndex(c => c.Code)
+            .IsUnique();
+
+        // Índices para mejorar rendimiento de cupones
+        modelBuilder.Entity<Coupon>()
+            .HasIndex(c => c.UserId);
+
+        modelBuilder.Entity<Coupon>()
+            .HasIndex(c => new { c.IsUsed, c.IsActive, c.ExpiresAt });
+
+        // ============================================
         // QUERY FILTERS - SOFT DELETE
         // ============================================
-        // Estos filtros se aplican automáticamente a todas las consultas
-        // Solo muestra registros donde IsDeleted = false
 
         modelBuilder.Entity<Product>()
             .HasQueryFilter(p => !p.IsDeleted);
@@ -205,13 +299,25 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
             .HasIndex(p => p.IsDeleted);
 
         modelBuilder.Entity<Brand>()
-            .HasIndex(b => b.IsDeleted); modelBuilder.Entity<Category>();
+            .HasIndex(b => b.IsDeleted);
 
         modelBuilder.Entity<Category>()
             .HasIndex(c => c.IsDeleted);
 
         modelBuilder.Entity<Order>()
             .HasIndex(o => o.IsDeleted);
+
+        modelBuilder.Entity<StockMovement>()
+            .HasIndex(sm => sm.CreatedAt);
+
+        modelBuilder.Entity<StockMovement>()
+            .HasIndex(sm => new { sm.ProductId, sm.CreatedAt });
+
+        modelBuilder.Entity<StockAdjustment>()
+            .HasIndex(sa => sa.AdjustmentDate);
+
+        modelBuilder.Entity<SupplierClaim>()
+            .HasIndex(sc => sc.Status);
 
         // ============================================
         // ÍNDICES MODULO RECLAMOS
@@ -263,6 +369,10 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
     public DbSet<AutoPartesRazor.Models.PurchaseOrder> PurchaseOrders { get; set; }
     public DbSet<AutoPartesRazor.Models.ProductReview> ProductReviews { get; set; } = default!;
     public DbSet<AutoPartesRazor.Models.ReviewHelpful> ReviewHelpfuls { get; set; } = default!;
+    public DbSet<AutoPartesRazor.Models.StockMovement> StockMovements { get; set; }
+    public DbSet<AutoPartesRazor.Models.StockAdjustment> StockAdjustments { get; set; }
+    public DbSet<AutoPartesRazor.Models.SupplierClaim> SupplierClaims { get; set; }
+    public DbSet<AutoPartesRazor.Models.Coupon> Coupons { get; set; } = default!;
 
 
     // ============================================

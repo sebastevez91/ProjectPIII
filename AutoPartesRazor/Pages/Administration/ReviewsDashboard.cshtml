@@ -65,13 +65,13 @@
         </li>
         <li class="nav-item" role="presentation">
             <button class="nav-link" id="discounts-tab" data-bs-toggle="tab" data-bs-target="#discounts" type="button">
-                💰 Descuentos Automáticos
+                💰 Descuentos
             </button>
         </li>
     </ul>
 
     <div class="tab-content" id="reviewsTabContent">
-        
+
         <!-- TAB: TOP Productos -->
         <div class="tab-pane fade show active" id="top" role="tabpanel">
             <div class="card">
@@ -99,13 +99,15 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @{int topPos = 1;}
+                                    @{
+                                        int topPos = 1;
+                                    }
                                     @foreach (var p in Model.TopProducts)
                                     {
                                         <tr>
                                             <td><strong>@topPos</strong></td>
                                             <td>
-                                                <strong>@p.Name</strong><br/>
+                                                <strong>@p.Name</strong><br />
                                                 <small class="text-muted">@p.Brand?.Name</small>
                                             </td>
                                             <td>
@@ -123,7 +125,7 @@
                                                 </span>
                                             </td>
                                             <td>
-                                                <a asp-page="/Products/Reviews" asp-route-productId="@p.Id" 
+                                                <a asp-page="/Products/Reviews" asp-route-productId="@p.Id"
                                                    class="btn btn-sm btn-primary" target="_blank">
                                                     <i class="fa-solid fa-eye"></i>
                                                 </a>
@@ -134,10 +136,10 @@
                                 </tbody>
                             </table>
                         </div>
-                        
+
                         <div class="alert alert-success mt-3">
                             <i class="fa-solid fa-lightbulb me-2"></i>
-                            <strong>Recomendación:</strong> Estos productos tienen alta satisfacción. 
+                            <strong>Recomendación:</strong> Estos productos tienen alta satisfacción.
                             Considere aumentar stock y negociar mejores precios por volumen con proveedores.
                         </div>
                     }
@@ -174,18 +176,18 @@
                                     @foreach (var p in Model.BottomProducts)
                                     {
                                         var status = p.AverageRating <= 2.0 ? "🚨 CRÍTICO" :
-                                                    p.AverageRating <= 2.5 ? "⚠️ MUY BAJO" :
-                                                    p.AverageRating <= 3.0 ? "⚠️ BAJO" : "📊 REGULAR";
-                                        
+                                        p.AverageRating <= 2.5 ? "⚠️ MUY BAJO" :
+                                        p.AverageRating <= 3.0 ? "⚠️ BAJO" : "📊 REGULAR";
+
                                         var badgeClass = p.AverageRating <= 2.0 ? "bg-danger" :
-                                                        p.AverageRating <= 2.5 ? "bg-warning text-dark" :
-                                                        p.AverageRating <= 3.0 ? "bg-warning" : "bg-info";
-                                        
+                                        p.AverageRating <= 2.5 ? "bg-warning text-dark" :
+                                        p.AverageRating <= 3.0 ? "bg-warning" : "bg-info";
+
                                         var negativePercent = 100 - p.PositiveReviewsPercentage;
-                                        
+
                                         <tr>
                                             <td>
-                                                <strong>@p.Name</strong><br/>
+                                                <strong>@p.Name</strong><br />
                                                 <small class="text-muted">@p.Brand?.Name</small>
                                             </td>
                                             <td>
@@ -201,13 +203,14 @@
                                                 <span class="badge @badgeClass">@status</span>
                                             </td>
                                             <td>
-                                                <a asp-page="/Products/Reviews" asp-route-productId="@p.Id" 
+                                                <a asp-page="/Products/Reviews" asp-route-productId="@p.Id"
                                                    class="btn btn-sm btn-primary" target="_blank">
                                                     Ver reseñas
                                                 </a>
-                                                <a asp-page="/Products/Edit" asp-route-id="@p.Id" 
+                                                <a asp-page="/Administration/CouponsFromReviews"
+                                                   asp-route-productId="@p.Id"
                                                    class="btn btn-sm btn-warning">
-                                                    Editar
+                                                    <i class="fa-solid fa-ticket me-1"></i>Cupones
                                                 </a>
                                             </td>
                                         </tr>
@@ -256,7 +259,7 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <p class="mb-1">
-                                                <strong>Calificación promedio:</strong> 
+                                                <strong>Calificación promedio:</strong>
                                                 <span class="badge bg-warning text-dark">
                                                     ⭐ @stat.AverageRating.ToString("0.0")
                                                 </span>
@@ -267,15 +270,15 @@
                                         </div>
                                         <div class="col-md-6">
                                             <p class="mb-1">
-                                                <strong>Productos OK:</strong> 
+                                                <strong>Productos OK:</strong>
                                                 <span class="text-success">✅ @stat.GoodProducts</span>
                                             </p>
                                             <p class="mb-1">
-                                                <strong>Productos en revisión:</strong> 
+                                                <strong>Productos en revisión:</strong>
                                                 <span class="text-warning">⚠️ @stat.RegularProducts</span>
                                             </p>
                                             <p class="mb-1">
-                                                <strong>Productos críticos:</strong> 
+                                                <strong>Productos críticos:</strong>
                                                 <span class="text-danger">🚨 @stat.CriticalProducts</span>
                                             </p>
                                         </div>
@@ -288,11 +291,11 @@
             </div>
         </div>
 
-        <!-- TAB: Descuentos Automáticos -->
+        <!-- TAB: Descuentos -->
         <div class="tab-pane fade" id="discounts" role="tabpanel">
             <div class="card">
                 <div class="card-header bg-warning text-dark">
-                    <h5 class="mb-0">💰 Sistema de Descuentos Automáticos</h5>
+                    <h5 class="mb-0">💰 Descuentos</h5>
                 </div>
                 <div class="card-body">
                     <!-- Tabla de configuración -->
@@ -311,19 +314,19 @@
                                     <td>⭐ 1.0 - 1.9</td>
                                     <td><span class="badge bg-danger">🚨 CRÍTICO</span></td>
                                     <td><strong>-40%</strong></td>
-                                    <td><span class="badge bg-danger">LIQUIDACIÓN</span></td>
+                                    <td><span class="badge bg-danger">DESCUENTO</span></td>
                                 </tr>
                                 <tr>
                                     <td>⭐⭐ 2.0 - 2.4</td>
                                     <td><span class="badge bg-warning text-dark">⚠️ MUY BAJO</span></td>
                                     <td><strong>-30%</strong></td>
-                                    <td><span class="badge bg-warning text-dark">OFERTA</span></td>
+                                    <td><span class="badge bg-warning text-dark">DESCUENTO</span></td>
                                 </tr>
                                 <tr>
                                     <td>⭐⭐ 2.5 - 2.9</td>
                                     <td><span class="badge bg-warning">⚠️ BAJO</span></td>
                                     <td><strong>-20%</strong></td>
-                                    <td><span class="badge bg-info">REBAJA</span></td>
+                                    <td><span class="badge bg-info">DESCUENTO</span></td>
                                 </tr>
                                 <tr>
                                     <td>⭐⭐⭐ 3.0 - 3.4</td>
@@ -341,15 +344,15 @@
                         </table>
                     </div>
 
-                    <h6 class="mb-3">Productos con Descuento Automático</h6>
+                    <h6 class="mb-3">Productos con Descuento</h6>
                     @{
                         var totalOriginal = Model.DiscountedProducts.Sum(p => p.Price * p.Stock);
                         var totalWithDiscount = Model.DiscountedProducts.Sum(p =>
                         {
                             var discount = p.AverageRating <= 1.9 ? 40 :
-                            p.AverageRating <= 2.4 ? 30 :
-                            p.AverageRating <= 2.9 ? 20 :
-                            p.AverageRating <= 3.4 ? 10 : 0;
+                                            p.AverageRating <= 2.4 ? 30 :
+                                            p.AverageRating <= 2.9 ? 20 :
+                                            p.AverageRating <= 3.4 ? 10 : 0;
                             return p.Price * (1 - discount / 100m) * p.Stock;
                         });
                         var totalLoss = totalOriginal - totalWithDiscount;
@@ -359,7 +362,7 @@
                     @if (!Model.DiscountedProducts.Any())
                     {
                         <div class="alert alert-success">
-                            No hay productos con descuentos automáticos actualmente.
+                            No hay productos con descuentos actualmente.
                         </div>
                     }
                     else
@@ -380,23 +383,21 @@
                                     @foreach (var p in Model.DiscountedProducts)
                                     {
                                         var discount = p.AverageRating <= 1.9 ? 40 :
-                                                      p.AverageRating <= 2.4 ? 30 :
-                                                      p.AverageRating <= 2.9 ? 20 :
-                                                      p.AverageRating <= 3.4 ? 10 : 0;
-                                        
+                                        p.AverageRating <= 2.4 ? 30 :
+                                        p.AverageRating <= 2.9 ? 20 :
+                                        p.AverageRating <= 3.4 ? 10 : 0;
+
                                         var discountedPrice = p.Price * (1 - discount / 100m);
-                                        
-                                        var badge = p.AverageRating <= 1.9 ? "LIQUIDACIÓN" :
-                                                   p.AverageRating <= 2.4 ? "OFERTA" :
-                                                   p.AverageRating <= 2.9 ? "REBAJA" : "DESCUENTO";
-                                        
+
+                                        var badge = "DESCUENTO";
+
                                         var badgeClass = p.AverageRating <= 1.9 ? "bg-danger" :
-                                                        p.AverageRating <= 2.4 ? "bg-warning text-dark" :
-                                                        p.AverageRating <= 2.9 ? "bg-info" : "bg-secondary";
-                                        
+                                        p.AverageRating <= 2.4 ? "bg-warning text-dark" :
+                                        p.AverageRating <= 2.9 ? "bg-info" : "bg-secondary";
+
                                         <tr>
                                             <td>
-                                                <strong>@p.Name</strong><br/>
+                                                <strong>@p.Name</strong><br />
                                                 <span class="badge @badgeClass">@badge</span>
                                             </td>
                                             <td>
@@ -427,7 +428,7 @@
                                 <p class="mb-1"><strong>Valor original:</strong> $@totalOriginal.ToString("N2")</p>
                                 <p class="mb-1"><strong>Valor con descuento:</strong> $@totalWithDiscount.ToString("N2")</p>
                                 <p class="mb-0">
-                                    <strong>Pérdida estimada:</strong> 
+                                    <strong>Pérdida estimada:</strong>
                                     <span class="text-danger">$@totalLoss.ToString("N2") (@lossPercentage.ToString("0.0")%)</span>
                                 </p>
                             </div>

@@ -1,0 +1,310 @@
+﻿@page
+@model AutoPartesRazor.Pages.Stock.MovementsModel
+@{
+    ViewData["Title"] = "Movimientos de Stock";
+}
+
+<div class="container-fluid mt-4">
+    <h2><i class="bi bi-arrow-left-right"></i> Historial de Movimientos de Stock</h2>
+    <hr />
+
+    <!-- Resumen de Movimientos -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card border-success">
+                <div class="card-body text-center">
+                    <i class="bi bi-arrow-down-circle text-success" style="font-size: 2rem;"></i>
+                    <h3 class="text-success mt-2 mb-0">@Model.Summary.TotalEntries</h3>
+                    <small class="text-muted">Entradas Totales</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-danger">
+                <div class="card-body text-center">
+                    <i class="bi bi-arrow-up-circle text-danger" style="font-size: 2rem;"></i>
+                    <h3 class="text-danger mt-2 mb-0">@Model.Summary.TotalExits</h3>
+                    <small class="text-muted">Salidas Totales</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-warning">
+                <div class="card-body text-center">
+                    <i class="bi bi-sliders text-warning" style="font-size: 2rem;"></i>
+                    <h3 class="text-warning mt-2 mb-0">@Model.Summary.TotalAdjustments</h3>
+                    <small class="text-muted">Ajustes</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-primary">
+                <div class="card-body text-center">
+                    <i class="bi bi-calculator text-primary" style="font-size: 2rem;"></i>
+                    <h3 class="text-primary mt-2 mb-0">
+                        @if (Model.Summary.NetMovement >= 0)
+                        {
+                            <text>+@Model.Summary.NetMovement</text>
+                        }
+                        else
+                        {
+                            @Model.Summary.NetMovement
+                        }
+                    </h3>
+                    <small class="text-muted">Movimiento Neto</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="card mb-4">
+        <div class="card-header bg-secondary text-white">
+            <h5 class="mb-0"><i class="bi bi-funnel"></i> Filtros</h5>
+        </div>
+        <div class="card-body">
+            <form method="get">
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label class="form-label">Producto</label>
+                        <select asp-for="Filters.ProductId" class="form-select" id="productFilter">
+                            <option value="">Todos los productos</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Tipo de Movimiento</label>
+                        <select asp-for="Filters.MovementType" class="form-select">
+                            <option value="">Todos los tipos</option>
+                            <option value="PurchaseEntry">Entrada por Compra</option>
+                            <option value="SaleExit">Salida por Venta</option>
+                            <option value="AdjustmentIncrease">Ajuste Positivo</option>
+                            <option value="AdjustmentDecrease">Ajuste Negativo</option>
+                            <option value="Return">Devolución</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Desde</label>
+                        <input asp-for="Filters.DateFrom" type="date" class="form-control" />
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Hasta</label>
+                        <input asp-for="Filters.DateTo" type="date" class="form-control" />
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="bi bi-search"></i> Filtrar
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Tabla de Movimientos -->
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">
+                <i class="bi bi-list-ul"></i> Movimientos Registrados 
+                <span class="badge bg-light text-dark">@Model.Summary.MovementCount</span>
+            </h5>
+        </div>
+        <div class="card-body p-0">
+            @if (Model.Movements.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Producto</th>
+                                <th>Tipo</th>
+                                <th>Cantidad</th>
+                                <th>Stock Anterior</th>
+                                <th>Stock Nuevo</th>
+                                <th>Cambio</th>
+                                <th>Motivo</th>
+                                <th>Usuario</th>
+                                <th>Detalles</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var movement in Model.Movements)
+                            {
+                                var isIncrease = movement.NewStock > movement.PreviousStock;
+                                var rowClass = isIncrease ? "table-success-subtle" : "table-danger-subtle";
+
+                                <tr class="@rowClass">
+                                    <td>
+                                        <small>
+                                            <i class="bi bi-calendar"></i> 
+                                            @movement.CreatedAt.ToString("dd/MM/yyyy")<br/>
+                                            <i class="bi bi-clock"></i> 
+                                            @movement.CreatedAt.ToString("HH:mm")
+                                        </small>
+                                    </td>
+                                    <td>
+                                        <strong>@movement.Product?.Name</strong><br/>
+                                        <small class="text-muted">@movement.Product?.Id</small>
+                                    </td>
+                                    <td>
+                                        @switch (movement.MovementType)
+                                        {
+                                            case AutoPartesRazor.Models.Enum.StockMovementType.PurchaseEntry:
+                                                <span class="badge bg-success">
+                                                    <i class="bi bi-cart-plus"></i> Compra
+                                                </span>
+                                                break;
+                                            case AutoPartesRazor.Models.Enum.StockMovementType.SaleExit:
+                                                <span class="badge bg-danger">
+                                                    <i class="bi bi-cart-dash"></i> Venta
+                                                </span>
+                                                break;
+                                            case AutoPartesRazor.Models.Enum.StockMovementType.AdjustmentIncrease:
+                                                <span class="badge bg-info">
+                                                    <i class="bi bi-plus-circle"></i> Ajuste +
+                                                </span>
+                                                break;
+                                            case AutoPartesRazor.Models.Enum.StockMovementType.AdjustmentDecrease:
+                                                <span class="badge bg-warning text-dark">
+                                                    <i class="bi bi-dash-circle"></i> Ajuste -
+                                                </span>
+                                                break;
+                                            case AutoPartesRazor.Models.Enum.StockMovementType.Return:
+                                                <span class="badge bg-secondary">
+                                                    <i class="bi bi-arrow-return-left"></i> Devolución
+                                                </span>
+                                                break;
+                                        }
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-primary fs-6">@movement.Quantity</span>
+                                    </td>
+                                    <td class="text-center">@movement.PreviousStock</td>
+                                    <td class="text-center"><strong>@movement.NewStock</strong></td>
+                                    <td class="text-center">
+                                        @{
+                                            var change = movement.NewStock - movement.PreviousStock;
+                                        }
+                                        @if (change > 0)
+                                        {
+                                            <span class="text-success fw-bold">+@change</span>
+                                        }
+                                        else if (change < 0)
+                                        {
+                                            <span class="text-danger fw-bold">@change</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">0</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <small title="@movement.Reason">
+                                            @if (!string.IsNullOrEmpty(movement.Reason))
+                                            {
+                                                @(movement.Reason.Length > 50 
+                                                    ? movement.Reason.Substring(0, 50) + "..." 
+                                                    : movement.Reason)
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted">-</span>
+                                            }
+                                        </small>
+                                    </td>
+                                    <td>
+                                        <small>
+                                            <i class="bi bi-person"></i> 
+                                            @(movement.UserName ?? "Sistema")
+                                        </small>
+                                    </td>
+                                    <td>
+                                        @if (movement.PurchaseOrderId.HasValue)
+                                        {
+                                            <a asp-page="/PurchaseOrders/Index" 
+                                               class="btn btn-sm btn-outline-primary"
+                                               title="Ver Orden de Compra #@movement.PurchaseOrderId">
+                                                <i class="bi bi-receipt"></i> OC #@movement.PurchaseOrderId
+                                            </a>
+                                        }
+                                        @if (movement.StockAdjustmentId.HasValue)
+                                        {
+                                            <a asp-page="/Stock/Adjustments" 
+                                               class="btn btn-sm btn-outline-warning"
+                                               title="Ver Ajuste #@movement.StockAdjustmentId">
+                                                <i class="bi bi-sliders"></i> Ajuste #@movement.StockAdjustmentId
+                                            </a>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info text-center m-3">
+                    <i class="bi bi-info-circle"></i> No hay movimientos registrados con los filtros seleccionados
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Información adicional -->
+    <div class="alert alert-info mt-4">
+        <i class="bi bi-info-circle"></i> 
+        <strong>Nota:</strong> Se muestran los últimos 100 movimientos. Use los filtros para búsquedas más específicas.
+    </div>
+
+    <!-- Botones de acción -->
+    <div class="d-flex gap-2 mt-4">
+        <a asp-page="/Stock/Adjustments" class="btn btn-warning">
+            <i class="bi bi-sliders"></i> Ir a Ajustes de Stock
+        </a>
+        <a asp-page="/PurchaseOrders/Index" class="btn btn-primary">
+            <i class="bi bi-cart"></i> Ir a Órdenes de Compra
+        </a>
+        <button onclick="window.print()" class="btn btn-secondary">
+            <i class="bi bi-printer"></i> Imprimir Reporte
+        </button>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Cargar productos para el filtro
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                const response = await fetch('?handler=Products');
+                const products = await response.json();
+                
+                const select = document.getElementById('productFilter');
+                const currentValue = '@Model.Filters.ProductId';
+                
+                products.forEach(product => {
+                    const option = document.createElement('option');
+                    option.value = product.id;
+                    option.textContent = `${product.code} - ${product.name}`;
+                    if (currentValue == product.id) {
+                        option.selected = true;
+                    }
+                    select.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error cargando productos:', error);
+            }
+        });
+    </script>
+
+    <style>
+        @@media print {
+            .btn, .card-header, nav, .alert {
+                display: none !important;
+            }
+            .card {
+                border: none !important;
+            }
+        }
+    </style>
+}
