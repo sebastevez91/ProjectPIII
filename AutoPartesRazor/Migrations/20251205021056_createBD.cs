@@ -5,11 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AutoPartesRazor.Migrations
 {
-<<<<<<<< HEAD:AutoPartesRazor/Migrations/20251118193409_InicialBd.cs
-    public partial class InicialBd : Migration
-========
-    public partial class InitalCreateDB : Migration
->>>>>>>> e0edc75ad1a5ecbeca5c6773622cbf0a1a45ff7b:AutoPartesRazor/Migrations/20251126023446_InitalCreateDB.cs
+    public partial class createBD : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -111,13 +107,9 @@ namespace AutoPartesRazor.Migrations
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CategoryId = table.Column<int>(type: "int", nullable: true),
-<<<<<<<< HEAD:AutoPartesRazor/Migrations/20251118193409_InicialBd.cs
-                    BrandId = table.Column<int>(type: "int", nullable: true)
-========
                     BrandId = table.Column<int>(type: "int", nullable: true),
                     ActualStock = table.Column<int>(type: "int", nullable: true),
                     LastStockCheck = table.Column<DateTime>(type: "datetime2", nullable: true)
->>>>>>>> e0edc75ad1a5ecbeca5c6773622cbf0a1a45ff7b:AutoPartesRazor/Migrations/20251126023446_InitalCreateDB.cs
                 },
                 constraints: table =>
                 {
@@ -252,8 +244,6 @@ namespace AutoPartesRazor.Migrations
                 });
 
             migrationBuilder.CreateTable(
-<<<<<<<< HEAD:AutoPartesRazor/Migrations/20251118193409_InicialBd.cs
-========
                 name: "StockAdjustments",
                 columns: table => new
                 {
@@ -295,7 +285,6 @@ namespace AutoPartesRazor.Migrations
                 });
 
             migrationBuilder.CreateTable(
->>>>>>>> e0edc75ad1a5ecbeca5c6773622cbf0a1a45ff7b:AutoPartesRazor/Migrations/20251126023446_InitalCreateDB.cs
                 name: "AspNetUserClaims",
                 columns: table => new
                 {
@@ -435,73 +424,6 @@ namespace AutoPartesRazor.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductReviews",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Rating = table.Column<int>(type: "int", nullable: false),
-                    Comment = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    HelpfulCount = table.Column<int>(type: "int", nullable: false),
-                    NotHelpfulCount = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProductReviews", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ProductReviews_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_ProductReviews_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Reclamo",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    NumeroTicket = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Asunto = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    Descripcion = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
-                    NivelUrgencia = table.Column<int>(type: "int", nullable: false),
-                    Estado = table.Column<int>(type: "int", nullable: false),
-                    FechaCreacion = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    FechaActualizacion = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    FechaCierre = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ClienteId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    AdministradorAsignadoId = table.Column<string>(type: "nvarchar(450)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Reclamo", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Reclamo_AspNetUsers_AdministradorAsignadoId",
-                        column: x => x.AdministradorAsignadoId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Reclamo_AspNetUsers_ClienteId",
-                        column: x => x.ClienteId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-<<<<<<<< HEAD:AutoPartesRazor/Migrations/20251118193409_InicialBd.cs
-========
                 name: "StockMovements",
                 columns: table => new
                 {
@@ -612,37 +534,6 @@ namespace AutoPartesRazor.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "MensajeReclamo",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ReclamoId = table.Column<int>(type: "int", nullable: false),
-                    UsuarioId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Mensaje = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
-                    FechaEnvio = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EsAdministrador = table.Column<bool>(type: "bit", nullable: false),
-                    Leido = table.Column<bool>(type: "bit", nullable: false),
-                    FechaLectura = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MensajeReclamo", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_MensajeReclamo_AspNetUsers_UsuarioId",
-                        column: x => x.UsuarioId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_MensajeReclamo_Reclamo_ReclamoId",
-                        column: x => x.ReclamoId,
-                        principalTable: "Reclamo",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Coupons",
                 columns: table => new
                 {
@@ -725,7 +616,6 @@ namespace AutoPartesRazor.Migrations
                 });
 
             migrationBuilder.CreateTable(
->>>>>>>> e0edc75ad1a5ecbeca5c6773622cbf0a1a45ff7b:AutoPartesRazor/Migrations/20251126023446_InitalCreateDB.cs
                 name: "OrderItems",
                 columns: table => new
                 {
@@ -762,33 +652,46 @@ namespace AutoPartesRazor.Migrations
                         principalColumn: "Id");
                 });
 
-<<<<<<<< HEAD:AutoPartesRazor/Migrations/20251118193409_InicialBd.cs
             migrationBuilder.CreateTable(
-                name: "ReviewHelpfuls",
+                name: "Reclamo",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ReviewId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    IsHelpful = table.Column<bool>(type: "bit", nullable: false),
-                    VotedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    NumeroTicket = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Asunto = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Descripcion = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
+                    NivelUrgencia = table.Column<int>(type: "int", nullable: false),
+                    Estado = table.Column<int>(type: "int", nullable: false),
+                    FechaCreacion = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    FechaActualizacion = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    FechaCierre = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ClienteId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    OrderId = table.Column<int>(type: "int", nullable: true),
+                    AdministradorAsignadoId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    AreaAsignada = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ReviewHelpfuls", x => x.Id);
+                    table.PrimaryKey("PK_Reclamo", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ReviewHelpfuls_AspNetUsers_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Reclamo_AspNetUsers_AdministradorAsignadoId",
+                        column: x => x.AdministradorAsignadoId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ReviewHelpfuls_ProductReviews_ReviewId",
-                        column: x => x.ReviewId,
-                        principalTable: "ProductReviews",
+                        name: "FK_Reclamo_AspNetUsers_ClienteId",
+                        column: x => x.ClienteId,
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Reclamo_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -822,8 +725,6 @@ namespace AutoPartesRazor.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-========
->>>>>>>> e0edc75ad1a5ecbeca5c6773622cbf0a1a45ff7b:AutoPartesRazor/Migrations/20251126023446_InitalCreateDB.cs
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -1042,6 +943,11 @@ namespace AutoPartesRazor.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Reclamo_OrderId",
+                table: "Reclamo",
+                column: "OrderId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ReviewHelpfuls_ReviewId_UserId",
                 table: "ReviewHelpfuls",
                 columns: new[] { "ReviewId", "UserId" },
@@ -1209,9 +1115,6 @@ namespace AutoPartesRazor.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "Carts");
 
             migrationBuilder.DropTable(
                 name: "Carts");
