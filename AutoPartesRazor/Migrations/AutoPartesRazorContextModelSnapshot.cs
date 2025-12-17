@@ -163,7 +163,7 @@ namespace AutoPartesRazor.Migrations
 
                     b.HasIndex("Estado", "NivelUrgencia", "FechaCreacion");
 
-                    b.ToTable("Reclamo");
+                    b.ToTable("Claims");
                 });
 
             modelBuilder.Entity("AutoPartesRazor.Models.Coupon", b =>
@@ -322,6 +322,9 @@ namespace AutoPartesRazor.Migrations
                     b.Property<int?>("Calificacion")
                         .HasColumnType("int");
 
+                    b.Property<bool>("ClientConfirmed")
+                        .HasColumnType("bit");
+
                     b.Property<string>("CouponCode")
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
@@ -346,6 +349,9 @@ namespace AutoPartesRazor.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeliveryDate")
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("DiscountAmount")
@@ -389,6 +395,40 @@ namespace AutoPartesRazor.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("AutoPartesRazor.Models.OrderEvent", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Reference")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderEvents");
                 });
 
             modelBuilder.Entity("AutoPartesRazor.Models.OrderItem", b =>
@@ -1170,6 +1210,17 @@ namespace AutoPartesRazor.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("AutoPartesRazor.Models.OrderEvent", b =>
+                {
+                    b.HasOne("AutoPartesRazor.Models.Order", "Order")
+                        .WithMany("OrderEvents")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+                });
+
             modelBuilder.Entity("AutoPartesRazor.Models.OrderItem", b =>
                 {
                     b.HasOne("AutoPartesRazor.Models.Order", "Order")
@@ -1439,6 +1490,8 @@ namespace AutoPartesRazor.Migrations
             modelBuilder.Entity("AutoPartesRazor.Models.Order", b =>
                 {
                     b.Navigation("Items");
+
+                    b.Navigation("OrderEvents");
                 });
 
             modelBuilder.Entity("AutoPartesRazor.Models.Product", b =>

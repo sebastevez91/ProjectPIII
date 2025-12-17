@@ -2,6 +2,7 @@
 @model AutoPartesRazor.Pages.Notifications.IndexModel
 @{
     ViewData["Title"] = "Notificaciones";
+    ViewData["CartCount"] = Model.CartCount;
 }
 
 <div class="container py-4">
@@ -252,4 +253,3 @@
         letter-spacing: 0.1em;
     }
 </style>
-}

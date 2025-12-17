@@ -30,8 +30,6 @@ builder.Services.AddIdentity<User, IdentityRole>(x =>
 }).AddEntityFrameworkStores<AutoPartesRazorContext>()
 .AddDefaultTokenProviders();
 
-builder.Services.AddTransient<SeedDataIdentity>();
-
 // Configurar autorización basada en claims
 builder.Services.AddAuthorization(options =>
 {
@@ -78,62 +76,28 @@ builder.Services.AddScoped<IClaimService, ClaimService>();
 var app = builder.Build();
 
 // ============================================
-// SEEDER - CARGAR DATOS DE PRUEBA
+// SEED DE DATOS (Solo en Development)
 // ============================================
-using (var scope = app.Services.CreateScope())
+if (app.Environment.IsDevelopment())
 {
-    var services = scope.ServiceProvider;
-    var logger = services.GetRequiredService<ILogger<Program>>();
-
-    try
+    using (var scope = app.Services.CreateScope())
     {
-        var context = services.GetRequiredService<AutoPartesRazorContext>();
-        var userManager = services.GetRequiredService<UserManager<User>>();
-
-        // Aplicar migraciones pendientes
-        logger.LogInformation("Verificando migraciones pendientes...");
-        await context.Database.MigrateAsync();
-        logger.LogInformation("✅ Migraciones aplicadas correctamente");
-
-        // Limpiar carritos al iniciar
-        logger.LogInformation("🧹 Limpiando carritos...");
-        var carts = await context.Carts.ToListAsync();
-        context.Carts.RemoveRange(carts);
-        await context.SaveChangesAsync();
-        logger.LogInformation($"✅ {carts.Count} carritos eliminados");
-
-        // Solo ejecutar el seeder si la base está vacía
-        if (!await context.Products.AnyAsync())
+        var services = scope.ServiceProvider;
+        try
         {
-            logger.LogInformation("🌱 Base de datos vacía. Iniciando carga de datos de prueba...");
+            var context = services.GetRequiredService<AutoPartesRazorContext>();
+            var userManager = services.GetRequiredService<UserManager<User>>();
+            var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
-            var seeder = new DatabaseSeeder(context, userManager);
+            // Ejecutar el seeder unificado
+            var seeder = new DatabaseSeeder(context, userManager, roleManager);
             await seeder.SeedAsync();
-
-            logger.LogInformation("✅ Datos de prueba cargados exitosamente");
         }
-        else
+        catch (Exception ex)
         {
-            logger.LogInformation("ℹ️ La base de datos ya contiene datos. Omitiendo seeder.");
+            var logger = services.GetRequiredService<ILogger<Program>>();
+            logger.LogError(ex, "❌ Ocurrió un error al ejecutar el seed de datos");
         }
-    }
-    catch (Exception ex)
-    {
-        logger.LogError(ex, "❌ Error al cargar datos de prueba: {Message}", ex.Message);
-        // No lanzar la excepción para que la app siga ejecutándose
-    }
-}
-
-SeedDataIdentity(app);
-void SeedDataIdentity(WebApplication app)
-{
-    IServiceScopeFactory? scopedFactory =
-    app.Services.GetService<IServiceScopeFactory>();
-    using (IServiceScope scope = scopedFactory!.CreateScope())
-    {
-        SeedDataIdentity? service =
-        scope.ServiceProvider.GetService<SeedDataIdentity>();
-        service!.SeedAsync().Wait();
     }
 }
 // ============================================

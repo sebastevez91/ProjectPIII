@@ -20,7 +20,7 @@ public class ClaimService : IClaimService
 
     public async Task<List<Claim>> ObtenerTodosLosReclamosAsync()
     {
-        return await _context.Reclamo
+        return await _context.Claims
             .Include(r => r.Cliente)
             .Include(r => r.AdministradorAsignado)
             .Include(r => r.Mensajes)
@@ -31,7 +31,7 @@ public class ClaimService : IClaimService
 
     public async Task<List<Claim>> ObtenerReclamosPorClienteAsync(string clienteId)
     {
-        return await _context.Reclamo
+        return await _context.Claims
             .Include(r => r.AdministradorAsignado)
             .Include(r => r.Mensajes)
             .Where(r => r.ClienteId == clienteId)
@@ -41,7 +41,7 @@ public class ClaimService : IClaimService
 
     public async Task<Claim?> ObtenerReclamoPorIdAsync(int id)
     {
-        return await _context.Reclamo
+        return await _context.Claims
             .Include(r => r.Cliente)
             .Include(r => r.AdministradorAsignado)
             .Include(r => r.Mensajes)
@@ -51,7 +51,7 @@ public class ClaimService : IClaimService
 
     public async Task<Claim?> ObtenerReclamoPorNumeroTicketAsync(string numeroTicket)
     {
-        return await _context.Reclamo
+        return await _context.Claims
             .Include(r => r.Cliente)
             .Include(r => r.AdministradorAsignado)
             .Include(r => r.Mensajes)
@@ -75,7 +75,7 @@ public class ClaimService : IClaimService
             FechaActualizacion = DateTime.Now
         };
 
-        _context.Reclamo.Add(reclamo);
+        _context.Claims.Add(reclamo);
         await _context.SaveChangesAsync();
 
         // Agregar el mensaje inicial del cliente con la descripción
@@ -86,7 +86,7 @@ public class ClaimService : IClaimService
 
     public async Task<bool> ActualizarEstadoReclamoAsync(int reclamoId, StatusClaim nuevoEstado)
     {
-        var reclamo = await _context.Reclamo.FindAsync(reclamoId);
+        var reclamo = await _context.Claims.FindAsync(reclamoId);
         if (reclamo == null) return false;
 
         reclamo.Estado = nuevoEstado;
@@ -103,7 +103,7 @@ public class ClaimService : IClaimService
 
     public async Task<bool> ActualizarUrgenciaReclamoAsync(int reclamoId, LevelUrgency nuevaUrgencia)
     {
-        var reclamo = await _context.Reclamo.FindAsync(reclamoId);
+        var reclamo = await _context.Claims.FindAsync(reclamoId);
         if (reclamo == null) return false;
 
         reclamo.NivelUrgencia = nuevaUrgencia;
@@ -115,7 +115,7 @@ public class ClaimService : IClaimService
 
     public async Task<bool> AsignarAdministradorAsync(int reclamoId, string administradorId)
     {
-        var reclamo = await _context.Reclamo.FindAsync(reclamoId);
+        var reclamo = await _context.Claims.FindAsync(reclamoId);
         if (reclamo == null) return false;
 
         reclamo.AdministradorAsignadoId = administradorId;
@@ -133,7 +133,7 @@ public class ClaimService : IClaimService
 
     public async Task<bool> CerrarReclamoAsync(int reclamoId)
     {
-        var reclamo = await _context.Reclamo.FindAsync(reclamoId);
+        var reclamo = await _context.Claims.FindAsync(reclamoId);
         if (reclamo == null) return false;
 
         // Solo se puede cerrar si está en estado Resuelto
@@ -153,7 +153,7 @@ public class ClaimService : IClaimService
     public async Task<string> GenerarNumeroTicketAsync()
     {
         var año = DateTime.Now.Year;
-        var ultimoReclamo = await _context.Reclamo
+        var ultimoReclamo = await _context.Claims
             .Where(r => r.NumeroTicket.StartsWith($"RCL-{año}-"))
             .OrderByDescending(r => r.NumeroTicket)
             .FirstOrDefaultAsync();
@@ -174,7 +174,7 @@ public class ClaimService : IClaimService
 
     public async Task<List<Claim>> ObtenerReclamosPorEstadoAsync(StatusClaim estado)
     {
-        return await _context.Reclamo
+        return await _context.Claims
             .Include(r => r.Cliente)
             .Include(r => r.AdministradorAsignado)
             .Include(r => r.Mensajes)
@@ -186,7 +186,7 @@ public class ClaimService : IClaimService
 
     public async Task<List<Claim>> ObtenerReclamosPorUrgenciaAsync(LevelUrgency urgencia)
     {
-        return await _context.Reclamo
+        return await _context.Claims
             .Include(r => r.Cliente)
             .Include(r => r.AdministradorAsignado)
             .Include(r => r.Mensajes)
@@ -197,7 +197,7 @@ public class ClaimService : IClaimService
 
     public async Task<ReclamoEstadisticas> ObtenerEstadisticasAsync()
     {
-        var reclamos = await _context.Reclamo.Include(r => r.Mensajes).ToListAsync();
+        var reclamos = await _context.Claims.Include(r => r.Mensajes).ToListAsync();
 
         var estadisticas = new ReclamoEstadisticas
         {
@@ -244,7 +244,7 @@ public class ClaimService : IClaimService
 
     public async Task<MessageClaim> AgregarMensajeAsync(int reclamoId, string usuarioId, string mensaje, bool esAdministrador)
     {
-        var reclamo = await _context.Reclamo.FindAsync(reclamoId);
+        var reclamo = await _context.Claims.FindAsync(reclamoId);
         if (reclamo == null)
         {
             throw new InvalidOperationException("El reclamo no existe.");
@@ -319,7 +319,7 @@ public class ClaimService : IClaimService
 
     public async Task<bool> UsuarioPuedeVerReclamoAsync(int reclamoId, string usuarioId, bool esAdministrador)
     {
-        var reclamo = await _context.Reclamo.FindAsync(reclamoId);
+        var reclamo = await _context.Claims.FindAsync(reclamoId);
         if (reclamo == null) return false;
 
         // Los administradores pueden ver todos los reclamos

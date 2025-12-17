@@ -19,8 +19,8 @@ public class ForgotPasswordModel : PageModel
     }
 
     [BindProperty]
-    [Required]
-    [EmailAddress]
+    [Required(ErrorMessage = "Ingresa el email para recuperar tu contraseña")]
+    [EmailAddress(ErrorMessage = "Ingresa un email válido. Ej: example@gmail.com")]
     public string Email { get; set; }
 
     [TempData]

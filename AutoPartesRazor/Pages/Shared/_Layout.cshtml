@@ -34,9 +34,9 @@
     <header class="site-header shadow-sm">
         <nav class="navbar container navbar-expand-lg p-0">
             <a class="navbar-brand d-flex align-items-center" asp-page="/Index">
-                <img src="~/img/logoAzul.jpg" alt="AutoPartes" class="brand-logo me-2" onerror="this.style.display='none'" />
+                <img src="~/img/logo_layout.png" alt="AutoPartes" class="brand-logo me-2" onerror="this.style.display='none'" />
                 <div class="brand-text">
-                    <span class="brand-title">AutoPartes</span>
+                    <span class="brand-title">AutoPartes Razor</span>
                     <small class="brand-sub">Repuestos y accesorios</small>
                 </div>
             </a>
@@ -67,17 +67,21 @@
                         <a asp-page="/Products/Index" class="nav-link">Catálogo</a>
                     </li>
                     
+                    <!--Carrito-->
                     <li class="nav-item me-3">
                         <a asp-page="/Carts/Index" class="nav-link position-relative">
                             <i class="fa-solid fa-shopping-cart fa-lg"></i>
                             <span id="navCartCount" class="badge-cart"></span>
                         </a>
                     </li>
+
+                    <!--Foto de perfil-->
                     @{
                         var currentUser = await UserManager.GetUserAsync(User);
                         var profilePic = currentUser?.ProfilePicturePath;
                     }
 
+                    <!--Menú desplegable-->
                     @if (SignInManager.IsSignedIn(User))
                     {
                         <li class="nav-item user-dropdown">
@@ -93,7 +97,6 @@
                                 {
                                     <i class="fa-solid fa-user-circle me-1"></i>
                                 }
-                                @* @User.Identity?.Name *@
                                 @currentUser.FullName
                                 <i class="fa-solid fa-chevron-down ms-1 small"></i>
                             </a>

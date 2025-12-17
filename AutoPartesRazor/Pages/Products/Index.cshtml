@@ -7,10 +7,14 @@
 }
 
 <div class="container py-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 class="mb-0">Repuestos y Accesorios</h2>
+    <div class="hero-section bg-primary bg-gradient text-white py-2 text-center m-2">
+        <div class="container py-4">
+            <h1 class="display-4 fw-bold mb-1">Nuestro catalogo</h1> 
+            <p class="lead">Repuestos y Accesorios</p>
+        </div>
     </div>
 
+    <!--Filtros de búsqueda-->
     <div class="row mb-3 g-2 align-items-center">
         <form method="get" class="row g-2 align-items-center" id="filterForm">
             <div class="col-md-4">
@@ -102,6 +106,34 @@
     }
 
     <div id="productsGrid" class="row g-3">
+        @if (User.IsInRole("Admin"))
+        {
+            <div class="container">
+                <table class="table table-hover table-striped shadow-lg rounded">
+                    <thead class="table-dark">
+                        <tr class="animate__animated animate__fadeInDown">
+                            <th>Código</th>
+                            <th>Producto</th>
+                            <th>Estado</th>
+                            <th>Fecha</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(var item in Model.Products)
+                        {
+                        <tr class="align-middle animate__animated animate__fadeInUp">
+                                <td class="fw-bold">OV-#@item.Id</td>
+                                <td>@item.Name</td>
+                                <td>@item.IsDeleted</td>
+
+                        </tr>                            
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        }
         @foreach (var p in Model.Products)
         {
             <div class="col-12 col-sm-6 col-md-4">

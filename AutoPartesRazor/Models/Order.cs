@@ -36,7 +36,7 @@ public class Order
     public decimal Total { get; set; }
 
     [Display(Name = "Estado")]
-    public string Status { get; set; } = "Pending";
+    public string Status { get; set; } = "Pendiente";
 
     [Display(Name = "Fecha de operación")]
     public DateTime CreatedAt { get; set; } = DateTime.Now;
@@ -47,6 +47,11 @@ public class Order
     // Soft Delete
     public bool IsDeleted { get; set; } = false;
     public DateTime? DeletedAt { get; set; }
+
+    [Display(Name = "Confirmado por Cliente")]
+    public bool ClientConfirmed { get; set; } = false;
+
+    public DateTime? DeliveryDate { get; set; }
 
     // ============================================
     // CAMPOS DE CUPÓN
@@ -73,4 +78,7 @@ public class Order
     public Coupon? Coupon { get; set; }
 
     public int? Calificacion { get; set; }
+    public List<OrderEvent>? OrderEvents { get; set; } = new();
+
 }
+

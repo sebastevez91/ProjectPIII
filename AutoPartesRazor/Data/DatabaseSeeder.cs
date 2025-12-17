@@ -2,195 +2,285 @@
 using Microsoft.AspNetCore.Identity;
 using AutoPartesRazor.Models;
 using AutoPartesRazor.Data;
-using AutoPartesRazor.Services;
+using AutoPartesRazor.Models.Enum;
 
 namespace AutoPartesRazor.Data;
-
 public class DatabaseSeeder
 {
     private readonly AutoPartesRazorContext _context;
     private readonly UserManager<User> _userManager;
+    private readonly RoleManager<IdentityRole> _roleManager;
     private readonly Random _random = new Random();
 
-    public DatabaseSeeder(AutoPartesRazorContext context, UserManager<User> userManager)
+    public DatabaseSeeder(
+        AutoPartesRazorContext context,
+        UserManager<User> userManager,
+        RoleManager<IdentityRole> roleManager)
     {
         _context = context;
         _userManager = userManager;
+        _roleManager = roleManager;
     }
 
+    /// <summary>
+    /// Método principal que ejecuta toda la carga de datos
+    /// </summary>
     public async Task SeedAsync()
     {
         try
         {
-            Console.WriteLine("=== INICIANDO CARGA DE DATOS DE PRUEBA - AUTOPARTES ===");
+            Console.WriteLine("\n╔═══════════════════════════════════════════════════════════╗");
+            Console.WriteLine("║     INICIANDO CARGA DE DATOS DE PRUEBA - AUTOPARTES       ║");
+            Console.WriteLine("╚═══════════════════════════════════════════════════════════╝\n");
 
-            // 1. CREAR USUARIOS
-            Console.WriteLine("📝 Creando usuarios...");
+            // Asegurar que la base de datos existe
+            await _context.Database.EnsureCreatedAsync();
+
+            // 1. CREAR ROLES
+            Console.WriteLine("🔐 Creando roles del sistema...");
+            await CreateRolesAsync();
+            Console.WriteLine("✅ Roles creados correctamente\n");
+
+            // 2. CREAR USUARIOS
+            Console.WriteLine("👥 Creando usuarios...");
             var users = await CreateUsersAsync();
-            Console.WriteLine($"✅ {users.Count} usuarios creados");
+            Console.WriteLine($"✅ {users.Count} usuarios creados\n");
 
-            // 2. CREAR CATEGORÍAS
+            // 3. CREAR CATEGORÍAS
             Console.WriteLine("📁 Creando categorías de autopartes...");
-            var categories = CreateCategories();
-            await _context.SaveChangesAsync();
-            Console.WriteLine($"✅ {categories.Count} categorías creadas");
+            var categories = await CreateCategoriesAsync();
+            Console.WriteLine($"✅ {categories.Count} categorías creadas\n");
 
-            // 3. CREAR MARCAS
-            Console.WriteLine("🏷️ Creando marcas automotrices...");
-            var brands = CreateBrands();
-            await _context.SaveChangesAsync();
-            Console.WriteLine($"✅ {brands.Count} marcas creadas");
+            // 4. CREAR MARCAS
+            Console.WriteLine("🏷️  Creando marcas automotrices...");
+            var brands = await CreateBrandsAsync();
+            Console.WriteLine($"✅ {brands.Count} marcas creadas\n");
 
-            // 4. CREAR PROVEEDORES
+            // 5. CREAR PROVEEDORES
             Console.WriteLine("🏭 Creando proveedores...");
-            var suppliers = CreateSuppliers();
-            await _context.SaveChangesAsync();
-            Console.WriteLine($"✅ {suppliers.Count} proveedores creados");
+            var suppliers = await CreateSuppliersAsync();
+            Console.WriteLine($"✅ {suppliers.Count} proveedores creados\n");
 
-            // 5. CREAR PRODUCTOS
+            // 6. CREAR PRODUCTOS
             Console.WriteLine("📦 Creando repuestos y accesorios...");
-            var products = CreateProducts(categories, brands);
-            await _context.SaveChangesAsync();
-            Console.WriteLine($"✅ {products.Count} productos creados");
+            var products = await CreateProductsAsync(categories, brands);
+            Console.WriteLine($"✅ {products.Count} productos creados\n");
 
-            // 6. CREAR RELACIONES PRODUCTO-PROVEEDOR
+            // 7. CREAR RELACIONES PRODUCTO-PROVEEDOR
             Console.WriteLine("🔗 Creando relaciones producto-proveedor...");
-            CreateProductSuppliers(products, suppliers);
-            await _context.SaveChangesAsync();
-            Console.WriteLine("✅ Relaciones producto-proveedor creadas");
+            await CreateProductSuppliersAsync(products, suppliers);
+            Console.WriteLine("✅ Relaciones producto-proveedor creadas\n");
 
-            // 7. CREAR ÓRDENES DE COMPRA
+            // 8. CREAR ÓRDENES DE COMPRA
             Console.WriteLine("📋 Creando órdenes de compra...");
-            CreatePurchaseOrders(products, suppliers);
-            await _context.SaveChangesAsync();
-            Console.WriteLine("✅ Órdenes de compra creadas");
+            await CreatePurchaseOrdersAsync(products, suppliers);
+            Console.WriteLine("✅ Órdenes de compra creadas\n");
 
-            // 9. CREAR ÓRDENES
-            Console.WriteLine("📊 Creando órdenes de venta...");
-            CreateOrders(users, products);
-            await _context.SaveChangesAsync();
-            Console.WriteLine("✅ Órdenes de venta creadas");
+            // 9. CREAR ÓRDENES DE VENTA
+            Console.WriteLine("🛒 Creando órdenes de venta...");
+            await CreateSalesOrdersAsync(users, products);
+            Console.WriteLine("✅ Órdenes de venta creadas\n");
 
-            // 10. CREAR NOTIFICACIONES
+            // 10. CREAR RESEÑAS DE PRODUCTOS
+            Console.WriteLine("⭐ Creando reseñas de productos...");
+            await CreateProductReviewsAsync(users, products);
+            Console.WriteLine("✅ Reseñas de productos creadas\n");
+
+            // 11. CREAR CUPONES
+            Console.WriteLine("🎫 Creando cupones de descuento...");
+            await CreateCouponsAsync(users, products);
+            Console.WriteLine("✅ Cupones creados\n");
+
+            // 12. CREAR NOTIFICACIONES
             Console.WriteLine("🔔 Creando notificaciones...");
-            CreateNotifications(users);
-            await _context.SaveChangesAsync();
-            Console.WriteLine("✅ Notificaciones creadas");
+            await CreateNotificationsAsync(users);
+            Console.WriteLine("✅ Notificaciones creadas\n");
 
-            Console.WriteLine("\n=== ✅ DATOS DE PRUEBA CREADOS EXITOSAMENTE ===\n");
+            // 13. CREAR RECLAMOS
+            Console.WriteLine("📝 Creando reclamos de clientes...");
+            await CreateClaimsAsync(users);
+            Console.WriteLine("✅ Reclamos creados\n");
+
+            // 14. CREAR MOVIMIENTOS DE STOCK
+            Console.WriteLine("📊 Creando movimientos de stock...");
+            await CreateStockMovementsAsync(products);
+            Console.WriteLine("✅ Movimientos de stock creados\n");
+
+            Console.WriteLine("\n╔═══════════════════════════════════════════════════════════╗");
+            Console.WriteLine("║        ✅ DATOS DE PRUEBA CREADOS EXITOSAMENTE ✅         ║");
+            Console.WriteLine("╚═══════════════════════════════════════════════════════════╝\n");
+
             PrintCredentials();
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"\n❌ ERROR: {ex.Message}");
-            Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+            Console.WriteLine($"\n❌ ERROR CRÍTICO: {ex.Message}");
+            Console.WriteLine($"📍 Stack Trace: {ex.StackTrace}");
+            if (ex.InnerException != null)
+            {
+                Console.WriteLine($"🔍 Inner Exception: {ex.InnerException.Message}");
+            }
             throw;
         }
     }
 
-    private void PrintCredentials()
+    #region Roles
+
+    private async Task CreateRolesAsync()
     {
-        Console.WriteLine("═══════════════════════════════════════════");
-        Console.WriteLine("        CREDENCIALES DE ACCESO");
-        Console.WriteLine("═══════════════════════════════════════════");
-        Console.WriteLine("\n👨‍💼 ADMINISTRADOR:");
-        Console.WriteLine("   Email: admin@autopartes.com");
-        Console.WriteLine("   Password: Admin123!");
-        Console.WriteLine("\n👔 EMPLEADOS:");
-        Console.WriteLine("   Email: vendedor@autopartes.com");
-        Console.WriteLine("   Password: Empleado123!");
-        Console.WriteLine("   Email: deposito@autopartes.com");
-        Console.WriteLine("   Password: Empleado123!");
-        Console.WriteLine("\n👥 CLIENTES:");
-        Console.WriteLine("   Email: taller.mecanico@email.com");
-        Console.WriteLine("   Email: gomeria.central@email.com");
-        Console.WriteLine("   Email: juan.perez@email.com");
-        Console.WriteLine("   Email: maria.rodriguez@email.com");
-        Console.WriteLine("   Email: carlos.gomez@email.com");
-        Console.WriteLine("   Password (todos): Cliente123!");
-        Console.WriteLine("═══════════════════════════════════════════\n");
+        string[] roleNames = { "Admin", "Employee", "Client" };
+
+        foreach (var roleName in roleNames)
+        {
+            var roleExist = await _roleManager.RoleExistsAsync(roleName);
+            if (!roleExist)
+            {
+                await _roleManager.CreateAsync(new IdentityRole(roleName));
+                Console.WriteLine($"   → Rol '{roleName}' creado");
+            }
+        }
     }
+
+    #endregion
+
+    #region Usuarios
 
     private async Task<List<User>> CreateUsersAsync()
     {
         var users = new List<User>();
 
-        // Admin
-        var admin = new User
-        {
-            UserName = "admin@autopartes.com",
-            Email = "admin@autopartes.com",
-            FullName = "Administrador Principal",
-            Role = "Admin",
-            Address = "Av. Córdoba 2500, Buenos Aires",
-            PhoneNumber = "1145678900",
-            EmailConfirmed = true,
-            RegistrationDate = DateTime.Now.AddYears(-2)
-        };
-        var adminResult = await _userManager.CreateAsync(admin, "Admin123!");
-        if (adminResult.Succeeded) users.Add(admin);
+        // SUPER ADMINISTRADOR
+        var superAdmin = await CreateUserIfNotExistsAsync(
+            username: "superadmin@autopartes.com",
+            email: "superadmin@autopartes.com",
+            fullName: "Super Administrador",
+            role: "Admin",
+            address: "Sede Central - Av. Córdoba 2500, Buenos Aires",
+            phone: "1145678900",
+            password: "SuperAdmin123!"
+        );
+        if (superAdmin != null) users.Add(superAdmin);
 
-        // Empleados
-        var vendedor = new User
-        {
-            UserName = "vendedor@autopartes.com",
-            Email = "vendedor@autopartes.com",
-            FullName = "Roberto Díaz",
-            Role = "Employee",
-            Address = "Av. Corrientes 1500, Buenos Aires",
-            PhoneNumber = "1156789011",
-            EmailConfirmed = true,
-            RegistrationDate = DateTime.Now.AddMonths(-8)
-        };
-        var vendedorResult = await _userManager.CreateAsync(vendedor, "Empleado123!");
-        if (vendedorResult.Succeeded) users.Add(vendedor);
+        // ADMINISTRADOR
+        var admin = await CreateUserIfNotExistsAsync(
+            username: "admin@autopartes.com",
+            email: "admin@autopartes.com",
+            fullName: "Administrador Principal",
+            role: "Admin",
+            address: "Av. Córdoba 2500, Buenos Aires",
+            phone: "1145678901",
+            password: "Admin123!"
+        );
+        if (admin != null) users.Add(admin);
 
-        var deposito = new User
+        // EMPLEADOS
+        var empleados = new[]
         {
-            UserName = "deposito@autopartes.com",
-            Email = "deposito@autopartes.com",
-            FullName = "Miguel Torres",
-            Role = "Employee",
-            Address = "Av. Warnes 2200, Buenos Aires",
-            PhoneNumber = "1167890122",
-            EmailConfirmed = true,
-            RegistrationDate = DateTime.Now.AddMonths(-10)
-        };
-        var depositoResult = await _userManager.CreateAsync(deposito, "Empleado123!");
-        if (depositoResult.Succeeded) users.Add(deposito);
-
-        // Clientes
-        var clientNames = new[]
-        {
-            ("Taller Mecánico San Martín", "taller.mecanico@email.com", "Av. San Martín 3450, Buenos Aires", "Cliente comercial - Taller mecánico"),
-            ("Gomería Central", "gomeria.central@email.com", "Av. Rivadavia 7890, Buenos Aires", "Cliente comercial - Gomería"),
-            ("Juan Pérez", "juan.perez@email.com", "Calle Alsina 567, Buenos Aires", "Cliente particular"),
-            ("María Rodríguez", "maria.rodriguez@email.com", "Av. Santa Fe 2100, Buenos Aires", "Cliente particular"),
-            ("Carlos Gómez", "carlos.gomez@email.com", "Calle Lavalle 890, Buenos Aires", "Cliente particular")
+            ("vendedor@autopartes.com", "Roberto Díaz", "Av. Corrientes 1500, Buenos Aires", "1156789011"),
+            ("deposito@autopartes.com", "Miguel Torres", "Av. Warnes 2200, Buenos Aires", "1167890122"),
+            ("atencion@autopartes.com", "Laura Fernández", "Av. Santa Fe 1800, Buenos Aires", "1178901233")
         };
 
-        foreach (var (name, email, address, description) in clientNames)
+        foreach (var (email, nombre, direccion, telefono) in empleados)
         {
-            var client = new User
-            {
-                UserName = email,
-                Email = email,
-                FullName = name,
-                Role = "Client",
-                Address = address,
-                PhoneNumber = $"11{_random.Next(40000000, 69999999)}",
-                EmailConfirmed = true,
-                RegistrationDate = DateTime.Now.AddDays(-_random.Next(30, 365))
-            };
-            var clientResult = await _userManager.CreateAsync(client, "Cliente123!");
-            if (clientResult.Succeeded) users.Add(client);
+            var empleado = await CreateUserIfNotExistsAsync(
+                username: email,
+                email: email,
+                fullName: nombre,
+                role: "Employee",
+                address: direccion,
+                phone: telefono,
+                password: "Empleado123!"
+            );
+            if (empleado != null) users.Add(empleado);
+        }
+
+        // CLIENTES
+        var clientes = new[]
+        {
+            ("Taller Mecánico San Martín", "taller.mecanico@email.com", "Av. San Martín 3450, Buenos Aires"),
+            ("Gomería Central", "gomeria.central@email.com", "Av. Rivadavia 7890, Buenos Aires"),
+            ("Auto Service Express", "autoservice@email.com", "Av. Cabildo 2100, Buenos Aires"),
+            ("Juan Pérez", "juan.perez@email.com", "Calle Alsina 567, Buenos Aires"),
+            ("María Rodríguez", "maria.rodriguez@email.com", "Av. Santa Fe 2100, Buenos Aires"),
+            ("Carlos Gómez", "carlos.gomez@email.com", "Calle Lavalle 890, Buenos Aires"),
+            ("Ana Martínez", "ana.martinez@email.com", "Av. Callao 456, Buenos Aires"),
+            ("Pedro López", "pedro.lopez@email.com", "Av. Belgrano 1234, Buenos Aires")
+        };
+
+        foreach (var (nombre, email, direccion) in clientes)
+        {
+            var cliente = await CreateUserIfNotExistsAsync(
+                username: email,
+                email: email,
+                fullName: nombre,
+                role: "Client",
+                address: direccion,
+                phone: $"11{_random.Next(40000000, 69999999)}",
+                password: "Cliente123!"
+            );
+            if (cliente != null) users.Add(cliente);
         }
 
         return users;
     }
 
-    private List<Category> CreateCategories()
+    private async Task<User?> CreateUserIfNotExistsAsync(
+        string username,
+        string email,
+        string fullName,
+        string role,
+        string address,
+        string phone,
+        string password)
     {
+        var existingUser = await _userManager.FindByEmailAsync(email);
+        if (existingUser != null)
+        {
+            Console.WriteLine($"   ⚠️  Usuario '{email}' ya existe, omitiendo...");
+            return existingUser;
+        }
+
+        var user = new User
+        {
+            UserName = username,
+            Email = email,
+            FullName = fullName,
+            Role = role,
+            Address = address,
+            PhoneNumber = phone,
+            EmailConfirmed = true,
+            RegistrationDate = DateTime.Now.AddDays(-_random.Next(30, 730))
+        };
+
+        var result = await _userManager.CreateAsync(user, password);
+
+        if (result.Succeeded)
+        {
+            await _userManager.AddToRoleAsync(user, role);
+            Console.WriteLine($"   ✓ Usuario '{email}' creado como {role}");
+            return user;
+        }
+        else
+        {
+            var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+            Console.WriteLine($"   ✗ Error creando '{email}': {errors}");
+            return null;
+        }
+    }
+
+    #endregion
+
+    #region Categorías
+
+    private async Task<List<Category>> CreateCategoriesAsync()
+    {
+        if (await _context.Categories.AnyAsync())
+        {
+            Console.WriteLine("   ⚠️  Las categorías ya existen, omitiendo...");
+            return await _context.Categories.ToListAsync();
+        }
+
         var categories = new List<Category>
         {
             new Category { Name = "Motor" },
@@ -210,11 +300,22 @@ public class DatabaseSeeder
         };
 
         _context.Categories.AddRange(categories);
+        await _context.SaveChangesAsync();
         return categories;
     }
 
-    private List<Brand> CreateBrands()
+    #endregion
+
+    #region Marcas
+
+    private async Task<List<Brand>> CreateBrandsAsync()
     {
+        if (await _context.Brands.AnyAsync())
+        {
+            Console.WriteLine("   ⚠️  Las marcas ya existen, omitiendo...");
+            return await _context.Brands.ToListAsync();
+        }
+
         var brands = new List<Brand>
         {
             new Brand { Name = "Bosch" },
@@ -235,11 +336,22 @@ public class DatabaseSeeder
         };
 
         _context.Brands.AddRange(brands);
+        await _context.SaveChangesAsync();
         return brands;
     }
 
-    private List<Supplier> CreateSuppliers()
+    #endregion
+
+    #region Proveedores
+
+    private async Task<List<Supplier>> CreateSuppliersAsync()
     {
+        if (await _context.Suppliers.AnyAsync())
+        {
+            Console.WriteLine("   ⚠️  Los proveedores ya existen, omitiendo...");
+            return await _context.Suppliers.ToListAsync();
+        }
+
         var suppliers = new List<Supplier>
         {
             new Supplier
@@ -280,14 +392,25 @@ public class DatabaseSeeder
         };
 
         _context.Suppliers.AddRange(suppliers);
+        await _context.SaveChangesAsync();
         return suppliers;
     }
 
-    private List<Product> CreateProducts(List<Category> categories, List<Brand> brands)
+    #endregion
+
+    #region Productos
+
+    private async Task<List<Product>> CreateProductsAsync(List<Category> categories, List<Brand> brands)
     {
+        if (await _context.Products.AnyAsync())
+        {
+            Console.WriteLine("   ⚠️  Los productos ya existen, omitiendo...");
+            return await _context.Products.ToListAsync();
+        }
+
         var products = new List<Product>
         {
-            // MOTOR
+            // MOTOR (Categoría 0)
             new Product
             {
                 Name = "Bujías NGK Platino (Set x4)",
@@ -296,7 +419,9 @@ public class DatabaseSeeder
                 Stock = 45,
                 MinimumStock = 15,
                 CategoryId = categories[0].Id,
-                BrandId = brands[2].Id
+                BrandId = brands[2].Id,
+                ActualStock = 45,
+                LastStockCheck = DateTime.Now.AddDays(-5)
             },
             new Product
             {
@@ -306,7 +431,9 @@ public class DatabaseSeeder
                 Stock = 12,
                 MinimumStock = 5,
                 CategoryId = categories[0].Id,
-                BrandId = brands[11].Id
+                BrandId = brands[11].Id,
+                ActualStock = 12,
+                LastStockCheck = DateTime.Now.AddDays(-3)
             },
             new Product
             {
@@ -316,20 +443,12 @@ public class DatabaseSeeder
                 Stock = 20,
                 MinimumStock = 8,
                 CategoryId = categories[0].Id,
-                BrandId = brands[0].Id
-            },
-            new Product
-            {
-                Name = "Filtro de Aire Deportivo",
-                Description = "Filtro de aire de alto flujo, lavable y reutilizable. Aumenta potencia hasta 5HP.",
-                Price = 32000m,
-                Stock = 18,
-                MinimumStock = 6,
-                CategoryId = categories[7].Id,
-                BrandId = brands[14].Id
+                BrandId = brands[0].Id,
+                ActualStock = 20,
+                LastStockCheck = DateTime.Now.AddDays(-7)
             },
 
-            // FRENOS
+            // FRENOS (Categoría 1)
             new Product
             {
                 Name = "Pastillas de Freno Delanteras Brembo",
@@ -338,7 +457,9 @@ public class DatabaseSeeder
                 Stock = 35,
                 MinimumStock = 12,
                 CategoryId = categories[1].Id,
-                BrandId = brands[1].Id
+                BrandId = brands[1].Id,
+                ActualStock = 35,
+                LastStockCheck = DateTime.Now.AddDays(-2)
             },
             new Product
             {
@@ -348,7 +469,9 @@ public class DatabaseSeeder
                 Stock = 15,
                 MinimumStock = 6,
                 CategoryId = categories[1].Id,
-                BrandId = brands[0].Id
+                BrandId = brands[0].Id,
+                ActualStock = 15,
+                LastStockCheck = DateTime.Now.AddDays(-4)
             },
             new Product
             {
@@ -358,20 +481,12 @@ public class DatabaseSeeder
                 Stock = 80,
                 MinimumStock = 20,
                 CategoryId = categories[1].Id,
-                BrandId = brands[5].Id
-            },
-            new Product
-            {
-                Name = "Kit Reparación Cilindro Freno",
-                Description = "Kit completo para reparación de cilindro maestro. Incluye retenes y pistones.",
-                Price = 15000m,
-                Stock = 25,
-                MinimumStock = 8,
-                CategoryId = categories[1].Id,
-                BrandId = brands[14].Id
+                BrandId = brands[5].Id,
+                ActualStock = 80,
+                LastStockCheck = DateTime.Now.AddDays(-1)
             },
 
-            // SUSPENSIÓN
+            // SUSPENSIÓN (Categoría 2)
             new Product
             {
                 Name = "Amortiguadores Monroe Delanteros (Par)",
@@ -380,17 +495,9 @@ public class DatabaseSeeder
                 Stock = 10,
                 MinimumStock = 4,
                 CategoryId = categories[2].Id,
-                BrandId = brands[6].Id
-            },
-            new Product
-            {
-                Name = "Espirales Traseros Progresivos",
-                Description = "Resortes helicoidales progresivos. Mayor estabilidad y confort. Acero templado.",
-                Price = 38000m,
-                Stock = 18,
-                MinimumStock = 6,
-                CategoryId = categories[2].Id,
-                BrandId = brands[14].Id
+                BrandId = brands[6].Id,
+                ActualStock = 10,
+                LastStockCheck = DateTime.Now.AddDays(-6)
             },
             new Product
             {
@@ -400,138 +507,12 @@ public class DatabaseSeeder
                 Stock = 14,
                 MinimumStock = 5,
                 CategoryId = categories[2].Id,
-                BrandId = brands[14].Id
+                BrandId = brands[14].Id,
+                ActualStock = 14,
+                LastStockCheck = DateTime.Now.AddDays(-8)
             },
 
-            // TRANSMISIÓN
-            new Product
-            {
-                Name = "Embrague Kit Completo",
-                Description = "Kit completo: disco, plato y collarin. Compatible múltiples modelos. Instalación profesional recomendada.",
-                Price = 125000m,
-                Stock = 8,
-                MinimumStock = 3,
-                CategoryId = categories[3].Id,
-                BrandId = brands[12].Id
-            },
-            new Product
-            {
-                Name = "Aceite Transmisión ATF Dexron III",
-                Description = "Aceite sintético para transmisión automática. 1 litro. Protección superior.",
-                Price = 8500m,
-                Stock = 60,
-                MinimumStock = 20,
-                CategoryId = categories[3].Id,
-                BrandId = brands[5].Id
-            },
-
-            // SISTEMA ELÉCTRICO
-            new Product
-            {
-                Name = "Batería Moura 12V 65Ah",
-                Description = "Batería sellada libre de mantenimiento. 650A arranque en frío. Garantía 12 meses.",
-                Price = 95000m,
-                Stock = 22,
-                MinimumStock = 8,
-                CategoryId = categories[10].Id,
-                BrandId = brands[13].Id
-            },
-            new Product
-            {
-                Name = "Alternador Bosch Remanufacturado",
-                Description = "Alternador remanufacturado 90A. Garantía 6 meses. Incluye polea.",
-                Price = 78000m,
-                Stock = 6,
-                MinimumStock = 3,
-                CategoryId = categories[4].Id,
-                BrandId = brands[0].Id
-            },
-            new Product
-            {
-                Name = "Burro de Arranque 12V",
-                Description = "Motor de arranque remanufacturado. Potencia original. Garantía 6 meses.",
-                Price = 65000m,
-                Stock = 8,
-                MinimumStock = 3,
-                CategoryId = categories[4].Id,
-                BrandId = brands[10].Id
-            },
-            new Product
-            {
-                Name = "Bobina de Encendido Individual",
-                Description = "Bobina de encendido electrónica. Mayor voltaje y eficiencia. Para motores modernos.",
-                Price = 18500m,
-                Stock = 30,
-                MinimumStock = 10,
-                CategoryId = categories[4].Id,
-                BrandId = brands[10].Id
-            },
-
-            // REFRIGERACIÓN
-            new Product
-            {
-                Name = "Radiador de Aluminio Reforzado",
-                Description = "Radiador completo de aluminio. Mayor eficiencia de enfriamiento. Incluye tapón.",
-                Price = 115000m,
-                Stock = 5,
-                MinimumStock = 2,
-                CategoryId = categories[5].Id,
-                BrandId = brands[12].Id
-            },
-            new Product
-            {
-                Name = "Termostato con Junta",
-                Description = "Termostato de apertura gradual. Temperatura 82°C. Incluye junta de sellado.",
-                Price = 12000m,
-                Stock = 40,
-                MinimumStock = 15,
-                CategoryId = categories[5].Id,
-                BrandId = brands[0].Id
-            },
-            new Product
-            {
-                Name = "Líquido Refrigerante Concentrado 5L",
-                Description = "Refrigerante orgánico de larga duración. Protección hasta -37°C. Color verde.",
-                Price = 15000m,
-                Stock = 50,
-                MinimumStock = 15,
-                CategoryId = categories[5].Id,
-                BrandId = brands[5].Id
-            },
-            new Product
-            {
-                Name = "Electroventilador con Motoventilador",
-                Description = "Electroventilador completo 12V. Incluye motoventilador y aspas. Alta eficiencia.",
-                Price = 55000m,
-                Stock = 10,
-                MinimumStock = 4,
-                CategoryId = categories[5].Id,
-                BrandId = brands[14].Id
-            },
-
-            // ESCAPE
-            new Product
-            {
-                Name = "Caño de Escape Completo",
-                Description = "Sistema de escape completo acero inoxidable. Incluye silenciador y caño trasero.",
-                Price = 145000m,
-                Stock = 4,
-                MinimumStock = 2,
-                CategoryId = categories[6].Id,
-                BrandId = brands[14].Id
-            },
-            new Product
-            {
-                Name = "Silenciador Deportivo",
-                Description = "Silenciador de flujo libre. Sonido deportivo. Acero inoxidable 409.",
-                Price = 85000m,
-                Stock = 7,
-                MinimumStock = 3,
-                CategoryId = categories[6].Id,
-                BrandId = brands[14].Id
-            },
-
-            // FILTROS
+            // FILTROS (Categoría 7)
             new Product
             {
                 Name = "Filtro de Aceite Mann Filter",
@@ -540,7 +521,9 @@ public class DatabaseSeeder
                 Stock = 120,
                 MinimumStock = 40,
                 CategoryId = categories[7].Id,
-                BrandId = brands[3].Id
+                BrandId = brands[3].Id,
+                ActualStock = 120,
+                LastStockCheck = DateTime.Now
             },
             new Product
             {
@@ -550,20 +533,12 @@ public class DatabaseSeeder
                 Stock = 80,
                 MinimumStock = 25,
                 CategoryId = categories[7].Id,
-                BrandId = brands[3].Id
-            },
-            new Product
-            {
-                Name = "Filtro Habitáculo Carbón Activado",
-                Description = "Filtro de aire acondicionado con carbón activado. Elimina olores y bacterias.",
-                Price = 12000m,
-                Stock = 55,
-                MinimumStock = 20,
-                CategoryId = categories[7].Id,
-                BrandId = brands[3].Id
+                BrandId = brands[3].Id,
+                ActualStock = 80,
+                LastStockCheck = DateTime.Now.AddDays(-2)
             },
 
-            // ACEITES Y LUBRICANTES
+            // ACEITES (Categoría 8)
             new Product
             {
                 Name = "Aceite Motor Mobil Super 3000 5W-40 (4L)",
@@ -572,7 +547,9 @@ public class DatabaseSeeder
                 Stock = 45,
                 MinimumStock = 15,
                 CategoryId = categories[8].Id,
-                BrandId = brands[4].Id
+                BrandId = brands[4].Id,
+                ActualStock = 45,
+                LastStockCheck = DateTime.Now.AddDays(-3)
             },
             new Product
             {
@@ -582,30 +559,26 @@ public class DatabaseSeeder
                 Stock = 35,
                 MinimumStock = 12,
                 CategoryId = categories[8].Id,
-                BrandId = brands[5].Id
-            },
-            new Product
-            {
-                Name = "Grasa Multiuso Litio EP2 (400g)",
-                Description = "Grasa lubricante multiuso. Resistente agua y temperatura. Para rodamientos y articulaciones.",
-                Price = 3500m,
-                Stock = 90,
-                MinimumStock = 30,
-                CategoryId = categories[8].Id,
-                BrandId = brands[14].Id
-            },
-            new Product
-            {
-                Name = "Aceite Diferencial 80W-90 (1L)",
-                Description = "Aceite para diferencial y caja transferencia. Alta presión extrema. API GL-5.",
-                Price = 7500m,
-                Stock = 40,
-                MinimumStock = 15,
-                CategoryId = categories[8].Id,
-                BrandId = brands[4].Id
+                BrandId = brands[5].Id,
+                ActualStock = 35,
+                LastStockCheck = DateTime.Now.AddDays(-4)
             },
 
-            // NEUMÁTICOS
+            // BATERÍA (Categoría 10)
+            new Product
+            {
+                Name = "Batería Moura 12V 65Ah",
+                Description = "Batería sellada libre de mantenimiento. 650A arranque en frío. Garantía 12 meses.",
+                Price = 95000m,
+                Stock = 22,
+                MinimumStock = 8,
+                CategoryId = categories[10].Id,
+                BrandId = brands[13].Id,
+                ActualStock = 22,
+                LastStockCheck = DateTime.Now.AddDays(-5)
+            },
+
+            // NEUMÁTICOS (Categoría 9)
             new Product
             {
                 Name = "Neumático Pirelli P7 195/65 R15",
@@ -614,7 +587,9 @@ public class DatabaseSeeder
                 Stock = 24,
                 MinimumStock = 8,
                 CategoryId = categories[9].Id,
-                BrandId = brands[8].Id
+                BrandId = brands[8].Id,
+                ActualStock = 24,
+                LastStockCheck = DateTime.Now.AddDays(-10)
             },
             new Product
             {
@@ -624,20 +599,12 @@ public class DatabaseSeeder
                 Stock = 20,
                 MinimumStock = 8,
                 CategoryId = categories[9].Id,
-                BrandId = brands[9].Id
-            },
-            new Product
-            {
-                Name = "Cubierta Fate AR-440 175/70 R13",
-                Description = "Neumático económico para ciudad. Buena relación precio/calidad. Uso moderado.",
-                Price = 45000m,
-                Stock = 40,
-                MinimumStock = 12,
-                CategoryId = categories[9].Id,
-                BrandId = brands[14].Id
+                BrandId = brands[9].Id,
+                ActualStock = 20,
+                LastStockCheck = DateTime.Now.AddDays(-12)
             },
 
-            // ILUMINACIÓN
+            // ILUMINACIÓN (Categoría 11)
             new Product
             {
                 Name = "Kit Luces LED H7 6000K",
@@ -646,30 +613,12 @@ public class DatabaseSeeder
                 Stock = 30,
                 MinimumStock = 10,
                 CategoryId = categories[11].Id,
-                BrandId = brands[7].Id
-            },
-            new Product
-            {
-                Name = "Foco Halógeno H4 12V 60/55W",
-                Description = "Lámpara halógena estándar. Mayor luminosidad que original. Pack x2 unidades.",
-                Price = 4500m,
-                Stock = 100,
-                MinimumStock = 30,
-                CategoryId = categories[11].Id,
-                BrandId = brands[7].Id
-            },
-            new Product
-            {
-                Name = "Barra LED Auxiliar 36W",
-                Description = "Barra de LED para off-road. 3600 lúmenes. Montaje universal. IP68 resistente agua.",
-                Price = 18000m,
-                Stock = 15,
-                MinimumStock = 5,
-                CategoryId = categories[11].Id,
-                BrandId = brands[14].Id
+                BrandId = brands[7].Id,
+                ActualStock = 30,
+                LastStockCheck = DateTime.Now.AddDays(-7)
             },
 
-            // ACCESORIOS
+            // ACCESORIOS (Categoría 12)
             new Product
             {
                 Name = "Alfombras Goma Premium (Set x4)",
@@ -678,59 +627,9 @@ public class DatabaseSeeder
                 Stock = 45,
                 MinimumStock = 15,
                 CategoryId = categories[12].Id,
-                BrandId = brands[14].Id
-            },
-            new Product
-            {
-                Name = "Cubre Volante Cuero Premium",
-                Description = "Funda de volante cuero ecológico. Mayor agarre y confort. Talle universal M.",
-                Price = 8500m,
-                Stock = 55,
-                MinimumStock = 20,
-                CategoryId = categories[12].Id,
-                BrandId = brands[14].Id
-            },
-            new Product
-            {
-                Name = "Organizador Baúl Plegable",
-                Description = "Organizador de baúl con compartimientos. Plegable y lavable. 3 divisiones ajustables.",
-                Price = 6500m,
-                Stock = 35,
-                MinimumStock = 12,
-                CategoryId = categories[12].Id,
-                BrandId = brands[14].Id
-            },
-            new Product
-            {
-                Name = "Kit Herramientas Básicas Auto",
-                Description = "Kit 23 piezas: llaves, destornilladores, pinzas. Estuche resistente. Ideal emergencias.",
-                Price = 15000m,
-                Stock = 28,
-                MinimumStock = 10,
-                CategoryId = categories[12].Id,
-                BrandId = brands[14].Id
-            },
-
-            // CARROCERÍA
-            new Product
-            {
-                Name = "Espejo Retrovisor Derecho Eléctrico",
-                Description = "Espejo con regulación eléctrica. Calefaccionado. Compatible múltiples modelos.",
-                Price = 35000m,
-                Stock = 12,
-                MinimumStock = 4,
-                CategoryId = categories[13].Id,
-                BrandId = brands[14].Id
-            },
-            new Product
-            {
-                Name = "Manija Exterior Puerta Cromada",
-                Description = "Manija de puerta cromada. Calidad OEM. Incluye cilindro y llaves.",
-                Price = 18000m,
-                Stock = 20,
-                MinimumStock = 8,
-                CategoryId = categories[13].Id,
-                BrandId = brands[14].Id
+                BrandId = brands[14].Id,
+                ActualStock = 45,
+                LastStockCheck = DateTime.Now.AddDays(-15)
             },
 
             // PRODUCTOS CON STOCK BAJO (ALERTAS)
@@ -742,17 +641,9 @@ public class DatabaseSeeder
                 Stock = 3,
                 MinimumStock = 8,
                 CategoryId = categories[4].Id,
-                BrandId = brands[0].Id
-            },
-            new Product
-            {
-                Name = "Correa Poli V 6 canales",
-                Description = "Correa poly V para accesorios motor. Alta resistencia. 6 nervios.",
-                Price = 8500m,
-                Stock = 4,
-                MinimumStock = 12,
-                CategoryId = categories[0].Id,
-                BrandId = brands[11].Id
+                BrandId = brands[0].Id,
+                ActualStock = 3,
+                LastStockCheck = DateTime.Now.AddDays(-1)
             },
             new Product
             {
@@ -762,16 +653,29 @@ public class DatabaseSeeder
                 Stock = 2,
                 MinimumStock = 6,
                 CategoryId = categories[0].Id,
-                BrandId = brands[14].Id
+                BrandId = brands[14].Id,
+                ActualStock = 2,
+                LastStockCheck = DateTime.Now
             }
         };
 
         _context.Products.AddRange(products);
+        await _context.SaveChangesAsync();
         return products;
     }
 
-    private void CreateProductSuppliers(List<Product> products, List<Supplier> suppliers)
+    #endregion
+
+    #region Relaciones Producto-Proveedor
+
+    private async Task CreateProductSuppliersAsync(List<Product> products, List<Supplier> suppliers)
     {
+        if (await _context.ProductSuppliers.AnyAsync())
+        {
+            Console.WriteLine("   ⚠️  Las relaciones producto-proveedor ya existen, omitiendo...");
+            return;
+        }
+
         var productSuppliers = new List<ProductSupplier>();
 
         foreach (var product in products)
@@ -792,14 +696,24 @@ public class DatabaseSeeder
         }
 
         _context.ProductSuppliers.AddRange(productSuppliers);
+        await _context.SaveChangesAsync();
     }
 
-    private void CreatePurchaseOrders(List<Product> products, List<Supplier> suppliers)
+    #endregion
+
+    #region Órdenes de Compra
+
+    private async Task CreatePurchaseOrdersAsync(List<Product> products, List<Supplier> suppliers)
     {
+        if (await _context.PurchaseOrders.AnyAsync())
+        {
+            Console.WriteLine("   ⚠️  Las órdenes de compra ya existen, omitiendo...");
+            return;
+        }
+
         var purchaseOrders = new List<PurchaseOrder>();
         var statuses = new[] { "Pending", "Approved", "Received", "Cancelled" };
 
-        // Crear 25 órdenes de compra
         for (int i = 0; i < 25; i++)
         {
             var product = products[_random.Next(products.Count)];
@@ -820,17 +734,27 @@ public class DatabaseSeeder
         }
 
         _context.PurchaseOrders.AddRange(purchaseOrders);
+        await _context.SaveChangesAsync();
     }
 
-    private void CreateOrders(List<User> users, List<Product> products)
+    #endregion
+
+    #region Órdenes de Venta
+
+    private async Task CreateSalesOrdersAsync(List<User> users, List<Product> products)
     {
+        if (await _context.Orders.AnyAsync())
+        {
+            Console.WriteLine("   ⚠️  Las órdenes de venta ya existen, omitiendo...");
+            return;
+        }
+
         var orders = new List<Order>();
         var clients = users.Where(u => u.Role == "Client").ToList();
-        var statuses = new[] { "Pending", "Processing", "Shipped", "Delivered", "Cancelled" };
+        var statuses = new[] { "Pendiente", "Preparando", "Despachado", "En Camino", "Entregado", "Cancelado" };
         var paymentMethods = new[] { "Tarjeta de Crédito", "Tarjeta de Débito", "Transferencia Bancaria", "Efectivo", "MercadoPago" };
 
-        // Crear 30 órdenes
-        for (int i = 0; i < 30; i++)
+        for (int i = 0; i < 40; i++)
         {
             var client = clients[_random.Next(clients.Count)];
             var numItems = _random.Next(1, 6);
@@ -840,7 +764,7 @@ public class DatabaseSeeder
             for (int j = 0; j < numItems; j++)
             {
                 var product = products[_random.Next(products.Count)];
-                var quantity = _random.Next(1, 3);
+                var quantity = _random.Next(1, 4);
                 var subtotal = product.Price * quantity;
                 total += subtotal;
 
@@ -866,54 +790,147 @@ public class DatabaseSeeder
                 ShippingAddress = client.Address ?? "Dirección no especificada",
                 PaymentMethod = paymentMethods[_random.Next(paymentMethods.Length)],
                 Total = total,
+                OriginalTotal = total,
                 Status = status,
                 CreatedAt = createdDate,
-                UpdatedAt = status != "Pending" ? createdDate.AddDays(_random.Next(1, 7)) : null,
+                UpdatedAt = status != "Pendiente" ? createdDate.AddDays(_random.Next(1, 7)) : null,
                 Items = orderItems,
-                Calificacion = status == "Delivered" ? _random.Next(3, 6) : null
+                Calificacion = status == "Entregado" ? _random.Next(3, 6) : null
             };
 
             orders.Add(order);
         }
 
         _context.Orders.AddRange(orders);
+        await _context.SaveChangesAsync();
     }
 
-    private void CreateNotifications(List<User> users)
+    #endregion
+
+    #region Reseñas de Productos
+
+    private async Task CreateProductReviewsAsync(List<User> users, List<Product> products)
     {
+        if (await _context.Set<ProductReview>().AnyAsync())
+        {
+            Console.WriteLine("   ⚠️  Las reseñas ya existen, omitiendo...");
+            return;
+        }
+
+        var reviews = new List<ProductReview>();
+        var clients = users.Where(u => u.Role == "Client").ToList();
+        var comments = new[]
+        {
+            "Excelente producto, muy buena calidad",
+            "Cumple con lo esperado, recomendado",
+            "Buena relación precio-calidad",
+            "Producto de calidad superior",
+            "Llegó en perfectas condiciones",
+            "No cumplió mis expectativas",
+            "Regular, esperaba más por el precio",
+            "Muy satisfecho con la compra",
+            "Perfecto, justo lo que necesitaba",
+            "Bueno pero podría mejorar"
+        };
+
+        // Crear reseñas para algunos productos
+        var reviewableProducts = products.Take(15).ToList();
+
+        foreach (var product in reviewableProducts)
+        {
+            var numReviews = _random.Next(2, 6);
+            var reviewers = clients.OrderBy(x => _random.Next()).Take(numReviews);
+
+            foreach (var reviewer in reviewers)
+            {
+                reviews.Add(new ProductReview
+                {
+                    ProductId = product.Id,
+                    UserId = reviewer.Id,
+                    Rating = _random.Next(3, 6),
+                    Comment = comments[_random.Next(comments.Length)],
+                    CreatedAt = DateTime.Now.AddDays(-_random.Next(1, 90)),
+                    HelpfulCount = _random.Next(0, 15),
+                    NotHelpfulCount = _random.Next(0, 5)
+                });
+            }
+        }
+
+        _context.Set<ProductReview>().AddRange(reviews);
+        await _context.SaveChangesAsync();
+    }
+
+    #endregion
+
+    #region Cupones
+
+    private async Task CreateCouponsAsync(List<User> users, List<Product> products)
+    {
+        if (await _context.Coupons.AnyAsync())
+        {
+            Console.WriteLine("   ⚠️  Los cupones ya existen, omitiendo...");
+            return;
+        }
+
+        var coupons = new List<Coupon>();
+        var clients = users.Where(u => u.Role == "Client").Take(3).ToList();
+
+        foreach (var client in clients)
+        {
+            coupons.Add(new Coupon
+            {
+                Code = $"DESC{_random.Next(1000, 9999)}",
+                DiscountPercentage = _random.Next(10, 31),
+                CreatedAt = DateTime.Now.AddDays(-30),
+                ExpiresAt = DateTime.Now.AddDays(30),
+                IsUsed = false,
+                IsActive = true,
+                UserId = client.Id,
+                Reason = "Cupón de bienvenida por registro"
+            });
+        }
+
+        _context.Coupons.AddRange(coupons);
+        await _context.SaveChangesAsync();
+    }
+
+    #endregion
+
+    #region Notificaciones
+
+    private async Task CreateNotificationsAsync(List<User> users)
+    {
+        if (await _context.Notifications.AnyAsync())
+        {
+            Console.WriteLine("   ⚠️  Las notificaciones ya existen, omitiendo...");
+            return;
+        }
+
         var notifications = new List<Notification>();
+
         var messagesAdmin = new[]
         {
-            ("Stock crítico detectado", "Los siguientes productos requieren reposición urgente: Bujías NGK, Filtro aceite Mann, Líquido de frenos DOT 4."),
-            ("Nueva orden de compra", "Se ha recibido una nueva orden de compra de Distribuidora Repuestos SA por $350.000."),
-            ("Pedido entregado con demora", "El pedido #1023 fue entregado con 2 días de demora. Revisar logística."),
-            ("Alerta de inventario", "15 productos están por debajo del stock mínimo. Generar órdenes de compra."),
-            ("Nuevo proveedor registrado", "Se ha agregado un nuevo proveedor: Lubricantes del Sur. Revisar catálogo."),
-            ("Venta importante", "Cliente Taller Mecánico San Martín realizó compra por $450.000. Coordinar envío."),
-            ("Producto más vendido", "Las pastillas Brembo son el producto más vendido del mes con 45 unidades.")
+            ("Stock crítico detectado", "Los siguientes productos requieren reposición urgente: Sensor Oxígeno, Kit Empacaduras."),
+            ("Nueva orden de compra", "Se ha recibido una nueva orden de compra por $350.000."),
+            ("Pedido entregado con demora", "El pedido #1023 fue entregado con 2 días de demora."),
+            ("Alerta de inventario", "3 productos están por debajo del stock mínimo."),
+            ("Venta importante", "Cliente Taller Mecánico realizó compra por $450.000."),
         };
 
         var messagesEmployee = new[]
         {
-            ("Asignación de pedido", "Se te ha asignado el pedido #2056 para preparación. Cliente: Gomería Central."),
-            ("Recordatorio de inventario", "Realizar conteo físico de neumáticos en depósito antes del viernes."),
-            ("Nueva cotización", "Cliente solicita cotización para kit de embrague completo. Responder en 24hs."),
-            ("Producto devuelto", "Cliente devolvió batería Moura 65Ah. Verificar estado y procesar garantía."),
-            ("Capacitación programada", "Capacitación sobre nuevos productos Bosch el próximo lunes 10:00hs.")
+            ("Asignación de pedido", "Se te ha asignado el pedido #2056 para preparación."),
+            ("Recordatorio de inventario", "Realizar conteo físico de neumáticos antes del viernes."),
+            ("Nueva cotización", "Cliente solicita cotización para kit de embrague completo."),
+            ("Producto devuelto", "Cliente devolvió batería Moura 65Ah. Verificar estado."),
         };
 
         var messagesClient = new[]
         {
-            ("Bienvenido a AutoPartes", "¡Gracias por registrarte! Encuentra los mejores repuestos para tu vehículo a precios increíbles."),
-            ("Tu pedido fue confirmado", "Recibimos tu pedido correctamente. Lo estamos preparando para el envío."),
-            ("Pedido en camino", "¡Tu pedido está en camino! Recibirás tus repuestos en 24-48hs hábiles."),
-            ("Pedido entregado", "Tu pedido fue entregado con éxito. ¡Esperamos que disfrutes tus productos!"),
-            ("Oferta especial en frenos", "🔥 25% OFF en pastillas y discos de freno Brembo. Stock limitado."),
-            ("Llegaron los neumáticos Michelin", "Nueva línea de neumáticos Michelin disponible. Consulta por tu medida."),
-            ("Promoción aceites sintéticos", "Llevá 4 litros de aceite sintético y llevate el filtro GRATIS."),
-            ("Tu opinión nos importa", "¿Cómo fue tu experiencia? Calificá tu última compra y obtené 10% descuento."),
-            ("Recordatorio de mantenimiento", "¿Hace más de 10.000km del último service? Revisá nuestros kits de mantenimiento."),
-            ("Producto en tu lista de deseos", "El Kit de Distribución que miraste está en oferta. ¡No te lo pierdas!")
+            ("Bienvenido a AutoPartes", "¡Gracias por registrarte! Encuentra los mejores repuestos."),
+            ("Oferta especial", "25% OFF en pastillas y discos de freno Brembo."),
+            ("Producto en oferta", "El Kit de Distribución está en oferta."),
+            ("Tu pedido fue confirmado", "Recibimos tu pedido correctamente."),
         };
 
         foreach (var user in users)
@@ -922,9 +939,7 @@ public class DatabaseSeeder
                          : user.Role == "Employee" ? messagesEmployee
                          : messagesClient;
 
-            var numNotifications = user.Role == "Admin" ? _random.Next(5, 10)
-                                 : user.Role == "Employee" ? _random.Next(3, 7)
-                                 : _random.Next(3, 8);
+            var numNotifications = _random.Next(3, 7);
 
             for (int i = 0; i < numNotifications; i++)
             {
@@ -935,11 +950,169 @@ public class DatabaseSeeder
                     Title = title,
                     Message = message,
                     CreatedAt = DateTime.Now.AddDays(-_random.Next(1, 60)),
-                    IsRead = _random.Next(0, 100) < 70 // 70% leídas
+                    IsRead = _random.Next(0, 100) < 60
                 });
             }
         }
 
         _context.Notifications.AddRange(notifications);
+        await _context.SaveChangesAsync();
     }
+
+    #endregion
+
+    #region Reclamos
+
+    private async Task CreateClaimsAsync(List<User> users)
+    {
+        if (await _context.Claims.AnyAsync())
+        {
+            Console.WriteLine("   ⚠️  Los reclamos ya existen, omitiendo...");
+            return;
+        }
+
+        var claims = new List<Claim>();
+        var clients = users.Where(u => u.Role == "Client").Take(4).ToList();
+        var admins = users.Where(u => u.Role == "Admin").ToList();
+
+        var asuntos = new[]
+        {
+            "Producto defectuoso",
+            "Entrega con demora",
+            "Producto no coincide con descripción",
+            "Falta de stock informado",
+            "Consulta sobre garantía"
+        };
+
+        foreach (var client in clients)
+        {
+            var numClaims = _random.Next(1, 3);
+
+            for (int i = 0; i < numClaims; i++)
+            {
+                var estado = (StatusClaim)_random.Next(1, 6);
+                var fechaCreacion = DateTime.Now.AddDays(-_random.Next(1, 60));
+
+                claims.Add(new Claim
+                {
+                    NumeroTicket = $"TKT-{_random.Next(10000, 99999)}",
+                    Asunto = asuntos[_random.Next(asuntos.Length)],
+                    Descripcion = "Descripción detallada del reclamo realizado por el cliente.",
+                    NivelUrgencia = (LevelUrgency)_random.Next(1, 5),
+                    Estado = estado,
+                    FechaCreacion = fechaCreacion,
+                    FechaActualizacion = fechaCreacion.AddDays(_random.Next(1, 5)),
+                    FechaCierre = estado == StatusClaim.Resuelto || estado == StatusClaim.Cerrado
+                        ? fechaCreacion.AddDays(_random.Next(3, 10))
+                        : null,
+                    ClienteId = client.Id,
+                    AdministradorAsignadoId = estado != StatusClaim.Nuevo
+                        ? admins[_random.Next(admins.Count)].Id
+                        : null
+                });
+            }
+        }
+
+        _context.Claims.AddRange(claims);
+        await _context.SaveChangesAsync();
+    }
+
+    #endregion
+
+    #region Movimientos de Stock
+
+    private async Task CreateStockMovementsAsync(List<Product> products)
+    {
+        if (await _context.StockMovements.AnyAsync())
+        {
+            Console.WriteLine("   ⚠️  Los movimientos de stock ya existen, omitiendo...");
+            return;
+        }
+
+        var movements = new List<StockMovement>();
+
+        // Crear algunos movimientos para productos seleccionados
+        var selectedProducts = products.Take(10).ToList();
+
+        foreach (var product in selectedProducts)
+        {
+            var numMovements = _random.Next(2, 5);
+
+            for (int i = 0; i < numMovements; i++)
+            {
+                var movementType = (StockMovementType)_random.Next(0, 5);
+                var quantity = _random.Next(5, 30);
+                var previousStock = product.Stock;
+                var newStock = movementType == StockMovementType.PurchaseEntry ||
+                              movementType == StockMovementType.AdjustmentIncrease
+                    ? previousStock + quantity
+                    : previousStock - quantity;
+
+                movements.Add(new StockMovement
+                {
+                    ProductId = product.Id,
+                    MovementType = movementType,
+                    Quantity = quantity,
+                    PreviousStock = previousStock,
+                    NewStock = newStock,
+                    Reason = GetStockMovementReason(movementType),
+                    CreatedAt = DateTime.Now.AddDays(-_random.Next(1, 90)),
+                    UserName = "Sistema"
+                });
+            }
+        }
+
+        _context.StockMovements.AddRange(movements);
+        await _context.SaveChangesAsync();
+    }
+
+    private string GetStockMovementReason(StockMovementType type)
+    {
+        return type switch
+        {
+            StockMovementType.PurchaseEntry => "Recepción de mercadería de proveedor",
+            StockMovementType.SaleExit => "Venta a cliente",
+            StockMovementType.AdjustmentIncrease => "Ajuste por conteo físico",
+            StockMovementType.AdjustmentDecrease => "Ajuste por diferencia de inventario",
+            StockMovementType.Return => "Devolución de cliente",
+            _ => "Movimiento de stock"
+        };
+    }
+
+    #endregion
+
+    #region Imprimir Credenciales
+
+    private void PrintCredentials()
+    {
+        Console.WriteLine("╔═══════════════════════════════════════════════════════════╗");
+        Console.WriteLine("║              CREDENCIALES DE ACCESO                       ║");
+        Console.WriteLine("╠═══════════════════════════════════════════════════════════╣");
+        Console.WriteLine("║                                                           ║");
+        Console.WriteLine("║  👨‍💼 SUPER ADMINISTRADOR:                                  ║");
+        Console.WriteLine("║     Email: superadmin@autopartes.com                      ║");
+        Console.WriteLine("║     Password: SuperAdmin123!                              ║");
+        Console.WriteLine("║                                                           ║");
+        Console.WriteLine("║  👨‍💼 ADMINISTRADOR:                                        ║");
+        Console.WriteLine("║     Email: admin@autopartes.com                           ║");
+        Console.WriteLine("║     Password: Admin123!                                   ║");
+        Console.WriteLine("║                                                           ║");
+        Console.WriteLine("║  👔 EMPLEADOS:                                            ║");
+        Console.WriteLine("║     Email: vendedor@autopartes.com                        ║");
+        Console.WriteLine("║     Email: deposito@autopartes.com                        ║");
+        Console.WriteLine("║     Email: atencion@autopartes.com                        ║");
+        Console.WriteLine("║     Password (todos): Empleado123!                        ║");
+        Console.WriteLine("║                                                           ║");
+        Console.WriteLine("║  👥 CLIENTES:                                             ║");
+        Console.WriteLine("║     Email: taller.mecanico@email.com                      ║");
+        Console.WriteLine("║     Email: gomeria.central@email.com                      ║");
+        Console.WriteLine("║     Email: juan.perez@email.com                           ║");
+        Console.WriteLine("║     Email: maria.rodriguez@email.com                      ║");
+        Console.WriteLine("║     Email: carlos.gomez@email.com                         ║");
+        Console.WriteLine("║     Password (todos): Cliente123!                         ║");
+        Console.WriteLine("║                                                           ║");
+        Console.WriteLine("╚═══════════════════════════════════════════════════════════╝\n");
+    }
+
+    #endregion
 }
