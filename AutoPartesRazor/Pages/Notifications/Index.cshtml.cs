@@ -21,6 +21,7 @@ public class IndexModel : PageModel
     }
 
     public List<Notification> Notifications { get; set; } = new();
+    public int CartCount { get; set; } = 0;
     public int UnreadCount { get; set; }
     public int TotalCount { get; set; }
 
@@ -61,6 +62,12 @@ public class IndexModel : PageModel
 
         TotalCount = await _context.Notifications
             .CountAsync(n => n.UserId == currentUser.Id);
+
+        // Obtener el contador del carrito
+        CartCount = await ObtenerContadorCarritoAsync();
+
+        // Actualizar ViewData
+        ViewData["CartCount"] = CartCount;
     }
 
     public async Task<IActionResult> OnPostMarkAsReadAsync(int id)
@@ -118,5 +125,13 @@ public class IndexModel : PageModel
 
         TempData["SuccessMessage"] = "Notificación eliminada.";
         return RedirectToPage();
+    }
+
+    /// Método privado para obtener el contador de items en el carrito
+    private async Task<int> ObtenerContadorCarritoAsync()
+    {
+        // Contar el número de items únicos en el carrito
+        var count = await _context.Carts.CountAsync();
+        return count;
     }
 }

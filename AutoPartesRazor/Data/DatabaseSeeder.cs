@@ -30,7 +30,7 @@ public class DatabaseSeeder
         try
         {
             Console.WriteLine("\n╔═══════════════════════════════════════════════════════════╗");
-            Console.WriteLine("║     INICIANDO CARGA DE DATOS DE PRUEBA - AUTOPARTES      ║");
+            Console.WriteLine("║     INICIANDO CARGA DE DATOS DE PRUEBA - AUTOPARTES       ║");
             Console.WriteLine("╚═══════════════════════════════════════════════════════════╝\n");
 
             // Asegurar que la base de datos existe
