@@ -139,26 +139,71 @@ public class GestionarModel : PageModel
         {
             if (string.IsNullOrEmpty(ViewModel.AdministradorAsignadoId))
             {
-                MensajeError = "Debe seleccionar un administrador.";
+                // Sin asignar - quitar asignación y área
+                var actualizado = await _reclamoService.AsignarAdministradorAsync(reclamoId, null, null);
+                if (actualizado)
+                {
+                    MensajeExito = "Asignación eliminada correctamente.";
+                }
                 return RedirectToPage(new { id = reclamoId });
             }
 
-            var actualizado = await _reclamoService.AsignarAdministradorAsync(reclamoId, ViewModel.AdministradorAsignadoId);
+            // ✅ Verificar si es un área
+            var esArea = ViewModel.AdministradorAsignadoId.EndsWith("_AREA");
 
-            if (actualizado)
+            if (esArea)
             {
-                MensajeExito = "Administrador asignado correctamente.";
+                // Determinar el nombre del área para guardar en la BD
+                var areaNombre = ViewModel.AdministradorAsignadoId switch
+                {
+                    "ADMIN_AREA" => "Administracion",
+                    "LOGISTICA_AREA" => "Logistica",
+                    "DEPOSITO_AREA" => "Deposito",
+                    "COMPRAS_AREA" => "Compras",
+                    _ => null
+                };
+
+                var areaTexto = ViewModel.AdministradorAsignadoId switch
+                {
+                    "ADMIN_AREA" => "Área de Administración",
+                    "LOGISTICA_AREA" => "Área de Logística",
+                    "DEPOSITO_AREA" => "Área de Depósito",
+                    "COMPRAS_AREA" => "Área de Compras",
+                    _ => "Área General"
+                };
+
+                // ✅ Guardar el área (sin administrador específico)
+                var actualizado = await _reclamoService.AsignarAdministradorAsync(reclamoId, null, areaNombre);
+
+                if (actualizado)
+                {
+                    MensajeExito = $"Reclamo asignado a: {areaTexto}";
+                }
+                else
+                {
+                    MensajeError = "No se pudo asignar el área.";
+                }
             }
             else
             {
-                MensajeError = "No se pudo asignar el administrador.";
+                // Es un administrador específico - limpiar el área
+                var actualizado = await _reclamoService.AsignarAdministradorAsync(reclamoId, ViewModel.AdministradorAsignadoId, null);
+
+                if (actualizado)
+                {
+                    MensajeExito = "Administrador asignado correctamente.";
+                }
+                else
+                {
+                    MensajeError = "No se pudo asignar el administrador.";
+                }
             }
 
             return RedirectToPage(new { id = reclamoId });
         }
         catch (Exception ex)
         {
-            MensajeError = $"Error al asignar administrador: {ex.Message}";
+            MensajeError = $"Error al asignar responsable: {ex.Message}";
             return RedirectToPage(new { id = reclamoId });
         }
     }

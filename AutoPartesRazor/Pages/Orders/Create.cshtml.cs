@@ -29,7 +29,6 @@ public class CreateModel : PageModel
     [BindProperty]
     public OrderInputModel Input { get; set; } = new();
 
-    // CAMBIO: Usar BindProperty con SupportsGet para mantener el cupón
     [BindProperty(SupportsGet = true)]
     public string? AppliedCouponCode { get; set; }
 
@@ -65,7 +64,6 @@ public class CreateModel : PageModel
 
         UserSesion = user;
 
-        // Cargar items del carrito
         CartItems = await _context.Carts
             .Include(c => c.Product)
             .ToListAsync();
@@ -75,11 +73,9 @@ public class CreateModel : PageModel
             return Page();
         }
 
-        // Calcular subtotal
         Subtotal = CartItems.Sum(item => (item.Product?.Price ?? 0) * item.Quantity);
         Total = Subtotal;
 
-        // Aplicar cupón si existe
         if (!string.IsNullOrEmpty(AppliedCouponCode))
         {
             await LoadAppliedCouponAsync(AppliedCouponCode, user.Id);
@@ -98,7 +94,6 @@ public class CreateModel : PageModel
 
         UserSesion = user;
 
-        // Cargar items del carrito nuevamente
         CartItems = await _context.Carts
             .Include(c => c.Product)
             .ToListAsync();
@@ -109,11 +104,9 @@ public class CreateModel : PageModel
             return Page();
         }
 
-        // Calcular totales
         Subtotal = CartItems.Sum(item => (item.Product?.Price ?? 0) * item.Quantity);
         Total = Subtotal;
 
-        // Verificar si hay cupón aplicado
         Coupon? couponToUse = null;
         if (!string.IsNullOrEmpty(AppliedCouponCode))
         {
@@ -139,7 +132,6 @@ public class CreateModel : PageModel
             return Page();
         }
 
-        // Crear la orden
         var order = new Order
         {
             UserId = user.Id,
@@ -154,7 +146,6 @@ public class CreateModel : PageModel
             CreatedAt = DateTime.Now
         };
 
-        // Asignar datos del cupón si existe
         if (couponToUse != null)
         {
             order.CouponId = couponToUse.Id;
@@ -164,7 +155,6 @@ public class CreateModel : PageModel
         _context.Orders.Add(order);
         await _context.SaveChangesAsync();
 
-        // Crear los OrderItems
         foreach (var cartItem in CartItems)
         {
             if (cartItem.Product == null) continue;
@@ -181,7 +171,6 @@ public class CreateModel : PageModel
             _context.OrderItems.Add(orderItem);
         }
 
-        // Marcar el cupón como usado
         if (couponToUse != null)
         {
             couponToUse.IsUsed = true;
@@ -189,9 +178,7 @@ public class CreateModel : PageModel
             _context.Coupons.Update(couponToUse);
         }
 
-        // Limpiar el carrito
         _context.Carts.RemoveRange(CartItems);
-
         await _context.SaveChangesAsync();
 
         TempData["SuccessMessage"] = $"¡Pedido #{order.Id} creado exitosamente!";
@@ -199,9 +186,6 @@ public class CreateModel : PageModel
         return RedirectToPage("/Orders/Details", new { id = order.Id });
     }
 
-    /// <summary>
-    /// Cargar cupón aplicado
-    /// </summary>
     private async Task LoadAppliedCouponAsync(string couponCode, string userId)
     {
         var coupon = await _context.Coupons
@@ -221,14 +205,10 @@ public class CreateModel : PageModel
         }
     }
 
-    /// <summary>
-    /// Calcular descuento según el tipo de cupón
-    /// </summary>
     private decimal CalculateDiscount(Coupon coupon)
     {
         if (coupon.ProductId.HasValue)
         {
-            // Descuento solo en producto específico
             var cartItem = CartItems.FirstOrDefault(c => c.ProductId == coupon.ProductId.Value);
             if (cartItem != null && cartItem.Product != null)
             {
@@ -239,7 +219,6 @@ public class CreateModel : PageModel
         }
         else
         {
-            // Descuento en todo el carrito
             return Subtotal * (coupon.DiscountPercentage / 100m);
         }
     }

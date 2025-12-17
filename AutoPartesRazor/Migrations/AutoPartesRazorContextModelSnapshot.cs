@@ -112,6 +112,9 @@ namespace AutoPartesRazor.Migrations
                     b.Property<string>("AdministradorAsignadoId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("AreaAsignada")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Asunto")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -146,6 +149,9 @@ namespace AutoPartesRazor.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AdministradorAsignadoId");
@@ -160,6 +166,8 @@ namespace AutoPartesRazor.Migrations
 
                     b.HasIndex("NumeroTicket")
                         .IsUnique();
+
+                    b.HasIndex("OrderId");
 
                     b.HasIndex("Estado", "NivelUrgencia", "FechaCreacion");
 
@@ -1127,9 +1135,16 @@ namespace AutoPartesRazor.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("AutoPartesRazor.Models.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.Navigation("AdministradorAsignado");
 
                     b.Navigation("Cliente");
+
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("AutoPartesRazor.Models.Coupon", b =>

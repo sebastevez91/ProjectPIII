@@ -23,15 +23,39 @@
                     <form method="post">
                         <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
 
+                        <!--DROPDOWN DE PEDIDOS (CORREGIDO) -->
+                        <div class="mb-3">
+                            <label asp-for="Input.OrderId" class="form-label"></label>
+                            <select asp-for="Input.OrderId" class="form-select">
+                                <option value="">-- Reclamo general (sin pedido específico) --</option>
+                                @if (Model.Input.PedidosDisponibles != null && Model.Input.PedidosDisponibles.Any())
+                                {
+                                    @foreach (var pedido in Model.Input.PedidosDisponibles)
+                                    {
+                                        <option value="@pedido.Id">
+                                            Pedido #@pedido.Id - @pedido.CreatedAt.ToString("dd/MM/yyyy") - $@pedido.Total.ToString("N2")
+                                        </option>
+                                    }
+                                }
+                            </select>
+                            <small class="form-text text-muted">
+                                <i class="bi bi-info-circle me-1"></i>
+                                Si tu reclamo está relacionado con un pedido específico, selecciónalo aquí.
+                            </small>
+                            <span asp-validation-for="Input.OrderId" class="text-danger"></span>
+                        </div>
+
+                        <!-- ASUNTO -->
                         <div class="mb-3">
                             <label asp-for="Input.Asunto" class="form-label"></label>
                             <input asp-for="Input.Asunto" class="form-control" placeholder="Ej: Producto defectuoso, Error en factura, etc." />
                             <span asp-validation-for="Input.Asunto" class="text-danger"></span>
                         </div>
 
+                        <!-- DESCRIPCIÓN -->
                         <div class="mb-3">
                             <label asp-for="Input.Descripcion" class="form-label"></label>
-                            <textarea asp-for="Input.Descripcion" class="form-control" rows="6" 
+                            <textarea asp-for="Input.Descripcion" class="form-control" rows="6"
                                       placeholder="Describa detalladamente su reclamo. Incluya toda la información relevante..."></textarea>
                             <div class="form-text">
                                 <span id="charCount">0</span> / 2000 caracteres
@@ -39,21 +63,23 @@
                             <span asp-validation-for="Input.Descripcion" class="text-danger"></span>
                         </div>
 
+                        <!-- NIVEL DE URGENCIA -->
                         <div class="mb-4">
                             <label asp-for="Input.NivelUrgencia" class="form-label"></label>
                             <select asp-for="Input.NivelUrgencia" class="form-select" asp-items="Html.GetEnumSelectList<AutoPartesRazor.Models.Enum.LevelUrgency>()">
                             </select>
                             <div class="form-text">
                                 <small>
-                                    <strong>Baja:</strong> Consulta general | 
-                                    <strong>Media:</strong> Problema moderado | 
-                                    <strong>Alta:</strong> Problema importante | 
+                                    <strong>Baja:</strong> Consulta general |
+                                    <strong>Media:</strong> Problema moderado |
+                                    <strong>Alta:</strong> Problema importante |
                                     <strong>Crítica:</strong> Urgente
                                 </small>
                             </div>
                             <span asp-validation-for="Input.NivelUrgencia" class="text-danger"></span>
                         </div>
 
+                        <!-- BOTONES -->
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-primary btn-lg">
                                 <i class="bi bi-send-fill me-2"></i>
@@ -72,7 +98,9 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
     <script>
         // Contador de caracteres
         const descripcionInput = document.querySelector('textarea[name="Input.Descripcion"]');
@@ -81,7 +109,7 @@
         if (descripcionInput && charCount) {
             descripcionInput.addEventListener('input', function() {
                 charCount.textContent = this.value.length;
-                
+
                 if (this.value.length > 2000) {
                     charCount.classList.add('text-danger');
                 } else if (this.value.length < 20) {

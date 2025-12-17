@@ -180,6 +180,13 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
             .HasForeignKey(m => m.UsuarioId)
             .OnDelete(DeleteBehavior.Restrict);
 
+        // Relación Claim - Order
+        modelBuilder.Entity<Claim>()
+            .HasOne(c => c.Order)
+            .WithMany()
+            .HasForeignKey(c => c.OrderId)
+            .OnDelete(DeleteBehavior.Restrict);
+
         // ============================================
         // RELACIONES DE RESEÑAS
         // ============================================

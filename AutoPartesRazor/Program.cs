@@ -70,7 +70,7 @@ builder.Services.AddAuthorization(options =>
 builder.Services.AddScoped<IPdfService, AutoPartesRazor.Services.PdfService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddTransient<IEmailSender, EmailSender>();
-
+// Servicio de Reclamo
 builder.Services.AddScoped<IClaimService, ClaimService>();
 
 var app = builder.Build();

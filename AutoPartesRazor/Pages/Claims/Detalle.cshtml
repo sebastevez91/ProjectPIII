@@ -49,7 +49,7 @@
                                 <!-- Mensaje del administrador (izquierda) -->
                                 <div class="d-flex mb-3">
                                     <div class="flex-shrink-0">
-                                        <div class="bg-warning rounded-circle text-white d-flex align-items-center justify-content-center" 
+                                        <div class="bg-warning rounded-circle text-white d-flex align-items-center justify-content-center"
                                              style="width: 40px; height: 40px;">
                                             <i class="bi bi-person-gear"></i>
                                         </div>
@@ -89,7 +89,7 @@
                                         </div>
                                     </div>
                                     <div class="flex-shrink-0">
-                                        <div class="bg-primary rounded-circle text-white d-flex align-items-center justify-content-center" 
+                                        <div class="bg-primary rounded-circle text-white d-flex align-items-center justify-content-center"
                                              style="width: 40px; height: 40px;">
                                             <i class="bi bi-person-fill"></i>
                                         </div>
@@ -134,6 +134,86 @@
 
         <!-- Columna lateral: Información del reclamo -->
         <div class="col-lg-4">
+
+            <!-- INFORMACIÓN DEL PEDIDO (NUEVO - SIMPLIFICADO PARA CLIENTE) -->
+            @if (Model.ViewModel.Reclamo.Order != null)
+            {
+                <div class="card shadow-sm mb-3 border-primary">
+                    <div class="card-header bg-primary text-white">
+                        <h6 class="mb-0">
+                            <i class="bi bi-box-seam me-2"></i>
+                            Pedido Relacionado
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <!-- Número y Estado -->
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <span class="badge bg-primary fs-6">
+                                <i class="bi bi-receipt me-1"></i>
+                                Pedido #@Model.ViewModel.Reclamo.Order.Id
+                            </span>
+                            @switch (Model.ViewModel.Reclamo.Order.Status)
+                            {
+                                case "Pending":
+                                    <span class="badge bg-warning text-dark">
+                                        <i class="bi bi-clock me-1"></i>Pendiente
+                                    </span>
+                                    break;
+                                case "Processing":
+                                    <span class="badge bg-info">
+                                        <i class="bi bi-arrow-repeat me-1"></i>En Proceso
+                                    </span>
+                                    break;
+                                case "Shipped":
+                                    <span class="badge bg-primary">
+                                        <i class="bi bi-truck me-1"></i>Enviado
+                                    </span>
+                                    break;
+                                case "Delivered":
+                                    <span class="badge bg-success">
+                                        <i class="bi bi-check-circle me-1"></i>Entregado
+                                    </span>
+                                    break;
+                                case "Cancelled":
+                                    <span class="badge bg-danger">
+                                        <i class="bi bi-x-circle me-1"></i>Cancelado
+                                    </span>
+                                    break;
+                                default:
+                                    <span class="badge bg-secondary">@Model.ViewModel.Reclamo.Order.Status</span>
+                                    break;
+                            }
+                        </div>
+
+                        <!-- Productos -->
+                        @if (Model.ViewModel.Reclamo.Order.Items != null && Model.ViewModel.Reclamo.Order.Items.Any())
+                        {
+                            <div>
+                                <strong class="d-block mb-2">
+                                    <i class="bi bi-box me-1"></i>Productos:
+                                </strong>
+                                <ul class="list-unstyled mb-0">
+                                    @foreach (var item in Model.ViewModel.Reclamo.Order.Items)
+                                    {
+                                        <li class="mb-1 ps-3">
+                                            <small class="text-muted">
+                                                <i class="bi bi-caret-right-fill me-1"></i>
+                                                @item.Product.Name
+                                                @if (item.Quantity > 1)
+                                                {
+                                                    <span class="badge bg-light text-dark ms-1">x@item.Quantity</span>
+                                                }
+                                            </small>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+
+            <!-- Información del Reclamo -->
             <div class="card shadow-sm mb-3">
                 <div class="card-header bg-secondary text-white">
                     <h6 class="mb-0">Información del Reclamo</h6>
@@ -241,8 +321,8 @@
 </div>
 
 @section Scripts {
-    @* COMENTAR ESTO TEMPORALMENTE *@
-    @* @{await Html.RenderPartialAsync("_ValidationScriptsPartial");} *@
+ 
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
     <script>
         // Scroll automático al final del chat
