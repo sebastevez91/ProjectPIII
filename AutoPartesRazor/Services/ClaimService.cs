@@ -120,7 +120,7 @@ public class ClaimService : IClaimService
 
     public async Task<bool> AsignarAdministradorAsync(int reclamoId, string? administradorId, string? areaAsignada = null)
     {
-<<<<<<< HEAD
+
         var reclamo = await _context.Claims.FindAsync(reclamoId);
         if (reclamo == null) return false;
 
@@ -129,19 +129,12 @@ public class ClaimService : IClaimService
 
         // Si el reclamo está en estado Nuevo, cambiar a EnProceso
         if (reclamo.Estado == StatusClaim.Nuevo)
-=======
-        var reclamo = await _context.Reclamo.FindAsync(reclamoId);
-        if (reclamo == null)
->>>>>>> 0bf5ff7de7fa453f33c0ec71764976b3257a96e4
-        {
-            return false;
-        }
 
         reclamo.AdministradorAsignadoId = administradorId;
         reclamo.AreaAsignada = areaAsignada;  
         reclamo.FechaActualizacion = DateTime.Now;
 
-        _context.Reclamo.Update(reclamo);
+        _context.Claims.Update(reclamo);
         await _context.SaveChangesAsync();
 
         return true;
