@@ -40,6 +40,7 @@
                         <thead class="table-light">
                             <tr>
                                 <th>Ticket</th>
+                                <th>Pedido</th>
                                 <th>Asunto</th>
                                 <th>Estado</th>
                                 <th>Urgencia</th>
@@ -52,14 +53,35 @@
                             @foreach (var reclamo in Model.Reclamos)
                             {
                                 <tr>
+                                    <!-- TICKET -->
                                     <td>
                                         <strong class="text-primary">@reclamo.NumeroTicket</strong>
                                     </td>
+
+                                    <!-- PEDIDO (MODIFICADO) -->
+                                    <td>
+                                        @if (reclamo.OrderId != null)
+                                        {
+                                            <span class="badge bg-info">
+                                                <i class="bi bi-box me-1"></i>#@reclamo.OrderId
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">
+                                                <small>General</small>
+                                            </span>
+                                        }
+                                    </td>
+
+                                    <!-- ASUNTO -->
                                     <td>
                                         <div class="text-truncate" style="max-width: 300px;">
                                             @reclamo.Asunto
                                         </div>
                                     </td>
+
+                                    <!-- ESTADO -->
                                     <td>
                                         @switch (reclamo.Estado)
                                         {
@@ -90,6 +112,8 @@
                                                 break;
                                         }
                                     </td>
+
+                                    <!-- URGENCIA -->
                                     <td>
                                         @switch (reclamo.NivelUrgencia)
                                         {
@@ -107,9 +131,13 @@
                                                 break;
                                         }
                                     </td>
+
+                                    <!-- FECHA -->
                                     <td>
                                         <small>@reclamo.FechaCreacion.ToString("dd/MM/yyyy HH:mm")</small>
                                     </td>
+
+                                    <!-- MENSAJES SIN LEER -->
                                     <td>
                                         @if (reclamo.MensajesSinLeerCliente > 0)
                                         {
@@ -124,6 +152,8 @@
                                             </span>
                                         }
                                     </td>
+
+                                    <!-- ACCIONES -->
                                     <td>
                                         <a asp-page="./Detalle" asp-route-id="@reclamo.Id" class="btn btn-sm btn-outline-primary">
                                             <i class="bi bi-eye me-1"></i>Ver

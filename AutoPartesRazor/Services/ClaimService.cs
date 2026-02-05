@@ -23,6 +23,7 @@ public class ClaimService : IClaimService
         return await _context.Claims
             .Include(r => r.Cliente)
             .Include(r => r.AdministradorAsignado)
+            .Include(r => r.Order)
             .Include(r => r.Mensajes)
             .OrderByDescending(r => r.NivelUrgencia)
             .ThenByDescending(r => r.FechaCreacion)
@@ -44,6 +45,9 @@ public class ClaimService : IClaimService
         return await _context.Claims
             .Include(r => r.Cliente)
             .Include(r => r.AdministradorAsignado)
+            .Include(r => r.Order)
+                .ThenInclude(o => o.Items)
+                .ThenInclude(i => i.Product)
             .Include(r => r.Mensajes)
                 .ThenInclude(m => m.Usuario)
             .FirstOrDefaultAsync(r => r.Id == id);
@@ -59,7 +63,7 @@ public class ClaimService : IClaimService
             .FirstOrDefaultAsync(r => r.NumeroTicket == numeroTicket);
     }
 
-    public async Task<Claim> CrearReclamoAsync(string clienteId, string asunto, string descripcion, LevelUrgency nivelUrgencia)
+    public async Task<Claim> CrearReclamoAsync(string clienteId, string asunto, string descripcion, LevelUrgency nivelUrgencia, int? orderId = null)
     {
         var numeroTicket = await GenerarNumeroTicketAsync();
 
@@ -70,6 +74,7 @@ public class ClaimService : IClaimService
             Asunto = asunto,
             Descripcion = descripcion,
             NivelUrgencia = nivelUrgencia,
+            OrderId = orderId,
             Estado = StatusClaim.Nuevo,
             FechaCreacion = DateTime.Now,
             FechaActualizacion = DateTime.Now
@@ -113,21 +118,21 @@ public class ClaimService : IClaimService
         return true;
     }
 
-    public async Task<bool> AsignarAdministradorAsync(int reclamoId, string administradorId)
+    public async Task<bool> AsignarAdministradorAsync(int reclamoId, string? administradorId, string? areaAsignada = null)
     {
         var reclamo = await _context.Claims.FindAsync(reclamoId);
-        if (reclamo == null) return false;
-
-        reclamo.AdministradorAsignadoId = administradorId;
-        reclamo.FechaActualizacion = DateTime.Now;
-
-        // Si el reclamo está en estado Nuevo, cambiar a EnProceso
-        if (reclamo.Estado == StatusClaim.Nuevo)
+        if (reclamo == null)
         {
-            reclamo.Estado = StatusClaim.EnProceso;
+            return false;
         }
 
+        reclamo.AdministradorAsignadoId = administradorId;
+        reclamo.AreaAsignada = areaAsignada;
+        reclamo.FechaActualizacion = DateTime.Now;
+
+        _context.Claims.Update(reclamo);
         await _context.SaveChangesAsync();
+
         return true;
     }
 

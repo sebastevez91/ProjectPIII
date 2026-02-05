@@ -23,7 +23,7 @@ public interface IClaimService
     Task<Claim?> ObtenerReclamoPorNumeroTicketAsync(string numeroTicket);
 
     /// Crea un nuevo reclamo
-    Task<Claim> CrearReclamoAsync(string clienteId, string asunto, string descripcion, LevelUrgency nivelUrgencia);
+    Task<Claim> CrearReclamoAsync(string clienteId, string asunto, string descripcion, LevelUrgency nivelUrgencia, int? orderId = null);
 
     /// Actualiza el estado de un reclamo
     Task<bool> ActualizarEstadoReclamoAsync(int reclamoId, StatusClaim nuevoEstado);
@@ -32,7 +32,7 @@ public interface IClaimService
     Task<bool> ActualizarUrgenciaReclamoAsync(int reclamoId, LevelUrgency nuevaUrgencia);
 
     /// Asigna un administrador a un reclamo
-    Task<bool> AsignarAdministradorAsync(int reclamoId, string administradorId);
+    Task<bool> AsignarAdministradorAsync(int reclamoId, string administradorId, string? areaAsignada = null);
 
     /// Cierra un reclamo
     Task<bool> CerrarReclamoAsync(int reclamoId);
