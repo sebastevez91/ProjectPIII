@@ -32,7 +32,7 @@ namespace AutoPartesRazor.ViewModels
     /// ViewModel para mostrar detalles de un reclamo
     public class ReclamoDetalleViewModel
     {
-        
+
         [ValidateNever]
         public Claim Reclamo { get; set; } = new Claim();
 

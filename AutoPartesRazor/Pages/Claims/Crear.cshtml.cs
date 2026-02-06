@@ -111,7 +111,11 @@ public class CrearModel : PageModel
                 Input.Asunto,
                 Input.Descripcion,
                 Input.NivelUrgencia,
+<<<<<<< HEAD
                 Input.OrderId 
+=======
+                Input.OrderId
+>>>>>>> tvz_dvp_desk
             );
 
             TempData["MensajeExito"] = $"Reclamo creado exitosamente. Número de ticket: {reclamo.NumeroTicket}";

@@ -122,6 +122,7 @@ public class ClaimService : IClaimService
     {
 
         var reclamo = await _context.Claims.FindAsync(reclamoId);
+<<<<<<< HEAD
         if (reclamo == null) return false;
 
         reclamo.AdministradorAsignadoId = administradorId;
@@ -132,6 +133,15 @@ public class ClaimService : IClaimService
 
         reclamo.AdministradorAsignadoId = administradorId;
         reclamo.AreaAsignada = areaAsignada;  
+=======
+        if (reclamo == null)
+        {
+            return false;
+        }
+
+        reclamo.AdministradorAsignadoId = administradorId;
+        reclamo.AreaAsignada = areaAsignada;
+>>>>>>> tvz_dvp_desk
         reclamo.FechaActualizacion = DateTime.Now;
 
         _context.Claims.Update(reclamo);

@@ -186,7 +186,10 @@ public class AutoPartesRazorContext : IdentityDbContext<User>
             .WithMany()
             .HasForeignKey(c => c.OrderId)
             .OnDelete(DeleteBehavior.Restrict);
+<<<<<<< HEAD
 
+=======
+>>>>>>> tvz_dvp_desk
         // ============================================
         // RELACIONES DE RESEÑAS
         // ============================================
