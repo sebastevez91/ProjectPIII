@@ -391,16 +391,6 @@ AutoPartesRazor/
 
 ---
 
-## 🤝 Contribuir
-
-¡Las contribuciones son bienvenidas! Si deseas contribuir:
-
-1. Fork el proyecto
-2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
-
 ### Guías de Contribución
 
 - Sigue las convenciones de código existentes
@@ -408,89 +398,23 @@ AutoPartesRazor/
 - Actualiza la documentación según sea necesario
 - Asegúrate de que el código compile sin errores
 
----
-
-## 🐛 Reportar Bugs
-
-Si encuentras un bug, por favor abre un [issue](https://github.com/tu-usuario/autopartes-razor/issues) con:
-
-- Descripción clara del problema
-- Pasos para reproducirlo
-- Comportamiento esperado vs comportamiento actual
-- Capturas de pantalla (si aplica)
-- Información del entorno (OS, navegador, versión de .NET)
-
----
-
-## 📝 Roadmap
-
-### Próximas Funcionalidades
-
-- [ ] Sistema de puntos de fidelidad
-- [ ] Integración con APIs de pago (MercadoPago, PayPal)
-- [ ] Chat en vivo para soporte
-- [ ] App móvil (Xamarin/MAUI)
-- [ ] Dashboard de analytics avanzado
-- [ ] Sistema de facturación electrónica
-- [ ] Integración con sistemas de envío
-- [ ] API REST para integraciones
-- [ ] Multi-idioma (i18n)
-- [ ] Tema oscuro/claro
-
----
 
 ## 📄 Licencia
 
 Este proyecto está licenciado bajo la Licencia MIT. Ver el archivo [LICENSE](LICENSE) para más detalles.
 
-```
-MIT License
-
-Copyright (c) 2024 AutoPartes
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
-
 ---
 
 ## 📞 Contacto
 
-**Desarrollador Principal:** Tu Nombre
+**Desarrollador Principal:** AutoPartesRazor
 
-- 📧 Email: tu-email@example.com
-- 🐱 GitHub: [@tu-usuario](https://github.com/tu-usuario)
-- 💼 LinkedIn: [Tu Perfil](https://linkedin.com/in/tu-perfil)
-- 🌐 Website: [tu-sitio-web.com](https://tu-sitio-web.com)
+- 📧 Email: sebastevez91@gmail.com
+- 🐱 GitHub: [sebastevez91](https://github.com/sebastevez91)
+- 💼 LinkedIn: [Sebastian Tevez](linkedin.com/in/sebastian-tevez-7b702322b)
+- 🌐 Website: [miportafolio.com](https://sebastevez91.github.io/miportafolio/)
 
-**Link del Proyecto:** [https://github.com/tu-usuario/autopartes-razor](https://github.com/tu-usuario/autopartes-razor)
-
----
-
-## 🙏 Agradecimientos
-
-- [ASP.NET Core Documentation](https://docs.microsoft.com/en-us/aspnet/core/)
-- [Bootstrap](https://getbootstrap.com/)
-- [Font Awesome](https://fontawesome.com/)
-- [SweetAlert2](https://sweetalert2.github.io/)
-- [Animate.css](https://animate.style/)
-
----
+**Link del Proyecto:** [https://github.com/sebastevez91/ProjectPIII.git](https://github.com/sebastevez91/ProjectPIII.git)
 
 ## ⭐ Dale una estrella
 
@@ -499,6 +423,5 @@ Si este proyecto te resultó útil, considera darle una ⭐ en GitHub. ¡Gracias
 ---
 
 <div align="center">
-  <p>Hecho con ❤️ y ☕</p>
   <p>© 2024 AutoPartes. Todos los derechos reservados.</p>
 </div>
