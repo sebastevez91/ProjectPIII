@@ -120,20 +120,7 @@ public class ClaimService : IClaimService
 
     public async Task<bool> AsignarAdministradorAsync(int reclamoId, string? administradorId, string? areaAsignada = null)
     {
-
         var reclamo = await _context.Claims.FindAsync(reclamoId);
-<<<<<<< HEAD
-        if (reclamo == null) return false;
-
-        reclamo.AdministradorAsignadoId = administradorId;
-        reclamo.FechaActualizacion = DateTime.Now;
-
-        // Si el reclamo está en estado Nuevo, cambiar a EnProceso
-        if (reclamo.Estado == StatusClaim.Nuevo)
-
-        reclamo.AdministradorAsignadoId = administradorId;
-        reclamo.AreaAsignada = areaAsignada;  
-=======
         if (reclamo == null)
         {
             return false;
@@ -141,7 +128,6 @@ public class ClaimService : IClaimService
 
         reclamo.AdministradorAsignadoId = administradorId;
         reclamo.AreaAsignada = areaAsignada;
->>>>>>> tvz_dvp_desk
         reclamo.FechaActualizacion = DateTime.Now;
 
         _context.Claims.Update(reclamo);
