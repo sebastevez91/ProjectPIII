@@ -78,26 +78,24 @@ var app = builder.Build();
 // ============================================
 // SEED DE DATOS (Solo en Development)
 // ============================================
-if (app.Environment.IsDevelopment())
+using (var scope = app.Services.CreateScope())
 {
-    using (var scope = app.Services.CreateScope())
+    var services = scope.ServiceProvider;
+    try
     {
-        var services = scope.ServiceProvider;
-        try
-        {
-            var context = services.GetRequiredService<AutoPartesRazorContext>();
-            var userManager = services.GetRequiredService<UserManager<User>>();
-            var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+        var context = services.GetRequiredService<AutoPartesRazorContext>();
+        var userManager = services.GetRequiredService<UserManager<User>>();
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
-            // Ejecutar el seeder unificado
-            var seeder = new DatabaseSeeder(context, userManager, roleManager);
-            await seeder.SeedAsync();
-        }
-        catch (Exception ex)
-        {
-            var logger = services.GetRequiredService<ILogger<Program>>();
-            logger.LogError(ex, "❌ Ocurrió un error al ejecutar el seed de datos");
-        }
+        await context.Database.MigrateAsync();
+
+        var seeder = new DatabaseSeeder(context, userManager, roleManager);
+        await seeder.SeedAsync();
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "❌ Ocurrió un error al ejecutar el seed de datos");
     }
 }
 // ============================================
